@@ -25,14 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: employee_home.php");
         } else {
             // Password doesn't match
-            // echo "<h2>Incorrect password</h2>";
+            echo "<h2>Incorrect password</h2>";
             session_start();
             $_SESSION['error'] = "Incorrect password!";
             header("Location: employee_login.php"); 
         }
     } else {
         // User doesn't exist
-        echo "<h2>header Employee ID not found</h2>";
+        echo
         session_start();
         $_SESSION['error'] = "Employee ID not found";
         header("Location: employee_login.php"); 
