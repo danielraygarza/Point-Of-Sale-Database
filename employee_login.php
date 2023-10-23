@@ -21,21 +21,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mysqli->query("UPDATE employee SET clocked_in=1 WHERE Employee_ID='$Employee_ID'");
 
 
-            // Redirect to a logged-in page or dashboard
+            // Redirect to a employee page
             header("Location: employee_home.php");
         } else {
             // Password doesn't match
-            echo "<h2>Incorrect password</h2>";
+            // echo "<h2>Incorrect password</h2>";
+            echo "";
             session_start();
             $_SESSION['error'] = "Incorrect password!";
-            header("Location: employee_login.php");     
+            // header("Location: employee_login.php");     
         }
     } else {
         // User doesn't exist
-        echo
+        echo "";
         session_start();
         $_SESSION['error'] = "Employee ID not found";
-        header("Location: employee_login.php"); 
+        // header("Location: employee_login.php"); 
     }
 }
 ?>
