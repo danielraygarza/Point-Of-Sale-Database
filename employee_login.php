@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // User doesn't exist
-        // echo "<h2>Employee ID not found</h2>";
+        echo "<h2>header Employee ID not found</h2>";
         session_start();
         $_SESSION['error'] = "Employee ID not found";
         header("Location: employee_login.php"); 
