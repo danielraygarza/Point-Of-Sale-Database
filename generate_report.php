@@ -29,11 +29,11 @@
             $reportType = $_POST['reportType'];
             
             if ($reportType === 'inventory') {
-                // Include your database connection code here
-                include 'db_connection.php'; // Replace with your actual database connection file
+                // Database connection code:
+                include 'database.php'; // Database connection file
 
                 // Define your SQL query to retrieve inventory data
-                $sql = "SELECT product_name, quantity_in_stock FROM inventory";
+                $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory";
 
                 // Execute the query
                 $result = mysqli_query($conn, $sql);
@@ -43,13 +43,13 @@
                     if (mysqli_num_rows($result) > 0) {
                         echo '<h2>Inventory Report</h2>';
                         echo '<table>';
-                        echo '<tr><th>Product Name</th><th>Quantity in Stock</th></tr>';
+                        echo '<tr><th>Product ID</th><th>Quantity in Stock</th></tr>';
 
                         // Loop through the results and display them in a table
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<tr>';
-                            echo '<td>' . $row['product_name'] . '</td>';
-                            echo '<td>' . $row['quantity_in_stock'] . '</td>';
+                            echo '<td>' . $row['Inventory_ID'] . '</td>';
+                            echo '<td>' . $row['Inventory_Amount'] . '</td>';
                             echo '</tr>';
                         }
 
