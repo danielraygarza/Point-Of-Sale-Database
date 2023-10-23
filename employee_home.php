@@ -30,6 +30,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo '<a href="logout.php">Logout</a>';
             }
+            if ($_SESSION['user']['Title_Role'] == 'MAN' && $_SERVER['REQUEST_URI'] != '/reports.php') {
+                echo '<a href="reports.php">Reports</a>';
+            }
             ?>
         </div>
 
