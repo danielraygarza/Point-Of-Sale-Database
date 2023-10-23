@@ -18,10 +18,11 @@
         <div class="navbar">
             <a href="index.php">Home</a>
             
+            
         </div>
         
-    <form action="reports.php" method="post">
-        <h2>Reports Page</h2>
+    <form action="generate_report.php" method="post">
+        <h2>Reports</h2>
 
         <label for="reportType">Select a Report:</label>
         <select name="reportType" id="reportType">
