@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // User doesn't exist
-        echo "<h2>Employee ID not found</h2>";
+        // echo "<h2>Employee ID not found</h2>";
         session_start();
         $_SESSION['error'] = "Employee ID not found";
         header("Location: employee_login.php"); 
@@ -49,6 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
+<?php
+    if (isset($_SESSION['error'])) {
+        echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+        unset($_SESSION['error']);  // Unset the error message after displaying it
+    }
+    ?>
     <!-- Navbar -->
     <div class="navbar">
         <a href="index.php">Home</a>
@@ -56,32 +62,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="#">Profile</a> -->
     </div>
 
-<form action="employee_login.php" method="post">
-    <h2>Login to your Employee Account</h2>
-    <div>
-        <label for="username">Employee ID  </label>
-        <input 
-            type="text" 
-            id="Employee_ID" 
-            name="Employee_ID"
-            placeholder="Enter employee ID"
-            required>
-    </div>
-    <br>
-    <div>
-        <label for="password">Password  </label>
-        <input 
-            type="password" 
-            id="password"
-            name="password"
-            placeholder="Enter password"
-            required>
-    </div>
-    <br>
-    <input class = button type="submit" value="Login">
-    <!-- shift start time begin at submit? shift end when log out? -->
-    
-</form> 
+    <form action="employee_login.php" method="post">
+        <h2>Login to your Employee Account</h2>
+        <div>
+            <label for="username">Employee ID  </label>
+            <input 
+                type="text" 
+                id="Employee_ID" 
+                name="Employee_ID"
+                placeholder="Enter employee ID"
+                required>
+        </div>
+        <br>
+        <div>
+            <label for="password">Password  </label>
+            <input 
+                type="password" 
+                id="password"
+                name="password"
+                placeholder="Enter password"
+                required>
+        </div>
+        <br>
+        <input class = button type="submit" value="Login">
+        <!-- shift start time begin at submit? shift end when log out? -->
+        
+    </form> 
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const errorMessage = document.getElementById('errorMessage');
+            if (errorMessage) {
+                setTimeout(() => {
+                    errorMessage.style.opacity = 0;  // Fade out the error message after 2 seconds
+                }, 2000);
+            }
+        });
+    </script>
 
 </body>
 </html>
