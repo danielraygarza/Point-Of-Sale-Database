@@ -30,6 +30,7 @@
 
     if ($mysqli->query($sql) === TRUE) {
         //if successful signup, mark user as logged in and send to home page
+        $result = $mysqli->query("SELECT * FROM customers WHERE email='$email'");
         $user = $result->fetch_assoc(); // Assign user data to the session
         $_SESSION['loggedin'] = true;
         $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
