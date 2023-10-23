@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
         <div>
             <label for="city">City  </label>
-            <input type="text" id="city" name="city" placeholder="Enter city" style="width: 150px;"required>
+            <input type="text" id="city" name="city" placeholder="Enter city" style="width: 100px;"required>
 
             <label for="state">State  </label>
             <select id="state" name="state" placeholder="Select state" style="width: 100px;" required>
