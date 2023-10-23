@@ -123,10 +123,10 @@ select:focus {
 }
 
 #errorMessage {
-    /* background-color: #ff6666; Red background color */
+    background-color: #ff6666; /* Red background color */
     padding: 10px;
-    color: rgba(255, 255, 255, 0);
-    /* border: 1px solid #e60000; Darker red border */
+    color: white;
+    border: 1px solid #e60000; /* Darker red border */
     display: inline-block;
     margin: 10px;
     border-radius: 5px;
