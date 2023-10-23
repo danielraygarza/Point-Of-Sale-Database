@@ -83,11 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 unset($_SESSION['error']);  // Unset the error message after displaying it
             }
         ?>
-        
+
         <input class = button type="submit" value="Login">
         
     </form> 
-    <script>
+    <!-- <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             const errorMessage = document.getElementById('errorMessage');
             if (errorMessage) {
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }, 1500);
             }
         });
-    </script>
+    </script> -->
 
 </body>
 </html>
