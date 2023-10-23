@@ -60,6 +60,7 @@
 <body>
     <div class="navbar">
         <a href="index.php">Home</a>
+        <a href="employee_home.php">Employee Home</a>
         <!-- <a href="#">Order Now</a>
         <a href="#">Profile</a> -->
         <?php

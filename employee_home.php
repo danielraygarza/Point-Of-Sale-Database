@@ -6,7 +6,6 @@ session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     //access employee attributes
     echo "<h2>Time to work, " . $_SESSION['user']['E_First_Name'] . "!</h2>";
-    echo "<h2>Role: " . $_SESSION['user']['Title_Role'] . "</h2>";
 } else {
     //if not logged in, will send to default URL
     header("Location: index.php");
