@@ -26,7 +26,9 @@
 
         $checkEmail = $mysqli->query("SELECT email FROM customers WHERE email='$email'");
         if($checkEmail->num_rows > 0) {
-            echo "The email address you entered is already registered. Please use a different email address or log in.";
+            echo "";
+            session_start();
+            $_SESSION['error'] = "Email already registered";
         } else {
             // Inserting the data into the database
             $sql = "INSERT INTO customers (first_name, middle_initial, last_name, birthday, join_date, address, address2, city, state, zip_code, phone_number, email, password) 
@@ -187,6 +189,14 @@
                 }
             });
         </script>
+
+        <?php
+            //displays error messages here 
+            if (isset($_SESSION['error'])) {
+                echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                unset($_SESSION['error']);  // Unset the error message after displaying it
+            }
+        ?>
 
         <div>
             <input class = button type="submit" value="Sign Up" onclick="formatDate()">
