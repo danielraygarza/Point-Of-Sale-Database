@@ -30,14 +30,12 @@
 
     if ($mysqli->query($sql) === TRUE) {
         //if successful signup, mark user as logged in and send to home page
+        $user = $result->fetch_assoc(); // Assign user data to the session
         $_SESSION['loggedin'] = true;
         $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
         
         $mysqli->close();
-        header("Location: home.php");
-
-        // goes to welcome page when signup but want to go to home.php
-        // header('Location: welcome.php');
+        header('Location: home.php');
         exit;
     } else {
         echo "Error: " . $sql . "<br>" . $mysqli->error;
