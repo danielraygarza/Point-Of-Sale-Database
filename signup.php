@@ -27,7 +27,6 @@
         $checkEmail = $mysqli->query("SELECT email FROM customers WHERE email='$email'");
         if($checkEmail->num_rows > 0) {
             echo "";
-            session_start();
             $_SESSION['error'] = "Email already registered";
         } else {
             // Inserting the data into the database
