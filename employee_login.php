@@ -40,63 +40,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Employee Login</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="img/pizza.ico" type="image/x-icon">
-</head>
-<body>
-    
-    <!-- Navbar -->
-    <div class="navbar">
-        <a href="index.php">Home</a>
-        <!-- <a href="#">Order Now</a>
-        <a href="#">Profile</a> -->
-    </div>
-
-    <form action="employee_login.php" method="post">
-        <h2>Login to your Employee Account</h2>
-        <div>
-            <label for="username">Employee ID  </label>
-            <input 
-                type="text" 
-                id="Employee_ID" 
-                name="Employee_ID"
-                placeholder="Enter employee ID"
-                required>
+    <head>
+        <title>Employee Login</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" href="img/pizza.ico" type="image/x-icon">
+    </head>
+    <body>
+        <!-- Navbar -->
+        <div class="navbar">
+            <a href="index.php">Home</a>
+            <!-- <a href="#">Order Now</a>
+            <a href="#">Profile</a> -->
         </div>
-        <br>
-        <div>
-            <label for="password">Password  </label>
-            <input 
-                type="password" 
-                id="password"
-                name="password"
-                placeholder="Enter password"
-                required>
-        </div>
-        <br>
-    
-        <?php
-            if (isset($_SESSION['error'])) {
-                echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
-                unset($_SESSION['error']);  // Unset the error message after displaying it
-            }
-        ?>
 
-        <input class = button type="submit" value="Login">
+        <form action="employee_login.php" method="post">
+            <h2>Login to your Employee Account</h2>
+            <div>
+                <label for="username">Employee ID  </label>
+                <input 
+                    type="text" 
+                    id="Employee_ID" 
+                    name="Employee_ID"
+                    placeholder="Enter employee ID"
+                    required>
+            </div>
+            <br>
+            <div>
+                <label for="password">Password  </label>
+                <input 
+                    type="password" 
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required>
+            </div>
+            <br>
         
-    </form> 
-    <!-- <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const errorMessage = document.getElementById('errorMessage');
-            if (errorMessage) {
-                setTimeout(() => {
-                    errorMessage.style.opacity = 0;  // Fade out the error message after 1 sec
-                }, 1500);
-            }
-        });
-    </script> -->
+            <?php
+                if (isset($_SESSION['error'])) {
+                    echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                    unset($_SESSION['error']);  // Unset the error message after displaying it
+                }
+            ?>
 
-</body>
+            <input class = button type="submit" value="Login">
+            
+        </form> 
+
+    </body>
 </html>

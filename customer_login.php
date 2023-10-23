@@ -21,17 +21,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: home.php");
         } else {
             // Password doesn't match
-            // echo "<h2>Incorrect password</h2>";
+            echo "";
             session_start();
             $_SESSION['error'] = "Incorrect password!";
-            header("Location: customer_login.php"); 
         }
     } else {
         // User doesn't exist
-        // echo "<h2>Email not found</h2>";
+        echo "";
         session_start();
         $_SESSION['error'] = "Email not found";
-        header("Location: customer_login.php"); 
     }
 }
 ?>
@@ -72,6 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             placeholder="Enter password"
             required>
     </div> <br>
+
+    <?php
+        if (isset($_SESSION['error'])) {
+            echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+            unset($_SESSION['error']);  // Unset the error message after displaying it
+        }
+    ?>
     
     <input class="button" type="submit" value="Login">
 
