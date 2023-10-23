@@ -76,22 +76,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 required>
         </div>
         <br>
+    
+        <?php
+            if (isset($_SESSION['error'])) {
+                echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                unset($_SESSION['error']);  // Unset the error message after displaying it
+            }
+        ?>
+        
         <input class = button type="submit" value="Login">
         
     </form> 
-    <?php
-        if (isset($_SESSION['error'])) {
-            echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
-            unset($_SESSION['error']);  // Unset the error message after displaying it
-        }
-    ?>
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             const errorMessage = document.getElementById('errorMessage');
             if (errorMessage) {
                 setTimeout(() => {
                     errorMessage.style.opacity = 0;  // Fade out the error message after 1 sec
-                }, 100);
+                }, 1500);
             }
         });
     </script>
