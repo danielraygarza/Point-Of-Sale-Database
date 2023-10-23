@@ -9,41 +9,42 @@
     session_start();
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
-    // Extracting data from the form
-    $first_name = $mysqli->real_escape_string($_POST['first_name']);
-    $middle_initial = $mysqli->real_escape_string($_POST['middle_initial']);
-    $last_name = $mysqli->real_escape_string($_POST['last_name']);
-    $birthday = $mysqli->real_escape_string($_POST['birthday']);
-    $join_date = $mysqli->real_escape_string($_POST['join_date']);
-    $address = $mysqli->real_escape_string($_POST['address']);
-    $address2 = $mysqli->real_escape_string($_POST['address2']);
-    $city = $mysqli->real_escape_string($_POST['city']);
-    $state = $mysqli->real_escape_string($_POST['state']);
-    $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
-    $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
-    $email = $mysqli->real_escape_string($_POST['email']);
-    $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
+        // Extracting data from the form
+        $first_name = $mysqli->real_escape_string($_POST['first_name']);
+        $middle_initial = $mysqli->real_escape_string($_POST['middle_initial']);
+        $last_name = $mysqli->real_escape_string($_POST['last_name']);
+        $birthday = $mysqli->real_escape_string($_POST['birthday']);
+        $join_date = $mysqli->real_escape_string($_POST['join_date']);
+        $address = $mysqli->real_escape_string($_POST['address']);
+        $address2 = $mysqli->real_escape_string($_POST['address2']);
+        $city = $mysqli->real_escape_string($_POST['city']);
+        $state = $mysqli->real_escape_string($_POST['state']);
+        $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
+        $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
+        $email = $mysqli->real_escape_string($_POST['email']);
+        $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
-    $checkEmail = $mysqli->query("SELECT email FROM customers WHERE email='$email'");
-    if($checkEmail->num_rows > 0) {
-        echo "The email address you entered is already registered. Please use a different email address or log in.";
-    } else {
-        // Inserting the data into the database
-        $sql = "INSERT INTO customers (first_name, middle_initial, last_name, birthday, join_date, address, address2, city, state, zip_code, phone_number, email, password) 
-                VALUES ('$first_name', '$middle_initial', '$last_name', '$birthday','$join_date', '$address', '$address2', '$city', '$state', '$zip_code', '$phone_number', '$email', '$password')";
-
-        if ($mysqli->query($sql) === TRUE) {
-            //if successful signup, mark user as logged in and send to home page
-            $result = $mysqli->query("SELECT * FROM customers WHERE email='$email'");
-            $user = $result->fetch_assoc(); // Assign user data to the session
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
-            
-            $mysqli->close();
-            header('Location: home.php');
-            exit;
+        $checkEmail = $mysqli->query("SELECT email FROM customers WHERE email='$email'");
+        if($checkEmail->num_rows > 0) {
+            echo "The email address you entered is already registered. Please use a different email address or log in.";
         } else {
-            echo "Error: " . $sql . "<br>" . $mysqli->error;
+            // Inserting the data into the database
+            $sql = "INSERT INTO customers (first_name, middle_initial, last_name, birthday, join_date, address, address2, city, state, zip_code, phone_number, email, password) 
+                    VALUES ('$first_name', '$middle_initial', '$last_name', '$birthday','$join_date', '$address', '$address2', '$city', '$state', '$zip_code', '$phone_number', '$email', '$password')";
+
+            if ($mysqli->query($sql) === TRUE) {
+                //if successful signup, mark user as logged in and send to home page
+                $result = $mysqli->query("SELECT * FROM customers WHERE email='$email'");
+                $user = $result->fetch_assoc(); // Assign user data to the session
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
+                
+                $mysqli->close();
+                header('Location: home.php');
+                exit;
+            } else {
+                echo "Error: " . $sql . "<br>" . $mysqli->error;
+            }
         }
     }
 ?>
