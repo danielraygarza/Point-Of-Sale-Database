@@ -18,10 +18,10 @@ The following technologies were used to develop this project:
 
     HTML/CSS/JavaScript
     PHP
-    MySQL
+    SQL
     Microsoft Azure
     MySQL Workbench
-    GitHub
+    GitHub/GitHub Desktop
     Visual Studio Code
 
 Steps to set up a PHP-based Web App:
