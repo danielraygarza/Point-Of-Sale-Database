@@ -14,7 +14,7 @@
     }
 
     //get list of supervisors from database
-    if ($Title_Role == 'SUP') { 
+    if ($_SESSION['user']['Title_Role'] == 'SUP') { 
         //if supervisor then only manager can be supervisor
         $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='MAN'");
     } else {
