@@ -25,24 +25,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: employee_home.php");
         } else {
             // Password doesn't match
-            // echo "<h2>Incorrect password</h2>";
             echo "";
             session_start();
             $_SESSION['error'] = "Incorrect password!";
-            // header("Location: employee_login.php");     
         }
     } else {
         // User doesn't exist
         echo "";
         session_start();
         $_SESSION['error'] = "Employee ID not found";
-        // header("Location: employee_login.php"); 
     }
 }
 ?>
 
 <!DOCTYPE html>
-<!-- Employee page. Only validated users will be able to access this page -->
 <html>
 <head>
     <title>Employee Login</title>
@@ -94,8 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             const errorMessage = document.getElementById('errorMessage');
             if (errorMessage) {
                 setTimeout(() => {
-                    errorMessage.style.opacity = 0;  // Fade out the error message after 2 seconds
-                }, 2000);
+                    errorMessage.style.opacity = 0;  // Fade out the error message after 1 sec
+                }, 100);
             }
         });
     </script>
