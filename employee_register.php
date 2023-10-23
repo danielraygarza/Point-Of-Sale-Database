@@ -102,11 +102,9 @@
             </select>
         </div><br>
 
-        <!-- Managers are not required to have supervisor -->
-        <?php $isRequired = ($Title_Role != 'MAN') ? 'required' : ''; ?>
         <div>
             <label for="Supervisor_ID">Supervisor </label>
-            <select id="Supervisor_ID" name="Supervisor_ID" <?= $isRequired ?>>
+            <select id="Supervisor_ID" name="Supervisor_ID" required>
                 <option value="" selected disabled>Assign Supervisor</option>
                 <?php
                 if ($supervisors->num_rows > 0) {
@@ -117,6 +115,19 @@
                 ?>
             </select>
         </div><br>
+        <script>
+            function roleRequirement() {
+                const role = document.getElementById('Title_Role');
+                const supervisor = document.getElementById('Supervisor_ID');
+
+                // if manager role is selected, supervisor is not required
+                if (role.value === 'MAN') {
+                    supervisor.removeAttribute('required');
+                } else {
+                    supervisor.setAttribute('required', '');
+                }
+            }
+        </script>
         
         <div>
             <label for="Employee_ID">Employee ID  </label>
