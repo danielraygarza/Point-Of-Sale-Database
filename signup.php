@@ -1,6 +1,4 @@
 <?php
-    //gives fatal eror if duplicate user. create error message to handle
-
     include 'database.php'; // Include the database connection details
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -24,6 +22,7 @@
         $email = $mysqli->real_escape_string($_POST['email']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
+        //check if duplicate user. sends error message
         $checkEmail = $mysqli->query("SELECT email FROM customers WHERE email='$email'");
         if($checkEmail->num_rows > 0) {
             echo "";
