@@ -72,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div> <br>
 
     <?php
+        //displays error messages here 
         if (isset($_SESSION['error'])) {
             echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
             unset($_SESSION['error']);  // Unset the error message after displaying it

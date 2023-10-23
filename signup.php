@@ -170,10 +170,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         </div><br>
         
         <!-- need to add SQL code to ensure passwords match and set up error if not -->
-        <!-- <div>
-            <label for="password">Confirm Password  </label>
-            <input type="password" id="password" name="password" placeholder="Confirm password" required>
-        </div><br> -->
+        <div>
+            <label for="confirm_password">Confirm Password  </label>
+            <input type="password" id="confirm_password" placeholder="Confirm password" required>
+        </div><br>
+
+        <script>
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm_password').value;
+
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    e.preventDefault();  // This will stop the form from submitting
+                }
+            });
+        </script>
 
         <div>
             <input class = button type="submit" value="Sign Up" onclick="formatDate()">
