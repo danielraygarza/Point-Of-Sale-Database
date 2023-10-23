@@ -17,13 +17,21 @@
     <body>
         <div class="navbar">
             <a href="index.php">Home</a>
-            <!-- <a href="#">Order Now</a>
-            <a href="#">Profile</a> -->
+            
         </div>
         
-    <form action="" method="post">
+    <form action="reports.php" method="post">
         <h2>Reports Page</h2>
-        <!-- <a href="menu.php" class="button">Order now!</a> -->
+
+        <label for="reportType">Select a Report:</label>
+        <select name="reportType" id="reportType">
+            <option value="inventory">Inventory Report</option>
+            <option value="onclock">On-Clock Report</option>
+            <option value="sales">Sales Report</option>
+            <option value="performance">Employee Performance Report</option>
+        </select>
+        <input type="submit" value="Generate Report">
+        
     </form> 
 
     </body>
