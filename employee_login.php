@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<h2>Incorrect password</h2>";
             session_start();
             $_SESSION['error'] = "Incorrect password!";
-            header("Location: employee_login.php"); 
+            header("Location: employee_login.php");     
         }
     } else {
         // User doesn't exist
@@ -49,12 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
-<?php
-    if (isset($_SESSION['error'])) {
-        echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
-        unset($_SESSION['error']);  // Unset the error message after displaying it
-    }
-    ?>
+    
     <!-- Navbar -->
     <div class="navbar">
         <a href="index.php">Home</a>
@@ -85,9 +80,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <br>
         <input class = button type="submit" value="Login">
-        <!-- shift start time begin at submit? shift end when log out? -->
         
     </form> 
+    <?php
+        if (isset($_SESSION['error'])) {
+            echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+            unset($_SESSION['error']);  // Unset the error message after displaying it
+        }
+    ?>
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             const errorMessage = document.getElementById('errorMessage');
