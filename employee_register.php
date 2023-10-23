@@ -1,5 +1,4 @@
 <?php
-    //gives fatal eror if duplicate ID. create error message to handle
     session_start();
 
     include 'database.php'; // Include the database connection details
@@ -15,7 +14,14 @@
     }
 
     //get list of supervisors from database
-    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP'");
+    if ($Title_Role == 'SUP') { 
+        //if supervisor then only manager can be supervisor
+        $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='MAN'");
+    } else {
+        //team members can only select supervisors as their supervisor
+        $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP'");
+    }
+    
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
@@ -39,9 +45,7 @@
                     VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password')";
 
             if ($mysqli->query($sql) === TRUE) {
-                // echo "Account created successfully!";
                 $mysqli->close();
-                // curretly does to main page because not technically logged in to go to employee_home
                 header('Location: employee_home.php');
                 exit;
             } else {
@@ -98,9 +102,11 @@
             </select>
         </div><br>
 
+        <!-- Managers are not required to have supervisor -->
+        <?php $isRequired = ($Title_Role != 'MAN') ? 'required' : ''; ?>
         <div>
             <label for="Supervisor_ID">Supervisor </label>
-            <select id="Supervisor_ID" name="Supervisor_ID" required>
+            <select id="Supervisor_ID" name="Supervisor_ID" <?= $isRequired ?>>
                 <option value="" selected disabled>Assign Supervisor</option>
                 <?php
                 if ($supervisors->num_rows > 0) {
