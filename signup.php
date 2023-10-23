@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                 <option value="WI">Wisconsin</option> <option value="WY">Wyoming</option>
         </select>
             <label for="zip_code">Zip Code  </label>
-            <input type="text" id="zip_code" name="zip_code" placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 90px;" required>
+            <input type="text" id="zip_code" name="zip_code" placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
         </div><br>
 
         <div>
