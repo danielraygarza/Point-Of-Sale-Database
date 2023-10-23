@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
             <label for="middle_initial"></label>
             <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  placeholder="M.I." style="width: 30px;">
-            
+
             <label for="last_name"></label>
             <input type="text" id="last_name" name="last_name" placeholder="Last" style="width: 75px;" required>
         </div><br>
@@ -115,10 +115,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
         <div>
             <label for="city">City  </label>
-            <input type="text" id="city" name="city" placeholder="Enter city" required>
+            <input type="text" id="city" name="city" placeholder="Enter city" style="width: 150px;"required>
 
             <label for="state">State  </label>
-            <select id="state" name="state" placeholder="Select state" style="width: 100px;"required>
+            <select id="state" name="state" placeholder="Select state" style="width: 100px;" required>
                 <option value="" selected disabled>Select</option>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
