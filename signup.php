@@ -22,7 +22,7 @@
         $email = $mysqli->real_escape_string($_POST['email']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
-        //check if duplicate user. sends error message
+        //check if duplicate user. Email is unique. sends error message if dup
         $checkEmail = $mysqli->query("SELECT email FROM customers WHERE email='$email'");
         if($checkEmail->num_rows > 0) {
             echo "";

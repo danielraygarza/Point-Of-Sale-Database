@@ -17,7 +17,6 @@
     //get list of supervisors from database
     $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP'");
 
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
         // Extracting data from the form
@@ -29,20 +28,26 @@
         $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
-        // Inserting the data into the database
-        $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Supervisor_ID, Employee_ID, password) 
-                VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password')";
-
-        if ($mysqli->query($sql) === TRUE) {
-            // echo "Account created successfully!";
-            $mysqli->close();
-            // curretly does to main page because not technically logged in to go to employee_home
-            header('Location: employee_home.php');
-            exit;
+        //check if duplicate employee ID. sends error message
+        $checkID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Employee_ID'");
+        if($checkID->num_rows > 0) {
+            echo "";
+            $_SESSION['error'] = "Employee ID already exist";
         } else {
-            echo "Error: " . $sql . "<br>" . $mysqli->error;
-        }
+            // Inserting the data into the database
+            $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Supervisor_ID, Employee_ID, password) 
+                    VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password')";
 
+            if ($mysqli->query($sql) === TRUE) {
+                // echo "Account created successfully!";
+                $mysqli->close();
+                // curretly does to main page because not technically logged in to go to employee_home
+                header('Location: employee_home.php');
+                exit;
+            } else {
+                echo "Error: " . $sql . "<br>" . $mysqli->error;
+            }
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -116,12 +121,31 @@
             <input type="password" id="password" name="password" placeholder="Create password" required>
         </div><br>
         
-        <!-- need to add SQL code to ensure passwords match and set up error if not -->
-        <!-- <div>
-            <label for="password">Confirm Password  </label>
-            <input type="password" id="password" name="password" placeholder="Confirm password" required>
-        </div><br> -->
+        <div>
+            <label for="confirm_password">Confirm Password  </label>
+            <input type="password" id="confirm_password" placeholder="Confirm password" required>
+        </div><br>
+        
+        <script>
+            // send alert if passwords do not match
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm_password').value;
 
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    e.preventDefault();  // stops form from submitting
+                }
+            });
+        </script>
+
+        <?php
+            //displays error messages here 
+            if (isset($_SESSION['error'])) {
+                echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                unset($_SESSION['error']);  // Unset the error message after displaying it
+            }
+        ?>
         <div>
             <input class = button type="submit" value="Register">
         </form>
