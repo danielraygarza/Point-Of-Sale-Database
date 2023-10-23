@@ -1,12 +1,13 @@
 <?php
-//gives fatal eror if duplicate user. create error message to handle
+    //gives fatal eror if duplicate user. create error message to handle
 
-include 'database.php'; // Include the database connection details
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+    include 'database.php'; // Include the database connection details
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
+    session_start();
+    if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
     // Extracting data from the form
     $first_name = $mysqli->real_escape_string($_POST['first_name']);
@@ -28,16 +29,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             VALUES ('$first_name', '$middle_initial', '$last_name', '$birthday','$join_date', '$address', '$address2', '$city', '$state', '$zip_code', '$phone_number', '$email', '$password')";
 
     if ($mysqli->query($sql) === TRUE) {
-        // echo "Account created successfully!";
+        //if successful signup, mark user as logged in and send to home page
+        $_SESSION['loggedin'] = true;
+        $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
+        
         $mysqli->close();
+        header("Location: home.php");
+
         // goes to welcome page when signup but want to go to home.php
-        header('Location: welcome.php');
+        // header('Location: welcome.php');
         exit;
     } else {
         echo "Error: " . $sql . "<br>" . $mysqli->error;
     }
 
-}
+    }
 ?>
 <!DOCTYPE html>
 <!-- Signup page for new users -->
