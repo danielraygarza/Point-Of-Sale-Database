@@ -106,9 +106,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>
             <label for="address">Address  </label>
             <input type="text" id="address" name="address" placeholder="Enter address" required>
-        </div><br>
-
-        <div>
             <label for="address2">Address 2  </label>
             <input type="text" id="address2" name="address2" placeholder="Optional">
         </div><br>
@@ -155,9 +152,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>
             <label for="phone_number">Phone Number  </label>
             <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
-        </div><br>
-
-        <div>
             <label for="email">Email  </label>
             <!-- input requires "@" and "." 
             currently casues fatal eror if not unique -->
@@ -167,22 +161,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>
             <label for="password">Password  </label>
             <input type="password" id="password" name="password" placeholder="Create password" required>
-        </div><br>
-        
-        <!-- need to add SQL code to ensure passwords match and set up error if not -->
-        <div>
             <label for="confirm_password">Confirm Password  </label>
             <input type="password" id="confirm_password" placeholder="Confirm password" required>
         </div><br>
 
         <script>
+            // send alert if passwords do not match
             document.querySelector('form').addEventListener('submit', function(e) {
                 const password = document.getElementById('password').value;
                 const confirmPassword = document.getElementById('confirm_password').value;
 
                 if (password !== confirmPassword) {
                     alert('Passwords do not match!');
-                    e.preventDefault();  // This will stop the form from submitting
+                    e.preventDefault();  // stops form from submitting
                 }
             });
         </script>

@@ -16,6 +16,7 @@
         <a href="menu.php">Order now</a>
         <!-- <a href="#">Profile</a> -->
         <?php
+            // in nav bar, shows log out or log in
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo '<a href="logout.php">Logout</a>';
             } else {
