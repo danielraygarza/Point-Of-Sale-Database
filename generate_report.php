@@ -35,7 +35,8 @@
         </div>
 
         <!-- Populates report header with JS in reports.php -->
-        <div class="report_header" id="reportHeader">
+        <div class="report_header">
+            Test Header - Faaaaaaaaaaaaaaaaaack
             <!-- Report header will be dynamically populated -->
         </div>
 
