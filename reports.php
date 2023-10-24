@@ -65,10 +65,10 @@
 
         <script>
             function showReportHeader(reportType){
-                var reportHeader = document.getElementById('reportHeader'); // variable for header
+                var reportHeaderId = "<?php echo $reportHeaderId; ?>";
+                var reportHeader = document.getElementById('reportHeaderId'); // variable for header
+                
                 if (reportType.value === 'inventory') {
-                    //inventoryOptions.style.display = 'block';
-
                     //Determine selected inventoryType
                     var inventoryType = document.getElemntById('inventoryType').value;
 

@@ -34,9 +34,12 @@
             ?>
         </div>
 
+        <!-- Populates reportHeader variable to use in reports.php -->
+        <?php 
+        $reportHeaderId = "reportHeader";
+        ?>
         <!-- Populates report header with JS in reports.php -->
-        <div class="report_header">
-            Test Header - Faaaaaaaaaaaaaaaaaack
+        <div id="reportHeader" class="report_header">
             <!-- Report header will be dynamically populated -->
         </div>
 
