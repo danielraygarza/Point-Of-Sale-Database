@@ -23,7 +23,7 @@
         $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
         $Hire_Date = $mysqli->real_escape_string($_POST['Hire_Date']);
         $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
-        $Supervisor_ID = $mysqli->real_escape_string($_POST['Supervisor_ID']);
+        $Supervisor_ID = isset($_POST['Supervisor_ID']) ? $mysqli->real_escape_string($_POST['Supervisor_ID']) : null; //Assigns null if no supervisor selected
         $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
@@ -33,9 +33,14 @@
             echo "";
             $_SESSION['error'] = "Employee ID already exist";
         } else {
-            // Inserting the data into the database
-            $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Supervisor_ID, Employee_ID, password) 
-                    VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password')";
+            // Inserting the data into the database. Accounting if supervisor is NULL when employee is a manager
+            if ($Supervisor_ID !== null) {
+                    $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Supervisor_ID, Employee_ID, password) 
+                            VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password')";
+            } else{
+                   $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Employee_ID, password) 
+                            VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Employee_ID','$password')";
+            }
 
             if ($mysqli->query($sql) === TRUE) {
                 $mysqli->close();
