@@ -27,6 +27,7 @@
             <a href="index.php">Home</a>
             <a href="reports.php">Back to Reports</a>
             <?php
+                //shows logout button if logged in
                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                     echo '<a href="logout.php">Logout</a>';
                 }
