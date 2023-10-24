@@ -1,4 +1,5 @@
 <?php 
+    // // Check if the user is not logged in
     /*
     session_start();
     include 'database.php'; // Include the database connection details
@@ -32,21 +33,31 @@
                     echo '<a href="logout.php">Logout</a>';
                 }
             ?>
-            
+
             
         </div>
         
     <form action="generate_report.php" method="post">
         <h2>Reports</h2>
 
-        <label for="reportType">Select a Report </label>
+        <label for="reportType">Select a Report:</label>
         <select name="reportType" id="reportType">
-            <option value="" selected disabled>Report Type</option>
+            <option value="none">Select a Report</option>
             <option value="inventory">Inventory Report</option>
             <option value="onclock">On-Clock Report</option>
             <option value="sales">Sales Report</option>
             <option value="performance">Employee Performance Report</option>
         </select>
+
+        <div id="inventoryOptions" style="display: none;">
+                <label for="inventoryType">Select Inventory Type:</label>
+                <select name="inventoryType" id="inventoryType">
+                    <option value="all">All Stock</option>
+                    <option value="low">Low Stock</option>
+                    <option value="out">Out of Stock</option>
+                </select>
+            </div>
+
         <input type="submit" value="Generate Report">
         
     </form> 
