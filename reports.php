@@ -64,13 +64,10 @@
     </form> 
 
         <script>
-            function showInventoryOptions() {
-                var reportType = document.getElementById('reportType');
-                var inventoryOptions = document.getElementById('inventoryOptions');
+            function showReportHeader(reportType){
                 var reportHeader = document.getElementById('reportHeader'); // variable for header
-
                 if (reportType.value === 'inventory') {
-                    inventoryOptions.style.display = 'block';
+                    //inventoryOptions.style.display = 'block';
 
                     //Determine selected inventoryType
                     var inventoryType = document.getElemntById('inventoryType').value;
@@ -88,8 +85,47 @@
                     //Update the report header text
                     reportHeader.textContent = reportHeaderText;
 
+                } else if (reportType === 'sales') {
+                    reportHeaderText = 'Sales Report';
+
+                    //Update the report header text
+                    reportHeader.textContent = reportHeaderText;
+                } else{
+                    //Test
+                    reportHeaderText = 'Blank';
+                    reportHeader.textContent = reportHeaderText;
+                }
+            }
+            function showInventoryOptions() {
+                var reportType = document.getElementById('reportType');
+                var inventoryOptions = document.getElementById('inventoryOptions');
+                var reportHeader = document.getElementById('reportHeader'); // variable for header
+
+                if (reportType.value === 'inventory') {
+                    inventoryOptions.style.display = 'block';
+                    showReportHeader(reportType); //set header
+
+                    /*
+                    //Made a separate function for setting the header
+                    //Determine selected inventoryType
+                    var inventoryType = document.getElemntById('inventoryType').value;
+
+                    //Define report header text to display
+                    var reportHeaderText = '';
+                    if(inventoryType === 'all'){
+                        reportHeaderText = 'All Stock Items Report';
+                    } else if (inventoryType === 'low'){
+                        reportHeaderText = 'Low Stock Items Report';
+                    } else if (inventoryType === 'out'){
+                        reportHeaderText = 'Out of Stock Items Report';
+                    }
+
+                    //Update the report header text
+                    reportHeader.textContent = reportHeaderText;
+                    */
                 } else {
                     inventoryOptions.style.display = 'none';
+                    showReportHeader(reportType); //set header for default
                 }
             }
         </script>
