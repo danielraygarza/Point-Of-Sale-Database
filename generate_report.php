@@ -45,6 +45,11 @@
                 // Database connection code:
                 include 'database.php'; // Database connection file
 
+                //Check if the connection to the database was successful
+                if($conn === false){
+                    die("Error: Could not connect to the database. " . mysqli_connect_error());
+                }
+
                 // Check the value of the inventoryType
                 $inventoryType = $_POST['inventoryType'];
                 $sql = '';
