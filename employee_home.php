@@ -17,7 +17,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 <html>
     <head>
         <title>POS Pizza Employees</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="css/styles.css">
         <link rel="icon" href="img/pizza.ico" type="image/x-icon">
     </head>
     <body>

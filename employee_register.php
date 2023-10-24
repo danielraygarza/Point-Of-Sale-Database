@@ -56,7 +56,7 @@
 <!-- Page for creating new employees -->
 <head>
     <title>Employee Registration</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
