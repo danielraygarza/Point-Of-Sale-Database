@@ -14,14 +14,7 @@
     }
 
     //get list of supervisors from database
-    if ($_SESSION['user']['Title_Role'] == 'SUP') { 
-        //if supervisor then only manager can be supervisor
-        $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='MAN'");
-    } else {
-        //team members can only select supervisors as their supervisor
-        $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP'");
-    }
-    
+    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP' OR Title_Role='MAN'");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
@@ -94,7 +87,7 @@
 
         <div>
             <label for="Title_Role">Role  </label>
-            <select id="Title_Role" name="Title_Role" placeholder="Select role" style="width: 150px;"required>
+            <select id="Title_Role" name="Title_Role" placeholder="Select role" style="width: 150px;"required onchange="roleRequirement()">
                 <option value="" selected disabled>Select</option>
                 <option value="TM">Team Member</option>
                 <option value="SUP">Supervisor</option>
