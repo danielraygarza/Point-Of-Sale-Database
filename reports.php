@@ -42,7 +42,7 @@
         <h2>Reports</h2>
 
         <label for="reportType">Select a Report:</label>
-        <select name="reportType" id="reportType">
+        <select name="reportType" id="reportType" onchange="showInventoryOptions()">
             <option value="none">Select a Report</option>
             <option value="inventory">Inventory Report</option>
             <option value="onclock">On-Clock Report</option>
