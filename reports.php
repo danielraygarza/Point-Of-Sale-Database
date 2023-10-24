@@ -22,17 +22,7 @@
         <title>POS Pizza</title>
         <link rel="stylesheet" href="css/styles.css">
         <link rel="icon" href="img/pizza.ico" type="image/x-icon">
-        <script>
-            function showInventoryOptions() {
-                var reportType = document.getElementById('reportType');
-                var inventoryOptions = document.getElementById('inventoryOptions');
-                if (reportType.value === 'inventory') {
-                    inventoryOptions.style.display = 'block';
-                } else {
-                    inventoryOptions.style.display = 'none';
-                }
-            }
-        </script>
+        
     </head>
     <body>
         <div class="navbar">
@@ -73,5 +63,16 @@
         
     </form> 
 
+    <script>
+            function showInventoryOptions() {
+                var reportType = document.getElementById('reportType');
+                var inventoryOptions = document.getElementById('inventoryOptions');
+                if (reportType.value === 'inventory') {
+                    inventoryOptions.style.display = 'block';
+                } else {
+                    inventoryOptions.style.display = 'none';
+                }
+            }
+        </script>
     </body>
 </html>
