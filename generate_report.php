@@ -26,7 +26,11 @@
         <div class="navbar">
             <a href="index.php">Home</a>
             <a href="reports.php">Back to Reports</a>
-
+            <?php
+                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+                    echo '<a href="logout.php">Logout</a>';
+                }
+            ?>
         </div>
         
     <form action="generate_report.php" method="post">
