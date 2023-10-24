@@ -33,7 +33,12 @@
                 }
             ?>
         </div>
-        
+
+        <!-- Populates report header with JS in reports.php -->
+        <div class="report_header" id="reportHeader">
+            <!-- Report header will be dynamically populated -->
+        </div>
+
     <form action="generate_report.php" method="post">
     <?php
     // Check if the form has been submitted
@@ -58,12 +63,15 @@
                 if ($inventoryType === 'low') {
                     // Query for low stock items
                     $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory WHERE Inventory_Amount < 10";
+
                 } elseif ($inventoryType === 'out') {
                     // Query for out of stock items
                     $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory WHERE Inventory_Amount = 0";
+
                 } else {
                     // Query for all stock items
                     $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory";
+
                 }
 
                 // Execute the query
