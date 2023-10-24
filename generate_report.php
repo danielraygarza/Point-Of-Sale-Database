@@ -45,8 +45,21 @@
                 // Database connection code:
                 include 'database.php'; // Database connection file
 
-                // Define your SQL query to retrieve inventory data
-                $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory";
+                // Check the value of the inventoryType
+                $inventoryType = $_POST['inventoryType'];
+                $sql = '';
+
+                // Define your SQL queries for Inventory selection
+                if ($inventoryType === 'low') {
+                    // Query for low stock items
+                    $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory WHERE Inventory_Amount < 10";
+                } elseif ($inventoryType === 'out') {
+                    // Query for out of stock items
+                    $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory WHERE Inventory_Amount = 0";
+                } else {
+                    // Query for all stock items
+                    $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory";
+                }
 
                 // Execute the query
                 $result = mysqli_query($conn, $sql);

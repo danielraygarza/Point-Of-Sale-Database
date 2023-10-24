@@ -63,7 +63,7 @@
         
     </form> 
 
-    <script>
+        <script>
             function showInventoryOptions() {
                 var reportType = document.getElementById('reportType');
                 var inventoryOptions = document.getElementById('inventoryOptions');
