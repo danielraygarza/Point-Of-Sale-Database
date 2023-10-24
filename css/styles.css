@@ -8,7 +8,7 @@ body {
     height: 100vh;
     padding-top: 5%;
     /* background: linear-gradient(45deg, #6C5B7B, #C06C84, #F67280); */
-    background: url('..img/pizza.jpeg') no-repeat center center fixed; 
+    background: url('../img/pizza.jpeg') no-repeat center center fixed; 
     background-size: cover; 
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
