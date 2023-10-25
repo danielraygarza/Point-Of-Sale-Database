@@ -22,30 +22,24 @@
         ?>
     </div>
 
-    <?php 
-        $sql = "SELECT * FROM pizza";
-        $result = mysqli->query($sql);
-        $resultCheck = mysqli_num_rows($result);
     
-        while ($row = mysqli.fetch_assoc($result)) {
-    ?>
+    
+    
 
     <main>
         <div class = "card">
             <div class = "image">
-                <img src= <?php echo $row["Image_Path"]; ?> alt="">
+                <img src= "img/cheese_pizza.jpeg" alt="">
             </div>
-            <p class = "pizza_name"><?php echo $row["Name"]; ?></p>
-            <p class = "description"><?php echo $row["Description"]; ?></p>
-            <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
-            <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
+            <p class = "pizza_name">Pizza Name</p>
+            <p class = "description">Placeholder</p>
+            <p class = "calories">1200 cals</p>
+            <p class = "price"><b>$12.99</b></p>
             <div class = "add-to-cart">ADD TO ORDER</div>
         </div>
     </main>
 
-    <?php 
-        }
-    ?>
+    
     
 
     <form action="" method="post">
