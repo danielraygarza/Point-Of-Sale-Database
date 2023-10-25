@@ -48,7 +48,7 @@
             <option value="onclock">On-Clock Report</option>
             <option value="sales">Sales Report</option>
             <option value="performance">Employee Performance Report</option>
-        </select>
+        </select><br>
 
         <div id="inventoryOptions" style="display: none;">
                 <label for="inventoryType">Select Inventory Type:</label>
@@ -57,9 +57,9 @@
                     <option value="low">Low Stock</option>
                     <option value="out">Out of Stock</option>
                 </select>
-            </div>
+        </div><br>
 
-        <input type="submit" value="Generate Report">
+        <input type="submit" class = "button" value="Generate Report">
         
     </form> 
 
