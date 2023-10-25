@@ -28,7 +28,7 @@
         $result = mysqli->query($sql);
         $resultCheck = mysqli_num_rows($result);
     
-        while ($row = mysqli.fetch_assoc($result)) {
+        while ($row = mysqli_fetch_assoc($result)) {
     ?>
     
 
@@ -45,9 +45,7 @@
         </div>
     </main>
 
-    <?php 
-        }
-    ?>
+    <?php}?>
     
 
     <form action="" method="post">
