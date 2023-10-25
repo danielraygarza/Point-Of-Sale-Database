@@ -25,7 +25,7 @@
     
     <?php 
         $sql = "SELECT * FROM pizza";
-        $result = $mysqli->query($sql);
+        $result = mysqli_query($sql);
         $resultCheck = mysqli_num_rows($result);
     
         while ($row = mysqli_fetch_assoc($result)) {
