@@ -48,8 +48,9 @@
             <option value="onclock">On-Clock Report</option>
             <option value="sales">Sales Report</option>
             <option value="performance">Employee Performance Report</option>
-        </select><br>
-
+        </select>
+        
+        <br>
         <div id="inventoryOptions" style="display: none;">
                 <label for="inventoryType">Select Inventory Type:</label>
                 <select name="inventoryType" id="inventoryType">
