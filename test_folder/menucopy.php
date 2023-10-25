@@ -1,5 +1,5 @@
 <?php
-    include 'database.php'
+    include 'database.php';
     session_start(); //continues current session to keep user logged in
 ?>
 
@@ -7,7 +7,7 @@
 <html>
 <head>
     <title>POS Pizza</title>
-    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="menucss.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
@@ -34,6 +34,6 @@
             </div>
         </main>
 
-        
+
     </body>
 </html>
