@@ -22,22 +22,6 @@
         ?>
     </div>
 
-    
-    
-    
-
-    <main>
-        <div class = "card">
-            <div class = "image">
-                <img src= "img/cheese_pizza.jpeg" alt="">
-            </div>
-            <p class = "pizza_name">Pizza Name</p>
-            <p class = "description">Placeholder</p>
-            <p class = "calories">1200 cals</p>
-            <p class = "price"><b>$12.99</b></p>
-            <div class = "add-to-cart">ADD TO ORDER</div>
-        </div>
-    </main>
 
     
     
