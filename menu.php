@@ -22,8 +22,6 @@
         ?>
     </div>
 
-    <p>TEST</p>
-
     <?php 
         $sql = "SELECT * FROM pizza";
         $result = mysqli->query($sql);
@@ -54,7 +52,7 @@
             <h2>Menu Test</h2>
 
             
-        </form>
+    </form>
 
 </body>
 </html>
