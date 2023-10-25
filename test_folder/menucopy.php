@@ -8,6 +8,7 @@
 <head>
     <title>POS Pizza</title>
     <link rel="stylesheet" href="menucss.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
