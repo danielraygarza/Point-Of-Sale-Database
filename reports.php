@@ -40,17 +40,18 @@
         
     <form action="generate_report.php" method="post">
         <h2>Reports</h2>
-
-        <label for="reportType">Select a Report:</label>
-        <select name="reportType" id="reportType" onchange="showInventoryOptions()">
-            <option value=""selected disabled>Select a Report</option>
-            <option value="inventory">Inventory Report</option>
-            <option value="onclock">On-Clock Report</option>
-            <option value="sales">Sales Report</option>
-            <option value="performance">Employee Performance Report</option>
-        </select>
         
-        <br>
+        <div>
+            <label for="reportType">Select a Report:</label>
+            <select name="reportType" id="reportType" onchange="showInventoryOptions()">
+                <option value=""selected disabled>Select a Report</option>
+                <option value="inventory">Inventory Report</option>
+                <option value="onclock">On-Clock Report</option>
+                <option value="sales">Sales Report</option>
+                <option value="performance">Employee Performance Report</option>
+            </select>
+        </div> <br>
+        
         <div id="inventoryOptions" style="display: none;">
                 <label for="inventoryType">Select Inventory Type:</label>
                 <select name="inventoryType" id="inventoryType">
