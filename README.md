@@ -18,10 +18,10 @@ The following technologies were used to develop this project:
 
     HTML/CSS/JavaScript
     PHP
-    MySQL
+    SQL
     Microsoft Azure
     MySQL Workbench
-    GitHub
+    GitHub/GitHub Desktop
     Visual Studio Code
 
 Steps to set up a PHP-based Web App:
@@ -229,4 +229,10 @@ To give database access to other users:
         Enter the username and password the admin created for the user.
         Test connection and press OK after successfully connecting.
     
-    
+Daniel: 
+echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+/Users/danielgarza/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+brew help
+php -v
+php -S localhost:8000

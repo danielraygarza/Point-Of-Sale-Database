@@ -1,49 +1,58 @@
 <?php
-//gives fatal eror if duplicate user. create error message to handle
+    include 'database.php'; // Include the database connection details
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
-include 'database.php'; // Include the database connection details
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+    session_start();
+    if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
+        // Extracting data from the form
+        $first_name = $mysqli->real_escape_string($_POST['first_name']);
+        $middle_initial = $mysqli->real_escape_string($_POST['middle_initial']);
+        $last_name = $mysqli->real_escape_string($_POST['last_name']);
+        $birthday = $mysqli->real_escape_string($_POST['birthday']);
+        $join_date = $mysqli->real_escape_string($_POST['join_date']);
+        $address = $mysqli->real_escape_string($_POST['address']);
+        $address2 = $mysqli->real_escape_string($_POST['address2']);
+        $city = $mysqli->real_escape_string($_POST['city']);
+        $state = $mysqli->real_escape_string($_POST['state']);
+        $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
+        $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
+        $email = $mysqli->real_escape_string($_POST['email']);
+        $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
-    // Extracting data from the form
-    $first_name = $mysqli->real_escape_string($_POST['first_name']);
-    $middle_initial = $mysqli->real_escape_string($_POST['middle_initial']);
-    $last_name = $mysqli->real_escape_string($_POST['last_name']);
-    $birthday = $mysqli->real_escape_string($_POST['birthday']);
-    $join_date = $mysqli->real_escape_string($_POST['join_date']);
-    $address = $mysqli->real_escape_string($_POST['address']);
-    $address2 = $mysqli->real_escape_string($_POST['address2']);
-    $city = $mysqli->real_escape_string($_POST['city']);
-    $state = $mysqli->real_escape_string($_POST['state']);
-    $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
-    $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
-    $email = $mysqli->real_escape_string($_POST['email']);
-    $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
+        //check if duplicate user. Email is unique. sends error message if dup
+        $checkEmail = $mysqli->query("SELECT email FROM customers WHERE email='$email'");
+        if($checkEmail->num_rows > 0) {
+            echo "";
+            $_SESSION['error'] = "Email already registered";
+        } else {
+            // Inserting the data into the database
+            $sql = "INSERT INTO customers (first_name, middle_initial, last_name, birthday, join_date, address, address2, city, state, zip_code, phone_number, email, password) 
+                    VALUES ('$first_name', '$middle_initial', '$last_name', '$birthday','$join_date', '$address', '$address2', '$city', '$state', '$zip_code', '$phone_number', '$email', '$password')";
 
-    // Inserting the data into the database
-    $sql = "INSERT INTO customers (first_name, middle_initial, last_name, birthday, join_date, address, address2, city, state, zip_code, phone_number, email, password) 
-            VALUES ('$first_name', '$middle_initial', '$last_name', '$birthday','$join_date', '$address', '$address2', '$city', '$state', '$zip_code', '$phone_number', '$email', '$password')";
-
-    if ($mysqli->query($sql) === TRUE) {
-        // echo "Account created successfully!";
-        $mysqli->close();
-        // goes to welcome page when signup but want to go to home.php
-        header('Location: welcome.php');
-        exit;
-    } else {
-        echo "Error: " . $sql . "<br>" . $mysqli->error;
+            if ($mysqli->query($sql) === TRUE) {
+                //if successful signup, mark user as logged in and send to home page
+                $result = $mysqli->query("SELECT * FROM customers WHERE email='$email'");
+                $user = $result->fetch_assoc(); // Assign user data to the session
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
+                
+                $mysqli->close();
+                header('Location: home.php');
+                exit;
+            } else {
+                echo "Error: " . $sql . "<br>" . $mysqli->error;
+            }
+        }
     }
-
-}
 ?>
 <!DOCTYPE html>
 <!-- Signup page for new users -->
 <head>
     <title>Sign Up Form</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
@@ -57,8 +66,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>       
             <label for="first_name">Name  </label>
             <input type="text" id="first_name" name="first_name" placeholder="First" style="width: 75px;" required>
+
             <label for="middle_initial"></label>
             <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  placeholder="M.I." style="width: 30px;">
+
             <label for="last_name"></label>
             <input type="text" id="last_name" name="last_name" placeholder="Last" style="width: 75px;" required>
         </div><br>
@@ -106,21 +117,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>
             <label for="address">Address  </label>
             <input type="text" id="address" name="address" placeholder="Enter address" required>
-        </div><br>
-
-        <div>
+            
             <label for="address2">Address 2  </label>
             <input type="text" id="address2" name="address2" placeholder="Optional">
         </div><br>
 
         <div>
             <label for="city">City  </label>
-            <input type="text" id="city" name="city" placeholder="Enter city" required>
-        </div><br>
+            <input type="text" id="city" name="city" placeholder="Enter city" style="width: 90px;"required>
 
-        <div>
             <label for="state">State  </label>
-            <select id="state" name="state" placeholder="Select state" style="width: 100px;"required>
+            <select id="state" name="state" placeholder="Select state" style="width: 100px;" required>
                 <option value="" selected disabled>Select</option>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
@@ -155,9 +162,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>
             <label for="phone_number">Phone Number  </label>
             <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
-        </div><br>
-
-        <div>
             <label for="email">Email  </label>
             <!-- input requires "@" and "." 
             currently casues fatal eror if not unique -->
@@ -167,13 +171,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>
             <label for="password">Password  </label>
             <input type="password" id="password" name="password" placeholder="Create password" required>
+            <label for="confirm_password">Confirm Password  </label>
+            <input type="password" id="confirm_password" placeholder="Confirm password" required>
         </div><br>
-        
-        <!-- need to add SQL code to ensure passwords match and set up error if not -->
-        <!-- <div>
-            <label for="password">Confirm Password  </label>
-            <input type="password" id="password" name="password" placeholder="Confirm password" required>
-        </div><br> -->
+
+        <script>
+            // send alert if passwords do not match
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm_password').value;
+
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    e.preventDefault();  // stops form from submitting
+                }
+            });
+        </script>
+
+        <?php
+            //displays error messages here 
+            if (isset($_SESSION['error'])) {
+                echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                unset($_SESSION['error']);  // Unset the error message after displaying it
+            }
+        ?>
 
         <div>
             <input class = button type="submit" value="Sign Up" onclick="formatDate()">

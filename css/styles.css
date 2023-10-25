@@ -8,7 +8,7 @@ body {
     height: 100vh;
     padding-top: 5%;
     /* background: linear-gradient(45deg, #6C5B7B, #C06C84, #F67280); */
-    background: url('img/pizza.jpeg') no-repeat center center fixed; 
+    background: url('../img/pizza.jpeg') no-repeat center center fixed; 
     background-size: cover; 
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -93,6 +93,17 @@ h1 {
     color: black;
 }
 
+/* Report Header Styling */
+.report_header {
+    background-color: rgba(7, 4, 4, 0.7);
+    color: white; /* Text color */
+    text-align: center; /* Center align text */
+    padding: 10px; /* Add some padding for spacing */
+    font-size: 24px; /* Adjust font size */
+    font-weight: bold; /* Make bold text */
+    top: 50px; /* Position 50 pixels below navbar */
+}
+
 /* Base styling for all input fields and dropdowns */
 input[type="text"],
 input[type="email"],
@@ -122,14 +133,10 @@ select:focus {
     box-shadow: 0 0 5px #F67280; /* Add a subtle shadow */
 }
 
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+#errorMessage {
+    color: black;  
+    font-weight: bold; 
+    margin: 10px;
+    opacity: 1;
+    transition: opacity 1s;  /* fade out effect */
 }

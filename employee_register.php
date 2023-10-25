@@ -1,5 +1,4 @@
 <?php
-    //gives fatal eror if duplicate ID. create error message to handle
     session_start();
 
     include 'database.php'; // Include the database connection details
@@ -14,6 +13,9 @@
         exit; // Make sure to exit so that the rest of the script won't execute
     }
 
+    //get list of supervisors from database
+    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP' OR Title_Role='MAN'");
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
         // Extracting data from the form
@@ -21,35 +23,46 @@
         $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
         $Hire_Date = $mysqli->real_escape_string($_POST['Hire_Date']);
         $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
+        $Supervisor_ID = isset($_POST['Supervisor_ID']) ? $mysqli->real_escape_string($_POST['Supervisor_ID']) : null; //Assigns null if no supervisor selected
         $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
-        // Inserting the data into the database
-        $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Employee_ID,password) 
-                VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Employee_ID','$password')";
-
-        if ($mysqli->query($sql) === TRUE) {
-            // echo "Account created successfully!";
-            $mysqli->close();
-            // curretly does to main page because not technically logged in to go to employee_home
-            header('Location: employee_home.php');
-            exit;
+        //check if duplicate employee ID. sends error message
+        $checkID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Employee_ID'");
+        if($checkID->num_rows > 0) {
+            echo "";
+            $_SESSION['error'] = "Employee ID already exist";
         } else {
-            echo "Error: " . $sql . "<br>" . $mysqli->error;
-        }
+            // Inserting the data into the database. Accounting if supervisor is NULL when employee is a manager
+            if ($Supervisor_ID !== null) {
+                    $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Supervisor_ID, Employee_ID, password) 
+                            VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password')";
+            } else{
+                   $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Employee_ID, password) 
+                            VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Employee_ID','$password')";
+            }
 
+            if ($mysqli->query($sql) === TRUE) {
+                $mysqli->close();
+                header('Location: employee_home.php');
+                exit;
+            } else {
+                echo "Error: " . $sql . "<br>" . $mysqli->error;
+            }
+        }
     }
 ?>
 <!DOCTYPE html>
 <!-- Page for creating new employees -->
 <head>
     <title>Employee Registration</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
     <div class="navbar">
         <a href="index.php">Home</a>
+        <a href="employee_home.php">Employee Home</a>
         <!-- <a href="#">Order Now</a>
         <a href="#">Profile</a> -->
         <?php
@@ -79,13 +92,40 @@
 
         <div>
             <label for="Title_Role">Role  </label>
-            <select id="Title_Role" name="Title_Role" placeholder="Select role" style="width: 150px;"required>
+            <select id="Title_Role" name="Title_Role" placeholder="Select role" style="width: 150px;"required onchange="roleRequirement()">
                 <option value="" selected disabled>Select</option>
                 <option value="TM">Team Member</option>
                 <option value="SUP">Supervisor</option>
                 <option value="MAN">Manager</option>
             </select>
         </div><br>
+
+        <div>
+            <label for="Supervisor_ID">Supervisor </label>
+            <select id="Supervisor_ID" name="Supervisor_ID" required>
+                <option value="" selected disabled>Assign Supervisor</option>
+                <?php
+                if ($supervisors->num_rows > 0) {
+                    while($row = $supervisors->fetch_assoc()) {
+                        echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                    }
+                }
+                ?>
+            </select>
+        </div><br>
+        <script>
+            function roleRequirement() {
+                const role = document.getElementById('Title_Role');
+                const supervisor = document.getElementById('Supervisor_ID');
+
+                // if manager role is selected, supervisor is not required
+                if (role.value === 'MAN') {
+                    supervisor.removeAttribute('required');
+                } else {
+                    supervisor.setAttribute('required', '');
+                }
+            }
+        </script>
         
         <div>
             <label for="Employee_ID">Employee ID  </label>
@@ -97,12 +137,31 @@
             <input type="password" id="password" name="password" placeholder="Create password" required>
         </div><br>
         
-        <!-- need to add SQL code to ensure passwords match and set up error if not -->
-        <!-- <div>
-            <label for="password">Confirm Password  </label>
-            <input type="password" id="password" name="password" placeholder="Confirm password" required>
-        </div><br> -->
+        <div>
+            <label for="confirm_password">Confirm Password  </label>
+            <input type="password" id="confirm_password" placeholder="Confirm password" required>
+        </div><br>
+        
+        <script>
+            // send alert if passwords do not match
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm_password').value;
 
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    e.preventDefault();  // stops form from submitting
+                }
+            });
+        </script>
+
+        <?php
+            //displays error messages here 
+            if (isset($_SESSION['error'])) {
+                echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                unset($_SESSION['error']);  // Unset the error message after displaying it
+            }
+        ?>
         <div>
             <input class = button type="submit" value="Register">
         </form>
