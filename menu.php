@@ -40,7 +40,7 @@
     
 
     <form action="" method="post">
-            <h2>Menu Test</h2>
+            <h2>Menu</h2>
 
             
     </form>
