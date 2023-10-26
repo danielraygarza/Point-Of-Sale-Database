@@ -232,11 +232,11 @@ To give database access to other users:
 
  How to run a PHP Web App locally through VS Code on MacOS:
 
-     Download VS extensions: PHP Intelephense by Ben Mewburn and PHP Server by brapifra
-     You will need to have PHP installed on your Mac. 
+     Download VS Code extensions: PHP Intelephense by Ben Mewburn and PHP Server by brapifra
+     You will need to have PHP installed on your Mac.
      Open a terminal window in VS Code:
      Check if you have PHP with command "php -v"
-     If you do not have PHP, can will need to dowload it using Homebrew.
+     If you do not have PHP, can will need to download it using Homebrew.
      Check if you have Homebrew installed with command "brew help"
      
      If you do not have Homebrew, run the following commands:
