@@ -31,18 +31,18 @@
         while($row = mysqli_fetch_assoc($result)) {
     ?>
 
-    <main>
-        <div class = "card">
-            <div class = "image">
-                <img src= <?php echo $row["Image_Path"]; ?> alt="">
+        <main>
+            <div class = "card">
+                <div class = "image">
+                    <img src= <?php echo $row["Image_Path"]; ?> alt="">
+                </div>
+                <p class = "pizza_name"><?php echo $row["Name"]; ?></p>
+                <p class = "description"><?php echo $row["Description"]; ?></p>
+                <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
+                <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
+                <div class = "add-to-cart">ADD TO ORDER</div>
             </div>
-            <p class = "pizza_name"><?php echo $row["Name"]; ?></p>
-            <p class = "description"><?php echo $row["Description"]; ?></p>
-            <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
-            <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
-            <div class = "add-to-cart">ADD TO ORDER</div>
-        </div>
-    </main>
+        </main>
     
     <?php } ?>
 
