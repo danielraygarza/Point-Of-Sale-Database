@@ -51,7 +51,7 @@
                 include 'database.php'; // Database connection file
 
                 //Check if the connection to the database was successful
-                if($conn === false){
+                if($mysqli === false){
                     die("Error: Could not connect to the database. " . mysqli_connect_error());
                 }
 
@@ -74,8 +74,9 @@
 
                 }
 
+                
                 // Execute the query
-                $result = mysqli_query($conn, $sql);
+                $result = mysqli_query($mysqli, $sql);
 
                 if ($result) {
                     // Check if there are rows returned
@@ -97,11 +98,11 @@
                         echo 'No inventory data available.';
                     }
                 } else {
-                    echo 'Error executing the SQL query: ' . mysqli_error($conn);
+                    echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
                 }
 
                 // Close the database connection
-                mysqli_close($conn);
+                mysqli_close($mysqli);
             }
             // Add more cases for other report types as needed
         }

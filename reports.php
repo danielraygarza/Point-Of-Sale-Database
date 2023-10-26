@@ -14,6 +14,7 @@
         exit(); //ensures code is killed
     }
     // */
+    $setHeader = '';
 ?>
 <!-- Welcome page after user creates new account -->
 <!DOCTYPE html>
