@@ -21,6 +21,10 @@ main {
     margin: auto;
 }
 
+main .headGap {
+    padding-top: 50px;
+}
+
 main .card {
     max-width: 300px;
     flex: 1 1 210px;
