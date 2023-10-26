@@ -15,11 +15,11 @@ main {
     margin: auto;
 }
 
-main .topGap {
-    padding-top: 50px;
+main .headGap {
+    padding-top: 100px;
 }
 
-main .topGap .card {
+main .headGap .card {
     max-width: 300px;
     flex: 1 1 210px;
     text-align: center;
@@ -30,28 +30,28 @@ main .topGap .card {
     background-color: white;
 }
 
-main .topGap .card .image {
+main .headGap .card .image {
     height: 50%;
     margin-bottom: 10px;
 }
 
-main .topGap .card .image img {
+main .headGap .card .image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-main .topGap .card .pizza_name {
+main .headGap .card .pizza_name {
     font-size: 20px;
     text-shadow: none;
 }
 
-main .topGap .card .description {
+main .headGap .card .description {
     margin: 7px;
     text-shadow: none;
 }
 
-main .topGap .card .price {
+main .headGap .card .price {
     margin: auto;
     position: absolute;
     bottom: 35px;
@@ -62,7 +62,7 @@ main .topGap .card .price {
     text-shadow: none;
 }
 
-main .topGap .card .calories {
+main .headGap .card .calories {
     margin: auto;
     position: absolute;
     bottom: 55px;
@@ -73,7 +73,7 @@ main .topGap .card .calories {
     text-shadow: none;
 }
 
-main .topGap .card .add-to-cart {
+main .headGap .card .add-to-cart {
     margin: 10%;
     padding: 6px;
     height: 30px;
@@ -88,6 +88,6 @@ main .topGap .card .add-to-cart {
     text-shadow: none;
 }
 
-main .topGap .card .add-to-cart:hover {
+main .headGap .card .add-to-cart:hover {
     transform: scale(105%);
 }
