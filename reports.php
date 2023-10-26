@@ -20,7 +20,7 @@
     /////////
 
     // Set the default header
-    $setHeader = "Default Report Header";
+    $setHeader = "Default Report Header 1";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['reportType'])) {
