@@ -74,8 +74,6 @@
     <form action="generate_report.php" method="post">
         <h2>Reports</h2>
         
-        <!-- Add a hidden input field to pass the setHeader variable -->
-        <input type="hidden" name="setHeader" value="<?php echo $setHeader; ?>">
         
         <div>
             <label for="reportType">Select a Report:</label>
@@ -96,7 +94,10 @@
                     <option value="out">Out of Stock</option>
                 </select>
         </div><br>
-
+        
+        <!-- Add a hidden input field to pass the setHeader variable -->
+        <input type="hidden" name="setHeader" value="<?php echo $setHeader; ?>">
+        
         <input type="submit" class = "button" value="Generate Report">
         
     </form> 
