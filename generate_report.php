@@ -37,7 +37,6 @@
 
         <div class="report_header">
             <!-- Design Report header to be dynamically populated -->
-            <!-- Temporary Report Header  -->
             <?php echo $setHeader; ?>
         </div>
 

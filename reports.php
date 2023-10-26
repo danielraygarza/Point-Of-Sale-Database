@@ -14,7 +14,39 @@
         exit(); //ensures code is killed
     }
     // */
-    $setHeader = '';
+
+    /////////
+    //TEST//
+    /////////
+
+    // Set the default header
+    $setHeader = "Default Report Header";
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['reportType'])) {
+            $reportType = $_POST['reportType'];
+            // Determine the subgroup
+            $subgroup = '';
+
+            if ($reportType === 'inventory') {
+                $subgroup = $_POST['inventoryType'];
+
+                if ($subgroup === 'low') {
+                    $setHeader = "Low Stock Items Report";
+                } elseif ($subgroup === 'out') {
+                    $setHeader = "Out of Stock Items Report";
+                } else {
+                    $setHeader = "All Stock Items Report";
+                }
+            } elseif ($reportType === 'sales') {
+                $setHeader = "Sales Report";
+            }
+        }
+    }
+    /////////
+    /////////
+
+    //$setHeader = ''; // Creates the variable to set Report Header on generate_report.php
 ?>
 <!-- Welcome page after user creates new account -->
 <!DOCTYPE html>
@@ -41,6 +73,9 @@
         
     <form action="generate_report.php" method="post">
         <h2>Reports</h2>
+        
+        <!-- Add a hidden input field to pass the setHeader variable -->
+        <input type="hidden" name="setHeader" value="<?php echo $setHeader; ?>">
         
         <div>
             <label for="reportType">Select a Report:</label>
