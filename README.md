@@ -258,7 +258,7 @@ To give database access to other users:
      You now have PHP installed:
      On your PHP files in VS Code, you should see a blue icon in the top right corner. 
      This button will launch a local server and open your web app locally.
-     Any changed you make can be seen before pushing to the GitHub repository. 
+     Any changes you make can be seen before pushing to the GitHub repository. 
 
  To run a PHP Web App locally through VS Code on Windows, refer to this video: 
  
