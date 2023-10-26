@@ -229,10 +229,41 @@ To give database access to other users:
         Enter the username and password the admin created for the user.
         Test connection and press OK after successfully connecting.
     
-Daniel: 
-echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-/Users/danielgarza/.zprofile
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-brew help
-php -v
-php -S localhost:8000
+
+ How to run a PHP Web App locally through VS Code on MacOS:
+
+     Download VS Code extensions: PHP Intelephense by Ben Mewburn and PHP Server by brapifra
+     You will need to have PHP installed on your Mac.
+     Open a terminal window in VS Code:
+     Check if you have PHP with command "php -v"
+     If you do not have PHP, can will need to download it using Homebrew.
+     Check if you have Homebrew installed with command "brew help"
+     
+     If you do not have Homebrew, run the following commands:
+         1. /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+         2. echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+         3. /Users/YOURUSERNAME/.zprofile 
+             eval "$(/opt/homebrew/bin/brew shellenv)"
+     
+     If you get this message (zsh: permission denied: /Users/YOURUSERNAME/.zprofile), run the following commands:
+         4. touch /Users/YOURUSERNAME/.zprofile
+         5. echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/YOURUSERNAME/.zprofile
+         6. source /Users/YOURUSERNAME/.zprofile
+         
+     Check if Homebrew was installed correctly with command "brew help"
+     Now that you have Homebrew, you can download PHP with command "brew install php"
+     Check if you have PHP with command "php -v"
+     Now close VS Code and start again.
+
+     You now have PHP installed:
+     On your PHP files in VS Code, you should see a blue icon in the top right corner. 
+     This button will launch a local server and open your web app locally.
+     Any changes you make can be seen before pushing to the GitHub repository. 
+
+ To run a PHP Web App locally through VS Code on Windows, refer to this video: 
+ 
+     https://www.youtube.com/watch?v=Ry8tRRfxxf4&ab_channel=BoostMyTool
+        
+         
+         
+           

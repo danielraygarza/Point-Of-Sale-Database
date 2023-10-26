@@ -14,6 +14,17 @@
         exit(); //ensures code is killed
     }
     // */
+
+    /////////
+    //TEST//
+    /////////
+
+    // Set the default header
+    $setHeader = "TEST";
+    /////////
+    /////////
+
+    //$setHeader = ''; // Creates the variable to set Report Header on generate_report.php
 ?>
 <!-- Welcome page after user creates new account -->
 <!DOCTYPE html>
@@ -40,6 +51,8 @@
         
     <form action="generate_report.php" method="post">
         <h2>Reports</h2>
+        <!-- Coninue here -->
+        <div id="setHeader"><?php echo $setHeader; ?></div>
         
         <div>
             <label for="reportType">Select a Report:</label>
@@ -60,6 +73,9 @@
                     <option value="out">Out of Stock</option>
                 </select>
         </div><br>
+        
+        <!-- Add a hidden input field to pass the setHeader variable -->
+        <input type="hidden" name="setHeader" value="<?php echo $setHeader; ?>">
 
         <input type="submit" class = "button" value="Generate Report">
         
@@ -69,9 +85,11 @@
             function showInventoryOptions() {
                 var reportType = document.getElementById('reportType');
                 var inventoryOptions = document.getElementById('inventoryOptions');
+                var headerVar = document.getElementById('setHeader');
 
                 if (reportType.value === 'inventory') {
                     inventoryOptions.style.display = 'block';
+                    headerVar = "Inventory Report";
                 } else {
                     inventoryOptions.style.display = 'none';
                 }

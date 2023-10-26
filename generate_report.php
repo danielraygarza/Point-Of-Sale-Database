@@ -13,6 +13,7 @@
         exit(); //ensures code is killed
     }
     // */
+    $setHeader = isset($_POST['setHeader']) ? $_POST['setHeader'] : "Default Report Header";
 ?>
 <!-- Welcome page after user creates new account -->
 <!DOCTYPE html>
@@ -36,7 +37,7 @@
 
         <div class="report_header">
             <!-- Design Report header to be dynamically populated -->
-            Temporary Report Header 
+            <?php echo $setHeader; ?>
         </div>
 
     <form action="generate_report.php" method="post">
@@ -51,7 +52,7 @@
                 include 'database.php'; // Database connection file
 
                 //Check if the connection to the database was successful
-                if($conn === false){
+                if($mysqli === false){
                     die("Error: Could not connect to the database. " . mysqli_connect_error());
                 }
 
@@ -74,8 +75,9 @@
 
                 }
 
+                
                 // Execute the query
-                $result = mysqli_query($conn, $sql);
+                $result = mysqli_query($mysqli, $sql);
 
                 if ($result) {
                     // Check if there are rows returned
@@ -97,11 +99,11 @@
                         echo 'No inventory data available.';
                     }
                 } else {
-                    echo 'Error executing the SQL query: ' . mysqli_error($conn);
+                    echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
                 }
 
                 // Close the database connection
-                mysqli_close($conn);
+                mysqli_close($mysqli);
             }
             // Add more cases for other report types as needed
         }
