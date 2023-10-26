@@ -20,7 +20,7 @@
     /////////
 
     // Set the default header
-    $setHeader = "Default Report Header 1";
+    $setHeader = "TEST";
     /////////
     /////////
 
@@ -51,7 +51,8 @@
         
     <form action="generate_report.php" method="post">
         <h2>Reports</h2>
-        
+        <!-- Coninue here -->
+        <div id="setHeader"><?php echo $setHeader; ?></div>
         
         <div>
             <label for="reportType">Select a Report:</label>
@@ -75,36 +76,7 @@
         
         <!-- Add a hidden input field to pass the setHeader variable -->
         <input type="hidden" name="setHeader" value="<?php echo $setHeader; ?>">
-        
-        <?php
-        /////////
-        //TEST//
-        /////////
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['reportType'])) {
-                $reportType = $_POST['reportType'];
-                // Determine the subgroup
-                $subgroup = '';
 
-                if ($reportType === 'inventory') {
-                    $subgroup = $_POST['inventoryType'];
-
-                    if ($subgroup === 'low') {
-                        $setHeader = "Low Stock Items Report";
-                    } elseif ($subgroup === 'out') {
-                        $setHeader = "Out of Stock Items Report";
-                    } else {
-                        $setHeader = "All Stock Items Report";
-                    }
-                } elseif ($reportType === 'sales') {
-                    $setHeader = "Sales Report";
-                }
-            }
-        }
-        /////////
-        /////////
-        ?>
-        
         <input type="submit" class = "button" value="Generate Report">
         
     </form> 
@@ -113,9 +85,11 @@
             function showInventoryOptions() {
                 var reportType = document.getElementById('reportType');
                 var inventoryOptions = document.getElementById('inventoryOptions');
+                var headerVar = document.getElementById('setHeader');
 
                 if (reportType.value === 'inventory') {
                     inventoryOptions.style.display = 'block';
+                    headerVar = "Inventory Report";
                 } else {
                     inventoryOptions.style.display = 'none';
                 }
