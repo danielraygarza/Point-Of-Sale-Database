@@ -26,31 +26,29 @@
             }
         ?>
     </div>
+    
+    <form action="" method="post">
+            <h2>Menu</h2>  
+    </form>
 
-    <?php 
-        while($row = mysqli_fetch_assoc($result)) {
-    ?>
-
-        <main>
+    <main>
+        <?php 
+            while($row = mysqli_fetch_assoc($result)) {
+        ?>
             <div class = "card">
                 <div class = "image">
                     <img src= <?php echo $row["Image_Path"]; ?> alt="">
                 </div>
-                <p class = "pizza_name"><?php echo $row["Name"]; ?></p>
+                <p class = "pizza_name"><?php echo $row["Name"]; ?> (<?php echo $row["Size_Option"];?>)</p>
                 <p class = "description"><?php echo $row["Description"]; ?></p>
                 <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
                 <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
-                <div class = "add-to-cart">ADD TO ORDER</div>
+                <div class = "customize">CUSTOMIZE</div>
             </div>
-        </main>
+        <?php } ?>
+    </main>
     
-    <?php } ?>
 
-    <form action="" method="post">
-            <h2>Menu</h2>
-
-            
-    </form>
 
 </body>
 </html>
