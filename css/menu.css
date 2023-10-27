@@ -79,7 +79,7 @@ main .card .customize {
     margin-top: 4em;
     font-weight: bold;
     position: absolute;
-    border: 1px solid red;
+    border: 1px solid green;
     background-color: lightgray;
     bottom: 0;
     margin-bottom: 5px;
