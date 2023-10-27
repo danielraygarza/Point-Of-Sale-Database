@@ -219,7 +219,7 @@ To give database access to other users:
     Enter the IP address under the Start IP address and End IP address.
     From the admin user's account in MySQL Workbench, run the command: CREATE USER 'username'@'%' IDENTIFIED BY 'password'
     Then run the command: GRANT ALL PRIVILEGES ON database_name.* TO 'username'@'%'
-    This will create the username and password for the user, and give the user access to view and edit the database in Workbench.
+    This will create the username and password for the user and give the user access to view and edit the database in Workbench.
     Now the user will do the following:
         Go to MySQL Workbench and select the + sign.
         Enter a name for the connection in the Connection name field.
@@ -236,7 +236,7 @@ To give database access to other users:
      You will need to have PHP installed on your Mac.
      Open a terminal window in VS Code:
      Check if you have PHP with command "php -v"
-     If you do not have PHP, can will need to download it using Homebrew.
+     If you do not have PHP, you will need to download it using Homebrew.
      Check if you have Homebrew installed with command "brew help"
      
      If you do not have Homebrew, run the following commands:
@@ -250,9 +250,10 @@ To give database access to other users:
          5. echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/YOURUSERNAME/.zprofile
          6. source /Users/YOURUSERNAME/.zprofile
          
-     Check if Homebrew was installed correctly with command "brew help"
+     
+     Ensure Homebrew was installed correctly with command "brew help"
      Now that you have Homebrew, you can download PHP with command "brew install php"
-     Check if you have PHP with command "php -v"
+     Ensure you have PHP with command "php -v"
      Now close VS Code and start again.
 
      You now have PHP installed:
