@@ -85,7 +85,6 @@
                     // Header for all items
                     $setHeader = 'Inventory Report';
                     // Query for all stock items
-                    // Might be able to remove the nextline entries and keep it as a single line query
                     $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
                     CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
                     V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
