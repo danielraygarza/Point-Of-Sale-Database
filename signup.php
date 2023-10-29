@@ -18,7 +18,7 @@
         $city = $mysqli->real_escape_string($_POST['city']);
         $state = $mysqli->real_escape_string($_POST['state']);
         $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
-        $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
+        $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
         $email = $mysqli->real_escape_string($_POST['email']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
@@ -161,7 +161,7 @@
 
         <div>
             <label for="phone_number">Phone Number  </label>
-            <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
+            <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="^\d{10}$|^\d{3}-\d{3}-\d{4}$" style="width: 120px;" required>
             <label for="email">Email  </label>
             <!-- input requires "@" and "." 
             currently casues fatal eror if not unique -->
