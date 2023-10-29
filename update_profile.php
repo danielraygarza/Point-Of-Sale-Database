@@ -9,7 +9,7 @@
     // Check if user is logged in
     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         //access customer attributes
-        echo "<h2>Welcome, " .$_SESSION['user']['first_name']. "!</h2>";
+        // echo "<h2>Welcome, " .$_SESSION['user']['first_name']. "!</h2>";
     } else {
         //if not logged in, will send to default URL
         header("Location: index.php");
@@ -68,7 +68,7 @@
             }
         ?>
     </div>
-    <form action="signup.php" method="post">
+    <form action="update_profile.php" method="post">
         <h2>Update your POS Pizza Account</h2>
         <div>       
             <label for="first_name">Name  </label>
@@ -155,7 +155,7 @@
         ?>
 
         <div>
-            <input class = button type="submit" value="Sign Up" onclick="formatDate()">
+            <input class = button type="submit" value="Save Updates">
         </form>
 </body>
 </html>
