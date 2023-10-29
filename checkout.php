@@ -8,7 +8,15 @@
     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         //access customer attributes
         echo "<h2>Welcome, " . $_SESSION['user']['first_name'] . "!</h2>";
-    } else {
+    } 
+    // Initialize the cart as an empty array if it doesn't exist
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+function getCartItemCount() {
+    return count($_SESSION['cart']);
+}
+    else {
         //if not logged in, will send to default URL
         header("Location: index.php");
     }
@@ -18,7 +26,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>POS Pizza</title>
+        <title>Checkout</title>
         <link rel="stylesheet" href="css/styles.css">
         <link rel="icon" href="img/pizza.ico" type="image/x-icon">
     </head>
@@ -27,6 +35,7 @@
             <a href="index.php">Home</a>
             <a href="menu.php">Order now</a>
             <!-- <a href="#">Profile</a> -->
+            <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
             <?php
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo '<a href="update_profile.php">Profile</a>';
