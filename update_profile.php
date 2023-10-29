@@ -21,21 +21,17 @@
         $first_name = $mysqli->real_escape_string($_POST['first_name']);
         $middle_initial = $mysqli->real_escape_string($_POST['middle_initial']);
         $last_name = $mysqli->real_escape_string($_POST['last_name']);
-        $birthday = $mysqli->real_escape_string($_POST['birthday']);
-        $join_date = $mysqli->real_escape_string($_POST['join_date']);
         $address = $mysqli->real_escape_string($_POST['address']);
         $address2 = $mysqli->real_escape_string($_POST['address2']);
         $city = $mysqli->real_escape_string($_POST['city']);
         $state = $mysqli->real_escape_string($_POST['state']);
         $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
         $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
-        $email = $mysqli->real_escape_string($_POST['email']);
-        $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
         // Inserting the data into the database
         $sql = "UPDATE customers 
-        SET first_name='$first_name', middle_initial='$middle_initial', last_name='$last_name', birthday='$birthday',address='$address',
-        address2='$address2', city='$city', state='$state', zip_code='$zip_code', phone_number='$phone_number', email='$email', password='$password'
+        SET first_name='$first_name', middle_initial='$middle_initial', last_name='$last_name',address='$address',
+        address2='$address2', city='$city', state='$state', zip_code='$zip_code', phone_number='$phone_number'
         WHERE email='$email'"; //email is guranteed unique
 
         if ($mysqli->query($sql) === TRUE) {
@@ -85,46 +81,11 @@
             <input type="text" id="last_name" name="last_name" value="<?php echo $_SESSION['user']['last_name']; ?>" placeholder="Last" style="width: 75px;" required>
         </div><br>
 
-        <!-- need to set up restictions on days for certain months (i.e. feb cant have more than 28 as day)
-        leap year: if year % 4 = 0 , then feb has 29 days 
-        year max is the current year -->
         <div>
             <label for="birthday_month">Birthday  </label>
-            <input type="number" id="birthday_month" name="birthday_month" min="1" max="12" placeholder="Month" style="width: 55px;" readonly>
-            <label for="birthday_day"></label>
-            <input type="number" id="birthday_day" name="birthday_day" min="1" max="31" placeholder = "Day" style="width: 55px;"readonly>
-            <label for="birthday_year"></label>
-            <input type="number" id="birthday_year" name="birthday_year" min="1900" max="2023" pattern="[0-9]{4}" placeholder = "Year" style="width: 55px;"readonly >
+            <input type="number" id="birthday_month" name="birthday_month" min="1" max="12" value="<?php echo $_SESSION['user']['birthday']; ?>"placeholder="Month" style="width: 100px;" readonly>
         </div><br>
         
-        <!-- hidden input to hold the concatenated date -->
-        <input type="hidden" id="birthday" name="birthday">
-        <script>
-            // javascript funciton to format date. function called when form submitted
-            function formatDate() {
-                var day = document.getElementById('birthday_day').value;
-                var month = document.getElementById('birthday_month').value;
-                var year = document.getElementById('birthday_year').value;
-
-                if (day && month && year) {
-                    var formatted = year + '/' + month.padStart(2, '0') + '/' + day.padStart(2, '0');
-                    document.getElementById('birthday').value = formatted;
-                } else {
-                    alert("Please fill all date fields");
-                }
-            }
-        </script>
-
-        <!-- pulls current date and assigns to join_date -->
-        <input type="hidden" id="join_date" name="join_date">
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const currentDate = new Date();
-                const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
-                document.getElementById('join_date').value = formattedDate;
-            });
-        </script>
-
         <div>
             <label for="address">Address  </label>
             <input type="text" id="address" name="address" value="<?php echo $_SESSION['user']['address']; ?>" placeholder="Enter address" required>
@@ -179,25 +140,6 @@
             <input type="email" id="email" name="email" value="<?php echo $_SESSION['user']['email']; ?>" placeholder="Enter email address" pattern=".*\..*" readonly required>
         </div><br>
 
-        <div>
-            <label for="password">Password  </label>
-            <input type="password" id="password" name="password" placeholder="Create password" required>
-            <label for="confirm_password">Confirm Password  </label>
-            <input type="password" id="confirm_password" placeholder="Confirm password" required>
-        </div><br>
-
-        <script>
-            // send alert if passwords do not match
-            document.querySelector('form').addEventListener('submit', function(e) {
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('confirm_password').value;
-
-                if (password !== confirmPassword) {
-                    alert('Passwords do not match!');
-                    e.preventDefault();  // stops form from submitting
-                }
-            });
-        </script>
 
         <?php
             //displays error messages here 
