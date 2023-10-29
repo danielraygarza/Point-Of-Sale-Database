@@ -143,7 +143,7 @@
         ?>
         <div>
             <label for="phone_number">Phone Number  </label>
-            <input type="tel" id="phone_number" name="phone_number" value="<?php echo $formattedPhoneNumber; ?>" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
+            <input type="tel" id="phone_number" name="phone_number" value="<?php echo $formattedPhoneNumber; ?>" placeholder="Enter 10 digits" style="width: 120px;" required>
             <label for="email">Email  </label>
             <!-- input requires "@" and "." -->
             <input type="email" id="email" name="email" value="<?php echo $_SESSION['user']['email']; ?>" placeholder="Enter email address" pattern=".*\..*" readonly required>
