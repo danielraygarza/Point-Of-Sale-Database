@@ -66,11 +66,21 @@
                 // Define your SQL queries for Inventory selection
                 if ($inventoryType === 'low') {
                     // Query for low stock items
-                    $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory WHERE Inventory_Amount < 10";
+                    $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
+                    CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
+                    V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                    FROM INVENTORY I
+                    INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
+                    WHERE I.Inventory_Amount <= I.Reorder_Threshold + 5;";
 
                 } elseif ($inventoryType === 'out') {
                     // Query for out of stock items
-                    $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory WHERE Inventory_Amount = 0";
+                    $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
+                    CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
+                    V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                    FROM INVENTORY I
+                    INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
+                    WHERE I.Inventory_Amount <= 0";
 
                 } else {
                     // Query for all stock items
