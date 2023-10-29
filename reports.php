@@ -50,9 +50,7 @@
         </div>
         
     <form action="generate_report.php" method="post">
-        <h2>Reports</h2>
-        <!-- Coninue here -->
-        <div id="setHeader"><?php echo $setHeader; ?></div>
+        <h2>Reports</h2>        
         
         <div>
             <label for="reportType">Select a Report:</label>
