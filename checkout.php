@@ -35,6 +35,7 @@ function getCartItemCount() {
         echo '<a href="logout.php">Logout</a>';
     }
     ?>
+    <div id="cart-container">
     <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
 </div>
 

@@ -132,6 +132,19 @@ select:focus {
     border-color: #F67280; 
     box-shadow: 0 0 5px #F67280; /* Add a subtle shadow */
 }
+/* Style the cart button */
+#cart-button {
+    background-color: #ff9900;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+/* Move the cart button to the far right */
+#cart-container {
+    margin-left: auto; /* Push the cart button to the right */
+}
 
 #errorMessage {
     color: black;  
