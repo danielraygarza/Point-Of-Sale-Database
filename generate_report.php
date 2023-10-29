@@ -13,9 +13,8 @@
         exit(); //ensures code is killed
     }
     // */
-    //$setHeader = isset($_POST['setHeader']) ? $_POST['setHeader'] : "Default Report Header";
 ?>
-<!-- Welcome page after user creates new account -->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -33,11 +32,6 @@
                     echo '<a href="logout.php">Logout</a>';
                 }
             ?>
-        </div>
-
-        <div class="report_header">
-            <!-- Design Report header to be dynamically populated -->
-            <?php echo $setHeader; ?>
         </div>
 
     <form action="generate_report.php" method="post">
