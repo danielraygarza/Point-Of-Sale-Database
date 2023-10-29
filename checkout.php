@@ -21,7 +21,7 @@ function getCartItemCount() {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>POS Pizza</title>
+    <title>Checkout</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
