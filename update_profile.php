@@ -9,7 +9,7 @@
     // Check if user is logged in
     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         //access customer attributes
-        echo "<h2>Welcome, " .$_SESSION['user']['first_name']. "!</h2>";
+        // echo "<h2>Welcome, " .$_SESSION['user']['first_name']. "!</h2>";
     } else {
         //if not logged in, will send to default URL
         header("Location: index.php");
@@ -26,7 +26,8 @@
         $city = $mysqli->real_escape_string($_POST['city']);
         $state = $mysqli->real_escape_string($_POST['state']);
         $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
-        $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
+        $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
+        $email = $mysqli->real_escape_string($_POST['email']);
 
         // Inserting the data into the database
         $sql = "UPDATE customers 
@@ -41,7 +42,7 @@
             $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
             
             $mysqli->close();
-            header('Location: update_profile.php');
+            header('Location: home.php');
             exit;
         } else {
             echo "Error: " . $sql . "<br>" . $mysqli->error;
@@ -68,7 +69,7 @@
             }
         ?>
     </div>
-    <form action="signup.php" method="post">
+    <form action="update_profile.php" method="post">
         <h2>Update your POS Pizza Account</h2>
         <div>       
             <label for="first_name">Name  </label>
@@ -81,9 +82,14 @@
             <input type="text" id="last_name" name="last_name" value="<?php echo $_SESSION['user']['last_name']; ?>" placeholder="Last" style="width: 75px;" required>
         </div><br>
 
+        <?php
+            //re-format date for friendly front end
+            $date = new DateTime($_SESSION['user']['birthday']);
+            $formattedDate = $date->format('F j, Y');
+        ?>
         <div>
             <label for="birthday">Birthday  </label>
-            <input type="date" id="birthday" value="<?php echo $_SESSION['user']['birthday']; ?>" placeholder="Birthday" style="width: 100px;" readonly>
+            <input type="text" id="birthday" value="<?php echo $formattedDate; ?>" placeholder="Birthday" style="width: 150px;" readonly>
         </div><br>
         
         <div>
@@ -99,8 +105,8 @@
             <input type="text" id="city" name="city" value="<?php echo $_SESSION['user']['city']; ?>" placeholder="Enter city" style="width: 90px;"required>
 
             <label for="state">State  </label>
-            <select id="state" name="state" value="<?php echo $_SESSION['user']['state']; ?>"placeholder="Select state" style="width: 100px;" required>
-                <option value="" selected disabled>Select</option>
+            <select id="state" name="state"  style="width: 100px;" required>
+                <option value="<?php echo $_SESSION['user']['state']; ?>"><?php echo $_SESSION['user']['state']; ?></option>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
                 <option value="CA">California</option> <option value="CO">Colorado</option>
@@ -131,12 +137,15 @@
             <input type="text" id="zip_code" name="zip_code" value="<?php echo $_SESSION['user']['zip_code']; ?>" placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
         </div><br>
 
+        <?php
+            $phoneNumber = $_SESSION['user']['phone_number'];
+            $formattedPhoneNumber = substr($phoneNumber, 0, 3) . '-' . substr($phoneNumber, 3, 3) . '-' . substr($phoneNumber, 6, 4);
+        ?>
         <div>
             <label for="phone_number">Phone Number  </label>
-            <input type="tel" id="phone_number" name="phone_number" value="<?php echo $_SESSION['user']['phone_number']; ?>" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
+            <input type="tel" id="phone_number" name="phone_number" value="<?php echo $formattedPhoneNumber; ?>" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
             <label for="email">Email  </label>
-            <!-- input requires "@" and "." 
--->
+            <!-- input requires "@" and "." -->
             <input type="email" id="email" name="email" value="<?php echo $_SESSION['user']['email']; ?>" placeholder="Enter email address" pattern=".*\..*" readonly required>
         </div><br>
 
@@ -150,7 +159,7 @@
         ?>
 
         <div>
-            <input class = button type="submit" value="Sign Up" onclick="formatDate()">
+            <input class = button type="submit" value="Save Updates">
         </form>
 </body>
 </html>
