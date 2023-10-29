@@ -76,7 +76,7 @@
             <input type="text" id="first_name" name="first_name" value="<?php echo $_SESSION['user']['first_name']; ?>" placeholder="First" style="width: 75px;" required>
 
             <label for="middle_initial"></label>
-            <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  value="<?php echo $_SESSION['user']['middle_initial']; ?>" placeholder="M.I." style="width: 60px;">
+            <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  value="<?php echo $_SESSION['user']['middle_initial']; ?>" placeholder="M.I." style="width: 40px;">
 
             <label for="last_name"></label>
             <input type="text" id="last_name" name="last_name" value="<?php echo $_SESSION['user']['last_name']; ?>" placeholder="Last" style="width: 75px;" required>
@@ -137,12 +137,15 @@
             <input type="text" id="zip_code" name="zip_code" value="<?php echo $_SESSION['user']['zip_code']; ?>" placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
         </div><br>
 
+        <?php
+            $phoneNumber = $_SESSION['user']['phone_number'];
+            $formattedPhoneNumber = substr($phoneNumber, 0, 3) . '-' . substr($phoneNumber, 3, 3) . '-' . substr($phoneNumber, 6, 4);
+        ?>
         <div>
             <label for="phone_number">Phone Number  </label>
-            <input type="tel" id="phone_number" name="phone_number" value="<?php echo $_SESSION['user']['phone_number']; ?>" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
+            <input type="tel" id="phone_number" name="phone_number" value="<?php echo $formattedPhoneNumber; ?>" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
             <label for="email">Email  </label>
-            <!-- input requires "@" and "." 
--->
+            <!-- input requires "@" and "." -->
             <input type="email" id="email" name="email" value="<?php echo $_SESSION['user']['email']; ?>" placeholder="Enter email address" pattern=".*\..*" readonly required>
         </div><br>
 
