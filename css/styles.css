@@ -139,6 +139,7 @@ select:focus {
     padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
+    align-items: right;
 }
 
 /* Move the cart button to the far right */
