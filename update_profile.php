@@ -104,8 +104,8 @@
             <input type="text" id="city" name="city" value="<?php echo $_SESSION['user']['city']; ?>" placeholder="Enter city" style="width: 90px;"required>
 
             <label for="state">State  </label>
-            <select id="state" name="state" value="<?php echo $_SESSION['user']['state']; ?>"placeholder="Select state" style="width: 100px;" required>
-                <option value="" selected disabled>Select</option>
+            <select id="state" name="state"  style="width: 100px;" required>
+                <option value="<?php echo $_SESSION['user']['state']; ?>"><?php echo $_SESSION['user']['state']; ?></option>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
                 <option value="CA">California</option> <option value="CO">Colorado</option>
