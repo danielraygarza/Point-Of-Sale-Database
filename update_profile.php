@@ -81,9 +81,14 @@
             <input type="text" id="last_name" name="last_name" value="<?php echo $_SESSION['user']['last_name']; ?>" placeholder="Last" style="width: 75px;" required>
         </div><br>
 
+        <?php
+            //re-format date for friendly front end
+            $date = new DateTime($_SESSION['user']['birthday']);
+            $formattedDate = $date->format('F j, Y');
+        ?>
         <div>
             <label for="birthday">Birthday  </label>
-            <input type="text" id="birthday" value="<?php echo $_SESSION['user']['birthday']; ?>" placeholder="Birthday" style="width: 100px;" readonly>
+            <input type="text" id="birthday" value="<?php echo $formattedDate; ?>" placeholder="Birthday" style="width: 150px;" readonly>
         </div><br>
         
         <div>
