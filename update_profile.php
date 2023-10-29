@@ -75,15 +75,15 @@
             <input type="text" id="first_name" name="first_name" value="<?php echo $_SESSION['user']['first_name']; ?>" placeholder="First" style="width: 75px;" required>
 
             <label for="middle_initial"></label>
-            <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  value="<?php echo $_SESSION['user']['middle_initial']; ?>" placeholder="M.I." style="width: 30px;">
+            <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  value="<?php echo $_SESSION['user']['middle_initial']; ?>" placeholder="M.I." style="width: 40px;">
 
             <label for="last_name"></label>
             <input type="text" id="last_name" name="last_name" value="<?php echo $_SESSION['user']['last_name']; ?>" placeholder="Last" style="width: 75px;" required>
         </div><br>
 
         <div>
-            <label for="birthday_month">Birthday  </label>
-            <input type="number" id="birthday_month" name="birthday_month" min="1" max="12" value="<?php echo $_SESSION['user']['birthday']; ?>"placeholder="Month" style="width: 100px;" readonly>
+            <label for="birthday">Birthday  </label>
+            <input type="date" id="birthday" value="<?php echo $_SESSION['user']['birthday']; ?>" placeholder="Birthday" style="width: 100px;" readonly>
         </div><br>
         
         <div>
