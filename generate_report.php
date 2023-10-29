@@ -92,16 +92,16 @@
                     if (mysqli_num_rows($result) > 0) {
                         echo '<h2>Inventory Report</h2>';
                         echo '<table>';
-                        echo '<tr><th>Product ID</th><th>Product</th><th>Quantity in Stock</th><th>Cost</th><th>Vendor</th><th>Vendor Rep</th><th>Email</th><th>Phone</th></tr>';
+                        echo '<tr><th>|Product ID|</th><th>|Product|</th><th>|Quantity in Stock|</th><th>|Cost|</th><th>|Vendor|</th><th>|Vendor Rep|</th><th>|Email|</th><th>|Phone|</th></tr>';
 
                         // Loop through the results and display them in a table
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<tr>';
-                            echo '<td>' . $row['I.Inventory_ID'] . '</td>';
-                            echo '<td>' . $row['I.Item_Name'] . '</td>';
-                            echo '<td>' . $row['I.Inventory_Amount'] . '</td>';
-                            echo '<td<' . $row['I.Cost'] . '</td>';
-                            echo '<td<' . $row['V.Vendor_Name'] . '</td>';
+                            echo '<td>' . $row['Inventory_ID'] . '</td>';
+                            echo '<td>' . $row['Item_Name'] . '</td>';
+                            echo '<td>' . $row['Inventory_Amount'] . '</td>';
+                            echo '<td<' . $row['Cost'] . '</td>';
+                            echo '<td<' . $row['Vendor_Name'] . '</td>';
                             echo '<td<' . $row['Vendor_Rep'] . '</td>';
                             echo '<td<' . $row['Vendor_Email'] . '</td>';
                             echo '<td<' . $row['Vendor_Phone'] . '</td>';
