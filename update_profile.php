@@ -15,9 +15,9 @@
         header("Location: index.php");
     }
 
-    $getUser = $mysqli->query("SELECT * FROM customers WHERE email='$email'");
-    $user = $getUser->fetch_assoc();
-    $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
+    // $getUser = $mysqli->query("SELECT * FROM customers WHERE email='$email'");
+    // $user = $getUser->fetch_assoc();
+    // $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
@@ -80,7 +80,7 @@
         <h2>Update your POS Pizza Account</h2>
         <div>       
             <label for="first_name">Name  </label>
-            <input type="text" id="first_name" name="first_name" value="<?php echo $user['first_name']; ?>" placeholder="First" style="width: 75px;" required>
+            <input type="text" id="first_name" name="first_name" value="<?php echo $_SESSION['user']['first_name']; ?>" placeholder="First" style="width: 75px;" required>
 
             <label for="middle_initial"></label>
             <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  placeholder="M.I." style="width: 30px;">
