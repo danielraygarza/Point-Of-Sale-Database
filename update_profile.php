@@ -75,7 +75,7 @@
         <h2>Update your POS Pizza Account</h2>
         <div>       
             <label for="first_name">Name  </label>
-            <input type="text" id="first_name" name="first_name" placeholder="<?php echo $current_data['first_name']; ?>" style="width: 75px;" required>
+            <input type="text" id="first_name" name="first_name" placeholder="<?php echo $user['first_name']; ?>" style="width: 75px;" required>
 
             <label for="middle_initial"></label>
             <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  placeholder="M.I." style="width: 30px;">
