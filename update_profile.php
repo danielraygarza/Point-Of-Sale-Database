@@ -14,7 +14,11 @@
         //if not logged in, will send to default URL
         header("Location: index.php");
     }
+
+    $getUser = $mysqli->query("SELECT * FROM customers WHERE email='$email'");
+    $user = $getUser->fetch_assoc();
     $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
         // Extracting data from the form
