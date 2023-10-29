@@ -40,7 +40,8 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['reportType'])) {
             $reportType = $_POST['reportType'];
-            
+            $setHeader = '';
+
             /////////////////////////
             ////INVENTORY QUERIES////
             /////////////////////////
@@ -59,6 +60,8 @@
 
                 // Define your SQL queries for Inventory selection
                 if ($inventoryType === 'low') {
+                    // Header for low stock items
+                    $setHeader = 'Low Stock Items';
                     // Query for low stock items
                     $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
                     CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
@@ -68,6 +71,8 @@
                     WHERE I.Inventory_Amount <= I.Reorder_Threshold + 5;";
 
                 } elseif ($inventoryType === 'out') {
+                    // Header for out of stock items
+                    $setHeader = 'Out of Stock Items';
                     // Query for out of stock items
                     $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
                     CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
@@ -77,6 +82,8 @@
                     WHERE I.Inventory_Amount <= 0";
 
                 } else {
+                    // Header for all items
+                    $setHeader = 'Inventory Report';
                     // Query for all stock items
                     // Might be able to remove the nextline entries and keep it as a single line query
                     $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
@@ -94,7 +101,7 @@
                 if ($result) {
                     // Check if there are rows returned
                     if (mysqli_num_rows($result) > 0) {
-                        echo '<h2>Inventory Report</h2>';
+                        echo '<h2>' . $setHeader . '</h2>';
                         echo '<table>';
                         echo '<tr><th>|Product ID|</th><th>|Product|</th><th>|Quantity in Stock|</th><th>|Cost|</th><th>|Vendor|</th><th>|Vendor Rep|</th><th>|Email|</th><th>|Phone|</th></tr>';
 
