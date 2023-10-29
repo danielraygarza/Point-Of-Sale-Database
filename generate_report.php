@@ -13,7 +13,7 @@
         exit(); //ensures code is killed
     }
     // */
-    $setHeader = isset($_POST['setHeader']) ? $_POST['setHeader'] : "Default Report Header";
+    //$setHeader = isset($_POST['setHeader']) ? $_POST['setHeader'] : "Default Report Header";
 ?>
 <!-- Welcome page after user creates new account -->
 <!DOCTYPE html>
@@ -100,11 +100,11 @@
                             echo '<td>' . $row['Inventory_ID'] . '</td>';
                             echo '<td>' . $row['Item_Name'] . '</td>';
                             echo '<td>' . $row['Inventory_Amount'] . '</td>';
-                            echo '<td<' . $row['Cost'] . '</td>';
-                            echo '<td<' . $row['Vendor_Name'] . '</td>';
-                            echo '<td<' . $row['Vendor_Rep'] . '</td>';
-                            echo '<td<' . $row['Vendor_Email'] . '</td>';
-                            echo '<td<' . $row['Vendor_Phone'] . '</td>';
+                            echo '<td>' . $row['Cost'] . '</td>';
+                            echo '<td>' . $row['Vendor_Name'] . '</td>';
+                            echo '<td>' . $row['Vendor_Rep'] . '</td>';
+                            echo '<td>' . $row['Vendor_Email'] . '</td>';
+                            echo '<td>' . $row['Vendor_Phone'] . '</td>';
                             echo '</tr>';
                         }
 
