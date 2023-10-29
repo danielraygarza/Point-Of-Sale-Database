@@ -107,75 +107,75 @@ In MySQL Workbench, create a table titled "users" by running the following SQL c
 Create a database.php file in the GitHub repository and paste the following:
 
     <?php
-    $host = "{servername}.mysql.database.azure.com";
-    $dbname = "{database name}";
-    $username = "{admin user}";
-    $password = "{admin user password}";
-    $port = 3306;
-    $mysqli = mysqli_init();
-    mysqli_ssl_set($mysqli, NULL, NULL, "./DigiCertGlobalRootCA.crt.pem", NULL, NULL);
-    if (!$mysqli->real_connect($host, $username, $password, $dbname, $port, NULL, MYSQLI_CLIENT_SSL)) {
-        die("Connection error: " . $mysqli->connect_error);
+        $host = "{servername}.mysql.database.azure.com";
+        $dbname = "{database name}";
+        $username = "{admin user}";
+        $password = "{admin user password}";
+        $port = 3306;
+        $mysqli = mysqli_init();
+        mysqli_ssl_set($mysqli, NULL, NULL, "./DigiCertGlobalRootCA.crt.pem", NULL, NULL);
+        if (!$mysqli->real_connect($host, $username, $password, $dbname, $port, NULL, MYSQLI_CLIENT_SSL)) {
+            die("Connection error: " . $mysqli->connect_error);
     }
 
 Create an index.php file in GitHub repository. This will be the default web page when you deploy your web app. For this example, it will be a basic page to create an account. Paste the following:
 
     <!DOCTYPE html>
-    <head>
-    <title>Welcome</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .account-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-
-        .account-container h2 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .account-input {
-            width: 92%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .account-button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #333;
-            color: #fff;
-            cursor: pointer;
-        }
-    </style>
-    </head>
-    <body>
-        <div class="account-container">
-            <h2>Create Account</h2>
-            <!-- This will run valid_signup.php when you press submit -->
-            <form action="valid_signup.php" method="post">
-                <input type="text" name="username" placeholder="Username" class="account-input" required>
-                <input type="password" name="password" placeholder="Password" class="account-input" required>
-                <button type="submit" class="account-button">Sign up now</button>
-            </form>
-        </div>
-    </body>
+        <head>
+            <title>Welcome</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f4f4f4;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                }
+        
+                .account-container {
+                    background-color: #fff;
+                    padding: 20px;
+                    border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    width: 300px;
+                }
+        
+                .account-container h2 {
+                    margin-bottom: 20px;
+                    text-align: center;
+                }
+        
+                .account-input {
+                    width: 92%;
+                    padding: 10px;
+                    margin: 10px 0;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                }
+        
+                .account-button {
+                    width: 100%;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: #333;
+                    color: #fff;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="account-container">
+                <h2>Create Account</h2>
+                <!-- This will run valid_signup.php when you press submit -->
+                <form action="valid_signup.php" method="post">
+                    <input type="text" name="username" placeholder="Username" class="account-input" required>
+                    <input type="password" name="password" placeholder="Password" class="account-input" required>
+                    <button type="submit" class="account-button">Sign up now</button>
+                </form>
+            </div>
+        </body>
     </html>
 
 
