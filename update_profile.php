@@ -27,6 +27,7 @@
         $state = $mysqli->real_escape_string($_POST['state']);
         $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
         $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
+        $email = $mysqli->real_escape_string($_POST['email']);
 
         // Inserting the data into the database
         $sql = "UPDATE customers 
@@ -41,7 +42,7 @@
             $_SESSION['user'] = $user;  //assigns all customer attributes inside an array
             
             $mysqli->close();
-            header('Location: update_profile.php');
+            header('Location: home.php');
             exit;
         } else {
             echo "Error: " . $sql . "<br>" . $mysqli->error;
