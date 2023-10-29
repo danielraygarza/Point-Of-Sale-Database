@@ -26,7 +26,7 @@
         $city = $mysqli->real_escape_string($_POST['city']);
         $state = $mysqli->real_escape_string($_POST['state']);
         $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
-        $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
+        $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
         $email = $mysqli->real_escape_string($_POST['email']);
 
         // Inserting the data into the database
