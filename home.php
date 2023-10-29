@@ -27,6 +27,7 @@
             <!-- <a href="#">Profile</a> -->
             <?php
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+                echo '<a href="update_profile.php">Profile</a>';
                 echo '<a href="logout.php">Logout</a>';
             }
             ?>
