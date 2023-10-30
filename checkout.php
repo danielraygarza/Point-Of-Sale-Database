@@ -1,7 +1,7 @@
 <?php
 // Start the session
 session_start();
-
+include database.php;
 // Initialize the cart as an empty array if it doesn't exist
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
@@ -54,7 +54,7 @@ function getCartItemCount() {
                         echo "<li>$item - $10.00</li>"; // Replace with actual item details
                     }
                 } else {
-                    echo "<li>Your cart is empty</li>";
+                    echo $mysqli->query("SELECT Price FROM pos.topping_on_pizza WHERE topping_name ='Pepperoni'");
                 }
                 ?>
             </ul>
