@@ -46,8 +46,8 @@
             <label for="reportType">Select a Report:</label>
             <select name="reportType" id="reportType" onchange="showInventoryOptions()">
                 <option value=""selected disabled>Select a Report</option>
-                <option value="inventory">Inventory Report</option>
-                <option value="onclock">On-Clock Report</option>
+                <option value="inventory">Inventory Reports</option>
+                <option value="store">Store Reports</option>
                 <option value="sales">Sales Report</option>
                 <option value="performance">Employee Performance Report</option>
             </select>
