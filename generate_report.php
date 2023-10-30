@@ -192,7 +192,7 @@
                     if (mysqli_num_rows($result) > 0) {
                         echo '<h2>' . $setHeader . '</h2>';
                         echo '<table>';
-                        echo '<tr><th>|Pizza Shop ID|</th></tr>';
+                        echo '<tr><th>|Pizza Store ID|</th></tr>';
 
                         // Loop through the results and display them in a table
                         while ($row = mysqli_fetch_assoc($result)) {
