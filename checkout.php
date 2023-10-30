@@ -63,7 +63,7 @@ function getCartItemCount() {
 
                         if ($row) {
                          $toppingPrice = $row['Price'];
-                            echo "$toppingName:                    $toppingPrice";
+                            echo "$toppingName:"                    "$row['Price']";
                             } else {
                               echo "Topping not found.";
                                       }
