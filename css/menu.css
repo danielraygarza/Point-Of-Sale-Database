@@ -82,7 +82,7 @@ main .card .customize {
     border: 1px solid green;
     background-color: lightgray;
     bottom: 0;
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
     text-shadow: none;
 }
 main .card .placeOrder {
