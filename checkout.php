@@ -42,21 +42,23 @@ function getCartItemCount() {
 
 <div class="checkout-window">
         <h2>Shopping Cart</h2>
-        <ul class="cart-items">
-            <?php
-            // Assuming you have a cart stored in a session or database
-            $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+        <div class="cart-panel">
+            <ul class="cart-items">
+                <?php
+                // Assuming you have a cart stored in a session or database
+                $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
-            if (count($cart) > 0) {
-                // Loop through the items in the cart and display them
-                foreach ($cart as $item) {
-                    echo "<li>$item - $10.00</li>"; // Replace with actual item details
+                if (count($cart) > 0) {
+                    // Loop through the items in the cart and display them
+                    foreach ($cart as $item) {
+                        echo "<li>$item - $10.00</li>"; // Replace with actual item details
+                    }
+                } else {
+                    echo "<li>Your cart is empty</li>";
                 }
-            } else {
-                echo "<li>Your cart is empty</li>";
-            }
-            ?>
-        </ul>
+                ?>
+            </ul>
+        </div>
         <?php
         // Calculate and display the total price
         $totalPrice = calculateTotalPrice($cart); // Implement this function
