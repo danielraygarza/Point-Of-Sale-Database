@@ -41,6 +41,7 @@ function getCartItemCount() {
 </div>
 
 <div class="checkout-window">
+<form action="" method="post">
         <h2>Shopping Cart</h2>
         <div class="cart-panel">
             <ul class="cart-items">
@@ -79,6 +80,7 @@ function getCartItemCount() {
         // $totalPrice = calculateTotalPrice($cart); // Implement this function
         // echo "<p>Total: $" . number_format($totalPrice, 2) . "</p>";
         ?>
+          </form> 
         <button class="button">Place Order</button>
     </div>
 
