@@ -154,7 +154,7 @@
                     // Header for daily orders
                     $setHeader = 'Daily Orders';
                     // TO COMPLETE: Query for daily orders
-                    $sql = " ";
+                    $sql = "SELECT Pizza_Shop_ID FROM pizza_shop";
 
                 } elseif ($storeType === 'pizzas') {
                     // Header for pizzas sold
@@ -185,25 +185,26 @@
                 
                 // Execute the query
                 $result = mysqli_query($mysqli, $sql);
+                //echo '<h2>' . $setHeader . '</h2>';
 
                 if ($result) {
                     // Check if there are rows returned
                     if (mysqli_num_rows($result) > 0) {
                         echo '<h2>' . $setHeader . '</h2>';
                         echo '<table>';
-                        echo '<tr><th>|Product ID|</th><th>|Product|</th><th>|Quantity in Stock|</th><th>|Cost|</th><th>|Vendor|</th><th>|Vendor Rep|</th><th>|Email|</th><th>|Phone|</th></tr>';
+                        echo '<tr><th>|Pizza Shop ID|</th></tr>';
 
                         // Loop through the results and display them in a table
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<tr>';
-                            echo '<td>' . $row['Inventory_ID'] . '</td>';
-                            echo '<td>' . $row['Item_Name'] . '</td>';
-                            echo '<td>' . $row['Inventory_Amount'] . '</td>';
-                            echo '<td>' . $row['Cost'] . '</td>';
-                            echo '<td>' . $row['Vendor_Name'] . '</td>';
-                            echo '<td>' . $row['Vendor_Rep'] . '</td>';
-                            echo '<td>' . $row['Vendor_Email'] . '</td>';
-                            echo '<td>' . $row['Vendor_Phone'] . '</td>';
+                            echo '<td>' . $row['Pizza_Shop_ID'] . '</td>';
+                            //echo '<td>' . $row['Item_Name'] . '</td>';
+                            //echo '<td>' . $row['Inventory_Amount'] . '</td>';
+                            //echo '<td>' . $row['Cost'] . '</td>';
+                            //echo '<td>' . $row['Vendor_Name'] . '</td>';
+                            //echo '<td>' . $row['Vendor_Rep'] . '</td>';
+                            //echo '<td>' . $row['Vendor_Email'] . '</td>';
+                            //echo '<td>' . $row['Vendor_Phone'] . '</td>';
                             echo '</tr>';
                         }
 
