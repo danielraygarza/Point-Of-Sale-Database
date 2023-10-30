@@ -63,10 +63,17 @@
                 </select>
         </div><br>
 
+        <!-- //Copy the format from here// -->
+        <!-- This creates the sub-menu once you've selected the main category -->
+        <!-- Here you also set your id that you will reference in the function below to make this menu visible -->
         <div id="storeOptions" style="display: none;">
             <!-- Store Report sub-options here -->
                 <label for="storeType">Select Store Report Type:</label>
+                <!-- Here you set your id that you'll reference on generate_report.php -->
+                <!-- This will tell the page which sub report you want to run -->
                 <select name="storeType" id="storeType">
+                    <!-- Here are the different options you can display in your sub menu -->
+                    <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
                     <option value="orders">Daily Orders</option>
                     <option value="pizzas">Daily Pizzas Sold</option>
                     <option value="popular">Today's Most Popular Pizza</option>
@@ -74,20 +81,32 @@
                     <option value="date">Total Sales To Date</option>
                 </select>
         </div><br>
+        <!-- //To here// -->
+
+        <!-- Add more drop down sub-menus here -->
 
         <input type="submit" class = "button" value="Generate Report">
         
     </form> 
 
         <script>
+            //This function makes the sub-menu appear depending on what's selected
             function showOptions() {
+                //This reads which main report group is currently selected
                 var reportType = document.getElementById('reportType');
+
+                //If you add a new sub menu, define it here then refence it by it's id like so:
                 var inventoryOptions = document.getElementById('inventoryOptions');
                 var storeOptions = document.getElementById('storeOptions');
 
+                //This if/else determines which sub menu is visible
+                //To set a new one visible, set reportType === 'newMenu'
+                //Then newMenuOptions.style.display = 'block'
+                //Be sure to set the other sub menus to 'none' and add in your new menu to the other sub menu categories and set it to 'none'
                 if (reportType.value === 'inventory') {
                     inventoryOptions.style.display = 'block';
                     storeOptions.style.display = 'none';
+                    // newMenuOptions.style.display = 'none'
                 } else if (reportType.value === 'store') {
                     inventoryOptions.style.display = 'none';
                     storeOptions.style.display = 'block';
