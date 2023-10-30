@@ -1,0 +1,65 @@
+/* CSS for the checkout page */
+
+body {
+    font-family: 'Trebuchet MS', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.checkout-window {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.cart-panel {
+    background-color: #f9f9f9; /* Background color for the panel */
+    border: 1px solid #ddd; /* Border for the panel */
+    padding: 15px; /* Padding inside the panel */
+    border-radius: 5px; /* Rounded corners for the panel */
+    margin: 15px 0; /* Margin around the panel */
+    min-height: 100px; /* Minimum height of the panel */
+}
+
+.cart-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cart-items li {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.place-order-button {
+    background-color: #F67280;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.place-order-button:hover {
+    background-color: #C06C84;
+}
