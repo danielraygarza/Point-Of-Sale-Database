@@ -144,9 +144,6 @@ select:focus {
 }
 
 /* Move the cart button to the far right */
-#cart-container {
-    float: right; /* Push the cart button to the right */
-}
 
 #errorMessage {
     color: black;  
