@@ -25,12 +25,12 @@ h2 {
 }
 
 .cart-panel {
-    background-color: #f9f9f9; /* Background color for the panel */
-    border: 1px solid #ddd; /* Border for the panel */
-    padding: 15px; /* Padding inside the panel */
-    border-radius: 5px; /* Rounded corners for the panel */
-    margin: 15px 0; /* Margin around the panel */
-    min-height: 100px; /* Minimum height of the panel */
+    border-radius: 10px;
+    width: 500px; /* Set the desired width */
+    height: 600px; /* Set the desired height */
+    margin: 20px auto;
+    position: relative;
+    background-color: white;
 }
 
 .cart-items {

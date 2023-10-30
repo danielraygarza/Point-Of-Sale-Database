@@ -103,6 +103,14 @@ h1 {
     font-weight: bold; /* Make bold text */
     top: 50px; /* Position 50 pixels below navbar */
 }
+.card {
+    border-radius: 10px;
+    width: 500px; /* Set the desired width */
+    height: 600px; /* Set the desired height */
+    margin: 20px auto;
+    position: relative;
+    background-color: white;
+}
 
 /* Base styling for all input fields and dropdowns */
 input[type="text"],
