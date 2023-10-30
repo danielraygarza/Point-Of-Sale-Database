@@ -54,6 +54,7 @@
                 <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
                 <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
                 <div class = "customize">CUSTOMIZE</div>
+                <br>
                 <div class = "placeOrder">PLACE ORDER</div>
             </div>
         <?php } ?>
