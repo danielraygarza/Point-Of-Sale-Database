@@ -23,6 +23,7 @@ function getCartItemCount() {
 <head>
     <title>Checkout</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/checkout.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
