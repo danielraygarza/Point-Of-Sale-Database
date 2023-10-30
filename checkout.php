@@ -55,21 +55,21 @@ function getCartItemCount() {
                     }
                 } else {
                     $toppingName = 'Pepperoni'; // Replace with the desired topping name
-$query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$toppingName'";
-$result = $mysqli->query($query);
+                    $query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$toppingName'";
+                    $result = $mysqli->query($query);
 
-if ($result) {
-    $row = $result->fetch_assoc();
+                    if ($result) {
+                    $row = $result->fetch_assoc();
 
-    if ($row) {
-        $toppingPrice = $row['Price'];
-        echo "The price of $toppingName topping is: $toppingPrice";
-    } else {
-        echo "Topping not found.";
-    }
-} else {
-    echo "Error executing the query: " . $mysqli->error;
-}
+                        if ($row) {
+                         $toppingPrice = $row['Price'];
+                            echo "$toppingName:                    $toppingPrice";
+                            } else {
+                              echo "Topping not found.";
+                                      }
+                                    } else {
+                                    echo "Error executing the query: " . $mysqli->error;
+                        }
                 }
                 ?>
             </ul>
