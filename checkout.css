@@ -25,12 +25,17 @@ h2 {
 }
 
 .cart-panel {
+    width: 50%; /* Set the desired width (60% of the screen width) */
+    height:80%;
+    margin: 0 auto; /* Center the box horizontally */
+    padding: 20px; /* Add padding for spacing inside the box */
+    position: absolute;
+    top: 50%; /* Center the box vertically */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
-    width: 500px; /* Set the desired width */
-    height: 1500px; /* Set the desired height */
-    margin: 20px auto;
-    position: relative;
     background-color: white;
+    text-align: center;
 }
 
 .cart-items {
