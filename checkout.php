@@ -24,6 +24,7 @@ function getCartItemCount() {
     <title>Checkout</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/checkout.css">
+    <link rel="stylesheet" href="css/customize_pizza.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
 </head>
 <body>
@@ -40,7 +41,7 @@ function getCartItemCount() {
     
 </div>
 <form action="" method="post">
-<div class="checkout-window">
+<div class = "card">
     <h2>Shopping Cart</h2>
     
         <div class="cart-panel">
