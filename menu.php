@@ -55,7 +55,7 @@
                 <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
                 <div class = "customize">CUSTOMIZE</div>
             
-                <div class = "placeOrder">Add To Cart</div>
+                <!-- <div class = "placeOrder">Add To Cart</div> -->
             </div>
         <?php } ?>
     </main>
