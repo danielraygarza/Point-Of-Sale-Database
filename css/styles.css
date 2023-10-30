@@ -145,7 +145,7 @@ select:focus {
 
 /* Move the cart button to the far right */
 #cart-container {
-    margin-left: auto; /* Push the cart button to the right */
+    float: right; /* Push the cart button to the right */
 }
 
 #errorMessage {
