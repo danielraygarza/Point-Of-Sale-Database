@@ -161,25 +161,25 @@
                     // Header for pizzas sold
                     $setHeader = 'Pizzas Sold Today';
                     // TO COMPLETE: Query for pizzas sold today
-                    $sql = " ";
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
 
                 } elseif ($storeType === 'popular') {
                     // Header for most popular pizza today
                     $setHeader = 'Most Popular Pizza';
                     // TO COMPLETE: Query for most popular pizza today
-                    $sql = " ";
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
 
                 } elseif ($storeType === 'sales'){
                     // Header for total sales today
                     $setHeader = 'Total Sales Today';
                     // TO COMPLETE: Query for total sales today
-                    $sql = " ";
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
 
                 } else {
                     //Header for total sales to date
                     $setHeader = 'Total Sales To Date';
                     // TO COMPLETE: Query for total sales to date
-                    $sql = " ";
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
 
                 }
 
