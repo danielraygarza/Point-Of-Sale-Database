@@ -74,11 +74,11 @@
                 <select id="Store_Manager_ID" name="Store_Manager_ID" required>
                     <option value="" selected disabled>Assign Shop Manager</option>
                     <?php
-                    if ($managers->num_rows > 0) {
-                        while($row = $managers->fetch_assoc()) {
-                            echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                        if ($managers->num_rows > 0) {
+                            while($row = $managers->fetch_assoc()) {
+                                echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                            }
                         }
-                    }
                     ?>
                 </select>
             </div><br>

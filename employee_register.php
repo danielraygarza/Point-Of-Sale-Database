@@ -6,15 +6,16 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    // Redirects if not manager or accessed directly via URL
-    if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'MAN') {
-        echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
-        echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
-        exit; // Make sure to exit so that the rest of the script won't execute
-    }
+    // Redirects if not manager/CEO or accessed directly via URL
+    // if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    //     echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
+    //     echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
+    //     exit; // Make sure to exit so that the rest of the script won't execute
+    // }
 
     //get list of supervisors from database
     $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP' OR Title_Role='MAN'");
+    $stores = $mysqli->query("SELECT * FROM pizza_store");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
@@ -25,6 +26,7 @@
         $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
         $Supervisor_ID = isset($_POST['Supervisor_ID']) ? $mysqli->real_escape_string($_POST['Supervisor_ID']) : null; //Assigns null if no supervisor selected
         $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
+        $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
         //check if duplicate employee ID. sends error message
@@ -35,11 +37,11 @@
         } else {
             // Inserting the data into the database. Accounting if supervisor is NULL when employee is a manager
             if ($Supervisor_ID !== null) {
-                    $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Supervisor_ID, Employee_ID, password) 
-                            VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password')";
+                    $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Supervisor_ID, Employee_ID, password, Store_ID) 
+                            VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password','$Store_ID')";
             } else{
-                   $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Employee_ID, password) 
-                            VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Employee_ID','$password')";
+                   $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Employee_ID, password, Store_ID) 
+                            VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Employee_ID','$password','$Store_ID')";
             }
 
             if ($mysqli->query($sql) === TRUE) {
@@ -69,7 +71,7 @@
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo '<a href="logout.php">Logout</a>';
             }
-        ?>
+            ?>
     </div>
     <form action="employee_register.php" method="post">
         <h2>Create Employee Account</h2>
@@ -78,6 +80,20 @@
             <input type="text" id="E_First_Name" name="E_First_Name" placeholder="First" style="width: 75px;" required>
             <label for="E_Last_Name"></label>
             <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 75px;" required>
+        </div><br>
+        
+        <div>
+            <label for="Store_ID">Store Location </label>
+            <select id="Store_ID" name="Store_ID" required>
+                <option value="" selected disabled>Select Store</option>
+                <?php
+                    if ($stores->num_rows > 0) {
+                        while($row = $stores->fetch_assoc()) {
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
+                ?>
+            </select>
         </div><br>
 
         <!-- pulls current date and assigns to Hire_Date -->
@@ -106,11 +122,11 @@
             <select id="Supervisor_ID" name="Supervisor_ID" required>
                 <option value="" selected disabled>Assign Supervisor</option>
                 <?php
-                if ($supervisors->num_rows > 0) {
-                    while($row = $supervisors->fetch_assoc()) {
-                        echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                    if ($supervisors->num_rows > 0) {
+                        while($row = $supervisors->fetch_assoc()) {
+                            echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                        }
                     }
-                }
                 ?>
             </select>
         </div><br>
@@ -118,7 +134,7 @@
             function roleRequirement() {
                 const role = document.getElementById('Title_Role');
                 const supervisor = document.getElementById('Supervisor_ID');
-
+                
                 // if manager role is selected, supervisor is not required
                 if (role.value === 'MAN' || role.value === 'CEO') {
                     supervisor.removeAttribute('required');
@@ -126,7 +142,7 @@
                     supervisor.setAttribute('required', '');
                 }
             }
-        </script>
+            </script>
         
         <div>
             <label for="Employee_ID">Employee ID  </label>
