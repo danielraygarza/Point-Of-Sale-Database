@@ -120,6 +120,7 @@
 
                         echo '</table>';
                     } else {
+                        echo '<h2>' . $setHeader . '</h2>';
                         echo 'No inventory data available.';
                     }
                 } else {
@@ -185,7 +186,6 @@
                 
                 // Execute the query
                 $result = mysqli_query($mysqli, $sql);
-                //echo '<h2>' . $setHeader . '</h2>';
 
                 if ($result) {
                     // Check if there are rows returned
@@ -210,6 +210,7 @@
 
                         echo '</table>';
                     } else {
+                        echo '<h2>' . $setHeader . '</h2>';
                         echo 'No inventory data available.';
                     }
                 } else {
