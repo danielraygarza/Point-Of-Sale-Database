@@ -1,7 +1,7 @@
 <?php
 // Start the session
 session_start();
-include database.php;
+include 'database.php';
 // Initialize the cart as an empty array if it doesn't exist
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
@@ -54,7 +54,22 @@ function getCartItemCount() {
                         echo "<li>$item - $10.00</li>"; // Replace with actual item details
                     }
                 } else {
-                    echo $mysqli->query("SELECT Price FROM pos.topping_on_pizza WHERE topping_name ='Pepperoni'");
+                    $toppingName = 'Pepperoni'; // Replace with the desired topping name
+$query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$toppingName'";
+$result = $mysqli->query($query);
+
+if ($result) {
+    $row = $result->fetch_assoc();
+
+    if ($row) {
+        $toppingPrice = $row['Price'];
+        echo "The price of $toppingName topping is: $toppingPrice";
+    } else {
+        echo "Topping not found.";
+    }
+} else {
+    echo "Error executing the query: " . $mysqli->error;
+}
                 }
                 ?>
             </ul>
