@@ -43,7 +43,7 @@
                 <p class = "description"><?php echo $row["Description"]; ?></p>
                 <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
                 <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
-                <div class = "customize">CUSTOMIZE</div>
+                <div class = "customize"> <a href = "customize_pizza.php">CUSTOMIZE</a></div>
             </div>
         <?php } ?>
     </main>

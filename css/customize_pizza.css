@@ -6,48 +6,63 @@
 }
 
 main {
-    max-width: 1200px;
-    width: 75%;
+    width: 100%;
+    margin: 30px auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin: auto;
-    height: 90%;
+    height: 100%;
 }
 
 main .card {
     border-radius: 10px;
-    max-width: 300px;
-    flex: 0 0 calc(33.33% - 20px);
-    text-align: center;
-    height: 400px;
+    max-width: 1000px;
+    flex: auto;
+    height: auto;
     border: 3px solid lightgray;
     margin: 20px;
     position: relative;
     background-color: white;
 }
 
-main .card .image {
-    height: 50%;
-    margin-bottom: 10px;
+main .card .top-card {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 10px;
+    justify-content: center;
+    border-bottom: 3px solid lightgray;
+
 }
 
-main .card .image img {
+main .card .top-card .right-top .image {
+
+}
+
+main .card .top-card .right-top .image img {
+    margin: 5px;
     border-radius: 5px;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-main .card .pizza_name {
-    font-size: 15px;
+main .card .top-card .left-top {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 10px;
+}
+
+main .card .top-card .left-top .pizza_name {
+    font-size: 35px;
     text-shadow: none;
 }
 
-main .card .description {
-    margin: 7px;
+main .card .top-card .left-top .description {
+    margin-top: 10px;
     text-shadow: none;
-    font-size: 12px;
+    font-size: 15px;
 }
 
 main .card .price {
@@ -61,7 +76,7 @@ main .card .price {
     text-shadow: none;
 }
 
-main .card .calories {
+main .card .top-card .left-top .calories {
     margin: auto;
     position: absolute;
     bottom: 55px;
@@ -70,26 +85,4 @@ main .card .calories {
     left: 25%;
     width: 50%;
     text-shadow: none;
-}
-
-main .card .customize a{
-    border-radius: 30px;
-    margin: 10%;
-    padding: 6px;
-    height: 30px;
-    width: 80%;
-    margin-top: 4em;
-    font-weight: bold;
-    position: absolute;
-    border: 1px solid green;
-    background-color: lightgray;
-    bottom: 0;
-    margin-bottom: 5px;
-    text-shadow: none;
-    text-decoration: none;
-    left: 0px;
-}
-
-main .card .customize a:hover {
-    transform: scale(105%);
 }
