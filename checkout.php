@@ -42,6 +42,7 @@ function getCartItemCount() {
 <div class="checkout-window">
     <form action="" method="post">
         <h2>Shopping Cart</h2>
+        <div class="cart-panel">
             <ul class="cart-items">
                 <?php
                 // Assuming you have a cart stored in a session or database
