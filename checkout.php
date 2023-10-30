@@ -39,10 +39,10 @@ function getCartItemCount() {
     <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
     
 </div>
-
-<div class="checkout-window">
 <form action="" method="post">
-        <h2>Shopping Cart</h2>
+<div class="checkout-window">
+    <h2>Shopping Cart</h2>
+    
         <div class="cart-panel">
             <ul class="cart-items">
                 <?php
