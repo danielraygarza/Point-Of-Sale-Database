@@ -25,6 +25,7 @@
                 echo '<a href="logout.php">Logout</a>';
             }
         ?>
+         <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
     </div>
     
     <form action="" method="post">
