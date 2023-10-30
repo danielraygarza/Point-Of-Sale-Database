@@ -18,7 +18,7 @@
         $city = $mysqli->real_escape_string($_POST['city']);
         $state = $mysqli->real_escape_string($_POST['state']);
         $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
-        $phone_number = $mysqli->real_escape_string($_POST['phone_number']);
+        $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
         $email = $mysqli->real_escape_string($_POST['email']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
@@ -79,11 +79,11 @@
         year max is the current year -->
         <div>
             <label for="birthday_month">Birthday  </label>
-            <input type="number" id="birthday_month" name="birthday_month" min="1" max="12" placeholder="Month" style="width: 55px;">
+            <input type="number" id="birthday_month" name="birthday_month" min="1" max="12" placeholder="Month" style="width: 55px;" required>
             <label for="birthday_day"></label>
-            <input type="number" id="birthday_day" name="birthday_day" min="1" max="31" placeholder = "Day" style="width: 55px;">
+            <input type="number" id="birthday_day" name="birthday_day" min="1" max="31" placeholder = "Day" style="width: 55px;" required>
             <label for="birthday_year"></label>
-            <input type="number" id="birthday_year" name="birthday_year" min="1900" max="2023" pattern="[0-9]{4}" placeholder = "Year" style="width: 55px;">
+            <input type="number" id="birthday_year" name="birthday_year" min="1900" max="2023" pattern="[0-9]{4}" placeholder = "Year" style="width: 55px;" required>
         </div><br>
         
         <!-- hidden input to hold the concatenated date -->
@@ -161,7 +161,7 @@
 
         <div>
             <label for="phone_number">Phone Number  </label>
-            <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="[0-9]{10}" style="width: 120px;" required>
+            <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="^\d{10}$|^\d{3}-\d{3}-\d{4}$" style="width: 120px;" required>
             <label for="email">Email  </label>
             <!-- input requires "@" and "." 
             currently casues fatal eror if not unique -->

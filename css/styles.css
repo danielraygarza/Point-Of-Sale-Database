@@ -132,6 +132,17 @@ select:focus {
     border-color: #F67280; 
     box-shadow: 0 0 5px #F67280; /* Add a subtle shadow */
 }
+/* Style the cart button */
+#cart-button {
+    background-color: #ff9900;
+    color: white;
+    float: right;
+
+}
+
+#cart-button:hover {
+    background-color: #ff7700; /* darker orange color on hover */
+}
 
 #errorMessage {
     color: black;  

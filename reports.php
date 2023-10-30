@@ -14,18 +14,8 @@
         exit(); //ensures code is killed
     }
     // */
-
-    /////////
-    //TEST//
-    /////////
-
-    // Set the default header
-    $setHeader = "TEST";
-    /////////
-    /////////
-
-    //$setHeader = ''; // Creates the variable to set Report Header on generate_report.php
 ?>
+
 <!-- Welcome page after user creates new account -->
 <!DOCTYPE html>
 <html>
@@ -50,48 +40,79 @@
         </div>
         
     <form action="generate_report.php" method="post">
-        <h2>Reports</h2>
-        <!-- Coninue here -->
-        <div id="setHeader"><?php echo $setHeader; ?></div>
+        <h2>Reports</h2>        
         
         <div>
             <label for="reportType">Select a Report:</label>
-            <select name="reportType" id="reportType" onchange="showInventoryOptions()">
+            <select name="reportType" id="reportType" onchange="showOptions()">
                 <option value=""selected disabled>Select a Report</option>
-                <option value="inventory">Inventory Report</option>
-                <option value="onclock">On-Clock Report</option>
+                <option value="inventory">Inventory Reports</option>
+                <option value="store">Store Reports</option>
                 <option value="sales">Sales Report</option>
                 <option value="performance">Employee Performance Report</option>
             </select>
         </div> <br>
         
         <div id="inventoryOptions" style="display: none;">
-                <label for="inventoryType">Select Inventory Type:</label>
+            <!-- Inventory Report sub-options here -->
+                <label for="inventoryType">Select Inventory Report Type:</label>
                 <select name="inventoryType" id="inventoryType">
                     <option value="all">All Stock</option>
                     <option value="low">Low Stock</option>
                     <option value="out">Out of Stock</option>
                 </select>
         </div><br>
-        
-        <!-- Add a hidden input field to pass the setHeader variable -->
-        <input type="hidden" name="setHeader" value="<?php echo $setHeader; ?>">
+
+        <!-- //Copy the format from here// -->
+        <!-- This creates the sub-menu once you've selected the main category -->
+        <!-- Here you also set your id that you will reference in the function below to make this menu visible -->
+        <div id="storeOptions" style="display: none;">
+            <!-- Store Report sub-options here -->
+                <label for="storeType">Select Store Report Type:</label>
+                <!-- Here you set your id that you'll reference on generate_report.php -->
+                <!-- This will tell the page which sub report you want to run -->
+                <select name="storeType" id="storeType">
+                    <!-- Here are the different options you can display in your sub menu -->
+                    <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
+                    <option value="orders">Daily Orders</option>
+                    <option value="pizzas">Daily Pizzas Sold</option>
+                    <option value="popular">Today's Most Popular Pizza</option>
+                    <option value="sales">Total Sales Today</option>
+                    <option value="date">Total Sales To Date</option>
+                </select>
+        </div><br>
+        <!-- //To here// -->
+
+        <!-- Add more drop down sub-menus here -->
 
         <input type="submit" class = "button" value="Generate Report">
         
     </form> 
 
         <script>
-            function showInventoryOptions() {
+            //This function makes the sub-menu appear depending on what's selected
+            function showOptions() {
+                //This reads which main report group is currently selected
                 var reportType = document.getElementById('reportType');
-                var inventoryOptions = document.getElementById('inventoryOptions');
-                var headerVar = document.getElementById('setHeader');
 
+                //If you add a new sub menu, define it here then refence it by it's id like so:
+                var inventoryOptions = document.getElementById('inventoryOptions');
+                var storeOptions = document.getElementById('storeOptions');
+
+                //This if/else determines which sub menu is visible
+                //To set a new one visible, set reportType === 'newMenu'
+                //Then newMenuOptions.style.display = 'block'
+                //Be sure to set the other sub menus to 'none' and add in your new menu to the other sub menu categories and set it to 'none'
                 if (reportType.value === 'inventory') {
                     inventoryOptions.style.display = 'block';
-                    headerVar = "Inventory Report";
+                    storeOptions.style.display = 'none';
+                    // newMenuOptions.style.display = 'none'
+                } else if (reportType.value === 'store') {
+                    inventoryOptions.style.display = 'none';
+                    storeOptions.style.display = 'block';
                 } else {
                     inventoryOptions.style.display = 'none';
+                    storeOptions.style.display = 'none';
                 }
             }
         </script>

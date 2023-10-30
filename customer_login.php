@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="employee_login.php">Employee Home</a>
+        <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
     </div>  
 
 <form action="customer_login.php" method="post">

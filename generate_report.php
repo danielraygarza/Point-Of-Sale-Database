@@ -13,9 +13,8 @@
         exit(); //ensures code is killed
     }
     // */
-    $setHeader = isset($_POST['setHeader']) ? $_POST['setHeader'] : "Default Report Header";
 ?>
-<!-- Welcome page after user creates new account -->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,18 +34,17 @@
             ?>
         </div>
 
-        <div class="report_header">
-            <!-- Design Report header to be dynamically populated -->
-            <?php echo $setHeader; ?>
-        </div>
-
     <form action="generate_report.php" method="post">
     <?php
     // Check if the form has been submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['reportType'])) {
             $reportType = $_POST['reportType'];
-            
+            $setHeader = '';
+
+            /////////////////////////
+            ////INVENTORY QUERIES////
+            /////////////////////////
             if ($reportType === 'inventory') {
                 // Database connection code:
                 include 'database.php'; // Database connection file
@@ -62,16 +60,36 @@
 
                 // Define your SQL queries for Inventory selection
                 if ($inventoryType === 'low') {
+                    // Header for low stock items
+                    $setHeader = 'Low Stock Items';
                     // Query for low stock items
-                    $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory WHERE Inventory_Amount < 10";
+                    $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
+                    CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
+                    V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                    FROM INVENTORY I
+                    INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
+                    WHERE I.Inventory_Amount <= I.Reorder_Threshold + 5;";
 
                 } elseif ($inventoryType === 'out') {
+                    // Header for out of stock items
+                    $setHeader = 'Out of Stock Items';
                     // Query for out of stock items
-                    $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory WHERE Inventory_Amount = 0";
+                    $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
+                    CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
+                    V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                    FROM INVENTORY I
+                    INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
+                    WHERE I.Inventory_Amount <= 0";
 
                 } else {
+                    // Header for all items
+                    $setHeader = 'Inventory Report';
                     // Query for all stock items
-                    $sql = "SELECT Inventory_ID, Inventory_Amount FROM inventory";
+                    $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
+                    CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
+                    V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                    FROM INVENTORY I
+                    INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID;";
 
                 }
 
@@ -82,20 +100,27 @@
                 if ($result) {
                     // Check if there are rows returned
                     if (mysqli_num_rows($result) > 0) {
-                        echo '<h2>Inventory Report</h2>';
+                        echo '<h2>' . $setHeader . '</h2>';
                         echo '<table>';
-                        echo '<tr><th>Product ID</th><th>Quantity in Stock</th></tr>';
+                        echo '<tr><th>|Product ID|</th><th>|Product|</th><th>|Quantity in Stock|</th><th>|Cost|</th><th>|Vendor|</th><th>|Vendor Rep|</th><th>|Email|</th><th>|Phone|</th></tr>';
 
                         // Loop through the results and display them in a table
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<tr>';
                             echo '<td>' . $row['Inventory_ID'] . '</td>';
+                            echo '<td>' . $row['Item_Name'] . '</td>';
                             echo '<td>' . $row['Inventory_Amount'] . '</td>';
+                            echo '<td>' . $row['Cost'] . '</td>';
+                            echo '<td>' . $row['Vendor_Name'] . '</td>';
+                            echo '<td>' . $row['Vendor_Rep'] . '</td>';
+                            echo '<td>' . $row['Vendor_Email'] . '</td>';
+                            echo '<td>' . $row['Vendor_Phone'] . '</td>';
                             echo '</tr>';
                         }
 
                         echo '</table>';
                     } else {
+                        echo '<h2>' . $setHeader . '</h2>';
                         echo 'No inventory data available.';
                     }
                 } else {
@@ -105,6 +130,100 @@
                 // Close the database connection
                 mysqli_close($mysqli);
             }
+            /////////////////////////
+            //END INVENTORY QUERIES//
+            /////////////////////////
+
+            /////////////////////////
+            //////STORE QUERIES//////
+            /////////////////////////
+            if ($reportType === 'store') {
+                // Database connection code:
+                include 'database.php'; // Database connection file
+
+                //Check if the connection to the database was successful
+                if($mysqli === false){
+                    die("Error: Could not connect to the database. " . mysqli_connect_error());
+                }
+
+                // Check the value of the inventoryType
+                $storeType = $_POST['storeType'];
+                $sql = '';
+
+                // Define your SQL queries for Inventory selection
+                if ($storeType === 'orders') {
+                    // Header for daily orders
+                    $setHeader = 'Daily Orders';
+                    // TO COMPLETE: Query for daily orders
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+
+                } elseif ($storeType === 'pizzas') {
+                    // Header for pizzas sold
+                    $setHeader = 'Pizzas Sold Today';
+                    // TO COMPLETE: Query for pizzas sold today
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+
+                } elseif ($storeType === 'popular') {
+                    // Header for most popular pizza today
+                    $setHeader = 'Most Popular Pizza';
+                    // TO COMPLETE: Query for most popular pizza today
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+
+                } elseif ($storeType === 'sales'){
+                    // Header for total sales today
+                    $setHeader = 'Total Sales Today';
+                    // TO COMPLETE: Query for total sales today
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+
+                } else {
+                    //Header for total sales to date
+                    $setHeader = 'Total Sales To Date';
+                    // TO COMPLETE: Query for total sales to date
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+
+                }
+
+                
+                // Execute the query
+                $result = mysqli_query($mysqli, $sql);
+
+                if ($result) {
+                    // Check if there are rows returned
+                    if (mysqli_num_rows($result) > 0) {
+                        echo '<h2>' . $setHeader . '</h2>';
+                        echo '<table>';
+                        echo '<tr><th>|Pizza Store ID|</th></tr>';
+
+                        // Loop through the results and display them in a table
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo '<tr>';
+                            echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
+                            //echo '<td>' . $row['Item_Name'] . '</td>';
+                            //echo '<td>' . $row['Inventory_Amount'] . '</td>';
+                            //echo '<td>' . $row['Cost'] . '</td>';
+                            //echo '<td>' . $row['Vendor_Name'] . '</td>';
+                            //echo '<td>' . $row['Vendor_Rep'] . '</td>';
+                            //echo '<td>' . $row['Vendor_Email'] . '</td>';
+                            //echo '<td>' . $row['Vendor_Phone'] . '</td>';
+                            echo '</tr>';
+                        }
+
+                        echo '</table>';
+                    } else {
+                        echo '<h2>' . $setHeader . '</h2>';
+                        echo 'No inventory data available.';
+                    }
+                } else {
+                    echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
+                }
+
+                // Close the database connection
+                mysqli_close($mysqli);
+            }
+            /////////////////////////
+            ////END STORE QUERIES////
+            /////////////////////////
+
             // Add more cases for other report types as needed
         }
     }
