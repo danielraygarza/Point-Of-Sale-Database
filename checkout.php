@@ -40,12 +40,7 @@ function getCartItemCount() {
     
 </div>
 <div class="checkout-window">
-<form method="post" action="process_form.php">
-    <label for="textarea_input">Multiple Lines of Text:</label>
-    <textarea name="textarea_input" id="textarea_input" rows="4" cols="50"></textarea>
     
-    <input type="submit" value="Submit">
-</form>
     <form action="" method="post">
         <h2>Shopping Cart</h2>
         <div class="cart-panel">
