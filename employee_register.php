@@ -97,6 +97,7 @@
                 <option value="TM">Team Member</option>
                 <option value="SUP">Supervisor</option>
                 <option value="MAN">Manager</option>
+                <option value="CEO">CEO</option>
             </select>
         </div><br>
 
@@ -119,7 +120,7 @@
                 const supervisor = document.getElementById('Supervisor_ID');
 
                 // if manager role is selected, supervisor is not required
-                if (role.value === 'MAN') {
+                if (role.value === 'MAN' || role.value === 'CEO') {
                     supervisor.removeAttribute('required');
                 } else {
                     supervisor.setAttribute('required', '');

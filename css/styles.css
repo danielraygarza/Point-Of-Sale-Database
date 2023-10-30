@@ -136,15 +136,12 @@ select:focus {
 #cart-button {
     background-color: #ff9900;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    align-items: right;
+    float: right;
+
 }
 
-/* Move the cart button to the far right */
-#cart-container {
-    margin-left: auto; /* Push the cart button to the right */
+#cart-button:hover {
+    background-color: #ff7700; /* darker orange color on hover */
 }
 
 #errorMessage {
