@@ -148,7 +148,8 @@ select:focus {
 
 }
 .checkout-window {
-    width: 60%; /* Set the desired width (60% of the screen width) */
+    width: 50%; /* Set the desired width (60% of the screen width) */
+    height:80%;
     margin: 0 auto; /* Center the box horizontally */
     padding: 20px; /* Add padding for spacing inside the box */
     position: absolute;
