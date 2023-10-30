@@ -76,10 +76,10 @@ if ($result) {
         </div>
         <?php
         // Calculate and display the total price
-        $totalPrice = calculateTotalPrice($cart); // Implement this function
-        echo "<p>Total: $" . number_format($totalPrice, 2) . "</p>";
+        // $totalPrice = calculateTotalPrice($cart); // Implement this function
+        // echo "<p>Total: $" . number_format($totalPrice, 2) . "</p>";
         ?>
-        <button class="place-order-button">Place Order</button>
+        <button class="button">Place Order</button>
     </div>
 
 <script>

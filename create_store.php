@@ -14,39 +14,48 @@
     // }
 
     //get list of managers from database
-    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='MAN'");
+    $managers = $mysqli->query("SELECT * FROM employee WHERE Title_Role='MAN'");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
         // Extracting data from the form
-        $E_First_Name = $mysqli->real_escape_string($_POST['E_First_Name']);
+        $Store_Address = $mysqli->real_escape_string($_POST['Store_Address']);
+        $Store_City = $mysqli->real_escape_string($_POST['Store_City']);
+        $Store_State = $mysqli->real_escape_string($_POST['Store_State']);
+        $Store_Zip_Code = $mysqli->real_escape_string($_POST['Store_Zip_Code']);
+        $Store_Phone_Number = $mysqli->real_escape_string(str_replace('-', '', $_POST['Store_Phone_Number']));
+        $Store_Manager_ID = $mysqli->real_escape_string($_POST['Store_Manager_ID']);
 
         //check if duplicate employee ID. sends error message
         $checkID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Employee_ID'");
+        
         if($checkID->num_rows > 0) {
             echo "";
-            $_SESSION['error'] = "Employee ID already exist";
+            $_SESSION['error'] = "Store location already exist";
         } else {
             // Inserting the data into the database. Accounting if supervisor is NULL when employee is a manager
-            $sql = "INSERT INTO employee (E_First_Name, E_Last_Name, Hire_Date, Title_Role, Supervisor_ID, Employee_ID, password) 
-                    VALUES ('$E_First_Name', '$E_Last_Name','$Hire_Date', '$Title_Role', '$Supervisor_ID', '$Employee_ID','$password')";
+            $sql = "INSERT INTO pizza_store (Store_Address, Store_City, Store_State, Store_Zip_Code, Store_Phone_Number) 
+                    VALUES ('$Store_Address', '$Store_City','$Store_State', '$Store_Zip_Code', '$Store_Phone_Number')";
 
-if ($mysqli->query($sql) === TRUE) {
-    $mysqli->close();
-    header('Location: employee_home.php');
-    exit;
-} else {
-    echo "Error: " . $sql . "<br>" . $mysqli->error;
-}
-}
-}
+            if ($mysqli->query($sql) === TRUE) {
+                $mysqli->close();
+                header('Location: employee_home.php');
+                exit;
+            } else {
+                echo "Error: " . $sql . "<br>" . $mysqli->error;
+            }
+        }
+    }
 ?>
 <!DOCTYPE html>
 <!-- Page for creating new employees -->
 <head>
-    <title>Employee Registration</title>
+    <title>Store Registration</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
+    <!-- <style>
+        body { background: url('../img/pizzaking.png') no-repeat center center fixed; }
+    </style> -->
 </head>
 <body>
     <div class="navbar">
@@ -58,15 +67,15 @@ if ($mysqli->query($sql) === TRUE) {
             }
             ?>
     </div>
-    <form action="employee_register.php" method="post">
+    <form action="create_store.php" method="post">
         <h2>Register New Store</h2>
             <div>
-                <label for="Supervisor_ID">Manager </label>
-                <select id="Supervisor_ID" name="Supervisor_ID" required>
+                <label for="Store_Manager_ID">Manager </label>
+                <select id="Store_Manager_ID" name="Store_Manager_ID" required>
                     <option value="" selected disabled>Assign Shop Manager</option>
                     <?php
-                    if ($supervisors->num_rows > 0) {
-                        while($row = $supervisors->fetch_assoc()) {
+                    if ($managers->num_rows > 0) {
+                        while($row = $managers->fetch_assoc()) {
                             echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
                         }
                     }
@@ -75,16 +84,16 @@ if ($mysqli->query($sql) === TRUE) {
             </div><br>
 
         <div>
-            <label for="address">Address  </label>
-            <input type="text" id="address" name="address" placeholder="Enter address" required>
+            <label for="Store_Address">Address  </label>
+            <input type="text" id="Store_Address" name="Store_Address" placeholder="Enter address" required>
 
-            <label for="city">City  </label>
-            <input type="text" id="city" name="city" placeholder="Enter city" style="width: 90px;"required>
+            <label for="Store_City">City  </label>
+            <input type="text" id="Store_City" name="Store_City" placeholder="Enter city" style="width: 90px;"required>
         </div><br>
 
         <div>
-            <label for="state">State  </label>
-            <select id="state" name="state" placeholder="Select state" style="width: 100px;" required>
+            <label for="Store_state">State  </label>
+            <select id="Store_state" name="Store_state" placeholder="Select state" style="width: 100px;" required>
                 <option value="" selected disabled>Select</option>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
@@ -112,13 +121,13 @@ if ($mysqli->query($sql) === TRUE) {
                 <option value="WA">Washington</option> <option value="WV">West Virginia</option>
                 <option value="WI">Wisconsin</option> <option value="WY">Wyoming</option>
         </select>
-            <label for="zip_code">Zip Code  </label>
-            <input type="text" id="zip_code" name="zip_code" placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
+            <label for="Store_Zip_Code">Zip Code  </label>
+            <input type="text" id="Store_Zip_Code" name="Store_Zip_Code" placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
         </div><br>
 
         <div>
-            <label for="phone_number">Phone Number  </label>
-            <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="^\d{10}$|^\d{3}-\d{3}-\d{4}$" style="width: 120px;" required>
+            <label for="Store_Phone_Number">Phone Number  </label>
+            <input type="tel" id="Store_Phone_Number" name="Store_Phone_Number" placeholder="Enter 10 digits" pattern="^\d{10}$|^\d{3}-\d{3}-\d{4}$" style="width: 120px;" required>
         </div><br>
 
         <?php
