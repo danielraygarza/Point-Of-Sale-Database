@@ -107,7 +107,7 @@ h1 {
     border-radius: 10px;
     width: 500px; /* Set the desired width */
     height: 600px; /* Set the desired height */
-    margin: 20px auto;
+    margin: 1px auto;
     position: relative;
     background-color: white;
 }
@@ -146,6 +146,14 @@ select:focus {
     color: white;
     float: right;
 
+}
+.checkout-window {
+    border-radius: 10px;
+    width: 70%; /* Set the desired width */
+    height: auto; /* Adjust the height as needed */
+    margin: 20px auto; /* Center the box horizontally */
+    position: relative;
+    background-color: white;
 }
 
 #cart-button:hover {
