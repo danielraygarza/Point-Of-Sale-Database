@@ -148,12 +148,16 @@ select:focus {
 
 }
 .checkout-window {
+    width: 60%; /* Set the desired width (60% of the screen width) */
+    margin: 0 auto; /* Center the box horizontally */
+    padding: 20px; /* Add padding for spacing inside the box */
+    position: absolute;
+    top: 50%; /* Center the box vertically */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
-    width: 70%; /* Set the desired width */
-    height: auto; /* Adjust the height as needed */
-    margin: 20px auto; /* Center the box horizontally */
-    position: relative;
     background-color: white;
+    text-align: center;
 }
 
 #cart-button:hover {
