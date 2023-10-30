@@ -154,7 +154,7 @@
                     // Header for daily orders
                     $setHeader = 'Daily Orders';
                     // TO COMPLETE: Query for daily orders
-                    $sql = "SELECT Pizza_Shop_ID FROM pizza_shop";
+                    $sql = "SELECT Pizza_Store_ID FROM pizza_store";
 
                 } elseif ($storeType === 'pizzas') {
                     // Header for pizzas sold
@@ -197,7 +197,7 @@
                         // Loop through the results and display them in a table
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<tr>';
-                            echo '<td>' . $row['Pizza_Shop_ID'] . '</td>';
+                            echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
                             //echo '<td>' . $row['Item_Name'] . '</td>';
                             //echo '<td>' . $row['Inventory_Amount'] . '</td>';
                             //echo '<td>' . $row['Cost'] . '</td>';
