@@ -44,7 +44,7 @@
         
         <div>
             <label for="reportType">Select a Report:</label>
-            <select name="reportType" id="reportType" onchange="showInventoryOptions()">
+            <select name="reportType" id="reportType" onchange="showOptions()">
                 <option value=""selected disabled>Select a Report</option>
                 <option value="inventory">Inventory Reports</option>
                 <option value="store">Store Reports</option>
@@ -54,11 +54,24 @@
         </div> <br>
         
         <div id="inventoryOptions" style="display: none;">
-                <label for="inventoryType">Select Inventory Type:</label>
+            <!-- Inventory Report sub-options here -->
+                <label for="inventoryType">Select Inventory Report Type:</label>
                 <select name="inventoryType" id="inventoryType">
                     <option value="all">All Stock</option>
                     <option value="low">Low Stock</option>
                     <option value="out">Out of Stock</option>
+                </select>
+        </div><br>
+
+        <div id="storeOptions" style="display: none;">
+            <!-- Store Report sub-options here -->
+                <label for="storeType">Select Store Report Type:</label>
+                <select name="storeType" id="storeType">
+                    <option value="orders">Daily Orders</option>
+                    <option value="pizzas">Daily Pizzas Sold</option>
+                    <option value="popular">Today's Most Popular Pizza</option>
+                    <option value="sales">Total Sales Today</option>
+                    <option value="date">Total Sales To Date</option>
                 </select>
         </div><br>
 
@@ -67,14 +80,20 @@
     </form> 
 
         <script>
-            function showInventoryOptions() {
+            function showOptions() {
                 var reportType = document.getElementById('reportType');
                 var inventoryOptions = document.getElementById('inventoryOptions');
+                var storeOptions = document.getElementById('storeOptions');
 
                 if (reportType.value === 'inventory') {
                     inventoryOptions.style.display = 'block';
+                    storeOptions.style.display = 'none';
+                } else if (reportType.value === 'store') {
+                    inventoryOptions.style.display = 'none';
+                    storeOptions.style.display = 'block';
                 } else {
                     inventoryOptions.style.display = 'none';
+                    storeOptions.style.display = 'none';
                 }
             }
         </script>

@@ -133,6 +133,95 @@
             //END INVENTORY QUERIES//
             /////////////////////////
 
+            /////////////////////////
+            //////STORE QUERIES//////
+            /////////////////////////
+            if ($reportType === 'store') {
+                // Database connection code:
+                include 'database.php'; // Database connection file
+
+                //Check if the connection to the database was successful
+                if($mysqli === false){
+                    die("Error: Could not connect to the database. " . mysqli_connect_error());
+                }
+
+                // Check the value of the inventoryType
+                $storeType = $_POST['storeType'];
+                $sql = '';
+
+                // Define your SQL queries for Inventory selection
+                if ($storeType === 'orders') {
+                    // Header for daily orders
+                    $setHeader = 'Daily Orders';
+                    // TO COMPLETE: Query for daily orders
+                    $sql = " ";
+
+                } elseif ($storeType === 'pizzas') {
+                    // Header for pizzas sold
+                    $setHeader = 'Pizzas Sold Today';
+                    // TO COMPLETE: Query for pizzas sold today
+                    $sql = " ";
+
+                } elseif ($storeType === 'popular') {
+                    // Header for most popular pizza today
+                    $setHeader = 'Most Popular Pizza';
+                    // TO COMPLETE: Query for most popular pizza today
+                    $sql = " ";
+
+                } elseif ($storeType === 'sales'){
+                    // Header for total sales today
+                    $setHeader = 'Total Sales Today';
+                    // TO COMPLETE: Query for total sales today
+                    $sql = " ";
+
+                } else {
+                    //Header for total sales to date
+                    $setHeader = 'Total Sales To Date';
+                    // TO COMPLETE: Query for total sales to date
+                    $sql = " ";
+
+                }
+
+                
+                // Execute the query
+                $result = mysqli_query($mysqli, $sql);
+
+                if ($result) {
+                    // Check if there are rows returned
+                    if (mysqli_num_rows($result) > 0) {
+                        echo '<h2>' . $setHeader . '</h2>';
+                        echo '<table>';
+                        echo '<tr><th>|Product ID|</th><th>|Product|</th><th>|Quantity in Stock|</th><th>|Cost|</th><th>|Vendor|</th><th>|Vendor Rep|</th><th>|Email|</th><th>|Phone|</th></tr>';
+
+                        // Loop through the results and display them in a table
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo '<tr>';
+                            echo '<td>' . $row['Inventory_ID'] . '</td>';
+                            echo '<td>' . $row['Item_Name'] . '</td>';
+                            echo '<td>' . $row['Inventory_Amount'] . '</td>';
+                            echo '<td>' . $row['Cost'] . '</td>';
+                            echo '<td>' . $row['Vendor_Name'] . '</td>';
+                            echo '<td>' . $row['Vendor_Rep'] . '</td>';
+                            echo '<td>' . $row['Vendor_Email'] . '</td>';
+                            echo '<td>' . $row['Vendor_Phone'] . '</td>';
+                            echo '</tr>';
+                        }
+
+                        echo '</table>';
+                    } else {
+                        echo 'No inventory data available.';
+                    }
+                } else {
+                    echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
+                }
+
+                // Close the database connection
+                mysqli_close($mysqli);
+            }
+            /////////////////////////
+            ////END STORE QUERIES////
+            /////////////////////////
+
             // Add more cases for other report types as needed
         }
     }
