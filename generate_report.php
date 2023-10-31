@@ -100,7 +100,7 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
-                            echo '<table>';
+                            echo '<table border="1" class="table_update">';
                             echo '<tr><th>|Product ID|</th><th>|Product|</th><th>|Quantity in Stock|</th><th>|Cost|</th><th>|Vendor|</th><th>|Vendor Rep|</th><th>|Email|</th><th>|Phone|</th></tr>';
 
                             // Loop through the results and display them in a table
@@ -185,7 +185,7 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
-                            echo '<table>';
+                            echo '<table border="1" class="table_update">';
                             echo '<tr><th>|Pizza Store ID|</th></tr>';
 
                             // Loop through the results and display them in a table
