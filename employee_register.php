@@ -72,6 +72,16 @@
                 echo '<a href="logout.php">Logout</a>';
             }
             ?>
+    </div>
+    <form action="employee_register.php" method="post">
+        <h2>Create Employee Account</h2>
+        <div>       
+            <label for="E_First_Name">Name  </label>
+            <input type="text" id="E_First_Name" name="E_First_Name" placeholder="First" style="width: 75px;" required>
+            <label for="E_Last_Name"></label>
+            <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 75px;" required>
+        </div><br>
+        
         <div>
             <label for="Store_ID">Store Location </label>
             <select id="Store_ID" name="Store_ID" required>
@@ -85,16 +95,6 @@
                 ?>
             </select>
         </div><br>
-    </div>
-    <form action="employee_register.php" method="post">
-        <h2>Create Employee Account</h2>
-        <div>       
-            <label for="E_First_Name">Name  </label>
-            <input type="text" id="E_First_Name" name="E_First_Name" placeholder="First" style="width: 75px;" required>
-            <label for="E_Last_Name"></label>
-            <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 75px;" required>
-        </div><br>
-        
 
         <!-- pulls current date and assigns to Hire_Date -->
         <input type="hidden" id="Hire_Date" name="Hire_Date">
