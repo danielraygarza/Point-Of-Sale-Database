@@ -6,6 +6,7 @@ include 'database.php';
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
+$stores = $mysqli->query("SELECT * FROM pizza_store");
 
 // Add an item to the cart (you can call this function when a user adds an item)
 function addToCart($itemId)
@@ -84,6 +85,19 @@ function getCartItemCount()
                     ?>
                 </ul>
             </div>
+            <div>
+            <label for="Store_ID">Store Location </label>
+            <select id="Store_ID" name="Store_ID" required>
+                <option value="" selected disabled>Select Store</option>
+                <?php
+                    if ($stores->num_rows > 0) {
+                        while($row = $stores->fetch_assoc()) {
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
+                ?>
+            </select>
+        </div><br>
             <a href="checkout.php" type="submit" class="button orderbutton">Place Order</a>
         </div>
     </form>
