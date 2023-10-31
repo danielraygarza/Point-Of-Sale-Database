@@ -34,15 +34,27 @@ function getCartItemCount()
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
+        <a href="checkout.php" id="store-dropdown">
+            <label for="Store_ID">Store Location </label>
+            <select id="Store_ID" name="Store_ID" required>
+                <option value="" selected disabled>Select Store</option>
+                <?php
+                    if ($stores->num_rows > 0) {
+                        while($row = $stores->fetch_assoc()) {
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
+                ?>
+            </select>
+        </a>
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             echo '<a href="update_profile.php">Profile</a>';
             echo '<a href="logout.php">Logout</a>';
         }
+        echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>';
         ?>
-        <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
     </div>
-
 
     <form action="" method="post">
         <div class="checkout-window">
@@ -86,19 +98,7 @@ function getCartItemCount()
                 </ul>
             </div>
             <div>
-            <label for="Store_ID">Store Location </label>
-            <select id="Store_ID" name="Store_ID" required>
-                <option value="" selected disabled>Select Store</option>
-                <?php
-                    if ($stores->num_rows > 0) {
-                        while($row = $stores->fetch_assoc()) {
-                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                        }
-                    }
-                ?>
-            </select>
-        </div><br>
-            <a href="checkout.php" type="submit" class="button orderbutton">Place Order</a>
+            <button class="button">Place Order</button>
         </div>
     </form>
         <?php
