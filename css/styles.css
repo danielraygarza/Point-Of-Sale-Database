@@ -189,7 +189,7 @@ select:focus {
     left: 50%;
     transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
-    background: transparent;
+    background: white;
     text-align: left;
     
 }
