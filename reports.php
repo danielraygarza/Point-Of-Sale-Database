@@ -152,16 +152,20 @@ function getEmployeeData()
             if (reportType.value === 'inventory') {
                 inventoryOptions.style.display = 'block';
                 storeOptions.style.display = 'none';
+                Employer.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
             } else if (reportType.value === 'store') {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'block';
+                Employer.style.display = 'none';
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
+                storeOptions.style.display = 'none';
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
+                Employer.style.display = 'none';
             }
         }
     </script>
