@@ -11,7 +11,7 @@ body {
     background: url('../img/pizza.jpeg') no-repeat center center fixed; 
     background-size: cover; 
     color: #fff;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    /* text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); */
 }
 
 form {
@@ -55,7 +55,9 @@ h1 {
     cursor: pointer; /* Changes the cursor to a hand when hovering */
     margin: 5px; /* Space around each button */
     transition: background-color 0.3s ease; /* Smooth color transition on hover */
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
+
 .orderbutton {
     position: relative;
     top: 70%;
@@ -81,6 +83,7 @@ h1 {
     top: 0;           /* Aligns the navbar to the top */
     width: 100%;      /* Ensures the navbar stretches the full width of the page */
     z-index: 1000;    /* Keeps the navbar above other elements */
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .navbar a {
