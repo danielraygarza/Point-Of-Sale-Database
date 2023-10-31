@@ -110,9 +110,7 @@ function getEmployeeData()
             <label for="employeeDropdown">Select Employee:</label>
             <select name="employeeDropdown" id="employeeDropdown">
                 <?php
-                include_once("./include/function/getEmplyee.php");
                 $employeeData = getEmployeeData();
-
                 foreach ($employeeData as $employee) {
                     $employeeID = $employee['Employee_ID'];
                     $employeeName = $employee['Name'];
@@ -123,7 +121,6 @@ function getEmployeeData()
         </div><br>
 
         <input type="submit" class="button" value="Generate Report">
-
     </form>
 
     <script>
