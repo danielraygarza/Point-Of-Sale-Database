@@ -41,10 +41,6 @@ h1 {
     -webkit-text-fill-color: transparent;
     animation: fadeIn 3s ease-in-out;
 }
-h3 {
-    font-size: 3rem;
-    color: black;
-}
 
 /* Button Styling */
 .button {
@@ -161,7 +157,7 @@ select:focus {
     left: 50%;
     transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
-    background-color: white;
+    background-color: rgb(0, 0, 0);
     text-align: center;
 }
 

@@ -42,7 +42,7 @@ function getCartItemCount() {
     
     <form action="" method="post">
     <div class="checkout-window">
-    <h3 class="cart-heading">Pizza Cart</h3>
+    <h2 class="cart-heading">Pizza Cart</h2>
         <div class="cart-panel">
             <ul class="cart-items">
                 <?php
