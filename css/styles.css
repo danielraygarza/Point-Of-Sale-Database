@@ -22,7 +22,7 @@ form {
     background-color: rgba(224, 217, 217, 0.7);
     padding: 10px 20px;
     border-radius: 15px;
-    /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
 }
 
@@ -60,11 +60,6 @@ h1 {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
-.orderbutton {
-    position: relative;
-    top: 80%;
-}
-
 /* Hover effect */
 .button:hover {
     background-color: #C06C84; /* Darkens the button color when hovered */
@@ -73,8 +68,15 @@ h1 {
 /* Active (when button is clicked) effect */
 .button:active {
     background-color: #6C5B7B; /* Makes the button even darker when clicked */
-    position: relative;
-    top: 1px;
+    /* position: relative; */
+    /* top: 1px; */
+}
+
+.orderbutton {
+    position: absolute;
+    bottom: -50px;  /* Moves the button outside and below the container */
+    left: 50%;
+    transform: translateX(-50%); /* This centers the button based on its width */
 }
 
 /* Navbar Styling */
@@ -121,7 +123,7 @@ select#Store_ID {
     -webkit-appearance: none;
     /* background-position: right 15px center; */
     /* background-size: 10px; */
-    /* cursor: pointer; */
+    cursor: pointer;
     border-color:none; 
     box-shadow: none; /* Add a subtle shadow */
 }
@@ -206,10 +208,11 @@ select:focus {
 }
 
 .checkout-window {
-    width: 50%; /* Set the desired width (60% of the screen width) */
+    display:flex;
+    width: 60%; /* Set the desired width (60% of the screen width) */
     height:80%;
-    margin: 0 auto; /* Center the box horizontally */
-    padding: 10px; /* Add padding for spacing inside the box */
+    /* margin-top: 0; */
+    padding: 0; /* Add padding for spacing inside the box */
     position: absolute;
     top: 50%; /* Center the box vertically */
     left: 50%;
@@ -217,24 +220,32 @@ select:focus {
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
     text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .cart-heading {
     color: rgb(0, 0, 0);
+    margin-bottom: 0;
+    text-shadow: none;
+    padding-bottom: 20px;
+
 }
 
 .cart-panel {
     width: 90%; /* Set the desired width (60% of the screen width) */
     height:70%;
-    margin: 0 auto; /* Center the box horizontally */
+    margin: 0px 0px; /* Center the box horizontally */
+    margin-top: 10px;
     padding: 20px; /* Add padding for spacing inside the box */
-    position: absolute;
-    top: 47%; /* Center the box vertically */
-    left: 50%;
-    transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
     background: rgba(224, 217, 217, 0.7);
     text-align: left;
+    position: relative;  /* Change from 'absolute' to 'relative' */
+    top: 0;  /* Reset the top positioning */
+    left: 0;  /* Reset the left positioning */
+    transform: none; 
     
 }
 
@@ -243,9 +254,12 @@ select:focus {
     padding: 0;
     margin: 0;
     color: black;
+    text-shadow: none;
 }
 
 .cart-items li {
     font-size: 16px;
     margin: 5px 0;
+    color: rgb(0, 0, 0);
+    text-shadow: none;
 }

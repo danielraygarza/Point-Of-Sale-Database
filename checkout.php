@@ -1,24 +1,39 @@
 <?php
-// Start the session
-session_start();
-include 'database.php';
-// Initialize the cart as an empty array if it doesn't exist
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-$stores = $mysqli->query("SELECT * FROM pizza_store");
+    // Start the session
+    session_start();
+    include 'database.php';
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
-// Add an item to the cart (you can call this function when a user adds an item)
-function addToCart($itemId)
-{
-    $_SESSION['cart'][] = $itemId;
-}
+    //when you click "place order", it will run this code
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        echo "<h2>Success</h2>";
+        echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
 
-// Get the number of items in the cart
-function getCartItemCount()
-{
-    return count($_SESSION['cart']);
-}
+        
+        //redirect to chosen page when click "place order"
+        // header('Location: index.php');
+        exit;
+    }
+
+    // Initialize the cart as an empty array if it doesn't exist
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+    $stores = $mysqli->query("SELECT * FROM pizza_store");
+
+    // Add an item to the cart (you can call this function when a user adds an item)
+    function addToCart($itemId)
+    {
+        $_SESSION['cart'][] = $itemId;
+    }
+
+    // Get the number of items in the cart
+    function getCartItemCount()
+    {
+        return count($_SESSION['cart']);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +68,7 @@ function getCartItemCount()
         ?>
     </div>
 
-    <form action="" method="post">
+    <form action="checkout.php" method="post">
         <div class="checkout-window">
             <h2 class="cart-heading">Pizza Cart</h2>
             <div class="cart-panel">
@@ -93,12 +108,9 @@ function getCartItemCount()
                     }
                     ?>
                 </ul>
+                <input class= "button orderbutton" type="submit" value="Place Order">
             </div>
-            <div>
-                <!-- <button class="button">Place Order</button> -->
-                <input class="button onbutton" type="submit" value="Place Order">
-
-            </div>
+        </div>
     </form>
     <?php
     // Calculate and display the total price
