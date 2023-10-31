@@ -185,8 +185,9 @@ select:focus {
     left: 50%;
     transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
-    background-color: rgb(255, 255, 255);
+    background: transparent;
     text-align: left;
+    
 }
 
 .cart-items {
