@@ -78,13 +78,13 @@ function getCartItemCount()
                     ?>
                 </ul>
             </div>
+            <a href="checkout.php" type="submit" class="button">Place Order</a>
         </div>
         <?php
         // Calculate and display the total price
         // $totalPrice = calculateTotalPrice($cart); // Implement this function
         // echo "<p>Total: $" . number_format($totalPrice, 2) . "</p>";
         ?>
-        <a href="checkout.php" type="submit" class="button">Place Order</a>
     </form>
 </body>
 </html>
