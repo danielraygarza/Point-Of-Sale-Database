@@ -62,6 +62,22 @@
                     <option value="out">Out of Stock</option>
                 </select>
         </div><br>
+        <div id="Employer" style="display: none;">
+                <label for="employeeDropdown">Select Employee:</label>
+                <select name="employeeDropdown" id="employeeDropdown">
+                <?php
+                    include_once("./include/function/getEmplyee.php");
+                    $employeeData = getEmployeeData();
+
+                    foreach ($employeeData as $employee) {
+                        $employeeID = $employee['Employee_ID'];
+                        $employeeName = $employee['Name'];
+                        echo "<option value='" . htmlspecialchars($employeeID) . "'>$employeeName</option>";
+                    }
+                    ?>
+                </select>
+        </div><br>
+
 
         <!-- //Copy the format from here// -->
         <!-- This creates the sub-menu once you've selected the main category -->
@@ -90,6 +106,13 @@
     </form> 
 
         <script>
+            document.getElementById('employeeDropdown').addEventListener('change', function() {
+                var selectedEmployeeId = this.value;
+                if (selectedEmployeeId != 0) {
+                    var url = "./include/function/genereateEmployReport.php?action=generateReport&id=" + selectedEmployeeId;
+                    window.location.href = url;
+                }
+            });
             //This function makes the sub-menu appear depending on what's selected
             function showOptions() {
                 //This reads which main report group is currently selected
@@ -98,6 +121,7 @@
                 //If you add a new sub menu, define it here then refence it by it's id like so:
                 var inventoryOptions = document.getElementById('inventoryOptions');
                 var storeOptions = document.getElementById('storeOptions');
+                var Employer = document.getElementById('Employer');
 
                 //This if/else determines which sub menu is visible
                 //To set a new one visible, set reportType === 'newMenu'
@@ -110,7 +134,12 @@
                 } else if (reportType.value === 'store') {
                     inventoryOptions.style.display = 'none';
                     storeOptions.style.display = 'block';
-                } else {
+                } else if (reportType.value === 'performance') {
+                    Employer.style.display = 'block';
+                    inventoryOptions.style.display = 'none';
+                    headerVar = "Employee performance report";
+                }
+                else {
                     inventoryOptions.style.display = 'none';
                     storeOptions.style.display = 'none';
                 }
