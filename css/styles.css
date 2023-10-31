@@ -19,7 +19,7 @@ form {
     width: auto;
     /* max-width: 700px; */
     display: inline-block;
-    background-color: rgba(117, 85, 85, 0.7);
+    background-color: rgba(224, 217, 217, 0.7);
     padding: 10px 20px;
     border-radius: 15px;
 }
@@ -109,6 +109,7 @@ select#Store_ID {
     text-align: right;
     padding: 14px 16px;
     border-radius: 0px;
+    
     overflow: hidden;
     top: 0;           /* Aligns the navbar to the top */
     font-size: 16px;
