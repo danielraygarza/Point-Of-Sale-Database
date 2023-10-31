@@ -34,14 +34,23 @@ function getCartItemCount()
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
+        <?php echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>'; ?>
+        <style>
+            /* Your specific page CSS here */
+            select#Store_ID {
+                padding: 13px 14px;
+                margin-bottom: 0px;
+                float: right;
+            }
+        </style>
         <select id="Store_ID" name="Store_ID" required>
             <option value="" selected disabled>Select Store</option>
             <?php
-                if ($stores->num_rows > 0) {
-                    while($row = $stores->fetch_assoc()) {
-                        echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                    }
+            if ($stores->num_rows > 0) {
+                while ($row = $stores->fetch_assoc()) {
+                    echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                 }
+            }
             ?>
         </select>
         <?php
@@ -49,7 +58,6 @@ function getCartItemCount()
             echo '<a href="update_profile.php">Profile</a>';
             echo '<a href="logout.php">Logout</a>';
         }
-        echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>';
         ?>
     </div>
 
@@ -95,15 +103,16 @@ function getCartItemCount()
                 </ul>
             </div>
             <div>
-            <!-- <button class="button">Place Order</button> -->
-            <input class = "button onbutton" type="submit" value="Place Order">
+                <!-- <button class="button">Place Order</button> -->
+                <input class="button onbutton" type="submit" value="Place Order">
 
-        </div>
+            </div>
     </form>
-        <?php
-        // Calculate and display the total price
-        // $totalPrice = calculateTotalPrice($cart); // Implement this function
-        // echo "<p>Total: $" . number_format($totalPrice, 2) . "</p>";
-        ?>
+    <?php
+    // Calculate and display the total price
+    // $totalPrice = calculateTotalPrice($cart); // Implement this function
+    // echo "<p>Total: $" . number_format($totalPrice, 2) . "</p>";
+    ?>
 </body>
+
 </html>
