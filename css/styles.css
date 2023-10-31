@@ -196,7 +196,7 @@ select:focus {
     left: 50%;
     transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
-    background: grey;
+    background: rgba(224, 217, 217, 0.7);
     text-align: left;
     
 }
