@@ -173,7 +173,7 @@ select:focus {
     transition: opacity 1s;  /* fade out effect */
 }
 .cart-heading {
-    color: black;
+    color: rgb(255, 255, 255);
 }
 .cart-panel {
     width: 50%; /* Set the desired width (60% of the screen width) */
