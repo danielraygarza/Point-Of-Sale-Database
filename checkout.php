@@ -35,15 +35,6 @@ function getCartItemCount()
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
         <?php echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>'; ?>
-        <style>
-            /* Your specific page CSS here */
-            select#Store_ID {
-                padding: 13px 14px;
-                margin-bottom: 0px;
-                float: right;
-                border-radius: 0px; /* Rounded corners */
-            }
-        </style>
         <select id="Store_ID" name="Store_ID" required>
             <option value="" selected disabled>Select Store</option>
             <?php
