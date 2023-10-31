@@ -41,6 +41,10 @@ h1 {
     -webkit-text-fill-color: transparent;
     animation: fadeIn 3s ease-in-out;
 }
+h3 {
+    font-size: 3rem;
+    color: black;
+}
 
 /* Button Styling */
 .button {
