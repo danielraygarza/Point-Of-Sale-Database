@@ -78,7 +78,7 @@ function getCartItemCount()
                     ?>
                 </ul>
             </div>
-            <a href="checkout.php" type="submit" class="button">Place Order</a>
+            <a href="index.php" type="submit" class="button">Place Order</a>
         </div>
         <?php
         // Calculate and display the total price
