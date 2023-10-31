@@ -67,7 +67,12 @@ function getCartItemCount()
 
                             if ($row) {
                                 $toppingPrice = $row['Price'];
-                                echo "$toppingName:                ", $row['Price'];
+                                echo "$toppingName:                ", $row['Price'], "\n";
+                                echo "$toppingName:                ", $row['Price'], "\n";
+                                echo "$toppingName:                ", $row['Price'], "\n";
+                                echo "$toppingName:                ", $row['Price'], "\n";
+                                echo "$toppingName:                ", $row['Price'], "\n";
+                                echo "$toppingName:                ", $row['Price'], "\n";
                             } else {
                                 echo "Topping not found.";
                             }
