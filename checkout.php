@@ -97,7 +97,9 @@ function getCartItemCount()
                 </ul>
             </div>
             <div>
-            <button class="button">Place Order</button>
+            <!-- <button class="button">Place Order</button> -->
+            <input class = "button onbutton" type="submit" value="Register">
+
         </div>
     </form>
         <?php
