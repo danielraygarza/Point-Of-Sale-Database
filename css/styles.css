@@ -11,7 +11,7 @@ body {
     background: url('../img/pizza.jpeg') no-repeat center center fixed; 
     background-size: cover; 
     color: #fff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 form {
@@ -157,7 +157,7 @@ select:focus {
     left: 50%;
     transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
     text-align: center;
 }
 
