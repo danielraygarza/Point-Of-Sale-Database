@@ -84,9 +84,9 @@ function getCartItemCount() {
     </form>
    
 </div>
-<button class="button">Place Order</button> <!-- Place the button here -->
-    </div>
 
+    </div>
+    <button class="button">Place Order</button> <!-- Place the button here -->
 <script>
     document.getElementById("cart-button").addEventListener("click", function() {
         window.location.href = "checkout.php";
