@@ -42,7 +42,6 @@ function getCartItemCount()
                 margin-bottom: 0px;
                 float: right;
                 border-radius: 0px; /* Rounded corners */
-                position:relative;
             }
         </style>
         <select id="Store_ID" name="Store_ID" required>
