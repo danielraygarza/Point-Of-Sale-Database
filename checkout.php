@@ -34,6 +34,7 @@ function getCartItemCount()
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
+        echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>';
         <select id="Store_ID" name="Store_ID" required>
             <option value="" selected disabled>Select Store</option>
             <?php
@@ -49,7 +50,6 @@ function getCartItemCount()
             echo '<a href="update_profile.php">Profile</a>';
             echo '<a href="logout.php">Logout</a>';
         }
-        echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>';
         ?>
     </div>
 
