@@ -75,8 +75,7 @@ function getCartItemCount() {
                 ?>
             </ul>
         </div>
-        <button class="button">Place Order</button> <!-- Place the button here -->
-        <!-- <a href="checkout.php" class="button">Place Order</a> -->
+        <a href="checkout.php" class="button">Place Order</a>
 
             </div>
         <?php
@@ -90,12 +89,6 @@ function getCartItemCount() {
 </div>
 
     </div>
-    
-<script>
-    document.getElementById("cart-button").addEventListener("click", function() {
-        window.location.href = "checkout.php";
-    });
-</script>
 
 </body>
 
