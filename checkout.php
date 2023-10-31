@@ -34,7 +34,6 @@ function getCartItemCount()
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
-        <a href="checkout.php" id="store-dropdown"></a>
         <select id="Store_ID" name="Store_ID" required>
             <option value="" selected disabled>Select Store</option>
             <?php
