@@ -82,8 +82,9 @@ function getCartItemCount() {
         ?>
          
     </form>
-    <button class="button">Place Order</button> <!-- Place the button here -->
+   
 </div>
+<button class="button">Place Order</button> <!-- Place the button here -->
     </div>
 
 <script>
