@@ -22,7 +22,7 @@ form {
     background-color: rgba(224, 217, 217, 0.7);
     padding: 10px 20px;
     border-radius: 15px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); */
 
 }
 
@@ -105,16 +105,16 @@ h1 {
 /* Dropdown styling to match navbar links */
 select#Store_ID {
     font-family: 'Trebuchet MS', sans-serif;
+    font-size: 16px;
     float: inline-end;
     display: block;
     color: white;
     text-align: right;
-    padding: 14px 16px;
+    /* padding: 14px 16px; */
     border-radius: 0px;
     
     overflow: hidden;
     top: 0;           /* Aligns the navbar to the top */
-    font-size: 16px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
     border: none;
     background-color: transparent;
@@ -122,7 +122,7 @@ select#Store_ID {
     -webkit-appearance: none;
     /* background-position: right 15px center; */
     /* background-size: 10px; */
-    cursor: pointer;
+    /* cursor: pointer; */
     border-color:none; 
     box-shadow: none; /* Add a subtle shadow */
 }
