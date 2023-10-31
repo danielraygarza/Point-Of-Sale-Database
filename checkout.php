@@ -51,6 +51,7 @@ function getCartItemCount()
                 while ($row = $stores->fetch_assoc()) {
                     echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                 }
+                echo 'Digiorno';
             }
             ?>
         </select>
