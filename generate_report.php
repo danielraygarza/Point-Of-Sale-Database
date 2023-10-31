@@ -268,7 +268,7 @@
                     mysqli_close($mysqli);
                 }
                 /////////////////////////
-                ////END EMPLOYEE QUERIES////
+                //END EMPLOYEE QUERIES///
                 /////////////////////////
 
 
