@@ -110,9 +110,8 @@ select#Store_ID {
     display: block;
     color: white;
     text-align: right;
-    /* padding: 14px 16px; */
+    padding: 14px 16px;
     border-radius: 0px;
-    
     overflow: hidden;
     top: 0;           /* Aligns the navbar to the top */
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
