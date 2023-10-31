@@ -71,7 +71,7 @@ h1 {
 /* Active (when button is clicked) effect */
 .button:active {
     background-color: #6C5B7B; /* Makes the button even darker when clicked */
-    /* position: relative; */
+    position: relative;
     top: 1px;
 }
 
