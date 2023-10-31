@@ -75,6 +75,8 @@ function getCartItemCount() {
                 ?>
             </ul>
         </div>
+        <button class="button">Place Order</button> <!-- Place the button here -->
+            </div>
         <?php
         // Calculate and display the total price
         // $totalPrice = calculateTotalPrice($cart); // Implement this function
@@ -94,5 +96,5 @@ function getCartItemCount() {
 </script>
 
 </body>
-<button class="button">Place Order</button> <!-- Place the button here -->
+
 </html>
