@@ -56,6 +56,21 @@ h1 {
     margin: 5px; /* Space around each button */
     transition: background-color 0.3s ease; /* Smooth color transition on hover */
 }
+.orderbutton {
+    display: inline-block;
+    background-color: #F67280; /* Button color */
+    color: #ffffff; /* Text color */
+    padding: 10px 20px; /* Top/bottom and left/right padding */
+    position: relative;
+    top: 70%;
+    border-radius: 15px; /* Rounded corners */
+    text-decoration: none; /* Removes underline from link */
+    font-size: 1rem; /* Text size */
+    border: none; /* Removes any default border */
+    cursor: pointer; /* Changes the cursor to a hand when hovering */
+    margin: 5px; /* Space around each button */
+    transition: background-color 0.3s ease; /* Smooth color transition on hover */
+}
 
 /* Hover effect */
 .button:hover {
@@ -184,12 +199,12 @@ select:focus {
     height:80%;
     margin: 0 auto; /* Center the box horizontally */
     padding: 20px; /* Add padding for spacing inside the box */
-    position: absolute;
-    top: 50%; /* Center the box vertically */
+    position: relative;
+    top: 5%; /* Center the box vertically */
     left: 50%;
     transform: translate(-50%, -50%); /* Center the box precisely */
     border-radius: 10px;
-    background: transparent;
+    background: grey;
     text-align: left;
     
 }
