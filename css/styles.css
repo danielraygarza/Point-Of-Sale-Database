@@ -140,6 +140,15 @@ select:focus {
     border-color: #F67280; 
     box-shadow: 0 0 5px #F67280; /* Add a subtle shadow */
 }
+
+#errorMessage {
+    color: black;  
+    font-weight: bold; 
+    margin: 10px;
+    opacity: 1;
+    transition: opacity 1s;  /* fade out effect */
+}
+
 /* Style the cart button */
 #cart-button {
     background-color: #ff9900;
@@ -147,6 +156,11 @@ select:focus {
     float: right;
 
 }
+
+#cart-button:hover {
+    background-color: #ff7700; /* darker orange color on hover */
+}
+
 .checkout-window {
     width: 50%; /* Set the desired width (60% of the screen width) */
     height:80%;
@@ -161,20 +175,10 @@ select:focus {
     text-align: center;
 }
 
-#cart-button:hover {
-    background-color: #ff7700; /* darker orange color on hover */
-}
-
-#errorMessage {
-    color: black;  
-    font-weight: bold; 
-    margin: 10px;
-    opacity: 1;
-    transition: opacity 1s;  /* fade out effect */
-}
 .cart-heading {
     color: rgb(0, 0, 0);
 }
+
 .cart-panel {
     width: 50%; /* Set the desired width (60% of the screen width) */
     height:80%;
