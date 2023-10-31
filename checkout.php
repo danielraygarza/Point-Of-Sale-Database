@@ -34,25 +34,23 @@ function getCartItemCount()
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
-        <a href="checkout.php" id="store-dropdown">
-            <label for="Store_ID">Store Location </label>
-            <select id="Store_ID" name="Store_ID" required>
-                <option value="" selected disabled>Select Store</option>
-                <?php
-                    if ($stores->num_rows > 0) {
-                        while($row = $stores->fetch_assoc()) {
-                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                        }
+        <a href="checkout.php" id="store-dropdown"></a>
+        <select id="Store_ID" name="Store_ID" required>
+            <option value="" selected disabled>Select Store</option>
+            <?php
+                if ($stores->num_rows > 0) {
+                    while($row = $stores->fetch_assoc()) {
+                        echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                     }
-                ?>
-            </select>
-        </a>
+                }
+            ?>
+        </select>
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             echo '<a href="update_profile.php">Profile</a>';
             echo '<a href="logout.php">Logout</a>';
+            echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>';
         }
-        echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>';
         ?>
     </div>
 
@@ -98,7 +96,9 @@ function getCartItemCount()
                 </ul>
             </div>
             <div>
-            <button class="button">Place Order</button>
+            <!-- <button class="button">Place Order</button> -->
+            <input class = "button onbutton" type="submit" value="Place Order">
+
         </div>
     </form>
         <?php
