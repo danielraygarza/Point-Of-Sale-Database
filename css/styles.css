@@ -119,8 +119,8 @@ h1 {
     background-color: white;
 }
 
-/* Base styling for all input fields and dropdowns */
-input[type="text"],
+
+input[type="text"],/* Base styling for all input fields and dropdowns */
 input[type="email"],
 input[type="password"],
 input[type="tel"],
@@ -135,6 +135,12 @@ select {
     background-color: #fff; /* White background */
     transition: border-color 0.3s; /* Smooth transition for border color */
     outline: none; /* Remove the browser's default outline */
+}
+
+.selectstore{
+    padding: 13px 14px; /* Padding for a nicer spacing inside the field */
+    margin-bottom: 0px; /* Spacing between each field */
+    float: right;
 }
 
 /* Focus effect: change border color when an input field is in focus */
