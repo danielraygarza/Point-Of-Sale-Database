@@ -35,7 +35,6 @@ function getCartItemCount()
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
         <a href="checkout.php" id="store-dropdown">
-            <label for="Store_ID">Store Location </label>
             <select id="Store_ID" name="Store_ID" required>
                 <option value="" selected disabled>Select Store</option>
                 <?php
