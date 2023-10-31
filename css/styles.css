@@ -141,6 +141,10 @@ select {
     padding: 13px 14px; /* Padding for a nicer spacing inside the field */
     margin-bottom: 0px; /* Spacing between each field */
     float: right;
+    border-radius: 0px; /* Rounded corners */
+    position: fixed;
+
+
 }
 
 /* Focus effect: change border color when an input field is in focus */
