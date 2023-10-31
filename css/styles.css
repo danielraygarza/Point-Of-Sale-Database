@@ -103,16 +103,15 @@ h1 {
 /* Dropdown styling to match navbar links */
 select#Store_ID {
     font-family: 'Trebuchet MS', sans-serif;
-    float: left;
+    float: inline-end;
     display: block;
     color: white;
-    text-align: center;
-    /* padding: 14px 16px; */
-    text-decoration: none;
-
+    text-align: right;
+    padding: 14px 16px;
+    border-radius: 0px;
     overflow: hidden;
     top: 0;           /* Aligns the navbar to the top */
-    font-size: 16px;        /* Font size of the label */
+    font-size: 16px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
     border: none;
     background-color: transparent;
