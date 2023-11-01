@@ -79,15 +79,39 @@
             <label for="E_Last_Name"></label>
             <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 75px;" required>
         </div><br>
-        <?php
-            if ($_SESSION['user']['Title_Role'] == "MAN") {
-                // Display readonly input for members with "MAN" role
-                echo '<input type="text" id="Store_ID" name="Store_ID" value="1" readonly>';
-                echo '<p>Store Location: MAN Role (Assigned Store ID: 1)</p>';
-            } 
-            // else {
-                // Display the dropdown for all other roles
-        ?>
+
+        <div>
+            <label for="Title_Role">Role  </label>
+            <select id="Title_Role" name="Title_Role" placeholder="Select role" style="width: 150px;"required onchange="roleRequirement()">
+                <option value="" selected disabled>Select</option>
+                <option value="TM">Team Member</option>
+                <option value="SUP">Supervisor</option>
+                <option value="MAN">Manager</option>
+                <!-- <option value="CEO">CEO</option> -->
+            </select>
+        </div><br>
+
+        <script>
+            function roleRequirement() {
+                const role = document.getElementById('Title_Role');
+                const supervisor = document.getElementById('Supervisor_ID');
+                const store = document.getElementById('Store_ID');
+                
+                // if manager role is selected, supervisor is CEO and store ID is one
+                if (role.value === 'MAN') {
+                    supervisor.value = '12345678';
+                    supervisor.setAttribute('disabled', '');
+                    
+                    //when CEO creates managers, store set to store 1 until new store created
+                    store.value = '1';
+                    store.setAttribute('disabled', '');
+                } else {
+                    supervisor.removeAttribute('disabled');
+                    store.removeAttribute('disabled');
+                }
+            }
+        </script>
+        
         <div>
             <label for="Store_ID">Store Location </label>
             <select id="Store_ID" name="Store_ID" required>
@@ -95,7 +119,11 @@
                 <?php
                     if ($stores->num_rows > 0) {
                         while($row = $stores->fetch_assoc()) {
-                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                            $selected = '';
+                            if ($row["Pizza_Store_ID"] == 1) {
+                                $selected = 'selected';
+                            }
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
                 ?>
@@ -112,16 +140,6 @@
             });
         </script>
 
-        <div>
-            <label for="Title_Role">Role  </label>
-            <select id="Title_Role" name="Title_Role" placeholder="Select role" style="width: 150px;"required onchange="roleRequirement()">
-                <option value="" selected disabled>Select</option>
-                <option value="TM">Team Member</option>
-                <option value="SUP">Supervisor</option>
-                <option value="MAN">Manager</option>
-                <option value="CEO">CEO</option>
-            </select>
-        </div><br>
 
         <div>
             <label for="Supervisor_ID">Supervisor </label>
@@ -130,25 +148,17 @@
                 <?php
                     if ($supervisors->num_rows > 0) {
                         while($row = $supervisors->fetch_assoc()) {
+                            $selected = '';
+                            if ($row["Supervisor_ID"] == 12345678) {
+                                $selected = 'selected';
+                            }
                             echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
                         }
                     }
                 ?>
             </select>
         </div><br>
-        <script>
-            function roleRequirement() {
-                const role = document.getElementById('Title_Role');
-                const supervisor = document.getElementById('Supervisor_ID');
-                
-                // if manager role is selected, supervisor is not required
-                if (role.value === 'MAN' || role.value === 'CEO') {
-                    supervisor.removeAttribute('required');
-                } else {
-                    supervisor.setAttribute('required', '');
-                }
-            }
-        </script>
+        
         
         <div>
             <label for="Employee_ID">Employee ID  </label>
