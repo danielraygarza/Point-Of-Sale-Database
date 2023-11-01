@@ -78,25 +78,25 @@
         </div><br>
 
         <?php
-            $employee = $mysqli->query("SELECT * FROM employee WHERE Employee_ID='$Employee_ID'");
-            $employeeData = $employee->fetch_assoc();
+            // $employee = $mysqli->query("SELECT * FROM employee WHERE Employee_ID='$Employee_ID'");
+            // $employeeData = $employee->fetch_assoc();
             
-            $firstName = $employeeData['E_First_Name'];
-            $lastName = $employeeData['E_Last_Name'];
-            $ID = $employeeData['Employee_ID'];
-            $hireDate = $employeeData['Hire_Date'];
-            $role = $employeeData['Title_Role'];
-            $store = $employeeData['Store_ID'];
-            $supervisor = $employeeData['Supervisor_ID'];
+            // $firstName = $employeeData['E_First_Name'];
+            // $lastName = $employeeData['E_Last_Name'];
+            // $ID = $employeeData['Employee_ID'];
+            // $hireDate = $employeeData['Hire_Date'];
+            // $role = $employeeData['Title_Role'];
+            // $store = $employeeData['Store_ID'];
+            // $supervisor = $employeeData['Supervisor_ID'];
 
         ?>
         
         <div>       
             <label for="E_First_Name">Name  </label>
-            <input type="text" id="E_First_Name" name="E_First_Name" value="<?php echo $firstName; ?>" placeholder="First" style="width: 75px;" required>
+            <input type="text" id="E_First_Name" name="E_First_Name" value="<?php echo $row["E_First_Name"];?>" placeholder="First" style="width: 75px;" required>
 
             <label for="E_Last_Name"></label>
-            <input type="text" id="E_Last_Name" name="E_Last_Name" value="<?php echo $lastName; ?>" placeholder="Last" style="width: 75px;" required>
+            <input type="text" id="E_Last_Name" name="E_Last_Name" value="<?php echo $row["E_Last_Name"]; ?>" placeholder="Last" style="width: 75px;" required>
         </div><br>
 
         <div>
