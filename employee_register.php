@@ -65,8 +65,6 @@
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="employee_home.php">Employee Home</a>
-        <!-- <a href="#">Order Now</a>
-        <a href="#">Profile</a> -->
         <?php
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo '<a href="logout.php">Logout</a>';
@@ -81,7 +79,15 @@
             <label for="E_Last_Name"></label>
             <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 75px;" required>
         </div><br>
-        
+        <?php
+            if ($_SESSION['user']['Title_Role'] == "MAN") {
+                // Display readonly input for members with "MAN" role
+                echo '<input type="text" id="Store_ID" name="Store_ID" value="1" readonly>';
+                echo '<p>Store Location: MAN Role (Assigned Store ID: 1)</p>';
+            } 
+            // else {
+                // Display the dropdown for all other roles
+        ?>
         <div>
             <label for="Store_ID">Store Location </label>
             <select id="Store_ID" name="Store_ID" required>
@@ -142,7 +148,7 @@
                     supervisor.setAttribute('required', '');
                 }
             }
-            </script>
+        </script>
         
         <div>
             <label for="Employee_ID">Employee ID  </label>
