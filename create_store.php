@@ -27,7 +27,7 @@
         $Store_Manager_ID = $mysqli->real_escape_string($_POST['Store_Manager_ID']);
 
         //check if duplicate employee ID. sends error message
-        $managerID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Employee_ID'");
+        $managerID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Store_Manager_ID'");
         
         if($managerID->num_rows > 0) {
             echo "";
@@ -104,8 +104,8 @@
         </div><br>
 
         <div>
-            <label for="Store_state">State  </label>
-            <select id="Store_state" name="Store_state" placeholder="Select state" style="width: 100px;" required>
+            <label for="Store_State">State  </label>
+            <select id="Store_State" name="Store_State" placeholder="Select state" style="width: 100px;" required>
                 <option value="" selected disabled>Select</option>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
