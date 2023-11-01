@@ -14,6 +14,9 @@
         exit; // Make sure to exit so that the rest of the script won't execute
     }
 
+    $allEmployees = $mysqli->query("SELECT * FROM employee WHERE Title_Role='MAN' OR Title_Role='SUP' OR Title_Role='TM'");
+    $employeesNotManagers = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP' OR Title_Role='TM'");
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
         // Extracting data from the form
@@ -60,6 +63,20 @@
     </div>
     <form action="update_employee.php" method="post">
         <h2>Update Employee Accounts</h2>
+        <div>
+            <label for="Employee_ID">Employee </label>
+            <select id="Employee_ID" name="Employee_ID" required>
+                <option value="" selected disabled>Select Employee</option>
+                <?php
+                    if ($allEmployees->num_rows > 0) {
+                        while($row = $allEmployees->fetch_assoc()) {
+                            echo '<option value="' . $row["Employee"] . '" ' . $selected . '>' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                        }
+                    }
+                ?>
+            </select>
+        </div><br>
+        
         <div>       
             <label for="E_First_Name">Name  </label>
             <input type="text" id="E_First_Name" name="E_First_Name" value="<?php echo $_SESSION['user']['E_First_Name']; ?>" placeholder="First" style="width: 75px;" required>
