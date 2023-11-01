@@ -6,13 +6,11 @@
     error_reporting(E_ALL);
     session_start();
 
-    // Check if user is logged in
-    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-        //access customer attributes
-        // echo "<h2>Welcome, " .$_SESSION['user']['first_name']. "!</h2>";
-    } else {
-        //if not logged in, will send to default URL
-        header("Location: index.php");
+     // Redirects if not manager/CEO or accessed directly via URL
+     if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+        echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
+        echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
+        exit; // Make sure to exit so that the rest of the script won't execute
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted

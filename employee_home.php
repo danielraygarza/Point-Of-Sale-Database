@@ -56,6 +56,11 @@
                 }
             ?>
             <?php // only managers will see the create employee account button
+                if ($_SESSION['user']['Title_Role'] == 'MAN' || $_SESSION['user']['Title_Role'] == 'CEO') {
+                    echo '<a href="update_employee.php" class="button">Update employee accounts</a>';
+                }
+            ?>
+            <?php // only managers will see the create employee account button
                 if ($_SESSION['user']['Title_Role'] == 'CEO') {
                     echo '<a href="create_store.php" class="button">Register new store</a>';
                 }
