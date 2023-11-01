@@ -50,10 +50,10 @@
 <body>
     <div class="navbar">
         <a href="index.php">Home</a>
-        <a href="menu.php">Order now</a>
+        <a href="employee_home.php">Employee Home</a>
+        <a href="reports.php">Reports</a>
         <?php
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                echo '<a href="update_profile.php">Profile</a>';
                 echo '<a href="logout.php">Logout</a>';
             }
         ?>
