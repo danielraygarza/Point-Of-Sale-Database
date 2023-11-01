@@ -57,7 +57,7 @@
     if ($row["Is_Pizza"] == 1) {
         echo '<div class="customize"><a href="customize_pizza.php">CUSTOMIZE</a></div>';
     } else {
-        echo '<div class="add-to-cart"><button onclick="addToCart(' . $row["Pizza_ID"] . ')">Add to Cart</button></div>';
+        echo '<div class="customize"><button onclick="addToCart(' . $row["Pizza_ID"] . ')">Add to Cart</a></div>';
     }
     ?>
 </div>
