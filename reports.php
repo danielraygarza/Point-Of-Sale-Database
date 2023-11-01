@@ -96,6 +96,14 @@ function getStoreID(){
             </select>
         </div> <br>
 
+        <div id="storeSelection" style="display: none;">
+            <label for="storeDropdown">Select Store:</label>
+            <select name="storeDropdown" id="storeDropdown">
+                <option value="test">Default</option>
+            </select>
+
+        </div><br>
+
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
@@ -177,20 +185,24 @@ function getStoreID(){
                 inventoryOptions.style.display = 'block';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
+                storeSelection.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
             } else if (reportType.value === 'store') {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'block';
+                storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
                 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
+                storeSelection.style.display = 'none';
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
+                storeSelection.style.display = 'none';
             }
         }
     </script>
