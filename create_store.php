@@ -34,8 +34,8 @@
             $_SESSION['error'] = "Store location already exist";
         } else {
             // Inserting the data into the database. Accounting if supervisor is NULL when employee is a manager
-            $sql = "INSERT INTO pizza_store (Store_Address, Store_City, Store_State, Store_Zip_Code, Store_Phone_Number) 
-                    VALUES ('$Store_Address', '$Store_City','$Store_State', '$Store_Zip_Code', '$Store_Phone_Number')";
+            $sql = "INSERT INTO pizza_store (Store_Address, Store_City, Store_State, Store_Zip_Code, Store_Phone_Number, Store_Manager_ID) 
+                    VALUES ('$Store_Address', '$Store_City','$Store_State', '$Store_Zip_Code', '$Store_Phone_Number', '$Store_Manager_ID')";
 
             if ($mysqli->query($sql) === TRUE) {
 
