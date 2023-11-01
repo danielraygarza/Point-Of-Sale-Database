@@ -60,36 +60,43 @@
                     $inventoryType = $_POST['inventoryType'];
                     $sql = '';
 
+                    //Temporary set of variable $storeId
+                    $storeId = '1';
+
                     // Define your SQL queries for Inventory selection
                     if ($inventoryType === 'low') {
                         // Header for low stock items
                         $setHeader = 'Low Stock Items';
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
-                    CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
-                    V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
-                    FROM INVENTORY I
-                    INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
-                    WHERE I.Inventory_Amount <= I.Reorder_Threshold + 5;";
+                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
+                        V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
+                        FROM INVENTORY I
+                        INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
+                        INNER JOIN ITEMS ON I.Item_ID = Items.Item_ID
+                        WHERE I.Inventory_Amount <= I.Reorder_Threshold + 5 AND I.Store_ID = '$storeId';";
                     } elseif ($inventoryType === 'out') {
                         // Header for out of stock items
                         $setHeader = 'Out of Stock Items';
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
-                    CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
-                    V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
-                    FROM INVENTORY I
-                    INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
-                    WHERE I.Inventory_Amount <= 0";
+                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
+                        V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                        FROM INVENTORY I
+                        INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
+                        INNER JOIN ITEMS ON I.Item_ID = Items.Item_ID
+                        WHERE I.Inventory_Amount <= 0 AND I.Store_ID = '$storeId';";
                     } else {
                         // Header for all items
                         $setHeader = 'Inventory Report';
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, I.Item_Name, I.Cost, V.Vendor_Name,
-                    CONCAT(V.V_Rep_Lname, ' ', V.V_Rep_Fname) AS Vendor_Rep,
-                    V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
-                    FROM INVENTORY I
-                    INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID;";
+                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
+                        V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                        FROM INVENTORY I
+                        INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
+                        INNER JOIN ITEMS ON I.Item_ID = Items.Item_ID
+                        WHERE I.Store_ID = '$storeId';";
                     }
 
 
