@@ -24,7 +24,8 @@
         $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
         $Hire_Date = $mysqli->real_escape_string($_POST['Hire_Date']);
         $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
-        $Supervisor_ID = isset($_POST['Supervisor_ID']) ? $mysqli->real_escape_string($_POST['Supervisor_ID']) : null; //Assigns null if no supervisor selected
+        $Supervisor_ID = $mysqli->real_escape_string($_POST['$Supervisor_ID']);
+        // $Supervisor_ID = isset($_POST['Supervisor_ID']) ? $mysqli->real_escape_string($_POST['Supervisor_ID']) : null; //Assigns null if no supervisor selected
         $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
         $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
