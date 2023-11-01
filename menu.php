@@ -45,16 +45,22 @@
         <?php 
             while($row = mysqli_fetch_assoc($result)) {
         ?>
-            <div class = "card">
-                <div class = "image">
-                    <img src= <?php echo $row["Image_Path"]; ?> alt="">
-                </div>
-                <p class = "pizza_name"><?php echo $row["Name"]; ?> (<?php echo $row["Size_Option"];?>)</p>
-                <p class = "description"><?php echo $row["Description"]; ?></p>
-                <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
-                <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
-                <div class = "customize"> <a href = "customize_pizza.php">CUSTOMIZE</a></div>
-            </div>
+            <div class="card">
+    <div class="image">
+        <img src=<?php echo $row["Image_Path"]; ?> alt="">
+    </div>
+    <p class="pizza_name"><?php echo $row["Name"]; ?> (<?php echo $row["Size_Option"]; ?>)</p>
+    <p class="description"><?php echo $row["Description"]; ?></p>
+    <p class="calories"><?php echo $row["Calories"]; ?> cals</p>
+    <p class="price"><b>$<?php echo $row["Cost"]; ?></b></p>
+    <?php
+    if ($row["Is_Pizza"] == 1) {
+        echo '<div class="customize"><a href="customize_pizza.php">CUSTOMIZE</a></div>';
+    } else {
+        echo '<div class="add-to-cart"><button onclick="addToCart(' . $row["Pizza_ID"] . ')">Add to Cart</button></div>';
+    }
+    ?>
+</div>
         <?php } ?>
     </main>
     
