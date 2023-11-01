@@ -24,10 +24,8 @@
         $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
         $Hire_Date = $mysqli->real_escape_string($_POST['Hire_Date']);
         $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
-        // $Supervisor_ID = $mysqli->real_escape_string($_POST['$Supervisor_ID']);
         $Supervisor_ID = isset($_POST['Supervisor_ID']) ? $mysqli->real_escape_string($_POST['Supervisor_ID']) : '12345678'; //Assigns CEO if no supervisor
         $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
-        // $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
         $Store_ID = isset($_POST['Store_ID']) ? $mysqli->real_escape_string($_POST['Store_ID']) : '1'; //Assigns store one if not assigned
         $password = password_hash($mysqli->real_escape_string($_POST['password']), PASSWORD_DEFAULT); // Hashing the password before storing it in the database
 
@@ -116,6 +114,10 @@
                     store.removeAttribute('disabled');
                     CEO.setAttribute('disabled', '');
                     HQ.setAttribute('disabled', '');
+                    
+                    //reset dropdown
+                    supervisor.value = "";
+                    store.value = "";
                 }
             }
         </script>
@@ -127,10 +129,6 @@
                 <?php
                     if ($stores->num_rows > 0) {
                         while($row = $stores->fetch_assoc()) {
-                            // $selected = '';
-                            // if ($row["Pizza_Store_ID"] == 1) {
-                            //     $selected = 'selected';
-                            // }
                             echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
@@ -156,10 +154,6 @@
                 <?php
                     if ($supervisors->num_rows > 0) {
                         while($row = $supervisors->fetch_assoc()) {
-                            // $selected = '';
-                            // if ($row["Supervisor_ID"] == 12345678) {
-                            //     $selected = 'selected';
-                            // }
                             echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
                         }
                     }
