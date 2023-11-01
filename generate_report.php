@@ -153,8 +153,38 @@
                     if ($storeType === 'orders') {
                         // Header for daily orders
                         $setHeader = 'Daily Orders';
+                        // Get the current Date
+                        $currentDate = date("Y-m-d");
                         // TO COMPLETE: Query for daily orders
-                        $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
+                        FROM pizza_store P 
+                        LEFT JOIN orders O
+                        ON P.Pizza_Store_ID = O.Store_ID
+                        WHERE DATE(O.Date_Of_Order) = '$currentDate'
+                        GROUP BY P.Pizza_Store_ID, P.Store_Address;";
+                    } elseif ($storeType === 'orderdates') {
+                        // Header for daily orders
+                        $setHeader = 'Daily Orders';
+                        // Get the selected date range
+                        if (isset($_POST['stDate'])) {
+                            $stDate = $_POST['stDate'];
+                        } else {
+                            // Default test values for stDate
+                            $stDate = date("Y-m-d");
+                        }
+                        if (isset($_POST['endDate'])) {
+                            $endDate = $_POST['endDate'];
+                        } else {
+                            // Default test values for endDate
+                            $endDate = date("Y-m-d");
+                        }
+                        // TO COMPLETE: Query for daily orders
+                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
+                        FROM pizza_store P 
+                        LEFT JOIN orders O
+                        ON P.Pizza_Store_ID = O.Store_ID
+                        WHERE DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
+                        GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } elseif ($storeType === 'pizzas') {
                         // Header for pizzas sold
                         $setHeader = 'Pizzas Sold Today';
