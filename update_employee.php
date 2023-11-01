@@ -160,7 +160,7 @@
         <div>
             <label for="Supervisor_ID">Change Supervisor </label>
             <select id="Supervisor_ID" name="Supervisor_ID" required>
-                <option value="<?php echo $_SESSION['user']['Supervisor_ID']; ?>" selected disabled>Assign Supervisor</option>
+                <option value="<?php echo $_SESSION['user']['Supervisor_ID']; ?>" selected disabled></option>
                 <?php
                     if ($supervisors->num_rows > 0) {
                         while($row = $supervisors->fetch_assoc()) {
