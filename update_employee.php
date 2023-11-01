@@ -93,10 +93,10 @@
         
         <div>       
             <label for="E_First_Name">Name  </label>
-            <input type="text" id="E_First_Name" name="E_First_Name" value="<?php echo $row["E_First_Name"];?>" placeholder="First" style="width: 75px;" required>
+            <input type="text" id="E_First_Name" name="E_First_Name" value="<?php echo $_SESSION['user']['E_First_Name']; ?>" placeholder="First" style="width: 75px;" required>
 
             <label for="E_Last_Name"></label>
-            <input type="text" id="E_Last_Name" name="E_Last_Name" value="<?php echo $row["E_Last_Name"]; ?>" placeholder="Last" style="width: 75px;" required>
+            <input type="text" id="E_Last_Name" name="E_Last_Name" value="<?php echo $_SESSION['user']['E_Last_Name']; ?>" placeholder="Last" style="width: 75px;" required>
         </div><br>
 
         <div>
