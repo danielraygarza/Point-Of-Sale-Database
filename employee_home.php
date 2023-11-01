@@ -1,21 +1,21 @@
 <?php
-// Start the session at the beginning of the file
-session_start();
+    // Start the session at the beginning of the file
+    session_start();
 
-// Check if user is logged in
-// if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-//     //access employee attributes
-//     if($_SESSION['user']['Title_Role'] == 'CEO'){
-//         echo "<h2>Welcome King " . $_SESSION['user']['E_First_Name'] . "!</h2>";
-//     } else {
-//         echo "<h2>Time to work, " . $_SESSION['user']['E_First_Name'] . "!</h2>";
-//     }
-    
-// } else {
-//     //if not logged in, will send to default URL
-//     header("Location: index.php");
-//     exit(); //ensures code is killed
-// }
+    // Check if user is logged in
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+        //access employee attributes
+        if($_SESSION['user']['Title_Role'] == 'CEO'){
+            echo "<h2>Welcome King " . $_SESSION['user']['E_First_Name'] . "!</h2>";
+        } else {
+            echo "<h2>Time to work, " . $_SESSION['user']['E_First_Name'] . "!</h2>";
+        }
+        
+    } else {
+        //if not logged in, will send to default URL
+        header("Location: index.php");
+        exit(); //ensures code is killed
+    }
 ?>
 
 <!DOCTYPE html>
