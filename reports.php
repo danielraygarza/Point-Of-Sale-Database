@@ -101,11 +101,21 @@ function getStoreID(){
             <select name="storeDropdown" id="storeDropdown">
                 <!-- <option value="test">Default</option> -->
                 <?php
-                $storeIdData = getStoreID();
-                foreach ($storeIdData as $store){
-                    $storeId = $store['Pizza_Store_ID'];
+                include_once("./database.php"); // Include your database connection file
+
+                $sql = "SELECT `Pizza_Store_ID` FROM `pizza_store`";
+                $result = mysqli_query($mysqli, $sql);
+
+                if (!$result) {
+                    die("Error: " . mysqli_error($connection));
+                }
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $storeId = $row['Pizza_Store_ID'];
                     echo "<option value='$storeId'>$storeId</option>";
                 }
+
+                mysqli_free_result($result);
                 ?>
             </select>
 
