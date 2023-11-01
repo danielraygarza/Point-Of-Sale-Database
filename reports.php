@@ -99,24 +99,7 @@ function getStoreID(){
         <div id="storeSelection" style="display: none;">
             <label for="storeDropdown">Select Store:</label>
             <select name="storeDropdown" id="storeDropdown">
-                <!-- <option value="test">Default</option> -->
-                <?php
-                include_once("./database.php"); // Include your database connection file
-
-                $sql = "SELECT `Pizza_Store_ID` FROM `pizza_store`";
-                $result = mysqli_query($mysqli, $sql);
-
-                if (!$result) {
-                    die("Error: " . mysqli_error($connection));
-                }
-
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $storeId = $row['Pizza_Store_ID'];
-                    echo "<option value='$storeId'>$storeId</option>";
-                }
-
-                mysqli_free_result($result);
-                ?>
+                <option value="test">Default</option>
             </select>
 
         </div><br>
