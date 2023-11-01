@@ -22,7 +22,8 @@
         $_SESSION['cart'] = [];
     }
     $stores = $mysqli->query("SELECT * FROM pizza_store");
-
+    $items = $mysqli->query("SELECT * FROM pizza")
+    $result = $mysqli->query($items)
     // Add an item to the cart (you can call this function when a user adds an item)
     function addToCart($itemId)
     {
@@ -54,8 +55,8 @@
             <option value="" selected disabled>Select Store</option>
             <?php
             if ($stores->num_rows > 0) {
-                while ($row = $stores->fetch_assoc()) {
-                    echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                while ($row = fetch_assoc($result)) {
+                    echo '<option value="' . $row["Pizza_ID"];
                 }
             }
             ?>
