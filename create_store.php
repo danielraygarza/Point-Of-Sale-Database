@@ -7,11 +7,11 @@
     error_reporting(E_ALL);
 
     // Redirects if not CEO or accessed directly via URL
-    // if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'CEO') {
-    //     echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
-    //     echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
-    //     exit; // Make sure to exit so that the rest of the script won't execute
-    // }
+    if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'CEO') {
+        echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
+        echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
+        exit; // Make sure to exit so that the rest of the script won't execute
+    }
 
     //get list of managers from database
     $managers = $mysqli->query("SELECT * FROM employee WHERE Title_Role='MAN'");
@@ -27,9 +27,9 @@
         $Store_Manager_ID = $mysqli->real_escape_string($_POST['Store_Manager_ID']);
 
         //check if duplicate employee ID. sends error message
-        $checkID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Employee_ID'");
+        $managerID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Employee_ID'");
         
-        if($checkID->num_rows > 0) {
+        if($managerID->num_rows > 0) {
             echo "";
             $_SESSION['error'] = "Store location already exist";
         } else {
@@ -38,6 +38,18 @@
                     VALUES ('$Store_Address', '$Store_City','$Store_State', '$Store_Zip_Code', '$Store_Phone_Number')";
 
             if ($mysqli->query($sql) === TRUE) {
+
+                 // Get the ID of the last inserted store
+                $newStoreID = $mysqli->insert_id;
+
+                // Update the manager's Pizza_Store_ID using that ID
+                $managerStoreID = "UPDATE employee SET Pizza_Store_ID = $newStoreID WHERE Employee_ID = $Store_Manager_ID";
+                
+                if ($mysqli->query($managerStoreID) !== TRUE) {
+                    echo "Error updating manager's store ID: " . $mysqli->error;
+                    // You might want to handle this error differently
+                }
+
                 $mysqli->close();
                 header('Location: employee_home.php');
                 exit;
