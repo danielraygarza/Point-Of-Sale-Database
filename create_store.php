@@ -43,7 +43,7 @@
                 $newStoreID = $mysqli->insert_id;
 
                 // Update the manager's Pizza_Store_ID using that ID
-                $managerStoreID = "UPDATE employee SET Pizza_Store_ID = $newStoreID WHERE Employee_ID = $Store_Manager_ID";
+                $managerStoreID = "UPDATE employee SET Store_ID = $newStoreID WHERE Employee_ID = $Store_Manager_ID";
                 
                 if ($mysqli->query($managerStoreID) !== TRUE) {
                     echo "Error updating manager's store ID: " . $mysqli->error;
