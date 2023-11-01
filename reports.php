@@ -34,6 +34,27 @@ function getEmployeeData()
     mysqli_free_result($result);
     return $employeeData;
 }
+
+// Get a list of Store Ids from Pizza_Store table as array $storeIdData
+function getStoreID(){
+    include_once("./database.php");
+    $sql = "SELECT 'Pizza_Store_ID' FROM 'pizza_store'";
+    $result = mysqli_query($mysqli, $sql);
+
+    if(!$result){
+        die("Error: " . mysqli_error($connection));
+    }
+
+    $storeIdData = array();
+    while($row = mysqli_fetch_assoc($result)){
+        $storeIdData[] = [
+            'Pizza_Store_ID' => $row['Pizza_Store_ID']
+        ];
+        mysqli_free_result($result);
+        return $storeIdData;
+    }
+}
+
 ?>
 
 <!-- Welcome page after user creates new account -->
