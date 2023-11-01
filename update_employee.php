@@ -69,18 +69,18 @@
         </div><br>
 
         <div>
-            <label for="Employee_ID">Hire Date  </label>
-            <input type="text" id="Employee_ID" value="<?php echo $formattedDate; ?>" placeholder="Employee_ID" style="width: 150px;" readonly>
+            <label for="Employee_ID">Employee ID </label>
+            <input type="text" id="Employee_ID" value="<?php echo $_SESSION['user']['Employee_ID']; ?>"placeholder="Employee_ID" style="width: 150px;" readonly>
         </div><br>
-
+        
         <?php
             //re-format date for friendly front end
             $date = new DateTime($_SESSION['user']['Hire_Date']);
             $formattedDate = $date->format('F j, Y');
-        ?>
+            ?>
         <div>
             <label for="Hire_Date">Hire Date  </label>
-            <input type="text" id="Hire_Date" value="<?php echo $_SESSION['user']['Employee_ID']; ?>" placeholder="Hire_Date" style="width: 150px;" readonly>
+            <input type="text" id="Hire_Date"value="<?php echo $formattedDate; ?>" placeholder="Hire_Date" style="width: 150px;" readonly>
         </div><br>
 
         <div>
