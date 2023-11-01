@@ -76,6 +76,39 @@
                 ?>
             </select>
         </div><br>
+
+        <script>
+            document.getElementById('Employee_ID').addEventListener('change', function() {
+                var employeeID = this.value;
+                
+                // Use AJAX to get employee details
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'update_employee.php?employeeID=' + employeeID, true);
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 400) {
+                        var data = JSON.parse(xhr.responseText);
+                        document.getElementById('E_First_Name').value = data.E_First_Name;
+                        document.getElementById('E_Last_Name').value = data.E_Last_Name;
+                        
+                        // Employee ID and Hire Date are read-only. So, we are setting their values too.
+                        var hireDate = new Date(data.Hire_Date).toLocaleDateString("en-US", { month: 'long', day: 'numeric', year: 'numeric' });
+                        document.getElementById('Hire_Date').value = hireDate;
+                        
+                        // Since Employee_ID is used as the select id and also as an input id, you might want to rename one of them to avoid confusion. 
+                        // For this example, I assume you rename the input id to 'Employee_ID_Input'.
+                        document.getElementById('Employee_ID_Input').value = data.Employee_ID;
+                        
+                    } else {
+                        console.error('Server reached, but it returned an error');
+                    }
+                };
+                xhr.onerror = function() {
+                    console.error('Connection error of some sort');
+                };
+                xhr.send();
+            });
+        </script>
+
         
         <div>       
             <label for="E_First_Name">Name  </label>
