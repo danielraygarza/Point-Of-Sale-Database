@@ -68,6 +68,21 @@
         </div><br>
 
         <div>
+            <label for="Employee_ID">Hire Date  </label>
+            <input type="text" id="Employee_ID" value="<?php echo $formattedDate; ?>" placeholder="Employee_ID" style="width: 150px;" readonly>
+        </div><br>
+
+        <?php
+            //re-format date for friendly front end
+            $date = new DateTime($_SESSION['user']['Hire_Date']);
+            $formattedDate = $date->format('F j, Y');
+        ?>
+        <div>
+            <label for="Hire_Date">Hire Date  </label>
+            <input type="text" id="Hire_Date" value="<?php echo $_SESSION['user']['Employee_ID']; ?>" placeholder="Hire_Date" style="width: 150px;" readonly>
+        </div><br>
+
+        <div>
             <label for="Title_Role">Change Role  </label>
             <select id="Title_Role" name="Title_Role" placeholder="Select role" style="width: 150px;"required onchange="roleRequirement()">
                 <option value="" selected disabled>Select</option>
