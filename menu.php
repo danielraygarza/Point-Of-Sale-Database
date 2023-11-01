@@ -60,6 +60,7 @@
                 } else {
                     echo '<div class="add-to-cart"><button onclick="addToCart(' . $row["Pizza_ID"] . ')">Add to Cart</button></div>';
                 }
+                
                 ?>
             </div>
         <?php } ?>
