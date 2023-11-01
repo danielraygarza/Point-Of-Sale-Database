@@ -144,7 +144,7 @@
                     if ($mysqli === false) {
                         die("Error: Could not connect to the database. " . mysqli_connect_error());
                     }
-                    
+
                     // Get the selected store
                     if(isset($_POST['selectStore'])){
                         $selectStore = $_POST['selectStore'];
@@ -243,6 +243,7 @@
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No inventory data available.';
+                            echo 'Store Selected: ' . $selectStore;
                         }
                     } else {
                         echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
