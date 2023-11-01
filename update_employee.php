@@ -16,8 +16,8 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
         // Extracting data from the form
-        $first_name = $mysqli->real_escape_string($_POST['first_name']);
-        $last_name = $mysqli->real_escape_string($_POST['last_name']);
+        $E_First_Name = $mysqli->real_escape_string($_POST['E_First_Name']);
+        $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
         $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
         $Supervisor_ID = $mysqli->real_escape_string($_POST['Supervisor_ID']);
         $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
@@ -25,7 +25,7 @@
 
         // Inserting the data into the database
         $sql = "UPDATE employee 
-        SET first_name='$first_name', last_name='$last_name',Title_Role='$Title_Role',Supervisor_ID='$Supervisor_ID',Store_ID='$last_name'
+        SET E_First_Name='$E_First_Name', E_Last_Name='$E_Last_Name',Title_Role='$Title_Role',Supervisor_ID='$Supervisor_ID',Store_ID='$E_Last_Name'
         WHERE Employee_ID = $Employee_ID";
 
         if ($mysqli->query($sql) === TRUE) {
@@ -60,14 +60,11 @@
     <form action="update_employee.php" method="post">
         <h2>Update Employee Accounts</h2>
         <div>       
-            <label for="first_name">Name  </label>
-            <input type="text" id="first_name" name="first_name" value="<?php echo $_SESSION['user']['first_name']; ?>" placeholder="First" style="width: 75px;" required>
+            <label for="E_First_Name">Name  </label>
+            <input type="text" id="E_First_Name" name="E_First_Name" value="<?php echo $_SESSION['user']['E_First_Name']; ?>" placeholder="First" style="width: 75px;" required>
 
-            <label for="middle_initial"></label>
-            <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  value="<?php echo $_SESSION['user']['middle_initial']; ?>" placeholder="M.I." style="width: 40px;">
-
-            <label for="last_name"></label>
-            <input type="text" id="last_name" name="last_name" value="<?php echo $_SESSION['user']['last_name']; ?>" placeholder="Last" style="width: 75px;" required>
+            <label for="E_Last_Name"></label>
+            <input type="text" id="E_Last_Name" name="E_Last_Name" value="<?php echo $_SESSION['user']['E_Last_Name']; ?>" placeholder="Last" style="width: 75px;" required>
         </div><br>
 
         <div>
