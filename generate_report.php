@@ -144,6 +144,13 @@
                     if ($mysqli === false) {
                         die("Error: Could not connect to the database. " . mysqli_connect_error());
                     }
+                    
+                    // Get the selected store
+                    if(isset($_POST['selectStore'])){
+                        $selectStore = $_POST['selectStore'];
+                    } else {
+                        $selectStore = '0';
+                    }
 
                     // Check the value of the inventoryType
                     $storeType = $_POST['storeType'];
@@ -160,7 +167,7 @@
                         FROM pizza_store P 
                         LEFT JOIN orders O
                         ON P.Pizza_Store_ID = O.Store_ID
-                        WHERE DATE(O.Date_Of_Order) = '$currentDate'
+                        WHERE P.Pizza_Store_ID = '$selectStore' AND DATE(O.Date_Of_Order) = '$currentDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } elseif ($storeType === 'orderdates') {
                         // Header for daily orders
