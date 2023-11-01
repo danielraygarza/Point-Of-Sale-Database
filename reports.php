@@ -147,7 +147,7 @@ function getEmployeeData()
         document.getElementById('employeeDropdown').addEventListener('change', function() {
             var selectedEmployeeId = this.value;
             if (selectedEmployeeId != 0) {
-                var url = "./include/function/genereateEmployReport.php?action=generateReport&id=" + selectedEmployeeId;
+                // var url = "./include/function/genereateEmployReport.php?action=generateReport&id=" + selectedEmployeeId;
                 window.location.href = url;
             }
         });
