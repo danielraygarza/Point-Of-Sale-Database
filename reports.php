@@ -36,6 +36,7 @@ function getEmployeeData()
 }
 
 // Get a list of Store Ids from Pizza_Store table as array $storeIdData
+// Function may be fucked, won't generate properly, breaks page
 function getStoreID(){
     include_once("./database.php");
     $sql = "SELECT `Pizza_Store_ID` FROM `pizza_store`";
@@ -99,14 +100,7 @@ function getStoreID(){
         <div id="storeSelection" style="display: none;">
             <label for="storeDropdown">Select Store:</label>
             <select name="storeDropdown" id="storeDropdown">
-                <!-- <option value="test">Default</option> -->
-                <?php
-                $storeIdData = getStoreID();
-                foreach ($storeIdData as $store) {
-                    $storeId = $store['Pizza_Store_ID'];
-                    echo "<option value='" . htmlspecialchars($storeId) . "'>$storeId</option>";
-                }
-                ?>
+                <option value="test">Default</option>
             </select>
 
         </div><br>
