@@ -96,8 +96,10 @@ function getEmployeeData()
             <select name="storeType" id="storeType">
                 <!-- Here are the different options you can display in your sub menu -->
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
+                <!-- ***TO DO*** -->
+                <!-- NEED TO ADD STORE SELECTION AS WELL FOR ALL STORE REPORTS -->
                 <option value="orders">Daily Orders</option>
-                <option value="orderdates">Daily Orders</option>
+                <option value="orderdates">Total Orders From:</option>
                 <option value="pizzas">Daily Pizzas Sold</option>
                 <option value="popular">Today's Most Popular Pizza</option>
                 <option value="sales">Total Sales Today</option>
