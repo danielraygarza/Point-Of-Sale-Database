@@ -108,7 +108,7 @@ function getStoreID(){
                 }
                 ?>
 
-        </div>
+        </div><br>
 
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
