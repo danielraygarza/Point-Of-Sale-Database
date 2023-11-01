@@ -27,12 +27,12 @@
         $Store_Manager_ID = $mysqli->real_escape_string($_POST['Store_Manager_ID']);
 
         //check if duplicate employee ID. sends error message
-        $managerID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Store_Manager_ID'");
+        // $managerID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Store_Manager_ID'");
         
-        if($managerID->num_rows > 0) {
-            echo "";
-            $_SESSION['error'] = "Store location already exist";
-        } else {
+        // if($managerID->num_rows > 0) {
+        //     echo "";
+        //     $_SESSION['error'] = "Store location already exist";
+        // } else {
             // Inserting the data into the database. Accounting if supervisor is NULL when employee is a manager
             $sql = "INSERT INTO pizza_store (Store_Address, Store_City, Store_State, Store_Zip_Code, Store_Phone_Number) 
                     VALUES ('$Store_Address', '$Store_City','$Store_State', '$Store_Zip_Code', '$Store_Phone_Number')";
@@ -56,7 +56,7 @@
             } else {
                 echo "Error: " . $sql . "<br>" . $mysqli->error;
             }
-        }
+        // }
     }
 ?>
 <!DOCTYPE html>
