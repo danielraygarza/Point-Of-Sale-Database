@@ -158,7 +158,14 @@ function getStoreID(){
         <div id="Employer" style="display: none;">
             <label for="employeeDropdown">Select Employee:</label>
             <select name="employeeDropdown" id="employeeDropdown">
-                <option value="test">Test</option>
+                <?php
+                $employeeData = getEmployeeData();
+                foreach ($employeeData as $employee) {
+                    $employeeID = $employee['Employee_ID'];
+                    $employeeName = $employee['Name'];
+                    echo "<option value='" . htmlspecialchars($employeeID) . "'>$employeeName</option>";
+                }
+                ?>
             </select>
         </div><br>
 
