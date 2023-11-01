@@ -14,7 +14,7 @@
     // }
 
     //get list of supervisors from database
-    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP' OR Title_Role='MAN'");
+    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP' OR Title_Role='MAN' OR Title_Role='CEO'");
     $stores = $mysqli->query("SELECT * FROM pizza_store");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
