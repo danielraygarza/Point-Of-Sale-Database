@@ -96,20 +96,6 @@ function getStoreID(){
             </select>
         </div> <br>
 
-        <div id="storeSelection" style="display: none;">
-            <!-- Store Selection Dropdown -->
-            <label for="storeType">Select a Store:</label>
-            <select name="storeType" id="storeType">
-                <!-- Dynamically populate from database -->
-                <?php
-                $storeIDs = getStoreID();
-                foreach ($storeIDs as $store){
-                    echo "<option value='{$store['Pizza_Store_ID']}'>Store {$store['Pizza_Store_ID']}</option>";
-                }
-                ?>
-
-        </div><br>
-
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
@@ -141,24 +127,7 @@ function getStoreID(){
                 <option value="date">Total Sales To Date</option>
             </select>
         </div><br>
-        <!-- //To here// -->
-        
-        <div id="dateRangeLeft" style="display: none;">
-            <label for="startDate">Select Begin Date:</label>
-            <select name="beginDate" id="beginDate">
-            <!-- Add date range $stDate selection here -->
-                <option value="placeHolderL">Place Holder</option>
-            </select>
-        </div><br>
-
-        <div id="dateRangeRight" style="display: none;">
-            <label for="finishDate">Select End Date:</label>
-            <select name="endDate" id="endDate">
-            <!-- Add date range $endDate selection here -->
-                <option value="placeHolderR">Place Holder</option>
-            </select>
-        </div><br>
-        
+        <!-- //To here// -->        
 
         <!-- Add more drop down sub-menus here -->
         <div id="Employer" style="display: none;">
@@ -197,10 +166,7 @@ function getStoreID(){
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
 
-            // Sub-sub menu and related variables for Store Reports
-            var storeType = document.getElementById('storeType');
-            var dateRangeLeft = document.getElementById('dateRangeLeft');
-            var dateRangeRight = document.getElementById('dateRangeRight');
+            //sub-sub menu stuff deleted
 
 
             //This if/else determines which sub menu is visible
@@ -208,30 +174,20 @@ function getStoreID(){
             //Then newMenuOptions.style.display = 'block'
             //Be sure to set the other sub menus to 'none' and add in your new menu to the other sub menu categories and set it to 'none'
             if (reportType.value === 'inventory') {
-                storeSelection.style.display = 'block';
                 inventoryOptions.style.display = 'block';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
             } else if (reportType.value === 'store') {
-                storeSelection.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'block';
                 Employer.style.display = 'none';
-                if(storeType.value === 'orderdates'){
-                    dateRangeLeft.style.display = 'block';
-                    dateRangeRight.style.display = 'block';
-                } else{
-                    dateRangeLeft.style.display = 'none';
-                    dateRangeRight.style.display = 'none';
-                }
+                
             } else if (reportType.value === 'performance') {
-                storeSelection.style.display = 'none';
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
             } else {
-                storeSelection.style.display = 'none';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
