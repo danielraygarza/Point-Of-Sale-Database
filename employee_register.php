@@ -98,18 +98,24 @@
                 const role = document.getElementById('Title_Role');
                 const supervisor = document.getElementById('Supervisor_ID');
                 const store = document.getElementById('Store_ID');
-                
+                const CEO = supervisor.querySelector('option[value="12345678"]');
+                const HQ = store.querySelector('option[value="1"]');
+
                 // if manager role is selected, supervisor is CEO and store ID is one
                 if (role.value === 'MAN') {
                     supervisor.value = '12345678';
                     supervisor.setAttribute('disabled', '');
+                    CEO.removeAttribute('disabled');
                     
                     //when CEO creates managers, store set to store 1 until new store created
                     store.value = '1';
                     store.setAttribute('disabled', '');
+                    HQ.removeAttribute('disabled');
                 } else {
                     supervisor.removeAttribute('disabled');
                     store.removeAttribute('disabled');
+                    CEO.setAttribute('disabled', '');
+                    HQ.setAttribute('disabled', '');
                 }
             }
         </script>
