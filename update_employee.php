@@ -120,7 +120,7 @@
 
         <div>
             <label for="Employee_ID">Employee ID </label>
-            <input type="text" id="Employee_ID" value="<?php echo $_SESSION['user']['Employee_ID']; ?>"placeholder="Employee_ID" style="width: 150px;" readonly>
+            <input type="text" id="Employee_ID" value="<?php echo $_SESSION['user']['Employee_ID']; ?>" placeholder="Employee_ID" style="width: 150px;" readonly>
         </div><br>
         
         <?php
@@ -136,7 +136,7 @@
         <div>
             <label for="Title_Role">Change Role  </label>
             <select id="Title_Role" name="Title_Role" placeholder="Select role" style="width: 150px;"required onchange="roleRequirement()">
-                <option value="" selected disabled>Select</option>
+                <option value="<?php echo $_SESSION['user']['Title_Role']; ?>" selected disabled></option>
                 <option value="TM">Team Member</option>
                 <option value="SUP">Supervisor</option>
                 <option value="MAN">Manager</option>
@@ -146,7 +146,7 @@
         <div>
             <label for="Store_ID">Change Location </label>
             <select id="Store_ID" name="Store_ID" required>
-                <option value="" selected disabled>Select Store</option>
+                <option value="<?php echo $_SESSION['user']['Store_ID']; ?>" selected disabled></option>
                 <?php
                     if ($stores->num_rows > 0) {
                         while($row = $stores->fetch_assoc()) {
@@ -160,7 +160,7 @@
         <div>
             <label for="Supervisor_ID">Change Supervisor </label>
             <select id="Supervisor_ID" name="Supervisor_ID" required>
-                <option value="" selected disabled>Assign Supervisor</option>
+                <option value="<?php echo $_SESSION['user']['Supervisor_ID']; ?>" selected disabled>Assign Supervisor</option>
                 <?php
                     if ($supervisors->num_rows > 0) {
                         while($row = $supervisors->fetch_assoc()) {
