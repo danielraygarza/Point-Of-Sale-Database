@@ -99,7 +99,14 @@ function getStoreID(){
         <div id="storeSelection" style="display: none;">
             <label for="storeDropdown">Select Store:</label>
             <select name="storeDropdown" id="storeDropdown">
-                <option value="test">Default</option>
+                <!-- <option value="test">Default</option> -->
+                <?php
+                $storeIdData = getStoreID();
+                foreach ($storeIdData as $store) {
+                    $storeId = $store['Pizza_Store_ID'];
+                    echo "<option value='$storeId'>$storeId</option>";
+                }
+                ?>
             </select>
 
         </div><br>
