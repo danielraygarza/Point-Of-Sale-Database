@@ -120,10 +120,10 @@
                 <?php
                     if ($stores->num_rows > 0) {
                         while($row = $stores->fetch_assoc()) {
-                            // $selected = '';
-                            // if ($row["Pizza_Store_ID"] == 1) {
-                            //     $selected = 'selected';
-                            // }
+                            $selected = '';
+                            if ($row["Pizza_Store_ID"] == 1) {
+                                $selected = 'selected';
+                            }
                             echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
@@ -149,10 +149,10 @@
                 <?php
                     if ($supervisors->num_rows > 0) {
                         while($row = $supervisors->fetch_assoc()) {
-                            // $selected = '';
-                            // if ($row["Supervisor_ID"] == 12345678) {
-                            //     $selected = 'selected';
-                            // }
+                            $selected = '';
+                            if ($row["Supervisor_ID"] == 12345678) {
+                                $selected = 'selected';
+                            }
                             echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
                         }
                     }
