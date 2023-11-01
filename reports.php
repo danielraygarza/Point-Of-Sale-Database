@@ -96,6 +96,20 @@ function getStoreID(){
             </select>
         </div> <br>
 
+        <div id="storeSelection" style="display: none;">
+            <!-- Store Selection Dropdown -->
+            <label for="storeType">Select a Store:</label>
+            <select name="storeType" id="storeType">
+                <!-- Dynamically populate from database -->
+                <?php
+                $storeIDs = getStoreID();
+                foreach ($storeIDs as $store){
+                    echo "<option value='{$store['Pizza_Store_ID']}'>Store {$store['Pizza_Store_ID']}</option>";
+                }
+                ?>
+
+        </div>
+
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
@@ -181,6 +195,7 @@ function getStoreID(){
             var inventoryOptions = document.getElementById('inventoryOptions');
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
+            var storeSelection = document.getElementById('storeSelection');
 
             // Sub-sub menu and related variables for Store Reports
             var storeType = document.getElementById('storeType');
@@ -193,11 +208,13 @@ function getStoreID(){
             //Then newMenuOptions.style.display = 'block'
             //Be sure to set the other sub menus to 'none' and add in your new menu to the other sub menu categories and set it to 'none'
             if (reportType.value === 'inventory') {
+                storeSelection.style.display = 'block';
                 inventoryOptions.style.display = 'block';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
             } else if (reportType.value === 'store') {
+                storeSelection.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'block';
                 Employer.style.display = 'none';
@@ -209,10 +226,12 @@ function getStoreID(){
                     dateRangeRight.style.display = 'none';
                 }
             } else if (reportType.value === 'performance') {
+                storeSelection.style.display = 'none';
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
             } else {
+                storeSelection.style.display = 'none';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
