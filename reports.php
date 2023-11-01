@@ -48,7 +48,7 @@ function getStoreID(){
     $storeIdData = array();
     while($row = mysqli_fetch_assoc($result)){
         $storeIdData[] = [
-            'Pizza_Store_ID' => $row['Pizza_Store_ID']
+            'Pizza_Store_ID' => $row['Pizza_Store_ID'],
         ];
         mysqli_free_result($result);
         return $storeIdData;
