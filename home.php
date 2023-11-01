@@ -24,7 +24,6 @@
         <div class="navbar">
             <a href="index.php">Home</a>
             <a href="menu.php">Order now</a>
-            <!-- <a href="#">Profile</a> -->
             <?php
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo '<a href="update_profile.php">Profile</a>';

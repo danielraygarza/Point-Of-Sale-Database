@@ -10,7 +10,7 @@
 <body>
   <div class="navbar">
       <a href="index.php">Home</a>
-      <a href="employee_login.php">Employee Home</a>
+      <a href="employee_home.php">Employee Home</a>
               
   </div>
 
