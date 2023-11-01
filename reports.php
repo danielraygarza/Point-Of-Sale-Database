@@ -104,7 +104,7 @@ function getStoreID(){
                 $storeIdData = getStoreID();
                 foreach ($storeIdData as $store) {
                     $storeId = $store['Pizza_Store_ID'];
-                    echo "<option value='$storeId'>$storeId</option>";
+                    echo "<option value='" . htmlspecialchars($storeId) . "'>$storeId</option>";
                 }
                 ?>
             </select>
