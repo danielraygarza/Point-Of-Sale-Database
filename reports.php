@@ -16,7 +16,13 @@
     // */
 
     //TO DO://
-    //
+    // ADD STORE SELECTOR FOR INVETORY AND STORE REPORTS
+    // ADD DATE RANGE SELECTOR FOR SPECIFIC DATE REPORTS
+    // COMMENT ON BROKEN PHP BELOW IS WHERE THE DROP DOWN NEEDS TO GO
+    // LINES 110-118ish
+    // $storeId IS THE VARIABLE FOR STORE SELECTOR
+    // $stDate and $endDate ARE THE VARIABLES FOR DATE RANGE SELECTOR
+
 function getEmployeeData()
 {
     include_once("./database.php");
