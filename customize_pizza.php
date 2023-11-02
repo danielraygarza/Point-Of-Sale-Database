@@ -50,7 +50,7 @@
                         <p class = "calories">Somewhere between 3 and 9871 Calories</p>
                     </div>
                 </div>
-                <p class = "price"><b>CALCULATE PRICE WITH ITEMS: AUTO UPDATE</b></p>
+                <p class = "price"><b>Calculated Price: AUTO UPDATE TOTAL PRICE</b></p>
             </div>
     </main>
     
