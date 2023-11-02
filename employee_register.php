@@ -8,8 +8,9 @@
 
     // Redirects if not manager/CEO or accessed directly via URL
     if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-        echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
-        echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
+        // echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
+        // echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
+        header("Location: employee_login.php");
         exit; // Make sure to exit so that the rest of the script won't execute
     }
 
