@@ -263,3 +263,10 @@ select:focus {
     color: rgb(0, 0, 0);
     text-shadow: none;
 }
+
+.php-heading {
+    color: black;
+    font-size: 24px;
+    text-shadow: none;
+
+}
