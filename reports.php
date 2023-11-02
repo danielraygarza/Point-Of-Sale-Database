@@ -162,8 +162,8 @@ function getStoreID(){
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
                 <option value="orders">Daily Orders</option>
                 <option value="orderdates">Total Orders From:</option>
-                <option value="pizzas">Daily Pizzas Sold</option>
-                <option value="popular">Today's Most Popular Pizza</option>
+                <!-- <option value="pizzas">Daily Pizzas Sold</option> -->
+                <option value="popular">Today's Most Popular Item</option>
                 <option value="sales">Total Sales Today</option>
                 <option value="date">Total Sales To Date</option>
             </select>
