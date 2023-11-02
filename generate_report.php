@@ -270,67 +270,62 @@
                 ////////////////////////////
                 ///START EMPLOYEE QUERIES///
                 ////////////////////////////
-                // if ($reportType === 'performance') {
-                //     include 'database.php'; // Database connection file
+                 if ($reportType === 'performance') {
+                     include 'database.php'; // Database connection file
 
-                //     if ($mysqli === false) {
-                //         die("Error: Could not connect to the database. " . mysqli_connect_error());
-                //     }
+                     if ($mysqli === false) {
+                         die("Error: Could not connect to the database. " . mysqli_connect_error());
+                     }
 
+                     $setHeader = 'Employee Details';
                 //     if(isset($_POST['employeeDropdown'])){
                 //         $employeeId = $_POST['employeeDropdown'];
                 //     } else {
                 //         $employeeId = 0;
                 //     }
-                //     //$employeeId = $_POST['employeeDropdown'];
-                //     $sql = '';
-                //     $setHeader = '';
+                    $employeeId = '0';
+                    $sql = '';
+                
+                    $sql = "SELECT e.`Employee_ID`, e.`E_First_Name`, e.`E_Last_Name`, e.`Title_Role`, 
+                    e.`Hire_Date`, e.`assigned_orders`, e.`completed_orders`, d.`Time_Delivered`, 
+                    d.`Delivery_Status`
+                    FROM `employee` e
+                    LEFT JOIN `delivery` d ON e.`Employee_ID` = d.`employee`
+                    WHERE e.`Employee_ID` = $employeeId;";
 
-                //     $setHeader = 'Employee Details';
-                //     $sql = "SELECT 
-                //     e.`Employee_ID`, 
-                //     e.`E_First_Name`, 
-                //     e.`E_Last_Name`, 
-                //     e.`Title_Role`, 
-                //     e.`Hire_Date`, 
-                //     e.`assigned_orders`, 
-                //     e.`completed_orders`, 
-                //     d.`Time_Delivered`, 
-                //     d.`Delivery_Status`
-                //     FROM `employee` e
-                //     LEFT JOIN `delivery` d ON e.`Employee_ID` = d.`employee`
-                //     WHERE e.`Employee_ID` = $employeeId;";
+                     $result = mysqli_query($mysqli, $sql);
 
-                //     $result = mysqli_query($mysqli, $sql);
+                    if ($result) {
+                        // Check if there are rows returned
+                        if (mysqli_num_rows($result) > 0) {
+                            echo '<h2>' . $setHeader . '<h2>';
+                            echo "<table border='1' class='table_update'>";
 
-                //     if ($result) {
-                //         // Check if there are rows returned
-                //         if (mysqli_num_rows($result) > 0) {
-                //             echo "<table border='1' class='table_update'>";
-                //             echo "<tr><th>Employee ID</th><th>First Name</th><th>Last Name</th><th>Title/Role</th><th>Hire Date</th><th>Assigned Orders</th><th>Completed Orders</th><th>Time Delivered</th><th>Delivery Status</th></tr>";
+                            echo "<tr><th>Employee ID</th><th>First Name</th><th>Last Name</th><th>Title/Role</th><th>Hire Date</th><th>Assigned Orders</th><th>Completed Orders</th><th>Time Delivered</th><th>Delivery Status</th></tr>";
                     
-                //             while ($row = mysqli_fetch_assoc($result)) {
-                //                 echo "<tr>";
-                //                 echo "<td>" . $row['Employee_ID'] . "</td>";
-                //                 echo "<td>" . $row['E_First_Name'] . "</td>";
-                //                 echo "<td>" . $row['E_Last_Name'] . "</td>";
-                //                 echo "<td>" . $row['Title_Role'] . "</td>";
-                //                 echo "<td>" . $row['Hire_Date'] . "</td>";
-                //                 echo "<td>" . $row['assigned_orders'] . "</td>";
-                //                 echo "<td>" . $row['completed_orders'] . "</td>";
-                //                 echo "<td>" . $row['Time_Delivered'] . "</td>";
-                //                 echo "<td>" . $row['Delivery_Status'] . "</td>";
-                //                 echo "</tr>";
-                //             }
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo "<tr>";
+                                echo "<td>" . $row['Employee_ID'] . "</td>";
+                                echo "<td>" . $row['E_First_Name'] . "</td>";
+                                echo "<td>" . $row['E_Last_Name'] . "</td>";
+                                echo "<td>" . $row['Title_Role'] . "</td>";
+                                echo "<td>" . $row['Hire_Date'] . "</td>";
+                                echo "<td>" . $row['assigned_orders'] . "</td>";
+                                echo "<td>" . $row['completed_orders'] . "</td>";
+                                echo "<td>" . $row['Time_Delivered'] . "</td>";
+                                echo "<td>" . $row['Delivery_Status'] . "</td>";
+                                echo "</tr>";
+                            }
                     
-                //             echo "</table>";
-                //         } else {
-                //         echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
-                //         }
+                            echo "</table>";
+                        } 
+                    } else {
+                        echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
+                    }
 
-                //     // Close the database connection
-                //     mysqli_close($mysqli);
-                // }
+                    // Close the database connection
+                    mysqli_close($mysqli);
+                }
                 /////////////////////////
                 //END EMPLOYEE QUERIES///
                 /////////////////////////
