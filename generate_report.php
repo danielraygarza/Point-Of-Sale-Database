@@ -277,7 +277,12 @@
                         die("Error: Could not connect to the database. " . mysqli_connect_error());
                     }
 
-                    $employeeId = $_POST['employeeDropdown'];
+                    if(isset($_POST['employeeDropdown'])){
+                        $employeeId = $_POST['employeeDropdown'];
+                    } else {
+                        $employeeId = 0;
+                    }
+                    //$employeeId = $_POST['employeeDropdown'];
                     $sql = '';
                     $setHeader = '';
 
@@ -294,7 +299,7 @@
                     d.`Delivery_Status`
                     FROM `employee` e
                     LEFT JOIN `delivery` d ON e.`Employee_ID` = d.`employee`
-                    WHERE e.`Employee_ID` = $employeeId";
+                    WHERE e.`Employee_ID` = $employeeId;";
 
                     $result = mysqli_query($mysqli, $sql);
 
