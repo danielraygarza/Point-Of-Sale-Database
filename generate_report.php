@@ -72,7 +72,7 @@
                         // Header for low stock items
                         $setHeader = 'Low Stock Items';
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
@@ -83,7 +83,7 @@
                         // Header for out of stock items
                         $setHeader = 'Out of Stock Items';
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
