@@ -6,13 +6,16 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-//when you click "place order", it will run this code
+// Clear the cart if the "Clear Cart" button is clicked
+if (isset($_POST['clear-cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// when you click "place order", it will run this code
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<h2>Success</h2>";
     echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
-
-
-    //redirect to chosen page when click "place order"
+    // redirect to the chosen page when click "place order"
     // header('Location: index.php');
     exit;
 }
@@ -62,31 +65,13 @@ function getCartItemCount()
 
     <form action="checkout.php" method="post">
         <div class="checkout-window">
-            <!-- <h2 class="cart-heading">Pizza Cart</h2> -->
-            <?php
-            $today = date('m-d');
-            // if logged in, greet customer with name
-            if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                echo "<h2 class='php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
-                if (isset($_SESSION['user']['birthday'])) {
-                    $birthday = strtotime($_SESSION['user']['birthday']);
-                    $birthdayMonthDay = date('m-d', $birthday);
-                }
-                if (isset($birthdayMonthDay) && $birthdayMonthDay == $today) {
-                    echo "<h2 class='php-heading'>Happy Birthday, enjoy your POS pizza!</h2>";
-                } else {
-                    // echo "<h2 class='php-heading'>Not your birthday, sorry loser</h2>";
-                }
-            } else {
-                echo "<h2 class='php-heading'>Review your cart!</h2>";
-            }
-            ?>
+            <h2 class="cart-heading">Pizza Cart</h2>
             <select id="Store_ID" name="Store_ID" required>
                 <option value="" selected disabled>Select Store</option>
                 <?php
                 if ($stores->num_rows > 0) {
                     while ($row = $stores->fetch_assoc()) {
-                        //does not show store ID 1
+                        // does not show store ID 1
                         if ($row["Pizza_Store_ID"] == 1) {
                             continue;
                         }
@@ -106,23 +91,8 @@ function getCartItemCount()
                         foreach ($cart as $item) {
                             echo "<li>$item - $10.00</li>"; // Replace with actual item details
                         }
+                        echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
                     } else {
-                        $toppingName = 'Pepperoni'; // Replace with the desired topping name
-                        $query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$toppingName'";
-                        $result = $mysqli->query($query);
-
-                        if ($result) {
-                            $row = $result->fetch_assoc();
-
-                            if ($row) {
-                                $toppingPrice = $row['Price'];
-                                echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                            } else {
                                 echo "Topping not found.";
                             }
                         } else {
