@@ -130,7 +130,7 @@ function getStoreID(){
                     $stores = $mysqli->query("SELECT * FROM pizza_store");
                     if ($stores->num_rows > 0) {
                         while($row = $stores->fetch_assoc()) {
-                            if ($row["Pizza_Store_ID"] != 1) { continue; } //only shows store ID 1. can delete to show all
+                            //if ($row["Pizza_Store_ID"] != 1) { continue; } //only shows store ID 1. can delete to show all
                             echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
