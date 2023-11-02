@@ -329,7 +329,17 @@
                             echo '<h2>' . $setHeader . '<h2>';
                             echo "<table border='1' class='table_update'>";
 
-                            echo "<tr><th>Employee ID</th><th>First Name</th><th>Last Name</th><th>Title/Role</th><th>Hire Date</th><th>Assigned Orders</th><th>Completed Orders</th><th>Time Delivered</th><th>Delivery Status</th></tr>";
+                            echo "<tr>
+                                <th class='th-spacing'>Employee ID</th>
+                                <th class='th-spacing'>First Name</th>
+                                <th class='th-spacing'>Last Name</th>
+                                <th class='th-spacing'>Title/Role</th>
+                                <th class='th-spacing'>Hire Date</th>
+                                <th class='th-spacing'>Assigned Orders</th>
+                                <th class='th-spacing'>Completed Orders</th>
+                                <th class='th-spacing'>Time Delivered</th>
+                                <th class='th-spacing'>Delivery Status</th>
+                                </tr>";
                     
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo "<tr>";
