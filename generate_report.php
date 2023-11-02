@@ -261,14 +261,14 @@
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo '<table border="1" class="table_update">';
-                            echo '<tr><th>Pizza Store ID</th><th>Pizza Store Address</th></tr>';
+                            echo '<tr><th>Pizza Store ID</th><th>Pizza Store Address</th><th>Order Count</th></tr>';
 
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr>';
                                 echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
                                 echo '<td>' . $row['Store_Address'] . '</td>';
-                                //echo '<td>' . $row['Inventory_Amount'] . '</td>';
+                                echo '<td>' . $row['OrderCount'] . '</td>';
                                 //echo '<td>' . $row['Cost'] . '</td>';
                                 //echo '<td>' . $row['Vendor_Name'] . '</td>';
                                 //echo '<td>' . $row['Vendor_Rep'] . '</td>';

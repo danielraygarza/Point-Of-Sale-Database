@@ -14,6 +14,9 @@
         exit(); //ensures code is killed
     }
     // */
+
+    //TO DO://
+    //
 function getEmployeeData()
 {
     include_once("./database.php");
@@ -101,6 +104,15 @@ function getStoreID(){
             <label for="storeDropdown">Select Store:</label>
             <select name="storeDropdown" id="storeDropdown">
                 <option value="test">Default</option>
+                <?php
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
+
+                    if($stores->num_rows > 0) {
+                        while($row = $stores->fetch_assoc()){
+                            echo '<option value="' . $row["PIzza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
+                ?>
             </select>
 
         </div><br>
