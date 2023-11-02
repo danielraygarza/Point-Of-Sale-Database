@@ -116,7 +116,7 @@ function getStoreID(){
                 <option value="" selected disabled>Select a Report</option>
                 <option value="inventory">Inventory Reports</option>
                 <option value="store">Store Reports</option>
-                <option value="sales">Sales Report</option>
+                <!-- <option value="sales">Sales Report</option> -->
                 <option value="performance">Employee Performance Report</option>
             </select>
         </div> <br>
