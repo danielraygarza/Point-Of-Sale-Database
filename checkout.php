@@ -65,7 +65,25 @@ function getCartItemCount()
 
     <form action="checkout.php" method="post">
         <div class="checkout-window">
-            <h2 class="cart-heading">Pizza Cart</h2>
+            <!-- <h2 class="cart-heading">Pizza Cart</h2> -->
+            <?php
+            $today = date('m-d');
+            // if logged in, greet customer with name
+            if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+                echo "<h2 class='php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
+                if (isset($_SESSION['user']['birthday'])) {
+                    $birthday = strtotime($_SESSION['user']['birthday']);
+                    $birthdayMonthDay = date('m-d', $birthday);
+                }
+                if (isset($birthdayMonthDay) && $birthdayMonthDay == $today) {
+                    echo "<h2 class='php-heading'>Happy Birthday, enjoy your POS pizza!</h2>";
+                } else {
+                    // echo "<h2 class='php-heading'>Not your birthday, sorry loser</h2>";
+                }
+            } else {
+                echo "<h2 class='php-heading'>Review your cart!</h2>";
+            }
+            ?>
             <select id="Store_ID" name="Store_ID" required>
                 <option value="" selected disabled>Select Store</option>
                 <?php
