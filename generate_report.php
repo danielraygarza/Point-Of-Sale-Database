@@ -278,7 +278,7 @@
                             echo '</table>';
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
-                            echo 'No inventory data available for store ' . $selectStore;
+                            echo 'No inventory data available for store ' . $storeId;
                         }
                     } else {
                         echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
