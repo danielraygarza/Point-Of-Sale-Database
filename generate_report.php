@@ -1,18 +1,16 @@
 <?php
-/*
     session_start();
     include 'database.php'; // Include the database connection details
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    // Redirects if not manager or accessed directly via URL
-    if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'MAN') {
-        //if not logged in, will send to default URL
-        header("Location: employee_login.php");
-        exit(); //ensures code is killed
-    }
-    // */
+   // Redirects if not manager/CEO or accessed directly via URL
+    // if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    //     header("Location: employee_login.php");
+    //     exit; // Make sure to exit so that the rest of the script won't execute
+    // }
+
 ?>
 
 <!DOCTYPE html>
