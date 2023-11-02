@@ -12,24 +12,21 @@
     //     exit; // Make sure to exit so that the rest of the script won't execute
     // }
 
-    $stores = $mysqli->query("SELECT * FROM pizza_store");
-    $vendors = $mysqli->query("SELECT * FROM vendor");
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
         // Extracting data from the form
-        $first_name = $mysqli->real_escape_string($_POST['first_name']);
-        $middle_initial = $mysqli->real_escape_string($_POST['middle_initial']);
-        $last_name = $mysqli->real_escape_string($_POST['last_name']);
-        $address = $mysqli->real_escape_string($_POST['address']);
-        $address2 = $mysqli->real_escape_string($_POST['address2']);
-        $city = $mysqli->real_escape_string($_POST['city']);
-        $state = $mysqli->real_escape_string($_POST['state']);
-        $zip_code = $mysqli->real_escape_string($_POST['zip_code']);
-        $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
-        $email = $mysqli->real_escape_string($_POST['email']);
+        $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
+        $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
+        $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']);
+        $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
+        $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
+        $Expiration_Date = $mysqli->real_escape_string($_POST['Expiration_Date']);
+        // $Cost = $mysqli->real_escape_string($_POST['Cost']);
+        // $Reorder_Threshold = $mysqli->real_escape_string($_POST['Reorder_Threshold']);
 
         // Inserting the data into the database
+        $sql = "INSERT INTO inventory (Store_ID, Item_ID, Inventory_Amount, Vend_ID, Last_Stock_Shipment_Date, Expiration_Date) 
+                VALUES ('$Store_ID', '$Item_ID', '$Inventory_Amount', '$Vend_ID','$Last_Stock_Shipment_Date', '$Expiration_Date')";
         if ($mysqli->query($sql) === TRUE) {
             $mysqli->close();
             header('Location: employee_home.php');
@@ -68,12 +65,69 @@
 
                     if ($stores->num_rows > 0) {
                         while($row = $stores->fetch_assoc()) {
+                            // if ($row["Pizza_Store_ID"] == 1) { continue; }
                             echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
                 ?>
             </select>
         </div><br>
+        <div>
+            <label for="Item_ID">Item </label>
+            <select id="Item_ID" name="Item_ID" required>
+                <option value="" selected disabled>Select Item</option>
+                <?php
+                    $items = $mysqli->query("SELECT * FROM items");
+                    if ($items->num_rows > 0) {
+                        while($row = $items->fetch_assoc()) {
+                            echo '<option value="' . $row["Item_ID"] . '" ' . $selected . '>' . $row["Item_Name"] .'</option>';
+                        }
+                    }
+                ?>
+            </select>
+        </div><br>
+
+        <div>
+            <label for="Inventory_Amount">Amount Requested </label>
+            <input type="number" id="Inventory_Amount" name="Inventory_Amount" min="1" placeholder="Enter amount" style="width: 120px;" required>
+        </div><br>
+        
+        <div>
+            <label for="Vend_ID">Vendor </label>
+            <select id="Vend_ID" name="Vend_ID" required>
+                <option value="" selected disabled>Select Vendor</option>
+                <?php
+                    $vendors = $mysqli->query("SELECT * FROM vendor");
+                    if ($vendors->num_rows > 0) {
+                        while($row = $vendors->fetch_assoc()) {
+                            echo '<option value="' . $row["Vendor_ID"] . '" ' . $selected . '>' . $row["Vendor_Name"] .'</option>';
+                        }
+                    }
+                ?>
+            </select>
+        </div><br>
+
+        <!-- pulls current date and assigns to Last_Stock_Shipment_Date -->
+        <input type="hidden" id="Last_Stock_Shipment_Date" name="Last_Stock_Shipment_Date">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const currentDate = new Date();
+                const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
+                document.getElementById('Last_Stock_Shipment_Date').value = formattedDate;
+            });
+        </script>
+
+        <!-- pulls current date and assigns to join_date -->
+        <input type="hidden" id="Expiration_Date" name="Expiration_Date">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const currentDate = new Date();
+                //100 days from order
+                currentDate.setDate(currentDate.getDate() + 100);
+                const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
+                document.getElementById('Expiration_Date').value = formattedDate;
+            });
+        </script>
 
         <?php
             //displays error messages here 
