@@ -64,14 +64,18 @@ function getCartItemCount()
         <div class="checkout-window">
             <!-- <h2 class="cart-heading">Pizza Cart</h2> -->
             <?php
-            $today = date('Y-m-d');
+            $today = date('m-d');
             // if logged in, greet customer with name
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo "<h2 class='php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
-                if (isset($_SESSION['user']['birthday']) && $_SESSION['user']['birthday'] == $today) {
+                if (isset($_SESSION['user']['birthday'])) {
+                    $birthday = strtotime($_SESSION['user']['birthday']);
+                    $birthdayMonthDay = date('m-d', $birthday);
+                }
+                if (isset($birthdayMonthDay) && $birthdayMonthDay == $today) {
                     echo "<h2 class='php-heading'>Happy Birthday, enjoy your POS pizza!</h2>";
                 } else {
-                    echo "<h2 class='php-heading'>Not your birthday, sorry loser</h2>";
+                    // echo "<h2 class='php-heading'>Not your birthday, sorry loser</h2>";
                 }
             } else {
                 echo "<h2 class='php-heading'>Review your cart!</h2>";
@@ -82,6 +86,10 @@ function getCartItemCount()
                 <?php
                 if ($stores->num_rows > 0) {
                     while ($row = $stores->fetch_assoc()) {
+                        //does not show store ID 1
+                        if ($row["Pizza_Store_ID"] == 1) {
+                            continue;
+                        }
                         echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                     }
                 }
