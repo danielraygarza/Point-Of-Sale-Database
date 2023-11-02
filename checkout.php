@@ -93,6 +93,17 @@ function getCartItemCount()
                         }
                         echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
                     } else {
+                        $toppingName = 'Pepperoni'; // Replace with the desired topping name
+                        $query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$toppingName'";
+                        $result = $mysqli->query($query);
+
+                        if ($result) {
+                            $row = $result->fetch_assoc();
+
+                            if ($row) {
+                                $toppingPrice = $row['Price'];
+                                echo "$toppingName:                ", $row['Price'], "<br>";
+                            } else {
                                 echo "Topping not found.";
                             }
                         } else {
