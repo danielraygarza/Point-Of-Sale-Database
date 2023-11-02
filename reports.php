@@ -186,7 +186,7 @@ function getStoreID(){
                 inventoryOptions.style.display = 'block';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
-                storeSelection.style.display = 'none';
+                storeSelection.style.display = 'block';
                 // newMenuOptions.style.display = 'none'
             } else if (reportType.value === 'store') {
                 inventoryOptions.style.display = 'none';

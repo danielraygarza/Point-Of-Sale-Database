@@ -60,8 +60,12 @@
                     $inventoryType = $_POST['inventoryType'];
                     $sql = '';
 
-                    //Temporary set of variable $storeId
-                    $storeId = '1';
+                    // Get the selected store
+                    if(isset($_POST['storeId'])){
+                        $storeId = $_POST['storeId'];
+                    } else {
+                        $storeId = '1';
+                    }
 
                     // Define your SQL queries for Inventory selection
                     if ($inventoryType === 'low') {
@@ -153,10 +157,10 @@
                     }
 
                     // Get the selected store
-                    if(isset($_POST['selectStore'])){
-                        $selectStore = $_POST['selectStore'];
+                    if(isset($_POST['storeId'])){
+                        $storeId = $_POST['storeId'];
                     } else {
-                        $selectStore = '0';
+                        $storeId = '1';
                     }
 
                     // Check the value of the inventoryType
@@ -169,12 +173,12 @@
                         $setHeader = 'Daily Orders';
                         // Get the current Date
                         $currentDate = date("Y-m-d");
-                        // TO COMPLETE: Query for daily orders
+                        // Query for daily orders
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
                         FROM pizza_store P 
                         LEFT JOIN orders O
                         ON P.Pizza_Store_ID = O.Store_ID
-                        WHERE P.Pizza_Store_ID = '$selectStore' AND DATE(O.Date_Of_Order) = '$currentDate'
+                        WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } elseif ($storeType === 'orderdates') {
                         // Header for daily orders
