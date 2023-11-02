@@ -62,7 +62,7 @@
                     if(isset($_POST['storeId'])){
                         $storeId = $_POST['storeId'];
                     } else {
-                        $storeId = '0';
+                        $storeId = '1';
                     }
 
                     // Define your SQL queries for Inventory selection
