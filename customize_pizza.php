@@ -1,20 +1,29 @@
 <?php
-    include 'database.php';
-    session_start();
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
+include 'database.php';
+session_start();
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+$toppingsQuery = "SELECT Price, topping_name FROM pos.topping_on_pizza";
+$toppingsResult = $mysqli->query($toppingsQuery);
+
+function addToCart($itemIDs) {
+    foreach ($itemIDs as $itemID) {
+        $_SESSION['cart'][] = $itemID;
     }
-    $toppingsQuery = "SELECT Price, topping_name FROM pos.topping_on_pizza";
-    $toppingsResult = $mysqli->query($toppingsQuery);
-    $sql = "SELECT * FROM pizza;";
-    $result = $mysqli->query($sql);
-    function addToCart($itemId) {
-        $_SESSION['cart'][] = $itemId;
+}
+
+function getCartItemCount() {
+    return count($_SESSION['cart']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add-to-cart'])) {
+        $selectedToppings = isset($_POST['toppings']) ? $_POST['toppings'] : [];
+        addToCart($selectedToppings);
     }
-    function getCartItemCount() {
-        return count($_SESSION['cart']);
-    }
-    
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,11 +39,11 @@
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
         <?php
-            if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                echo '<a href="logout.php">Logout</a>';
-            }
+        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+            echo '<a href="logout.php">Logout</a>';
+        }
         ?>
-         <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
+        <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
     </div>
 
     <main>
@@ -52,8 +61,8 @@
                 </div>
             </div>
             <p class="price"><b>Calculated Price: AUTO UPDATE TOTAL PRICE</b></p>
-            <div class="toppings-list">
-                <form id="toppingForm">
+            <form action="" method="post">
+                <div class="toppings-list">
                     <?php
                     while ($toppingRow = $toppingsResult->fetch_assoc()) {
                         $toppingName = $toppingRow['topping_name'];
@@ -61,28 +70,10 @@
                         echo '<label><input type="checkbox" name="toppings[]" value="' . $toppingName . '">' . $toppingName . ' - $' . $toppingPrice . '</label><br>';
                     }
                     ?>
-                </form>
-                <button id="addToCartButton" onclick="addSelectedToppingsToCart()">Add to Cart</button>
-            </div>
+                </div>
+                <input type="submit" name="add-to-cart" value="Add to Cart">
+            </form>
         </div>
     </main>
-
-    <script>
-        function addSelectedToppingsToCart() {
-            // Get the form and collect checked checkboxes
-            const form = document.getElementById('toppingForm');
-            const checkboxes = form.querySelectorAll('input[name="toppings[]"]:checked');
-            
-            // Extract the values (topping names) from the checked checkboxes
-            const selectedToppings = Array.from(checkboxes).map(checkbox => checkbox.value);
-
-            // Add the selected toppings to the cart using the addToCart function
-            selectedToppings.forEach(topping => addToCart(topping));
-            
-            // Optionally, you can update the cart count or show a message
-            const cartItemCount = getCartItemCount();
-            alert(selectedToppings.length + ' topping(s) added to the cart. Total items in the cart: ' + cartItemCount);
-        }
-    </script>
 </body>
 </html>
