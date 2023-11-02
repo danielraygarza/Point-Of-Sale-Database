@@ -182,7 +182,7 @@
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } elseif ($storeType === 'orderdates') {
                         // Header for daily orders
-                        $setHeader = 'Daily Orders';
+                        $setHeader = 'Orders by Date';
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
                             $stDate = $_POST['stDate'];
@@ -196,10 +196,10 @@
                             // Default test values for endDate
                             $endDate = date("Y-m-d");
                         }
-                        // TO COMPLETE: Query for daily orders
+                        // TO COMPLETE: Query for orders by date
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
-                        FROM pizza_store P 
-                        LEFT JOIN orders O
+                        FROM PIZZA_STORE P 
+                        LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
@@ -209,20 +209,47 @@
                         // TO COMPLETE: Query for pizzas sold today
                         $sql = "SELECT Pizza_Store_ID FROM pizza_store";
                     } elseif ($storeType === 'popular') {
-                        // Header for most popular pizza today
-                        $setHeader = 'Most Popular Pizza';
-                        // TO COMPLETE: Query for most popular pizza today
-                        $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+                        // Header for most popular item today
+                        $setHeader = 'Most Popular Item';
+                        // TO COMPLETE: Query for most popular item today
+                        $sql = "SELECT I.Item_Name 
+                        FROM menu_items M
+                        ";
                     } elseif ($storeType === 'sales') {
                         // Header for total sales today
                         $setHeader = 'Total Sales Today';
+                        // Get the current Date
+                        $currentDate = date("Y-m-d");
                         // TO COMPLETE: Query for total sales today
-                        $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, SUM(O.Total_Amount) AS Total_Sales
+                        FROM PIZZA_STORE P 
+                        LEFT JOIN ORDERS O
+                        ON P.Pizza_Store_ID = O.Store_ID
+                        WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
+                        GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } else {
                         //Header for total sales to date
-                        $setHeader = 'Total Sales To Date';
-                        // TO COMPLETE: Query for total sales to date
-                        $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+                        $setHeader = 'Total Sales For Date Range';
+                        // Get the selected date range
+                        if (isset($_POST['stDate'])) {
+                            $stDate = $_POST['stDate'];
+                        } else {
+                            // Default test values for stDate
+                            $stDate = date("Y-m-d");
+                        }
+                        if (isset($_POST['endDate'])) {
+                            $endDate = $_POST['endDate'];
+                        } else {
+                            // Default test values for endDate
+                            $endDate = date("Y-m-d");
+                        }
+                        // TO COMPLETE: Query for date range sales
+                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, SUM(O.Total_Amount) AS Total_Sales
+                        FROM PIZZA_STORE P 
+                        LEFT JOIN ORDERS O
+                        ON P.Pizza_Store_ID = O.Store_ID
+                        WHERE DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
+                        GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     }
 
 
