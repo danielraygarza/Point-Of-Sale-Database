@@ -72,6 +72,10 @@ h1 {
     /* top: 1px; */
 }
 
+.toppings-list{
+    color: black;
+}
+
 .orderbutton {
     position: absolute;
     bottom: -50px;  /* Moves the button outside and below the container */
