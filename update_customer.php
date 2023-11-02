@@ -53,7 +53,6 @@
 ?>
 
 <!DOCTYPE html>
-<!-- Signup page for new users -->
 <head>
     <title>Update Profile</title>
     <link rel="stylesheet" href="css/styles.css">
