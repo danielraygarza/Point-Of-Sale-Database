@@ -7,10 +7,13 @@
     session_start();
 
      // Redirects if not manager/CEO or accessed directly via URL
-     if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-        header("Location: employee_login.php");
-        exit; // Make sure to exit so that the rest of the script won't execute
-    }
+    //  if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    //     header("Location: employee_login.php");
+    //     exit; // Make sure to exit so that the rest of the script won't execute
+    // }
+
+    $stores = $mysqli->query("SELECT * FROM pizza_store");
+    $vendors = $mysqli->query("SELECT * FROM vendor");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
@@ -27,7 +30,6 @@
         $email = $mysqli->real_escape_string($_POST['email']);
 
         // Inserting the data into the database
-
         if ($mysqli->query($sql) === TRUE) {
             $mysqli->close();
             header('Location: employee_home.php');
@@ -56,19 +58,22 @@
         ?>
     </div>
     <form action="inventory.php" method="post">
-        <h2>Update your POS Pizza Account</h2>
-        <div>       
-            <label for="first_name">Name  </label>
-            <input type="text" id="first_name" name="first_name" value="<?php echo $_SESSION['user']['first_name']; ?>" placeholder="First" style="width: 75px;" required>
+        <h2>Inventory</h2>
+        <div>
+            <label for="Store_ID">Store Location </label>
+            <select id="Store_ID" name="Store_ID" required>
+                <option value="" selected disabled>Select Store</option>
+                <?php
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
 
-            <label for="middle_initial"></label>
-            <input type="text" id="middle_initial" name="middle_initial" maxlength="1"  value="<?php echo $_SESSION['user']['middle_initial']; ?>" placeholder="M.I." style="width: 40px;">
-
-            <label for="last_name"></label>
-            <input type="text" id="last_name" name="last_name" value="<?php echo $_SESSION['user']['last_name']; ?>" placeholder="Last" style="width: 75px;" required>
+                    if ($stores->num_rows > 0) {
+                        while($row = $stores->fetch_assoc()) {
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
+                ?>
+            </select>
         </div><br>
-
-
 
         <?php
             //displays error messages here 
@@ -79,7 +84,7 @@
         ?>
 
         <div>
-            <input class = button type="submit" value="Save Updates">
+            <input class = button type="submit" value="Place Inventory Order">
         </form>
 </body>
 </html>
