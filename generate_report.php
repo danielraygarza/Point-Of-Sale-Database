@@ -209,10 +209,17 @@
                     } elseif ($storeType === 'popular') {
                         // Header for most popular item today
                         $setHeader = 'Most Popular Item';
+                        // Get the current Date
+                        $currentDate = date("Y-m-d");
                         // TO COMPLETE: Query for most popular item today
-                        $sql = "SELECT I.Item_Name 
-                        FROM menu_items M
-                        ";
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        FROM ORDER_ITEMS OI
+                        JOIN ORDERS O ON OI.Order_ID = O.Order_ID
+                        JOIN ITEMS I ON OI.Item_ID = I.Item_ID
+                        WHERE DATE(O.Date_Of_Order) = '$currentDate'AND O.Store_ID = '$storeId'
+                        GROUP BY I.Item_Name
+                        ORDER BY Item_Count DESC
+                        LIMIT 1;";
                     } elseif ($storeType === 'sales') {
                         // Header for total sales today
                         $setHeader = 'Total Sales Today';
