@@ -112,9 +112,8 @@ function getCartItemCount()
                             $row = $result->fetch_assoc();
                             if($result){
                                 $toppingPrice = $row['Price'];
-                                echo "$row['Price'];
                             }
-                            echo "<li>$item - $10.00</li>"; // Replace with actual item details
+                            echo "<li>$item - $row['Price']"; // Replace with actual item details
                         }
                         echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
                     } else {
