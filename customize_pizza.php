@@ -1,6 +1,18 @@
 <?php
     include 'database.php';
     session_start();
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+    $sql = "SELECT * FROM pizza;";
+    $result = $mysqli->query($sql);
+    function addToCart($itemId) {
+        $_SESSION['cart'][] = $itemId;
+    }
+    function getCartItemCount() {
+        return count($_SESSION['cart']);
+    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +33,7 @@
                 echo '<a href="logout.php">Logout</a>';
             }
         ?>
+         <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
     </div>
 
     <main>
