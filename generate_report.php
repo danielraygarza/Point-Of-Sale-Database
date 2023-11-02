@@ -94,7 +94,7 @@
                         // Header for all items
                         $setHeader = 'Inventory Report';
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -117,7 +117,7 @@
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr>';
-                                echo '<td>' . $row['Store_Inventory_ID'] . '</td>';
+                                echo '<td>' . $row['Inventory_ID'] . '</td>';
                                 echo '<td>' . $row['Item_Name'] . '</td>';
                                 echo '<td>' . $row['Inventory_Amount'] . '</td>';
                                 echo '<td>' . $row['Cost'] . '</td>';
