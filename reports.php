@@ -121,13 +121,11 @@ function getStoreID(){
         <div id="storeOptions" style="display: none;">
             <!-- Store Report sub-options here -->
             <label for="storeType">Select Store Report Type:</label>
-            <!-- Here you set your id that you'll reference on generate_reportl.php -->
+            <!-- Here you set your id that you'll reference on generate_report.php -->
             <!-- This will tell the page which sub report you want to run -->
             <select name="storeType" id="storeType">
                 <!-- Here are the different options you can display in your sub menu -->
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
-                <!-- ***TO DO*** -->
-                <!-- NEED TO ADD STORE SELECTION AS WELL FOR ALL STORE REPORTS -->
                 <option value="orders">Daily Orders</option>
                 <option value="orderdates">Total Orders From:</option>
                 <option value="pizzas">Daily Pizzas Sold</option>
