@@ -1,6 +1,5 @@
 <?php
 // // Check if the user is not logged in
-/*
     session_start();
     include 'database.php'; // Include the database connection details
     ini_set('display_errors', 1);
@@ -8,12 +7,10 @@
     error_reporting(E_ALL);
 
     // Redirects if not manager or accessed directly via URL
-    if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'MAN') {
-        //if not logged in, will send to default URL
-        header("Location: employee_login.php");
-        exit(); //ensures code is killed
-    }
-    // */
+    // if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    //     header("Location: employee_login.php");
+    //     exit; // Make sure to exit so that the rest of the script won't execute
+    // }
 
     //TO DO://
     // ADD STORE SELECTOR FOR INVETORY AND STORE REPORTS
@@ -23,26 +20,44 @@
     // $storeId IS THE VARIABLE FOR STORE SELECTOR
     // $stDate and $endDate ARE THE VARIABLES FOR DATE RANGE SELECTOR
 
-function getEmployeeData()
-{
-    include_once("./database.php");
-    $sql = "SELECT `Employee_ID`, `E_First_Name`, `E_Last_Name` FROM `employee`";
-    $result = mysqli_query($mysqli, $sql);
+    // function getEmployeeData() {
+    //     include_once("./database.php");
+    //     $sql = "SELECT `Employee_ID`, `E_First_Name`, `E_Last_Name` FROM `employee`";
+    //     $result = mysqli_query($mysqli, $sql);
+    
+    //     if (!$result) {
+    //         die("Error: " . mysqli_error($connection));
+    //     }
+    
+    //     $employeeData = array();
+    //     while ($row = mysqli_fetch_assoc($result)) {
+    //         $employeeData[] = [
+    //             'Employee_ID' => $row['Employee_ID'],
+    //             'Name' => $row['E_First_Name'] . ' ' . $row['E_Last_Name'],
+    //         ];
+    //     }
+    //     mysqli_free_result($result);
+    //     return $employeeData;
+    // }
 
-    if (!$result) {
-        die("Error: " . mysqli_error($connection));
+    //Daniel: altered function above to not include "database.php" inside function. 
+    // it was causing continuity errors. database.php included is at top of file
+    function getEmployeeData($mysqli) {
+        $sql = "SELECT `Employee_ID`, `E_First_Name`, `E_Last_Name` FROM `employee`";
+        $result = $mysqli->query($sql);
+    
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $employeeData[] = [
+                    'Employee_ID' => $row['Employee_ID'],
+                    'Name' => $row['E_First_Name'] . ' ' . $row['E_Last_Name'],
+                ];
+            }
+            $result->free();
+        } 
+        return $employeeData;
     }
-
-    $employeeData = array();
-    while ($row = mysqli_fetch_assoc($result)) {
-        $employeeData[] = [
-            'Employee_ID' => $row['Employee_ID'],
-            'Name' => $row['E_First_Name'] . ' ' . $row['E_Last_Name'],
-        ];
-    }
-    mysqli_free_result($result);
-    return $employeeData;
-}
+    
 
 // Get a list of Store Ids from Pizza_Store table as array $storeIdData
 // Function may be fucked, won't generate properly, breaks page
@@ -109,18 +124,17 @@ function getStoreID(){
         <div id="storeSelection" style="display: none;">
             <label for="storeDropdown">Select Store:</label>
             <select name="storeDropdown" id="storeDropdown">
-                <option value="test">Default</option>
-                <!-- THIS PHP BREAKS THE PAGE -->
+                <!-- <option value="test">Default</option> -->
+                <option value="" selected disabled>Select Store</option>
                 <?php
-                    // $stores = $mysqli->query("SELECT * FROM pizza_store");
-
-                    // if($stores->num_rows > 0) {
-                    //     while($row = $stores->fetch_assoc()){
-                    //         echo '<option value="' . $row["PIzza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                    //     }
-                    // }
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
+                    if ($stores->num_rows > 0) {
+                        while($row = $stores->fetch_assoc()) {
+                            if ($row["Pizza_Store_ID"] != 1) { continue; } //only shows store ID 1. can delete to show all
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
                 ?>
-                <!-- END -->
             </select>
 
         </div><br>
@@ -161,7 +175,7 @@ function getStoreID(){
             <label for="employeeDropdown">Select Employee:</label>
             <select name="employeeDropdown" id="employeeDropdown">
                 <?php
-                $employeeData = getEmployeeData();
+                $employeeData = getEmployeeData($mysqli);
                 foreach ($employeeData as $employee) {
                     $employeeID = $employee['Employee_ID'];
                     $employeeName = $employee['Name'];
@@ -186,6 +200,7 @@ function getStoreID(){
         function showOptions() {
             //This reads which main report group is currently selected
             var reportType = document.getElementById('reportType');
+            storeDropdown.value = ""; //resets store dropdown when you change report type
 
             //If you add a new sub menu, define it here then refence it by it's id like so:
             var inventoryOptions = document.getElementById('inventoryOptions');
