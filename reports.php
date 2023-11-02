@@ -122,8 +122,8 @@ function getStoreID(){
         </div> <br>
 
         <div id="storeSelection" style="display: none;">
-            <label for="storeDropdown">Select Store:</label>
-            <select name="storeDropdown" id="storeDropdown">
+            <label for="storeId">Select Store:</label>
+            <select name="storeId" id="storeId">
                 <!-- <option value="test">Default</option> -->
                 <option value="" selected disabled>Select Store</option>
                 <?php
@@ -135,7 +135,7 @@ function getStoreID(){
                         }
                     }
                 ?>
-            </select>
+1            </select>
 
         </div><br>
 
