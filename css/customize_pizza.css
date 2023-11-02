@@ -35,9 +35,7 @@ main .card .top-card {
 
 }
 
-main .card .top-card .right-top .image {
 
-}
 
 main .card .top-card .right-top .image img {
     margin: 5px;
@@ -65,24 +63,48 @@ main .card .top-card .left-top .description {
     font-size: 15px;
 }
 
-main .card .price {
-    margin: auto;
-    position: absolute;
-    bottom: 35px;
-    font-size: 15px;
-    padding: 5px;
-    left: 25%;
-    width: 50%;
+main .card .top-card .left-top .calories {
+    margin-top: 10px;
+    font-size: 12px;
     text-shadow: none;
 }
 
-main .card .top-card .left-top .calories {
-    margin: auto;
-    position: absolute;
-    bottom: 55px;
-    font-size: 12px;
-    padding: 5px;
-    left: 25%;
-    width: 50%;
+.bottom-bar {
+    background-color: rgba(224, 217, 217, 0.7);
+    overflow: hidden;
+    position: fixed;  /* This ensures the navbar is always at the top */
+    bottom: 0;           /* Aligns the bottom to the bottom */
+    width: 100%;      /* Ensures the navbar stretches the full width of the page */
+    z-index: 1000;    /* Keeps the navbar above other elements */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     text-shadow: none;
+}
+
+.bottom-bar .total {
+    margin: 5px;
+    padding: 5px;
+    text-shadow: none;
+    margin-right: -5px;
+}
+
+.bottom-bar .price {
+    margin: 5px;
+    font-size: 15px;
+    padding: 5px;
+    text-shadow: none;
+    color: green;
+    font-weight: bold;
+}
+
+.bottom-bar .add-to-cart {
+    border-radius: 20px;
+    background-color: rgb(80, 198, 80);
+    margin: 5px;
+    padding: 5px;
+}
+
+.bottom-bar .add-to-cart:hover {
+    transform: scale(105%);
 }

@@ -1,6 +1,8 @@
 <?php
     include 'database.php';
     session_start();
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -32,14 +34,19 @@
                         </div>
                     </div>
                     <div class = "left-top">
-                        <p class = "pizza_name">Cheese Pizza</p>
-                        <p class = "description">This is a placeholder description</p>
+                        <p class = "pizza_name"><?php echo $_SESSION['pizzaname'];?></p>
+                        <p class = "description">This is a placeholder description. This is a placeholder description. This is a placeholder description.</p>
                         <p class = "calories">1200 cals</p>
                     </div>
                 </div>
-                <p class = "price"><b>$12.99</b></p>
             </div>
     </main>
+
+    <div class = "bottom-bar">
+        <p class = "total"><b>Total:</b></p>
+        <p class = "price">$12.99</p>
+        <div class = "add-to-cart"> ADD TO CART</div>
+    </div>
     
 
 

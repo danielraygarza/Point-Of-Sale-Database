@@ -54,6 +54,7 @@
                 <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
                 <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
                 <div class = "customize"> <a href = "customize_pizza.php">CUSTOMIZE</a></div>
+                <?php $_SESSION['pizzaname'] = $row["Name"]; ?> 
             </div>
         <?php } ?>
     </main>
