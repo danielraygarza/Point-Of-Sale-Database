@@ -278,12 +278,13 @@
                      }
 
                      $setHeader = 'Employee Details';
+                     $employeeId = '0';
                 //     if(isset($_POST['employeeDropdown'])){
                 //         $employeeId = $_POST['employeeDropdown'];
                 //     } else {
                 //         $employeeId = 0;
                 //     }
-                    $employeeId = '0';
+                    
                     $sql = '';
                 
                     $sql = "SELECT e.`Employee_ID`, e.`E_First_Name`, e.`E_Last_Name`, e.`Title_Role`, 
