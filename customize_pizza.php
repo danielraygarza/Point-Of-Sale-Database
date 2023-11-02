@@ -45,12 +45,12 @@
                         </div>
                     </div>
                     <div class = "left-top">
-                        <p class = "pizza_name">Cheese Pizza</p>
-                        <p class = "description">This is a placeholder description</p>
-                        <p class = "calories">1200 cals</p>
+                        <p class = "pizza_name">Customize Your Pizza</p>
+                        <p class = "description">Select any of the following toppings for your pizza:</p>
+                        <p class = "calories">Somewhere between 3 and 9871 Calories</p>
                     </div>
                 </div>
-                <p class = "price"><b>$12.99</b></p>
+                <p class = "price"><b>CALCULATE PRICE WITH ITEMS: AUTO UPDATE</b></p>
             </div>
     </main>
     
