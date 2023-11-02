@@ -279,11 +279,11 @@
 
                      $setHeader = 'Employee Details';
                      $employeeId = '0';
-                //     if(isset($_POST['employeeDropdown'])){
-                //         $employeeId = $_POST['employeeDropdown'];
-                //     } else {
-                //         $employeeId = 0;
-                //     }
+                     if(isset($_POST['employeeDropdown'])){
+                        $employeeId = $_POST['employeeDropdown'];
+                     } else {
+                        $employeeId = 0;
+                    }
                     
                     $sql = '';
                 
