@@ -62,6 +62,7 @@
 // Get a list of Store Ids from Pizza_Store table as array $storeIdData
 // Function may be fucked, won't generate properly, breaks page
 function getStoreID(){
+    include_once("./database.php");
     $sql = "SELECT `Pizza_Store_ID` FROM `pizza_store`";
     $result = mysqli_query($mysqli, $sql);
 
