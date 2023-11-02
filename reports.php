@@ -104,15 +104,17 @@ function getStoreID(){
             <label for="storeDropdown">Select Store:</label>
             <select name="storeDropdown" id="storeDropdown">
                 <option value="test">Default</option>
+                <!-- THIS PHP BREAKS THE PAGE -->
                 <?php
-                    $stores = $mysqli->query("SELECT * FROM pizza_store");
+                    // $stores = $mysqli->query("SELECT * FROM pizza_store");
 
-                    if($stores->num_rows > 0) {
-                        while($row = $stores->fetch_assoc()){
-                            echo '<option value="' . $row["PIzza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                        }
-                    }
+                    // if($stores->num_rows > 0) {
+                    //     while($row = $stores->fetch_assoc()){
+                    //         echo '<option value="' . $row["PIzza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                    //     }
+                    // }
                 ?>
+                <!-- END -->
             </select>
 
         </div><br>
