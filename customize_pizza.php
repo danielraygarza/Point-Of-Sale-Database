@@ -4,6 +4,8 @@
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
+    $toppingsQuery = "SELECT Price, topping_name FROM pos.topping_on_pizza";
+    $toppingsResult = $mysqli->query($toppingsQuery);
     $sql = "SELECT * FROM pizza;";
     $result = $mysqli->query($sql);
     function addToCart($itemId) {
@@ -51,6 +53,15 @@
                     </div>
                 </div>
                 <p class = "price"><b>Calculated Price: AUTO UPDATE TOTAL PRICE</b></p>
+                <div class="toppings-list">
+                    <?php
+                    while ($toppingRow = $toppingsResult->fetch_assoc()) {
+                        $toppingName = $toppingRow['topping_name'];
+                        $toppingPrice = $toppingRow['Price'];
+                        echo '<label><input type="checkbox" name="toppings[]" value="' . $toppingName . '">' . $toppingName . ' - $' . $toppingPrice . '</label><br>';
+                    }
+                    ?>
+                </div>
             </div>
     </main>
     
