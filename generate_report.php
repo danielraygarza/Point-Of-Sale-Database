@@ -270,6 +270,9 @@
 
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
+                                //TO DO://
+                                //NEED TO FINISH DECIDING WHAT TO DISPLAY FOR REPORTS
+                                //MAY HAVE TO MAKE SEPARATE DISPLAYS FOR SEPARATE STORE REPORT TYPES
                                 echo '<tr>';
                                 echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
                                 echo '<td>' . $row['Store_Address'] . '</td>';
