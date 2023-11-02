@@ -107,6 +107,13 @@ function getCartItemCount()
                     if (count($cart) > 0) {
                         // Loop through the items in the cart and display them
                         foreach ($cart as $item) {
+                            $query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$item'";
+                            $result = $mysqli->query($query);
+                            $row = $result->fetch_assoc();
+                            if($result){
+                                $toppingPrice = $row['Price'];
+                                echo "$row['Price'];
+                            }
                             echo "<li>$item - $10.00</li>"; // Replace with actual item details
                         }
                         echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
