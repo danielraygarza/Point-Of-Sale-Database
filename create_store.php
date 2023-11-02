@@ -7,11 +7,11 @@
     error_reporting(E_ALL);
 
     // Redirects if not CEO or accessed directly via URL
-    // if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'CEO') {
-    //     echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
-    //     echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
-    //     exit; // Make sure to exit so that the rest of the script won't execute
-    // }
+    if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'CEO') {
+        echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
+        echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
+        exit; // Make sure to exit so that the rest of the script won't execute
+    }
 
     //get list of managers from database
     $managers = $mysqli->query("SELECT * FROM employee WHERE Title_Role='MAN'");
@@ -26,18 +26,30 @@
         $Store_Phone_Number = $mysqli->real_escape_string(str_replace('-', '', $_POST['Store_Phone_Number']));
         $Store_Manager_ID = $mysqli->real_escape_string($_POST['Store_Manager_ID']);
 
-        //check if duplicate employee ID. sends error message
-        $checkID = $mysqli->query("SELECT Employee_ID FROM employee WHERE Employee_ID='$Employee_ID'");
+        // check if duplicate store location. sends error message
+        $location = $mysqli->query("SELECT * FROM pizza_store WHERE Store_Address='$Store_Address' AND Store_City='$Store_City' AND Store_State='$Store_State'");
         
-        if($checkID->num_rows > 0) {
+        if($location->num_rows > 0) {
             echo "";
             $_SESSION['error'] = "Store location already exist";
         } else {
             // Inserting the data into the database. Accounting if supervisor is NULL when employee is a manager
-            $sql = "INSERT INTO pizza_store (Store_Address, Store_City, Store_State, Store_Zip_Code, Store_Phone_Number) 
-                    VALUES ('$Store_Address', '$Store_City','$Store_State', '$Store_Zip_Code', '$Store_Phone_Number')";
+            $sql = "INSERT INTO pizza_store (Store_Address, Store_City, Store_State, Store_Zip_Code, Store_Phone_Number, Store_Manager_ID) 
+                    VALUES ('$Store_Address', '$Store_City','$Store_State', '$Store_Zip_Code', '$Store_Phone_Number', '$Store_Manager_ID')";
 
             if ($mysqli->query($sql) === TRUE) {
+
+                 // Get the ID of the last inserted store
+                $newStoreID = $mysqli->insert_id;
+
+                // Update the manager's Pizza_Store_ID using that ID
+                $managerStoreID = "UPDATE employee SET Store_ID = $newStoreID WHERE Employee_ID = $Store_Manager_ID";
+                
+                if ($mysqli->query($managerStoreID) !== TRUE) {
+                    echo "Error updating manager's store ID: " . $mysqli->error;
+                    // You might want to handle this error differently
+                }
+
                 $mysqli->close();
                 header('Location: employee_home.php');
                 exit;
@@ -92,8 +104,8 @@
         </div><br>
 
         <div>
-            <label for="Store_state">State  </label>
-            <select id="Store_state" name="Store_state" placeholder="Select state" style="width: 100px;" required>
+            <label for="Store_State">State  </label>
+            <select id="Store_State" name="Store_State" placeholder="Select state" style="width: 100px;" required>
                 <option value="" selected disabled>Select</option>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>

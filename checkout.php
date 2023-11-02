@@ -1,39 +1,39 @@
 <?php
-    // Start the session
-    session_start();
-    include 'database.php';
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+// Start the session
+session_start();
+include 'database.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    //when you click "place order", it will run this code
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        echo "<h2>Success</h2>";
-        echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
+//when you click "place order", it will run this code
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo "<h2>Success</h2>";
+    echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
 
-        
-        //redirect to chosen page when click "place order"
-        // header('Location: index.php');
-        exit;
-    }
 
-    // Initialize the cart as an empty array if it doesn't exist
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
-    $stores = $mysqli->query("SELECT * FROM pizza_store");
+    //redirect to chosen page when click "place order"
+    // header('Location: index.php');
+    exit;
+}
 
-    // Add an item to the cart (you can call this function when a user adds an item)
-    function addToCart($itemId)
-    {
-        $_SESSION['cart'][] = $itemId;
-    }
+// Initialize the cart as an empty array if it doesn't exist
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+$stores = $mysqli->query("SELECT * FROM pizza_store");
 
-    // Get the number of items in the cart
-    function getCartItemCount()
-    {
-        return count($_SESSION['cart']);
-    }
+// Add an item to the cart (you can call this function when a user adds an item)
+function addToCart($itemId)
+{
+    $_SESSION['cart'][] = $itemId;
+}
+
+// Get the number of items in the cart
+function getCartItemCount()
+{
+    return count($_SESSION['cart']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,27 +50,43 @@
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
         <?php echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>'; ?>
-        <select id="Store_ID" name="Store_ID" required>
-            <option value="" selected disabled>Select Store</option>
-            <?php
-            if ($stores->num_rows > 0) {
-                while ($row = $stores->fetch_assoc()) {
-                    echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                }
-            }
-            ?>
-        </select>
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             echo '<a href="update_profile.php">Profile</a>';
             echo '<a href="logout.php">Logout</a>';
+        } else {
+            echo '<a href="customer_login.php">Login</a>';
         }
         ?>
     </div>
 
     <form action="checkout.php" method="post">
         <div class="checkout-window">
-            <h2 class="cart-heading">Pizza Cart</h2>
+            <!-- <h2 class="cart-heading">Pizza Cart</h2> -->
+            <?php
+            $today = date('Y-m-d');
+            // if logged in, greet customer with name
+            if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+                echo "<h2 class='php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
+                if (isset($_SESSION['user']['birthday']) && $_SESSION['user']['birthday'] == $today) {
+                    echo "<h2 class='php-heading'>Happy Birthday, enjoy your POS pizza!</h2>";
+                } else {
+                    echo "<h2 class='php-heading'>Not your birthday, sorry loser</h2>";
+                }
+            } else {
+                echo "<h2 class='php-heading'>Review your cart!</h2>";
+            }
+            ?>
+            <select id="Store_ID" name="Store_ID" required>
+                <option value="" selected disabled>Select Store</option>
+                <?php
+                if ($stores->num_rows > 0) {
+                    while ($row = $stores->fetch_assoc()) {
+                        echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                    }
+                }
+                ?>
+            </select>
             <div class="cart-panel">
                 <ul class="cart-items">
                     <?php
@@ -93,12 +109,11 @@
                             if ($row) {
                                 $toppingPrice = $row['Price'];
                                 echo "$toppingName:                ", $row['Price'], "<br>";
-
-                                echo "$toppingName:                ", $row['Price'], "<br>";
-                                echo "$toppingName:                ", $row['Price'], "<br>";
-                                echo "$toppingName:                ", $row['Price'], "<br>";
-                                echo "$toppingName:                ", $row['Price'], "<br>";
-                                echo "$toppingName:                ", $row['Price'], "<br>";
+                                // echo "$toppingName:                ", $row['Price'], "<br>";
+                                // echo "$toppingName:                ", $row['Price'], "<br>";
+                                // echo "$toppingName:                ", $row['Price'], "<br>";
+                                // echo "$toppingName:                ", $row['Price'], "<br>";
+                                // echo "$toppingName:                ", $row['Price'], "<br>";
                             } else {
                                 echo "Topping not found.";
                             }
@@ -108,7 +123,7 @@
                     }
                     ?>
                 </ul>
-                <input class= "button orderbutton" type="submit" value="Place Order">
+                <input class="button orderbutton" type="submit" value="Place Order">
             </div>
         </div>
     </form>

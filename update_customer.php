@@ -13,6 +13,7 @@
     } else {
         //if not logged in, will send to default URL
         header("Location: index.php");
+        exit;
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted

@@ -30,7 +30,7 @@
         <a href="menu.php">Order now</a>
         <?php
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                echo '<a href="update_profile.php">Profile</a>';
+                echo '<a href="update_customer.php">Profile</a>';
                 echo '<a href="logout.php">Logout</a>';
             }
         ?>
@@ -45,17 +45,22 @@
         <?php 
             while($row = mysqli_fetch_assoc($result)) {
         ?>
-            <div class = "card">
-                <div class = "image">
-                    <img src= <?php echo $row["Image_Path"]; ?> alt="">
-                </div>
-                <p class = "pizza_name"><?php echo $row["Name"]; ?> (<?php echo $row["Size_Option"];?>)</p>
-                <p class = "description"><?php echo $row["Description"]; ?></p>
-                <p class = "calories"><?php echo $row["Calories"]; ?> cals</p>
-                <p class = "price"><b>$<?php echo $row["Cost"]; ?></b></p>
-                <div class = "customize"> <a href = "customize_pizza.php">CUSTOMIZE</a></div>
-                <?php $_SESSION['pizzaname'] = $row["Name"]; ?> 
+        <div class="card">
+            <div class="image">
+                <img src=<?php echo $row["Image_Path"]; ?> alt="">
             </div>
+            <p class="pizza_name"><?php echo $row["Name"]; ?> (<?php echo $row["Size_Option"]; ?>)</p>
+            <p class="description"><?php echo $row["Description"]; ?></p>
+            <p class="calories"><?php echo $row["Calories"]; ?> cals</p>
+            <p class="price"><b>$<?php echo $row["Cost"]; ?></b></p>
+                <?php
+                if ($row["Is_Pizza"] == 1) {
+                    echo '<div class="customize"><a href="customize_pizza.php">CUSTOMIZE</a></div>';
+                } else {
+                    echo '<div class="customize"><button onclick="addToCart(' . $row["Pizza_ID"] . ')">Add to Cart</a></div>';
+                }
+                ?>
+        </div>
         <?php } ?>
     </main>
     

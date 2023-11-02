@@ -34,6 +34,28 @@ function getEmployeeData()
     mysqli_free_result($result);
     return $employeeData;
 }
+
+// Get a list of Store Ids from Pizza_Store table as array $storeIdData
+// Function may be fucked, won't generate properly, breaks page
+function getStoreID(){
+    include_once("./database.php");
+    $sql = "SELECT `Pizza_Store_ID` FROM `pizza_store`";
+    $result = mysqli_query($mysqli, $sql);
+
+    if(!$result){
+        die("Error: " . mysqli_error($connection));
+    }
+
+    $storeIdData = array();
+    while($row = mysqli_fetch_assoc($result)){
+        $storeIdData[] = [
+            'Pizza_Store_ID' => $row['Pizza_Store_ID'],
+        ];
+        mysqli_free_result($result);
+        return $storeIdData;
+    }
+}
+
 ?>
 
 <!-- Welcome page after user creates new account -->
@@ -75,6 +97,14 @@ function getEmployeeData()
             </select>
         </div> <br>
 
+        <div id="storeSelection" style="display: none;">
+            <label for="storeDropdown">Select Store:</label>
+            <select name="storeDropdown" id="storeDropdown">
+                <option value="test">Default</option>
+            </select>
+
+        </div><br>
+
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
@@ -91,19 +121,20 @@ function getEmployeeData()
         <div id="storeOptions" style="display: none;">
             <!-- Store Report sub-options here -->
             <label for="storeType">Select Store Report Type:</label>
-            <!-- Here you set your id that you'll reference on generate_reportl.php -->
+            <!-- Here you set your id that you'll reference on generate_report.php -->
             <!-- This will tell the page which sub report you want to run -->
             <select name="storeType" id="storeType">
                 <!-- Here are the different options you can display in your sub menu -->
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
                 <option value="orders">Daily Orders</option>
+                <option value="orderdates">Total Orders From:</option>
                 <option value="pizzas">Daily Pizzas Sold</option>
                 <option value="popular">Today's Most Popular Pizza</option>
                 <option value="sales">Total Sales Today</option>
                 <option value="date">Total Sales To Date</option>
             </select>
         </div><br>
-        <!-- //To here// -->
+        <!-- //To here// -->        
 
         <!-- Add more drop down sub-menus here -->
         <div id="Employer" style="display: none;">
@@ -127,7 +158,7 @@ function getEmployeeData()
         document.getElementById('employeeDropdown').addEventListener('change', function() {
             var selectedEmployeeId = this.value;
             if (selectedEmployeeId != 0) {
-                var url = "./include/function/genereateEmployReport.php?action=generateReport&id=" + selectedEmployeeId;
+                // var url = "./include/function/genereateEmployReport.php?action=generateReport&id=" + selectedEmployeeId;
                 window.location.href = url;
             }
         });
@@ -140,6 +171,9 @@ function getEmployeeData()
             var inventoryOptions = document.getElementById('inventoryOptions');
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
+            var storeSelection = document.getElementById('storeSelection');
+
+            //sub-sub menu stuff deleted
 
 
             //This if/else determines which sub menu is visible
@@ -150,19 +184,24 @@ function getEmployeeData()
                 inventoryOptions.style.display = 'block';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
+                storeSelection.style.display = 'block';
                 // newMenuOptions.style.display = 'none'
             } else if (reportType.value === 'store') {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'block';
+                storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
+                
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
+                storeSelection.style.display = 'none';
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
+                storeSelection.style.display = 'none';
             }
         }
     </script>
