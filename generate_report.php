@@ -117,7 +117,7 @@
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr>';
-                                echo '<td>' . $row['Store_Inventory_ID'] . '</td>';
+                                echo '<td>' . $row['Inventory_ID'] . '</td>';
                                 echo '<td>' . $row['Item_Name'] . '</td>';
                                 echo '<td>' . $row['Inventory_Amount'] . '</td>';
                                 echo '<td>' . $row['Cost'] . '</td>';
