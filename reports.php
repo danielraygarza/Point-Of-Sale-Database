@@ -1,6 +1,5 @@
 <?php
 // // Check if the user is not logged in
-/*
     session_start();
     include 'database.php'; // Include the database connection details
     ini_set('display_errors', 1);
@@ -8,32 +7,37 @@
     error_reporting(E_ALL);
 
     // Redirects if not manager or accessed directly via URL
-    if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'MAN') {
-        //if not logged in, will send to default URL
-        header("Location: employee_login.php");
-        exit(); //ensures code is killed
-    }
-    // */
-function getEmployeeData()
-{
-    include_once("./database.php");
-    $sql = "SELECT `Employee_ID`, `E_First_Name`, `E_Last_Name` FROM `employee`";
-    $result = mysqli_query($mysqli, $sql);
+    // if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    //     header("Location: employee_login.php");
+    //     exit; // Make sure to exit so that the rest of the script won't execute
+    // }
 
-    if (!$result) {
-        die("Error: " . mysqli_error($connection));
-    }
+    //TO DO://
+    // ADD STORE SELECTOR FOR INVETORY AND STORE REPORTS
+    // ADD DATE RANGE SELECTOR FOR SPECIFIC DATE REPORTS
+    // COMMENT ON BROKEN PHP BELOW IS WHERE THE DROP DOWN NEEDS TO GO
+    // LINES 110-118ish
+    // $storeId IS THE VARIABLE FOR STORE SELECTOR
+    // $stDate and $endDate ARE THE VARIABLES FOR DATE RANGE SELECTOR
 
-    $employeeData = array();
-    while ($row = mysqli_fetch_assoc($result)) {
-        $employeeData[] = [
-            'Employee_ID' => $row['Employee_ID'],
-            'Name' => $row['E_First_Name'] . ' ' . $row['E_Last_Name'],
-        ];
+    //Daniel: altered function above to not include "database.php" inside function. 
+    // it was causing continuity errors. database.php included is at top of file
+    function getEmployeeData($mysqli) {
+        $sql = "SELECT `Employee_ID`, `E_First_Name`, `E_Last_Name` FROM `employee`";
+        $result = $mysqli->query($sql);
+    
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $employeeData[] = [
+                    'Employee_ID' => $row['Employee_ID'],
+                    'Name' => $row['E_First_Name'] . ' ' . $row['E_Last_Name'],
+                ];
+            }
+            $result->free();
+        } 
+        return $employeeData;
     }
-    mysqli_free_result($result);
-    return $employeeData;
-}
+    
 
 // Get a list of Store Ids from Pizza_Store table as array $storeIdData
 // Function may be fucked, won't generate properly, breaks page
@@ -92,16 +96,26 @@ function getStoreID(){
                 <option value="" selected disabled>Select a Report</option>
                 <option value="inventory">Inventory Reports</option>
                 <option value="store">Store Reports</option>
-                <option value="sales">Sales Report</option>
+                <!-- <option value="sales">Sales Report</option> -->
                 <option value="performance">Employee Performance Report</option>
             </select>
         </div> <br>
 
         <div id="storeSelection" style="display: none;">
-            <label for="storeDropdown">Select Store:</label>
-            <select name="storeDropdown" id="storeDropdown">
-                <option value="test">Default</option>
-            </select>
+            <label for="storeId">Select Store:</label>
+            <select name="storeId" id="storeId">
+                <!-- <option value="test">Default</option> -->
+                <option value="" selected disabled>Select Store</option>
+                <?php
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
+                    if ($stores->num_rows > 0) {
+                        while($row = $stores->fetch_assoc()) {
+                            //if ($row["Pizza_Store_ID"] != 1) { continue; } //only shows store ID 1. can delete to show all
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
+                ?>
+1            </select>
 
         </div><br>
 
@@ -128,10 +142,10 @@ function getStoreID(){
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
                 <option value="orders">Daily Orders</option>
                 <option value="orderdates">Total Orders From:</option>
-                <option value="pizzas">Daily Pizzas Sold</option>
-                <option value="popular">Today's Most Popular Pizza</option>
+                <!-- <option value="pizzas">Daily Pizzas Sold</option> -->
+                <option value="popular">Today's Most Popular Item</option>
                 <option value="sales">Total Sales Today</option>
-                <option value="date">Total Sales To Date</option>
+                <option value="date">Total Sales From:</option>
             </select>
         </div><br>
         <!-- //To here// -->        
@@ -141,7 +155,7 @@ function getStoreID(){
             <label for="employeeDropdown">Select Employee:</label>
             <select name="employeeDropdown" id="employeeDropdown">
                 <?php
-                $employeeData = getEmployeeData();
+                $employeeData = getEmployeeData($mysqli);
                 foreach ($employeeData as $employee) {
                     $employeeID = $employee['Employee_ID'];
                     $employeeName = $employee['Name'];
@@ -166,6 +180,7 @@ function getStoreID(){
         function showOptions() {
             //This reads which main report group is currently selected
             var reportType = document.getElementById('reportType');
+            storeId.value = ""; //resets store dropdown when you change report type
 
             //If you add a new sub menu, define it here then refence it by it's id like so:
             var inventoryOptions = document.getElementById('inventoryOptions');

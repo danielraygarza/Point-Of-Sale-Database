@@ -6,13 +6,16 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-//when you click "place order", it will run this code
+// Clear the cart if the "Clear Cart" button is clicked
+if (isset($_POST['clear-cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// when you click "place order", it will run this code
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<h2>Success</h2>";
     echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
-
-
-    //redirect to chosen page when click "place order"
+    // redirect to the chosen page when click "place order"
     // header('Location: index.php');
     exit;
 }
@@ -64,14 +67,18 @@ function getCartItemCount()
         <div class="checkout-window">
             <!-- <h2 class="cart-heading">Pizza Cart</h2> -->
             <?php
-            $today = date('Y-m-d');
+            $today = date('m-d');
             // if logged in, greet customer with name
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo "<h2 class='php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
-                if (isset($_SESSION['user']['birthday']) && $_SESSION['user']['birthday'] == $today) {
+                if (isset($_SESSION['user']['birthday'])) {
+                    $birthday = strtotime($_SESSION['user']['birthday']);
+                    $birthdayMonthDay = date('m-d', $birthday);
+                }
+                if (isset($birthdayMonthDay) && $birthdayMonthDay == $today) {
                     echo "<h2 class='php-heading'>Happy Birthday, enjoy your POS pizza!</h2>";
                 } else {
-                    echo "<h2 class='php-heading'>Not your birthday, sorry loser</h2>";
+                    // echo "<h2 class='php-heading'>Not your birthday, sorry loser</h2>";
                 }
             } else {
                 echo "<h2 class='php-heading'>Review your cart!</h2>";
@@ -82,6 +89,8 @@ function getCartItemCount()
                 <?php
                 if ($stores->num_rows > 0) {
                     while ($row = $stores->fetch_assoc()) {
+                        // does not show store ID 1
+                        // if ($row["Pizza_Store_ID"] == 1) { continue; }
                         echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                     }
                 }
@@ -96,30 +105,17 @@ function getCartItemCount()
                     if (count($cart) > 0) {
                         // Loop through the items in the cart and display them
                         foreach ($cart as $item) {
-                            echo "<li>$item - $10.00</li>"; // Replace with actual item details
-                        }
-                    } else {
-                        $toppingName = 'Pepperoni'; // Replace with the desired topping name
-                        $query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$toppingName'";
-                        $result = $mysqli->query($query);
-
-                        if ($result) {
+                            $query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$item'";
+                            $result = $mysqli->query($query);
                             $row = $result->fetch_assoc();
-
-                            if ($row) {
+                            if($result){
                                 $toppingPrice = $row['Price'];
-                                echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                                // echo "$toppingName:                ", $row['Price'], "<br>";
-                            } else {
-                                echo "Topping not found.";
                             }
-                        } else {
-                            echo "Error executing the query: " . $mysqli->error;
+                            echo "<li>$item - $toppingPrice</li>"; // Replace with actual item details
                         }
+                        echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
+                    } else {
+                        echo "<h2 class='php-heading'> Your cart is empty</h2>";
                     }
                     ?>
                 </ul>

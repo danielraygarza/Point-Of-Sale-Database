@@ -1,18 +1,16 @@
 <?php
-/*
     session_start();
     include 'database.php'; // Include the database connection details
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    // Redirects if not manager or accessed directly via URL
-    if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'MAN') {
-        //if not logged in, will send to default URL
-        header("Location: employee_login.php");
-        exit(); //ensures code is killed
-    }
-    // */
+   // Redirects if not manager/CEO or accessed directly via URL
+    // if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    //     header("Location: employee_login.php");
+    //     exit; // Make sure to exit so that the rest of the script won't execute
+    // }
+
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +70,7 @@
                         // Header for low stock items
                         $setHeader = 'Low Stock Items';
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
@@ -83,7 +81,7 @@
                         // Header for out of stock items
                         $setHeader = 'Out of Stock Items';
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -94,7 +92,7 @@
                         // Header for all items
                         $setHeader = 'Inventory Report';
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Store_Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -117,7 +115,7 @@
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr>';
-                                echo '<td>' . $row['Store_Inventory_ID'] . '</td>';
+                                echo '<td>' . $row['Inventory_ID'] . '</td>';
                                 echo '<td>' . $row['Item_Name'] . '</td>';
                                 echo '<td>' . $row['Inventory_Amount'] . '</td>';
                                 echo '<td>' . $row['Cost'] . '</td>';
@@ -211,10 +209,17 @@
                     } elseif ($storeType === 'popular') {
                         // Header for most popular item today
                         $setHeader = 'Most Popular Item';
+                        // Get the current Date
+                        $currentDate = date("Y-m-d");
                         // TO COMPLETE: Query for most popular item today
-                        $sql = "SELECT I.Item_Name 
-                        FROM menu_items M
-                        ";
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        FROM ORDER_ITEMS OI
+                        JOIN ORDERS O ON OI.Order_ID = O.Order_ID
+                        JOIN ITEMS I ON OI.Item_ID = I.Item_ID
+                        WHERE DATE(O.Date_Of_Order) = '$currentDate'AND O.Store_ID = '$storeId'
+                        GROUP BY I.Item_Name
+                        ORDER BY Item_Count DESC
+                        LIMIT 1;";
                     } elseif ($storeType === 'sales') {
                         // Header for total sales today
                         $setHeader = 'Total Sales Today';
@@ -261,14 +266,17 @@
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo '<table border="1" class="table_update">';
-                            echo '<tr><th>Pizza Store ID</th></tr>';
+                            echo '<tr><th>Pizza Store ID</th><th>Pizza Store Address</th><th>Order Count</th></tr>';
 
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
+                                //TO DO://
+                                //NEED TO FINISH DECIDING WHAT TO DISPLAY FOR REPORTS
+                                //MAY HAVE TO MAKE SEPARATE DISPLAYS FOR SEPARATE STORE REPORT TYPES
                                 echo '<tr>';
                                 echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
-                                //echo '<td>' . $row['Item_Name'] . '</td>';
-                                //echo '<td>' . $row['Inventory_Amount'] . '</td>';
+                                echo '<td>' . $row['Store_Address'] . '</td>';
+                                echo '<td>' . $row['OrderCount'] . '</td>';
                                 //echo '<td>' . $row['Cost'] . '</td>';
                                 //echo '<td>' . $row['Vendor_Name'] . '</td>';
                                 //echo '<td>' . $row['Vendor_Rep'] . '</td>';
@@ -280,7 +288,7 @@
                             echo '</table>';
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
-                            echo 'No inventory data available for store ' . $selectStore;
+                            echo 'No order data available for store ' . $storeId;
                         }
                     } else {
                         echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
@@ -329,7 +337,17 @@
                             echo '<h2>' . $setHeader . '<h2>';
                             echo "<table border='1' class='table_update'>";
 
-                            echo "<tr><th>Employee ID</th><th>First Name</th><th>Last Name</th><th>Title/Role</th><th>Hire Date</th><th>Assigned Orders</th><th>Completed Orders</th><th>Time Delivered</th><th>Delivery Status</th></tr>";
+                            echo "<tr>
+                                <th class='th-spacing'>Employee ID</th>
+                                <th class='th-spacing'>First Name</th>
+                                <th class='th-spacing'>Last Name</th>
+                                <th class='th-spacing'>Title/Role</th>
+                                <th class='th-spacing'>Hire Date</th>
+                                <th class='th-spacing'>Assigned Orders</th>
+                                <th class='th-spacing'>Completed Orders</th>
+                                <th class='th-spacing'>Time Delivered</th>
+                                <th class='th-spacing'>Delivery Status</th>
+                                </tr>";
                     
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo "<tr>";
