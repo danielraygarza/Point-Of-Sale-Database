@@ -68,20 +68,30 @@
                     // Define your SQL queries for Inventory selection
                     if ($inventoryType === 'low') {
                         // Header for low stock items
-                        $setHeader = 'Low Stock Items';
+                        // $setHeader = 'Low Stock Items';
+                        $addressResult = $mysqli->query("SELECT Store_Address FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        if ($addressRow = $addressResult->fetch_assoc()) {
+                            $storeAddress = $addressRow['Store_Address'];
+                            $setHeader = 'Low Stock Items for ' . $storeAddress; //header with store address
+                        }
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
                         INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
                         INNER JOIN ITEMS ON I.Item_ID = Items.Item_ID
-                        WHERE I.Inventory_Amount <= I.Reorder_Threshold + 5 AND I.Store_ID = '$storeId';";
+                        WHERE I.Inventory_Amount <= Items.Reorder_Threshold + 5 AND I.Store_ID = '$storeId';";
                     } elseif ($inventoryType === 'out') {
                         // Header for out of stock items
-                        $setHeader = 'Out of Stock Items';
+                        // $setHeader = 'Out of Stock Items';
+                        $addressResult = $mysqli->query("SELECT Store_Address FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        if ($addressRow = $addressResult->fetch_assoc()) {
+                            $storeAddress = $addressRow['Store_Address'];
+                            $setHeader = 'Out of Stock Items for ' . $storeAddress; //header with store address
+                        }
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -90,9 +100,14 @@
                         WHERE I.Inventory_Amount <= 0 AND I.Store_ID = '$storeId';";
                     } else {
                         // Header for all items
-                        $setHeader = 'Inventory Report';
+                        // $setHeader = 'Inventory Report';
+                        $addressResult = $mysqli->query("SELECT Store_Address FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        if ($addressRow = $addressResult->fetch_assoc()) {
+                            $storeAddress = $addressRow['Store_Address'];
+                            $setHeader = 'Inventory Report for ' . $storeAddress; //header with store address
+                        }
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, I.Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -110,15 +125,24 @@
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo '<table border="1" class="table_update">';
-                            echo '<tr><th>Product ID</th><th>Product</th><th>Quantity in Stock</th><th>Cost</th><th>Vendor</th><th>Vendor Rep</th><th>Email</th><th>Phone</th></tr>';
+                            // <th class='th-spacing'>Product ID</th>
+                            echo "<tr>
+                                <th class='th-spacing'>Product</th>
+                                <th class='th-spacing'>Quantity in Stock</th>
+                                <th class='th-spacing'>Cost</th>
+                                <th class='th-spacing'>Vendor</th>
+                                <th class='th-spacing'>Vendor Rep</th>
+                                <th class='th-spacing'>Email</th>
+                                <th class='th-spacing'>Phone</th>
+                                </tr>";
 
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr>';
-                                echo '<td>' . $row['Inventory_ID'] . '</td>';
+                                // echo '<td>' . $row['Inventory_ID'] . '</td>';
                                 echo '<td>' . $row['Item_Name'] . '</td>';
                                 echo '<td>' . $row['Inventory_Amount'] . '</td>';
-                                echo '<td>' . $row['Cost'] . '</td>';
+                                echo '<td>' . $row['Item_Cost'] . '</td>';
                                 echo '<td>' . $row['Vendor_Name'] . '</td>';
                                 echo '<td>' . $row['Vendor_Rep'] . '</td>';
                                 echo '<td>' . $row['Vendor_Email'] . '</td>';
@@ -277,7 +301,7 @@
                                 echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
                                 echo '<td>' . $row['Store_Address'] . '</td>';
                                 echo '<td>' . $row['OrderCount'] . '</td>';
-                                //echo '<td>' . $row['Cost'] . '</td>';
+                                //echo '<td>' . $row['Item_Cost'] . '</td>';
                                 //echo '<td>' . $row['Vendor_Name'] . '</td>';
                                 //echo '<td>' . $row['Vendor_Rep'] . '</td>';
                                 //echo '<td>' . $row['Vendor_Email'] . '</td>';
