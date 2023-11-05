@@ -11,25 +11,6 @@
     //     header("Location: employee_login.php");
     //     exit; // Make sure to exit so that the rest of the script won't execute
     // }
-    if (isset($_POST['ajax']) && $_POST['ajax'] == 1) {
-        // Process AJAX request and return data
-
-        // Make sure to sanitize the input
-        $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
-
-        // Query to get Days_to_expire based on Item_ID
-        $query = "SELECT Days_to_expire FROM items WHERE Item_ID = ?";
-        $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("s", $itemId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        // Now you can echo the Days_to_expire and it will be sent back as a response to the AJAX call
-        echo json_encode($row);
-        $mysqli->close();
-        exit; // Stop script execution after AJAX request
-    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
         // Extracting data from the form
@@ -39,23 +20,47 @@
         $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
         $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
 
+        // add days_to_expire to the shipment date
         $daysToExpireQuery = $mysqli->query("SELECT Days_to_expire FROM items WHERE Item_ID = '$Item_ID'");
         $row = $daysToExpireQuery->fetch_assoc();
         $daysToExpire = $row['Days_to_expire'];
         $date = new DateTime($Last_Stock_Shipment_Date);
-        // Add days to expire to the shipment date
         $date->add(new DateInterval('P' . $daysToExpire . 'D'));
         $Expiration_Date = $date->format('Y-m-d');
 
-        // Inserting the data into the database
-        $sql = "INSERT INTO inventory (Store_ID, Item_ID, Inventory_Amount, Vend_ID, Last_Stock_Shipment_Date, Expiration_Date) 
+        $checkExistence = $mysqli->prepare("SELECT COUNT(*) FROM inventory WHERE Store_ID = ? AND Item_ID = ?");
+        $checkExistence->bind_param("ss", $Store_ID, $Item_ID);
+        $checkExistence->execute();
+        $result = $checkExistence->get_result();
+        $row = $result->fetch_array();
+        if ($result->num_rows > 0) {
+            // Inventory exists for this store and item, update it
+            $existing = $result->fetch_assoc();
+            $newInventoryAmount = $existing['Inventory_Amount'] + $Inventory_Amount;
+    
+            // Update query
+            $sql = "UPDATE inventory 
+                    SET Inventory_Amount='$newInventoryAmount', Vend_ID='$Vend_ID', Last_Stock_Shipment_Date='$Last_Stock_Shipment_Date', Expiration_Date='$Expiration_Date' 
+                    WHERE Store_ID='$Store_ID' AND Item_ID='$Item_ID'";
+
+            if ($mysqli->query($sql) === TRUE) {
+                $mysqli->close();
+                header('Location: employee_home.php');
+                exit;
+            } else {
+                echo "Error: " . $sql . "<br>" . $mysqli->error;
+            }
+        }else {
+            // Inserting the data into the database
+            $sql = "INSERT INTO inventory (Store_ID, Item_ID, Inventory_Amount, Vend_ID, Last_Stock_Shipment_Date, Expiration_Date) 
                     VALUES ('$Store_ID', '$Item_ID', '$Inventory_Amount', '$Vend_ID','$Last_Stock_Shipment_Date', '$Expiration_Date')";
-        if ($mysqli->query($sql) === TRUE) {
-            $mysqli->close();
-            header('Location: employee_home.php');
-            exit;
-        } else {
-            echo "Error: " . $sql . "<br>" . $mysqli->error;
+            if ($mysqli->query($sql) === TRUE) {
+                $mysqli->close();
+                header('Location: employee_home.php');
+                exit;
+            } else {
+                echo "Error: " . $sql . "<br>" . $mysqli->error;
+            }
         }
     }
 
@@ -148,8 +153,6 @@
         if (isset($_SESSION['error'])) {
             echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
             unset($_SESSION['error']);  // Unset the error message after displaying it
-        } else {
-            echo "<h2>Good job</h2>";
         }
         ?>
 
