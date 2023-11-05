@@ -1,71 +1,63 @@
 <?php
-// Start the session at the beginning of the file
-include 'database.php';
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-session_start();
+    // Start the session at the beginning of the file
+    include 'database.php';
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+    session_start();
 
-// Redirects if not manager/CEO or accessed directly via URL
-//  if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-//     header("Location: employee_login.php");
-//     exit; // Make sure to exit so that the rest of the script won't execute
-// }
-if (isset($_POST['ajax']) && $_POST['ajax'] == 1) {
-    // Process AJAX request and return data
+    // Redirects if not manager/CEO or accessed directly via URL
+    //  if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    //     header("Location: employee_login.php");
+    //     exit; // Make sure to exit so that the rest of the script won't execute
+    // }
+    if (isset($_POST['ajax']) && $_POST['ajax'] == 1) {
+        // Process AJAX request and return data
 
-    // Make sure to sanitize the input
-    $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
+        // Make sure to sanitize the input
+        $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
 
-    // Query to get Days_to_expire based on Item_ID
-    $query = "SELECT Days_to_expire FROM items WHERE Item_ID = ?";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("s", $itemId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+        // Query to get Days_to_expire based on Item_ID
+        $query = "SELECT Days_to_expire FROM items WHERE Item_ID = ?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("s", $itemId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
 
-    // Now you can echo the Days_to_expire and it will be sent back as a response to the AJAX call
-    echo json_encode($row);
-    $mysqli->close();
-    exit; // Stop script execution after AJAX request
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
-
-    // Extracting data from the form
-    $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
-    $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
-    $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']);
-    $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
-    $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
-    // $Expiration_Date = $mysqli->real_escape_string($_POST['Expiration_Date']);
-    // $Item_Cost = $mysqli->real_escape_string($_POST['Item_Cost']);
-    // $Reorder_Threshold = $mysqli->real_escape_string($_POST['Reorder_Threshold']);
-
-    // $daysToExpire = "SELECT Days_to_expire FROM items WHERE Item_ID = $Item_ID";
-    $daysToExpireQuery = $mysqli->query("SELECT Days_to_expire FROM items WHERE Item_ID = '$Item_ID'");
-    $row = $daysToExpireQuery->fetch_assoc();
-    $daysToExpire = $row['Days_to_expire'];
-
-    // Create a DateTime object from Last_Stock_Shipment_Date
-    $date = new DateTime($Last_Stock_Shipment_Date);
-    // Add days to expire to the date
-    $date->add(new DateInterval('P' . $daysToExpire . 'D'));
-    // Format the date back to a string to use in the query
-    $Expiration_Date = $date->format('Y-m-d');
-
-    // Inserting the data into the database
-    $sql = "INSERT INTO inventory (Store_ID, Item_ID, Inventory_Amount, Vend_ID, Last_Stock_Shipment_Date, Expiration_Date) 
-                VALUES ('$Store_ID', '$Item_ID', '$Inventory_Amount', '$Vend_ID','$Last_Stock_Shipment_Date', '$Expiration_Date')";
-    if ($mysqli->query($sql) === TRUE) {
+        // Now you can echo the Days_to_expire and it will be sent back as a response to the AJAX call
+        echo json_encode($row);
         $mysqli->close();
-        header('Location: employee_home.php');
-        exit;
-    } else {
-        echo "Error: " . $sql . "<br>" . $mysqli->error;
+        exit; // Stop script execution after AJAX request
     }
-}
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
+        // Extracting data from the form
+        $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
+        $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
+        $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']);
+        $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
+        $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
+
+        $daysToExpireQuery = $mysqli->query("SELECT Days_to_expire FROM items WHERE Item_ID = '$Item_ID'");
+        $row = $daysToExpireQuery->fetch_assoc();
+        $daysToExpire = $row['Days_to_expire'];
+        $date = new DateTime($Last_Stock_Shipment_Date);
+        // Add days to expire to the shipment date
+        $date->add(new DateInterval('P' . $daysToExpire . 'D'));
+        $Expiration_Date = $date->format('Y-m-d');
+
+        // Inserting the data into the database
+        $sql = "INSERT INTO inventory (Store_ID, Item_ID, Inventory_Amount, Vend_ID, Last_Stock_Shipment_Date, Expiration_Date) 
+                    VALUES ('$Store_ID', '$Item_ID', '$Inventory_Amount', '$Vend_ID','$Last_Stock_Shipment_Date', '$Expiration_Date')";
+        if ($mysqli->query($sql) === TRUE) {
+            $mysqli->close();
+            header('Location: employee_home.php');
+            exit;
+        } else {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+    }
 
 ?>
 
@@ -111,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             <select id="Item_ID" name="Item_ID" required>
                 <option value="" selected disabled>Select Item</option>
                 <?php
-                $items = $mysqli->query("SELECT * FROM items");
+                $items = $mysqli->query("SELECT * FROM items WHERE Days_to_expire > 0");
                 if ($items->num_rows > 0) {
                     while ($row = $items->fetch_assoc()) {
                         echo '<option value="' . $row["Item_ID"] . '" ' . $selected . '>' . $row["Item_Name"] . '</option>';
@@ -150,51 +142,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                 document.getElementById('Last_Stock_Shipment_Date').value = formattedDate;
             });
         </script>
-
-
-        <script>
-            // <input type="hidden" id="Expiration_Date" name="Expiration_Date">
-            // Add a listener for when the Item_ID changes
-            //     document.getElementById('Item_ID').addEventListener('change', function() {
-            //     var itemId = this.value;
-
-            //     // Make a POST request to the server
-            //     fetch(window.location.href, {
-            //             method: 'POST',
-            //             headers: {
-            //                 'Content-Type': 'application/x-www-form-urlencoded',
-            //             },
-            //             body: 'ajax=1&Item_ID=' + encodeURIComponent(itemId)
-            //         })
-            //         .then(response => response.json())
-            //         .then(data => {
-            //             // Assuming 'data' is the response which contains 'Days_to_expire'
-            //             if (data && data.Days_to_expire) {
-            //                 // Use the 'Days_to_expire' from the response to set the expiration date
-            //                 const daysToExpire = parseInt(data.Days_to_expire, 10);
-            //                 const expirationDate = new Date(currentDate.getTime());
-            //                 expirationDate.setDate(currentDate.getDate() + daysToExpire);
-
-            //                 // Format the expiration date and set the value
-            //                 const formattedExpirationDate = `${expirationDate.getFullYear()}-${(expirationDate.getMonth() + 1).toString().padStart(2, '0')}-${expirationDate.getDate().toString().padStart(2, '0')}`;
-            //                 document.getElementById('Expiration_Date').value = formattedExpirationDate;
-            //             }
-            //         })
-            //         .catch(error => {
-            //             console.error('Error:', error);
-            //         });
-            //     });
-            //     });
-            //         document.addEventListener("DOMContentLoaded", function() {
-            //             const currentDate = new Date();
-            //             currentDate.setDate(currentDate.getDate() + 100);
-            //             const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
-            //             document.getElementById('Expiration_Date').value = formattedDate;
-            //         });
-            // 
-        </script>
-
-
 
         <?php
         //displays error messages here 
