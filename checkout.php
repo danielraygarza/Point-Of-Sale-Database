@@ -13,10 +13,10 @@ if (isset($_POST['clear-cart'])) {
 
 // when you click "place order", it will run this code
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "<h2>Success</h2>";
-    echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
+    // echo "<h2>Success</h2>";
+    // echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
     // redirect to the chosen page when click "place order"
-    // header('Location: index.php');
+    header('Location: checkout.php');
     exit;
 }
 
@@ -105,11 +105,11 @@ function getCartItemCount()
                     if (count($cart) > 0) {
                         // Loop through the items in the cart and display them
                         foreach ($cart as $item) {
-                            $query = "SELECT Price FROM topping_on_pizza WHERE topping_name = '$item'";
+                            $query = "SELECT Item_Cost FROM items WHERE Item_Name = '$item'";
                             $result = $mysqli->query($query);
                             $row = $result->fetch_assoc();
                             if($result){
-                                $toppingPrice = $row['Price'];
+                                $toppingPrice = $row['Item_Cost'];
                             }
                             echo "<li>$item - $toppingPrice</li>"; // Replace with actual item details
                         }
