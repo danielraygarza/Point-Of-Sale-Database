@@ -40,6 +40,17 @@
             }
             ?>
         </div>
+        
+        <main>
+            <div class = "order-display">
+                <p class = "od-header">Assigned Orders: (TOTAL NUMBER OF ASSIGNED OREDERS)</p>
+                <div class = "order-card">
+                    <p class = "order-id">Order ID: </p>
+                </div>
+            </div>
+        </main>
+            
+        </div>
 
         <form action="" method="post">
             <?php
