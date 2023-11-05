@@ -74,7 +74,7 @@
                             $setHeader = 'Low Stock Items for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
@@ -89,7 +89,7 @@
                             $setHeader = 'Out of Stock for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -104,7 +104,7 @@
                             $setHeader = 'Inventory Report for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
