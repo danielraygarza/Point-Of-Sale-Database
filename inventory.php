@@ -39,10 +39,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
     $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']);
     $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
     $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
-    $Expiration_Date = $mysqli->real_escape_string($_POST['Expiration_Date']);
+    // $Expiration_Date = $mysqli->real_escape_string($_POST['Expiration_Date']);
     // $Item_Cost = $mysqli->real_escape_string($_POST['Item_Cost']);
     // $Reorder_Threshold = $mysqli->real_escape_string($_POST['Reorder_Threshold']);
 
+    // $daysToExpire = "SELECT Days_to_expire FROM items WHERE Item_ID = $Item_ID";
+    $daysToExpireQuery = $mysqli->query("SELECT Days_to_expire FROM items WHERE Item_ID = '$Item_ID'");
+    $row = $daysToExpireQuery->fetch_assoc();
+    $daysToExpire = $row['Days_to_expire'];
+
+    // Create a DateTime object from Last_Stock_Shipment_Date
+    $date = new DateTime($Last_Stock_Shipment_Date);
+    // Add days to expire to the date
+    $date->add(new DateInterval('P' . $daysToExpire . 'D'));
+    // Format the date back to a string to use in the query
+    $Expiration_Date = $date->format('Y-m-d');
 
     // Inserting the data into the database
     $sql = "INSERT INTO inventory (Store_ID, Item_ID, Inventory_Amount, Vend_ID, Last_Stock_Shipment_Date, Expiration_Date) 
@@ -132,56 +143,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
         <!-- pulls current date and assigns to Last_Stock_Shipment_Date -->
         <input type="hidden" id="Last_Stock_Shipment_Date" name="Last_Stock_Shipment_Date">
-        <input type="hidden" id="Expiration_Date" name="Expiration_Date">
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                // Your existing script to handle Last_Stock_Shipment_Date
                 const currentDate = new Date();
-                const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+                const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
                 document.getElementById('Last_Stock_Shipment_Date').value = formattedDate;
-
-                // Add a listener for when the Item_ID changes
-                document.getElementById('Item_ID').addEventListener('change', function() {
-                    var itemId = this.value;
-
-                    // Make a POST request to the server
-                    fetch(window.location.href, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: 'ajax=1&Item_ID=' + encodeURIComponent(itemId)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Assuming 'data' is the response which contains 'Days_to_expire'
-                            if (data && data.Days_to_expire) {
-                                // Use the 'Days_to_expire' from the response to set the expiration date
-                                const daysToExpire = parseInt(data.Days_to_expire, 10);
-                                const expirationDate = new Date(currentDate.getTime());
-                                expirationDate.setDate(currentDate.getDate() + daysToExpire);
-
-                                // Format the expiration date and set the value
-                                const formattedExpirationDate = `${expirationDate.getFullYear()}-${(expirationDate.getMonth() + 1).toString().padStart(2, '0')}-${expirationDate.getDate().toString().padStart(2, '0')}`;
-                                document.getElementById('Expiration_Date').value = formattedExpirationDate;
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                });
             });
         </script>
 
 
-        <!-- <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate() + 100);
-                const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
-                document.getElementById('Expiration_Date').value = formattedDate;
-            });
-        </script> -->
+        <script>
+            // <input type="hidden" id="Expiration_Date" name="Expiration_Date">
+            // Add a listener for when the Item_ID changes
+            //     document.getElementById('Item_ID').addEventListener('change', function() {
+            //     var itemId = this.value;
+
+            //     // Make a POST request to the server
+            //     fetch(window.location.href, {
+            //             method: 'POST',
+            //             headers: {
+            //                 'Content-Type': 'application/x-www-form-urlencoded',
+            //             },
+            //             body: 'ajax=1&Item_ID=' + encodeURIComponent(itemId)
+            //         })
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             // Assuming 'data' is the response which contains 'Days_to_expire'
+            //             if (data && data.Days_to_expire) {
+            //                 // Use the 'Days_to_expire' from the response to set the expiration date
+            //                 const daysToExpire = parseInt(data.Days_to_expire, 10);
+            //                 const expirationDate = new Date(currentDate.getTime());
+            //                 expirationDate.setDate(currentDate.getDate() + daysToExpire);
+
+            //                 // Format the expiration date and set the value
+            //                 const formattedExpirationDate = `${expirationDate.getFullYear()}-${(expirationDate.getMonth() + 1).toString().padStart(2, '0')}-${expirationDate.getDate().toString().padStart(2, '0')}`;
+            //                 document.getElementById('Expiration_Date').value = formattedExpirationDate;
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.error('Error:', error);
+            //         });
+            //     });
+            //     });
+            //         document.addEventListener("DOMContentLoaded", function() {
+            //             const currentDate = new Date();
+            //             currentDate.setDate(currentDate.getDate() + 100);
+            //             const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
+            //             document.getElementById('Expiration_Date').value = formattedDate;
+            //         });
+            // 
+        </script>
+
+
 
         <?php
         //displays error messages here 
