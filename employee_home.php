@@ -73,7 +73,7 @@
             ?>
             <?php // only managers will see the create employee account button
                 if ($_SESSION['user']['Title_Role'] == 'CEO') {
-                    echo '<a href="create_menu_item.php" class="button">Add menu item</a>';
+                    echo '<a href="create_menuItem.php" class="button">Add menu item</a>';
                 }
             ?>
         </form>

@@ -8,8 +8,9 @@
 
     // Redirects if not CEO or accessed directly via URL
     if (!isset($_SESSION['user']['Title_Role']) || $_SESSION['user']['Title_Role'] !== 'CEO') {
-        echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
-        echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
+        // echo "<h2>You don't have permission to do this. You are being redirected.</h2>";
+        // echo '<script>setTimeout(function(){ window.location.href="employee_login.php"; }, 1500);</script>';
+        header("Location: employee_login.php");
         exit; // Make sure to exit so that the rest of the script won't execute
     }
 
@@ -33,7 +34,7 @@
             echo "";
             $_SESSION['error'] = "Store location already exist";
         } else {
-            // Inserting the data into the database. Accounting if supervisor is NULL when employee is a manager
+            // Inserting the data into the database. 
             $sql = "INSERT INTO pizza_store (Store_Address, Store_City, Store_State, Store_Zip_Code, Store_Phone_Number, Store_Manager_ID) 
                     VALUES ('$Store_Address', '$Store_City','$Store_State', '$Store_Zip_Code', '$Store_Phone_Number', '$Store_Manager_ID')";
 
