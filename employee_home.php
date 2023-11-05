@@ -62,12 +62,18 @@
             ?>
             <?php // only managers will see the create employee account button
                 if ($_SESSION['user']['Title_Role'] == 'MAN' || $_SESSION['user']['Title_Role'] == 'CEO') {
-                    echo '<a href="inventory.php" class="button">Order Inventory</a>';
+                    echo '<a href="inventory.php" class="button">Order inventory</a>';
+                }
+            ?> 
+            <br>
+            <?php // only managers will see the create employee account button
+                if ($_SESSION['user']['Title_Role'] == 'CEO') {
+                    echo '<a href="create_store.php" class="button">Register new store</a>';
                 }
             ?>
             <?php // only managers will see the create employee account button
                 if ($_SESSION['user']['Title_Role'] == 'CEO') {
-                    echo '<a href="create_store.php" class="button">Register new store</a>';
+                    echo '<a href="create_menuItem.php" class="button">Add menu item</a>';
                 }
             ?>
         </form>
