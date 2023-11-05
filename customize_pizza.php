@@ -5,7 +5,7 @@
         $_SESSION['cart'] = [];
     }
 
-    $toppingsQuery = "SELECT Price, topping_name FROM pos.topping_on_pizza";
+    $toppingsQuery = "SELECT Item_Cost, Item_Name FROM items";
     $toppingsResult = $mysqli->query($toppingsQuery);
 
     function addToCart($itemIDs) {
@@ -65,8 +65,8 @@
                 <div class="toppings-list">
                     <?php
                     while ($toppingRow = $toppingsResult->fetch_assoc()) {
-                        $toppingName = $toppingRow['topping_name'];
-                        $toppingPrice = $toppingRow['Price'];
+                        $toppingName = $toppingRow['Item_Name'];
+                        $toppingPrice = $toppingRow['Item_Cost'];
                         echo '<label><input type="checkbox" name="toppings[]" value="' . $toppingName . '">' . $toppingName . ' - $' . $toppingPrice . '</label><br>';
                     }
                     ?>
