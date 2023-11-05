@@ -69,7 +69,7 @@
                     if ($inventoryType === 'low') {
                         // Header for low stock items
                         // $setHeader = 'Low Stock Items';
-                        $address = $mysqli->query("SELECT * FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Low Stock Items for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
@@ -84,7 +84,7 @@
                     } elseif ($inventoryType === 'out') {
                         // Header for out of stock items
                         // $setHeader = 'Out of Stock Items';
-                        $address = $mysqli->query("SELECT * FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Out of Stock for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
@@ -99,7 +99,7 @@
                     } else {
                         // Header for all items
                         // $setHeader = 'Inventory Report';
-                        $address = $mysqli->query("SELECT * FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Inventory Report for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
