@@ -86,13 +86,23 @@
             <label for="Store_ID">Store Location </label>
             <select id="Store_ID" name="Store_ID" required>
                 <option value="" selected disabled>Select Store</option>
+                <!-- Show all stores for CEO but only assigned store for managers -->
                 <?php
-                $stores = $mysqli->query("SELECT * FROM pizza_store");
-
-                if ($stores->num_rows > 0) {
-                    while ($row = $stores->fetch_assoc()) {
-                        // if ($row["Pizza_Store_ID"] == 1) { continue; }
-                        echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                 if ($_SESSION['user']['Title_Role'] == 'CEO') {
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
+                    if ($stores->num_rows > 0) {
+                        while ($row = $stores->fetch_assoc()) {
+                            // if ($row["Pizza_Store_ID"] == 1) { continue; }
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
+                } else {
+                    $managerID = $_SESSION['user']['Employee_ID'];
+                    $stores = $mysqli->query("SELECT * FROM pizza_store WHERE Store_Manager_ID = $managerID");
+                    if ($stores->num_rows > 0) {
+                        while ($row = $stores->fetch_assoc()) {
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
                     }
                 }
                 ?>
