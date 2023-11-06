@@ -92,7 +92,7 @@ function getStoreID(){
 
         <div>
             <label for="reportType">Select a Report:</label>
-            <select name="reportType" id="reportType" onchange="showOptions()">
+            <select name="reportType" id="reportType" onchange="showOptions()" required>
                 <option value="" selected disabled>Select a Report</option>
                 <option value="inventory">Inventory Reports</option>
                 <option value="store">Store Reports</option>
@@ -103,7 +103,7 @@ function getStoreID(){
 
         <div id="storeSelection" style="display: none;">
             <label for="storeId">Select Store:</label>
-            <select name="storeId" id="storeId">
+            <select name="storeId" id="storeId" required>
                 <!-- <option value="test">Default</option> -->
                 <option value="" selected disabled>Select Store</option>
                 <?php
@@ -122,7 +122,8 @@ function getStoreID(){
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
-            <select name="inventoryType" id="inventoryType">
+            <select name="inventoryType" id="inventoryType" required>
+                <option value="" selected disabled>Select</option>
                 <option value="all">All Stock</option>
                 <option value="low">Low Stock</option>
                 <option value="out">Out of Stock</option>
