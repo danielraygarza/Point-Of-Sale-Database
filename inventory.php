@@ -16,7 +16,7 @@
         // Extracting data from the form
         $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
         $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
-        $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']);
+        $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']); //adds to current amount if already exist
         $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
         $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
 
@@ -35,12 +35,8 @@
         $row = $result->fetch_array();
         if ($result->num_rows > 0) {
             // Inventory exists for this store and item, update it
-            $existing = $result->fetch_assoc();
-            $newInventoryAmount = $existing['Inventory_Amount'] + $Inventory_Amount;
-    
-            // Update query
             $sql = "UPDATE inventory 
-                    SET Inventory_Amount='$newInventoryAmount', Vend_ID='$Vend_ID', Last_Stock_Shipment_Date='$Last_Stock_Shipment_Date', Expiration_Date='$Expiration_Date' 
+                    SET Inventory_Amount = Inventory_Amount + '$Inventory_Amount', Vend_ID='$Vend_ID', Last_Stock_Shipment_Date='$Last_Stock_Shipment_Date', Expiration_Date='$Expiration_Date' 
                     WHERE Store_ID='$Store_ID' AND Item_ID='$Item_ID'";
 
             if ($mysqli->query($sql) === TRUE) {
