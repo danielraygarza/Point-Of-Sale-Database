@@ -123,7 +123,6 @@ function getStoreID(){
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
             <select name="inventoryType" id="inventoryType">
-                <option value="" selected disabled>Select</option>
                 <option value="all">All Stock</option>
                 <option value="low">Low Stock</option>
                 <option value="out">Out of Stock</option>
