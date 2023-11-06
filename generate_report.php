@@ -69,12 +69,12 @@
                     if ($inventoryType === 'low') {
                         // Header for low stock items
                         // $setHeader = 'Low Stock Items';
-                        $address = $mysqli->query("SELECT * FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Low Stock Items for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
@@ -84,12 +84,12 @@
                     } elseif ($inventoryType === 'out') {
                         // Header for out of stock items
                         // $setHeader = 'Out of Stock Items';
-                        $address = $mysqli->query("SELECT * FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Out of Stock for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -99,12 +99,12 @@
                     } else {
                         // Header for all items
                         // $setHeader = 'Inventory Report';
-                        $address = $mysqli->query("SELECT * FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Inventory Report for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, I.Inventory_ID, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
