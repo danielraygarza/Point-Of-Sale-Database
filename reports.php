@@ -103,7 +103,7 @@ function getStoreID(){
 
         <div id="storeSelection" style="display: none;">
             <label for="storeId">Select Store:</label>
-            <select name="storeId" id="storeId" required>
+            <select name="storeId" id="storeId">
                 <!-- <option value="test">Default</option> -->
                 <option value="" selected disabled>Select Store</option>
                 <?php
