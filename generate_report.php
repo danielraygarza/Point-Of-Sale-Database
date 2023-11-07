@@ -327,12 +327,6 @@
                 ///START EMPLOYEE QUERIES///
                 ////////////////////////////
                  if ($reportType === 'performance') {
-                     include 'database.php'; // Database connection file
-
-                     if ($mysqli === false) {
-                         die("Error: Could not connect to the database. " . mysqli_connect_error());
-                     }
-
                      $setHeader = 'Employee Details';
                      $employeeId = '0';
                      if(isset($_POST['employeeDropdown'])){

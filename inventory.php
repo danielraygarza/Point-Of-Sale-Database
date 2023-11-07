@@ -16,7 +16,7 @@
         // Extracting data from the form
         $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
         $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
-        $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']);
+        $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']); //adds to current amount if already exist
         $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
         $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
 
@@ -35,12 +35,8 @@
         $row = $result->fetch_array();
         if ($result->num_rows > 0) {
             // Inventory exists for this store and item, update it
-            $existing = $result->fetch_assoc();
-            $newInventoryAmount = $existing['Inventory_Amount'] + $Inventory_Amount;
-    
-            // Update query
             $sql = "UPDATE inventory 
-                    SET Inventory_Amount='$newInventoryAmount', Vend_ID='$Vend_ID', Last_Stock_Shipment_Date='$Last_Stock_Shipment_Date', Expiration_Date='$Expiration_Date' 
+                    SET Inventory_Amount = Inventory_Amount + '$Inventory_Amount', Vend_ID='$Vend_ID', Last_Stock_Shipment_Date='$Last_Stock_Shipment_Date', Expiration_Date='$Expiration_Date' 
                     WHERE Store_ID='$Store_ID' AND Item_ID='$Item_ID'";
 
             if ($mysqli->query($sql) === TRUE) {
@@ -90,13 +86,23 @@
             <label for="Store_ID">Store Location </label>
             <select id="Store_ID" name="Store_ID" required>
                 <option value="" selected disabled>Select Store</option>
+                <!-- Show all stores for CEO but only assigned store for managers -->
                 <?php
-                $stores = $mysqli->query("SELECT * FROM pizza_store");
-
-                if ($stores->num_rows > 0) {
-                    while ($row = $stores->fetch_assoc()) {
-                        // if ($row["Pizza_Store_ID"] == 1) { continue; }
-                        echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                 if ($_SESSION['user']['Title_Role'] == 'CEO') {
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
+                    if ($stores->num_rows > 0) {
+                        while ($row = $stores->fetch_assoc()) {
+                            // if ($row["Pizza_Store_ID"] == 1) { continue; }
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
+                } else {
+                    $managerID = $_SESSION['user']['Employee_ID'];
+                    $stores = $mysqli->query("SELECT * FROM pizza_store WHERE Store_Manager_ID = $managerID");
+                    if ($stores->num_rows > 0) {
+                        while ($row = $stores->fetch_assoc()) {
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
                     }
                 }
                 ?>

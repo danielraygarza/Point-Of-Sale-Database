@@ -92,7 +92,7 @@ function getStoreID(){
 
         <div>
             <label for="reportType">Select a Report:</label>
-            <select name="reportType" id="reportType" onchange="showOptions()">
+            <select name="reportType" id="reportType" onchange="showOptions()" required>
                 <option value="" selected disabled>Select a Report</option>
                 <option value="inventory">Inventory Reports</option>
                 <option value="store">Store Reports</option>

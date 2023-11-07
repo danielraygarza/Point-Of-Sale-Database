@@ -14,10 +14,6 @@
         exit; // Make sure to exit so that the rest of the script won't execute
     }
 
-    //get list of supervisors from database
-    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role='SUP' OR Title_Role='MAN' OR Title_Role='CEO'");
-    $stores = $mysqli->query("SELECT * FROM pizza_store");
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
         // Extracting data from the form
@@ -128,6 +124,7 @@
             <select id="Store_ID" name="Store_ID" required>
                 <option value="" selected disabled>Select Store</option>
                 <?php
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
                     if ($stores->num_rows > 0) {
                         while($row = $stores->fetch_assoc()) {
                             echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
@@ -153,6 +150,7 @@
             <select id="Supervisor_ID" name="Supervisor_ID" required>
                 <option value="" selected disabled>Assign Supervisor</option>
                 <?php
+                    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role IN ('SUP', 'MAN', 'CEO')");
                     if ($supervisors->num_rows > 0) {
                         while($row = $supervisors->fetch_assoc()) {
                             echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
