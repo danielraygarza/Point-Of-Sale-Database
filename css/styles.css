@@ -260,7 +260,7 @@ select:focus {
     margin: 0;
     color: black;
     text-shadow: none;
-    text-align: center;
+    /* text-align: center; */
 
 }
 
