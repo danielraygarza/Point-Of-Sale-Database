@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
-$stores = $mysqli->query("SELECT * FROM pizza_store");
 
 // Add an item to the cart (you can call this function when a user adds an item)
 function addToCart($itemId)
@@ -84,9 +83,10 @@ function getCartItemCount()
                 echo "<h2 class='php-heading'>Review your cart!</h2>";
             }
             ?>
-            <select id="Store_ID" name="Store_ID" required>
-                <option value="" selected disabled>Select Store</option>
+            <select id="Store_ID" name="Store_ID">
+                <option value="" selected disabled>Select Location to Order</option>
                 <?php
+                $stores = $mysqli->query("SELECT * FROM pizza_store");
                 if ($stores->num_rows > 0) {
                     while ($row = $stores->fetch_assoc()) {
                         // does not show store ID 1
@@ -119,8 +119,8 @@ function getCartItemCount()
                     }
                     ?>
                 </ul>
-                <input class="button orderbutton" type="submit" value="Place Order">
             </div>
+            <input class="button orderbutton" type="submit" value="Place Order">
         </div>
     </form>
     <?php
