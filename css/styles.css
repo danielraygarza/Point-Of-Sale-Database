@@ -74,13 +74,14 @@ h1 {
 
 .toppings-list{
     color: black;
+    text-shadow: none;
+    margin-bottom: 10px;
+    vertical-align: middle;
 }
 
-.orderbutton {
-    position: absolute;
-    bottom: -50px;  /* Moves the button outside and below the container */
-    left: 50%;
-    transform: translateX(-50%); /* This centers the button based on its width */
+input[type="checkbox"] {
+    margin-right: 10px; /* Adds space between the checkbox and the label text */
+    /* Add your custom styles for checkboxes here */
 }
 
 /* Navbar Styling */
@@ -259,6 +260,8 @@ select:focus {
     margin: 0;
     color: black;
     text-shadow: none;
+    text-align: center;
+
 }
 
 .cart-items li {
@@ -266,6 +269,14 @@ select:focus {
     margin: 5px 0;
     color: rgb(0, 0, 0);
     text-shadow: none;
+}
+
+.orderbutton {
+    display: block; /* Ensures it's on a new line */
+    /* position: absolute; */
+    /* bottom: -50px;  Moves the button outside and below the container */
+    /* left: 50%; */
+    /* transform: translateX(-50%); This centers the button based on its width */
 }
 
 .php-heading {
