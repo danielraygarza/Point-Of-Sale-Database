@@ -67,11 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     while ($toppingRow = $toppingsResult->fetch_assoc()) {
                         $toppingName = $toppingRow['Item_Name'];
                         $toppingPrice = $toppingRow['Item_Cost'];
-                        echo '<label><input type="checkbox" name="toppings[]" value="' . $toppingName . '">' . $toppingName . ' - $' . $toppingPrice . '</label><br>';
+                        echo '<label class="toppings-list"><input type="checkbox" name="toppings[]" value="' . $toppingName . '">' . $toppingName . ' - $' . $toppingPrice . '</label><br>';
                     }
                     ?>
                 </div>
-                <input type="submit" name="add-to-cart" value="Add to Cart">
+                <input type="submit" class = button name="add-to-cart" value="Add to Cart">
             </form>
         </div>
     </main>
