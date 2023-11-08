@@ -5,7 +5,7 @@ include 'database.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-$_SESSION['selected_store_id'] = $store_id;
+// $_SESSION['selected_store_id'] = $store_id;
 
 // when you click "place order", it will run this code
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
