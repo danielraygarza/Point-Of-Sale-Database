@@ -150,7 +150,7 @@
             <select id="Supervisor_ID" name="Supervisor_ID" required>
                 <option value="" selected disabled>Assign Supervisor</option>
                 <?php
-                    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role IN ('SUP', 'MAN', 'CEO')");
+                    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'");
                     if ($supervisors->num_rows > 0) {
                         while($row = $supervisors->fetch_assoc()) {
                             echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
