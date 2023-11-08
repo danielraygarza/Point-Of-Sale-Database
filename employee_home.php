@@ -77,7 +77,17 @@
                             <p class = "total">Total: $<?php echo $row["Total_Amount"]; ?></p>
                         </div>
                         <div class = "order-card-right">
+
                             <p class = "items-ordered">Items Ordered: </p>
+
+                            <?php 
+                                $orderID = $row["Order_ID"];
+                                $itemsOrdered = $mysqli->query("SELECT P.Name FROM order_items AS I, pizza AS P WHERE $orderID = I.Order_ID AND I.Item_ID = P.Pizza_ID");
+                                while ($itemRow = mysqli_fetch_assoc($itemsOrdered)) {
+                                    echo "<p class = items>" . "-" . " " . $itemRow["Name"] . "</p>";
+                                }
+                            ?>
+                            
                             <p class = "type">Order Type: <?php echo $row["Order_Type"]; ?></p>
                         </div>
 

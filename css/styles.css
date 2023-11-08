@@ -300,8 +300,9 @@ main .order-display {
 }
 
 main .order-display .od-header {
-    color: rgb(255, 255, 255);
+    color: rgb(245, 245, 245);
     font-weight: bold;
+    text-align: right;
 }
 
 main .order-display .order-card {
@@ -349,12 +350,20 @@ main .order-display .order-card .order-card-right {
 main .order-display .order-card .order-card-right .items-ordered{
     color: black;
     width: 90%;
-    height: 65%;
+}
+
+main .order-display .order-card .order-card-right .items{
+    color: black;
+    width: 90%;
+    margin: 1px;
+    margin-left: 15px;
 }
 
 main .order-display .order-card .order-card-right .type{
     color: black;
     width: 90%;
+    position: absolute;
+    bottom: 0;
 }
 
 main .order-display .order-card .status {
@@ -363,7 +372,7 @@ main .order-display .order-card .status {
     writing-mode: vertical-lr;
     margin: 8px;
     text-transform: uppercase;
-    font-size: 10px;
+    font-size: 12px;
     display: flex;
     justify-content: center;
 }
