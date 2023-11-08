@@ -48,47 +48,57 @@
             ?>
         </div>
 
-        <main>
-            <div class = "order-display">
-
-                <p class = "od-header">Assigned Orders: <?php echo $getOrderCount["COUNT(Order_ID)"]; ?></p>
+        <?php
+        // only shows orders for team members and supervisor roles
+        if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+            ?>
+                <main>
+                    <div class = "order-display">
                 
-                <?php while($row = mysqli_fetch_assoc($result)) { 
-                    $customerID = $row["O_Customer_ID"];
-                    $customerName = $mysqli->query("SELECT C.first_name, C.last_name FROM customers AS C WHERE $customerID = C.customer_id");
-                    $getCustomerName = $customerName->fetch_assoc();
-                ?>
-
-                <div class = "order-card" style = "
-                    <?php if ($row["Order_Status"] == "Canceled") {
-                        echo "background-color: #ed9999";
-                    } else if ($row["Order_Status"] == "Completed") {
-                        echo "background-color: #aff0b4";
-                    } else if ($row["Order_Status"] == "In Progress") {
-                        echo "background-color: #e9f6bd";
-                    }
-                    ?>
-                    ">
-                        <div class = "order-card-left">
-                            <p class = "order-id">Order ID: <?php echo $row["Order_ID"]; ?></p>
-                            <p class = "customer">Customer Name: <?php echo $getCustomerName["first_name"], " ", $getCustomerName["last_name"]; ?></p>
-                            <p class = "date">Date Order Placed: <?php echo $row["Date_Of_Order"]; ?></p>
-                            <p class = "time">Time Order Placed: <?php echo $row["Time_Of_Order"]; ?></p>
-                            <p class = "total">Total: $<?php echo $row["Total_Amount"]; ?></p>
+                        <p class = "od-header">Assigned Orders: <?php echo $getOrderCount["COUNT(Order_ID)"]; ?></p>
+                        
+                        <?php while($row = mysqli_fetch_assoc($result)) { 
+                            $customerID = $row["O_Customer_ID"];
+                            $customerName = $mysqli->query("SELECT C.first_name, C.last_name FROM customers AS C WHERE $customerID = C.customer_id");
+                            $getCustomerName = $customerName->fetch_assoc();
+                        ?>
+                
+                        <div class = "order-card" style = "
+                            <?php if ($row["Order_Status"] == "Canceled") {
+                                echo "background-color: #ed9999";
+                            } else if ($row["Order_Status"] == "Completed") {
+                                echo "background-color: #aff0b4";
+                            } else if ($row["Order_Status"] == "In Progress") {
+                                echo "background-color: #e9f6bd";
+                            }
+                            ?>
+                            ">
+                                <div class = "order-card-left">
+                                    <p class = "order-id">Order ID: <?php echo $row["Order_ID"]; ?></p>
+                                    <p class = "customer">Customer Name: <?php echo $getCustomerName["first_name"], " ", $getCustomerName["last_name"]; ?></p>
+                                    <p class = "date">Date Order Placed: <?php echo $row["Date_Of_Order"]; ?></p>
+                                    <p class = "time">Time Order Placed: <?php echo $row["Time_Of_Order"]; ?></p>
+                                    <p class = "total">Total: $<?php echo $row["Total_Amount"]; ?></p>
+                                </div>
+                                <div class = "order-card-right">
+                                    <p class = "items-ordered">Items Ordered: </p>
+                                    <p class = "type">Order Type: <?php echo $row["Order_Type"]; ?></p>
+                                </div>
+                
+                                <p class ="status"><?php echo $row["Order_Status"];?></p>
+                            </div>
                         </div>
-                        <div class = "order-card-right">
-                            <p class = "items-ordered">Items Ordered: </p>
-                            <p class = "type">Order Type: <?php echo $row["Order_Type"]; ?></p>
-                        </div>
-
-                        <p class ="status"><?php echo $row["Order_Status"];?></p>
+                        
+                        <?php } ?>
+                
                     </div>
-                </div>
-                
-                <?php } ?>
+            </main>
+            <?php
+        }
+        ?>
 
-            </div>
-        </main>
+
+
             
         </div>
 
