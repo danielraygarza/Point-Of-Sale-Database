@@ -173,7 +173,7 @@
 
             <label for="D_State">State </label>
             <select id="D_State" name="D_State" placeholder="Select state" style="width: 100px;" required>
-                <option value="<?php echo $_SESSION['user']['state']; ?>"> <?php echo $_SESSION['user']['state']; ?></option>
+                <option <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['state']; ?>"  <?php } ?>> <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?><?php echo $_SESSION['user']['state']; ?> <?php } ?></option>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
                 <option value="CA">California</option> <option value="CO">Colorado</option>
