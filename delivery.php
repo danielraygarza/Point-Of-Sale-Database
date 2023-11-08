@@ -50,7 +50,7 @@
         // Inserting the data into the orders table first
         $ordersSQL = "INSERT INTO orders (O_Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID)
                 VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id')";
-        // $mysqli->query($ordersSQL);
+        $mysqli->query($ordersSQL);
         $Order_ID = $mysqli->insert_id; // Retrieve the ID of the newly created order
 
         // Inserting the data into the delivery table with the same Order_ID
