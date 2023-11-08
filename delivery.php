@@ -159,9 +159,12 @@
             });
         </script>
 
+        <!-- <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['address']; ?>"  <?php } ?> -->
+
         <div>
             <label for="D_Address">Address </label>
-            <input type="text" id="D_Address" name="D_Address" value="<?php echo $_SESSION['user']['address']; ?>" placeholder="Enter deilvery address" required>
+            <input type="text" id="D_Address" name="D_Address"         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['address']; ?>"  <?php } ?>
+ placeholder="Enter deilvery address" required>
 
             <label for="D_Address2">Address 2 </label>
             <input type="text" id="D_Address2" name="D_Address2" value="<?php echo $_SESSION['user']['address2']; ?>"placeholder="Optional">
