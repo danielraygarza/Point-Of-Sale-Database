@@ -159,20 +159,17 @@
             });
         </script>
 
-        <!-- <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['address']; ?>"  <?php } ?> -->
-
         <div>
             <label for="D_Address">Address </label>
-            <input type="text" id="D_Address" name="D_Address"         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['address']; ?>"  <?php } ?>
- placeholder="Enter deilvery address" required>
+            <input type="text" id="D_Address" name="D_Address" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['address']; ?>"  <?php } ?> placeholder="Enter deilvery address" required>
 
             <label for="D_Address2">Address 2 </label>
-            <input type="text" id="D_Address2" name="D_Address2" value="<?php echo $_SESSION['user']['address2']; ?>"placeholder="Optional">
+            <input type="text" id="D_Address2" name="D_Address2" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['address2']; ?>"  <?php } ?> placeholder="Optional">
         </div><br>
 
         <div>
             <label for="D_City">City </label>
-            <input type="text" id="D_City" name="D_City" value="<?php echo $_SESSION['user']['city']; ?>" placeholder="Enter city" style="width: 90px;" required>
+            <input type="text" id="D_City" name="D_City" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['city']; ?>"  <?php } ?>  placeholder="Enter city" style="width: 90px;" required>
 
             <label for="D_State">State </label>
             <select id="D_State" name="D_State" placeholder="Select state" style="width: 100px;" required>
@@ -204,7 +201,7 @@
                 <option value="WI">Wisconsin</option> <option value="WY">Wyoming</option>
             </select>
             <label for="D_Zip_Code">Zip Code </label>
-            <input type="text" id="D_Zip_Code" name="D_Zip_Code" value="<?php echo $_SESSION['user']['zip_code']; ?>" placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
+            <input type="text" id="D_Zip_Code" name="D_Zip_Code" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['zip_code']; ?>"  <?php } ?> placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
         </div><br>
 
         <div>
