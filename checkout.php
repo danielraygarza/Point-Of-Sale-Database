@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
-$stores = $mysqli->query("SELECT * FROM pizza_store");
 
 // Add an item to the cart (you can call this function when a user adds an item)
 function addToCart($itemId)
@@ -84,18 +83,26 @@ function getCartItemCount()
                 echo "<h2 class='php-heading'>Review your cart!</h2>";
             }
             ?>
-            <select id="Store_ID" name="Store_ID" required>
-                <option value="" selected disabled>Select Store</option>
-                <?php
-                if ($stores->num_rows > 0) {
-                    while ($row = $stores->fetch_assoc()) {
-                        // does not show store ID 1
-                        // if ($row["Pizza_Store_ID"] == 1) { continue; }
-                        echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+            <div>
+                <select id="Store_ID" name="Store_ID" style="margin-right: 10px">
+                    <option value="" selected disabled>Select Location to Order</option>
+                    <?php
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
+                    if ($stores->num_rows > 0) {
+                        while ($row = $stores->fetch_assoc()) {
+                            // does not show store ID 1
+                            // if ($row["Pizza_Store_ID"] == 1) { continue; }
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
                     }
-                }
-                ?>
-            </select>
+                    ?>
+                </select>
+                <select id="Order_Type" name="Order_Type">
+                    <option value="" selected disabled>Select Order Method</option>
+                    <option value="Pickup">Pick Up</option>
+                    <option value="Deilvery">Deilvery</option>
+                </select>
+            </div>
             <div class="cart-panel">
                 <ul class="cart-items">
                     <?php
@@ -119,10 +126,12 @@ function getCartItemCount()
                     }
                     ?>
                 </ul>
-                <input class="button orderbutton" type="submit" value="Place Order">
             </div>
+            <input class="button orderbutton" type="submit" value="Place Order">
         </div>
     </form>
+
+    
     <?php
     // Calculate and display the total price
     // $totalPrice = calculateTotalPrice($cart); // Implement this function
