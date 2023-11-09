@@ -120,6 +120,7 @@ function getCartItemCount()
                     // Assuming you have a cart stored in a session or database
                     $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
+                    $totalPrice = 0; //start total at zero
                     if (count($cart) > 0) {
                         // Loop through the items in the cart and display them
                         foreach ($cart as $item) {
@@ -128,26 +129,24 @@ function getCartItemCount()
                             $row = $result->fetch_assoc();
                             if($result){
                                 $toppingPrice = $row['Item_Cost'];
+                                $totalPrice += $toppingPrice; //accumlating total price
                             }
-                            echo "<li>$item - $toppingPrice</li>"; // Replace with actual item details
+                            echo "<li>$item - $toppingPrice</li>";
                         }
+                        echo "<li>----------------------</li>";
+                        echo "<li>Total Price: $$totalPrice</li>"; //prints total price
+
                         echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
                     } else {
                         echo "<h2 class='php-heading'> Your cart is empty</h2>";
                     }
+                    $_SESSION['totalPrice'] = $totalPrice; //saves total price to session
                     ?>
                 </ul>
             </div>
             <input class="button orderbutton" type="submit" value="Place Order">
         </div>
     </form>
-
-    
-    <?php
-    // Calculate and display the total price
-    // $totalPrice = calculateTotalPrice($cart); // Implement this function
-    // echo "<p>Total: $" . number_format($totalPrice, 2) . "</p>";
-    ?>
 </body>
 
 </html>
