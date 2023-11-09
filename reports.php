@@ -221,10 +221,12 @@ function getStoreID(){
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                if(storeSelection = 'orderdates'){
+                if(storeSelection.value = 'orderdates'){
                     dateOptions.style.display = 'block';
                 }
-                
+                else{
+                    dateOptions.style.display = 'none';
+                }
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
