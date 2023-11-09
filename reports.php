@@ -15,6 +15,7 @@
     //TO DO://
     // ADD DATE RANGE SELECTOR FOR SPECIFIC DATE REPORTS
     // $stDate and $endDate ARE THE VARIABLES FOR DATE RANGE SELECTOR
+    // FIX BUG THAT ALLOWS NOTHING TO BE SELECTED AND STILL HAVE A REPORT GENERATED
 
     //Daniel: altered function above to not include "database.php" inside function. 
     // it was causing continuity errors. database.php included is at top of file
@@ -227,7 +228,7 @@ function getStoreID(){
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
-                dateOptions.style.display = 'block';
+                dateOptions.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
