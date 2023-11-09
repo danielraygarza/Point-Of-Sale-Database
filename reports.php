@@ -13,11 +13,7 @@
     // }
 
     //TO DO://
-    // ADD STORE SELECTOR FOR INVETORY AND STORE REPORTS
     // ADD DATE RANGE SELECTOR FOR SPECIFIC DATE REPORTS
-    // COMMENT ON BROKEN PHP BELOW IS WHERE THE DROP DOWN NEEDS TO GO
-    // LINES 110-118ish
-    // $storeId IS THE VARIABLE FOR STORE SELECTOR
     // $stDate and $endDate ARE THE VARIABLES FOR DATE RANGE SELECTOR
 
     //Daniel: altered function above to not include "database.php" inside function. 
@@ -42,7 +38,6 @@
 // Get a list of Store Ids from Pizza_Store table as array $storeIdData
 // Function may be fucked, won't generate properly, breaks page
 function getStoreID(){
-    include_once("./database.php");
     $sql = "SELECT `Pizza_Store_ID` FROM `pizza_store`";
     $result = mysqli_query($mysqli, $sql);
 
