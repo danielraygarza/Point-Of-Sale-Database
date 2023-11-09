@@ -221,7 +221,7 @@ function getStoreID(){
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                if(storeSelection = 'orderdates'){
+                if(storeSelection.value = 'orderdates'){
                     dateOptions.style.display = 'block';
                 }
                 
