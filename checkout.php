@@ -102,7 +102,7 @@ function getCartItemCount()
                     if ($stores->num_rows > 0) {
                         while ($row = $stores->fetch_assoc()) {
                             // does not show store ID 1
-                            // if ($row["Pizza_Store_ID"] == 1) { continue; }
+                            if ($row["Pizza_Store_ID"] == 1) { continue; }
                             echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
