@@ -109,10 +109,10 @@ Create a table titled "users" by running the following SQL command:
 Create a database.php file in the GitHub repository and paste the following. Update the file by filling in your own information:
 
     <?php
-        $host = "{servername}.mysql.database.azure.com";
-        $dbname = "{database name}";
-        $username = "{admin user}";
-        $password = "{admin user password}";
+        $host = "servername.mysql.database.azure.com";
+        $dbname = "database name";
+        $username = "admin username";
+        $password = "admin user password";
         $port = 3306;
         $mysqli = mysqli_init();
         mysqli_ssl_set($mysqli, NULL, NULL, "./DigiCertGlobalRootCA.crt.pem", NULL, NULL);
