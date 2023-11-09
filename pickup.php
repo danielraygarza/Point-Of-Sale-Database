@@ -19,6 +19,10 @@ if (isset($_SESSION['selected_store_id'])) {
     header('Location: checkout.php');
     exit;
 }
+//gets total price from checkout page
+if (isset($_SESSION['totalPrice'])) {
+    $totalPrice = $_SESSION['totalPrice'];
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
@@ -89,6 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                     SET assigned_orders = assigned_orders + 1 
                                                     WHERE Employee_ID = '$employee_id_assigned'";
                         if ($mysqli->query($incrementAssignedOrdersSQL) === TRUE) {
+                            //adds to customers total spent to date
+                            $addToCustomerTotal = "UPDATE customers
+                                                    SET total_spent_toDate = total_spent_toDate + $Total_Amount_Charged 
+                                                    WHERE customer_id = '$customerID'";
+                            $result = $mysqli->query($addToCustomerTotal); //process update
                             $mysqli->commit();
                             // Redirect to the thank you page
                             header('Location: thankyou.php');
@@ -189,10 +198,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
         <div>
             <label for="Amount">Amount </label>
-            <input type="text" id="Amount" name="Amount" placeholder="Amount" style="width: 100px;" required>
+            <input type="text" id="Amount" name="Amount" <?php if (isset($_SESSION['totalPrice'])) { ?> value=" <?php echo $totalPrice ?>" <?php } ?> placeholder="Amount" style="width: 100px;" required readonly >
 
             <label for="Amount_Tipped">Tip Amount </label>
-            <input type="text" id="Amount_Tipped" name="Amount_Tipped" placeholder="Tip" style="width: 100px;">
+            <input type="number" id="Amount_Tipped" name="Amount_Tipped" min=0 placeholder="Tip" style="width: 100px;">
         </div><br>
 
         <div>
