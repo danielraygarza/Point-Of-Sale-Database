@@ -24,6 +24,21 @@ if (isset($_SESSION['selected_store_id'])) {
 if (isset($_SESSION['totalPrice'])) {
     $totalPrice = $_SESSION['totalPrice'];
 }
+//gets cart from checkout page
+if (isset($_SESSION['cart'])) {
+    $cart = $_SESSION['cart'];
+}
+
+$discountAmount = 0;
+if (isset($_SESSION['user']['customer_id'])) {
+    $customerID = $_SESSION['user']['customer_id'];
+    $checkDiscount = "SELECT store_credit FROM customers WHERE customer_id = '$customerID'";
+    $result = $mysqli->query($checkDiscount);
+    $row = $result->fetch_assoc();
+    if ($row && $row['store_credit'] > 0) {
+        $discountAmount = $row['store_credit'];
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
@@ -56,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
     try {
         $result = $mysqli->query($findEmployeeSQL);
         if ($result && $result->num_rows > 0) {
-            //get the customer id of current user
+            //check if user is logged in as customer
             if (isset($_SESSION['user']['customer_id'])) {
                 //get ID if customer is logged in
                 $customerID = $_SESSION['user']['customer_id'];
@@ -69,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                 $guestSQL = "INSERT INTO guest (G_Email, G_Phone_Number, G_First_Name, G_Last_Name)
                             VALUES ('$email', '$phone_number', '$first_name', '$last_name')";
 
-                //get ID if guest
+                //get new ID if guest
                 if ($mysqli->query($guestSQL) === TRUE) {
                     $customerID = $mysqli->insert_id; // get new auto incremented ID
                 } else {
@@ -83,14 +98,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                         VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned')";
             // Check if the orders table insertion was successful
             if ($mysqli->query($ordersSQL) === TRUE) {
-                $Order_ID = $mysqli->insert_id; // Check this after the query
+                $Order_ID = $mysqli->insert_id; //assign new order ID
 
-                // Inserting the data into the delivery table with the same Order_ID
+                //insert delivery table
                 $deliverySQL = "INSERT INTO delivery (D_Order_ID, D_Date, D_Time_Processed, D_Address, D_Address2, D_City, D_State, D_Zip_Code, employee)
                             VALUES ('$Order_ID', '$Current_Date', '$Current_Time', '$D_Address', '$D_Address2','$D_City', '$D_State', '$D_Zip_Code', '$employee_id_assigned')";
 
                 if ($mysqli->query($deliverySQL) === TRUE) {
-                    // Inserting the data into the transactions table with the same Order_ID
+                    // Update the customer's store credit after applying the discount
+                    $newStoreCredit = $row['store_credit'] - $discountAmount;
+                    $updateCustomerCredit = "UPDATE customers SET store_credit = $newStoreCredit WHERE customer_id = '$customerID'";
+                    if (!$mysqli->query($updateCustomerCredit)) {
+                        throw new Exception("Error updating customer's store credit: " . $mysqli->error);
+                    }
+                    //insert transaction table
                     $transactionSQL = "INSERT INTO transactions (T_Order_ID, Total_Amount_Charged, Amount_Tipped, Payment_Method, T_Date, Time_Processed)
                                 VALUES ('$Order_ID', '$Total_Amount_Charged', '$Amount_Tipped', '$Payment_Method', '$Current_Date','$Current_Time')";
                     if ($mysqli->query($transactionSQL) === TRUE) {
@@ -98,14 +119,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                         $incrementAssignedOrdersSQL = "UPDATE employee 
                                                 SET assigned_orders = assigned_orders + 1 
                                                 WHERE Employee_ID = '$employee_id_assigned'";
-                        
+
                         if ($mysqli->query($incrementAssignedOrdersSQL) === TRUE) {
                             //adds to customers total spent to date
                             $addToCustomerTotal = "UPDATE customers
                                                     SET total_spent_toDate = total_spent_toDate + $Total_Amount_Charged 
                                                     WHERE customer_id = '$customerID'";
                             $result = $mysqli->query($addToCustomerTotal); //process update
-
+                            
+                            $_SESSION['cart'] = []; //empties cart after everything
                             $mysqli->commit();
                             // Redirect to the thank you page
                             header('Location: thankyou.php');
@@ -222,80 +244,90 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                     <option value="<?php echo $_SESSION['user']['state']; ?>" selected> <?php echo $_SESSION['user']['state']; ?> </option>
                 <?php else : ?> <option value="" selected disabled>Select</option> <?php endif; ?>
                 <option value="AL">Alabama</option><option value="AK">Alaska</option>
-                <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
-                <option value="CA">California</option> <option value="CO">Colorado</option>
-                <option value="CT">Connecticut</option> <option value="DE">Delaware</option>
-                <option value="FL">Florida</option> <option value="GA">Georgia</option>
-                <option value="HI">Hawaii</option> <option value="ID">Idaho</option>
-                <option value="IL">Illinois</option> <option value="IN">Indiana</option>
-                <option value="IA">Iowa</option> <option value="KS">Kansas</option>
-                <option value="KY">Kentucky</option> <option value="LA">Louisiana</option>
-                <option value="ME">Maine</option> <option value="MD">Maryland</option>
-                <option value="MA">Massachusetts</option> <option value="MI">Michigan</option>
-                <option value="MN">Minnesota</option> <option value="MS">Mississippi</option>
-                <option value="MO">Missouri</option> <option value="MT">Montana</option>
-                <option value="NE">Nebraska</option> <option value="NV">Nevada</option>
-                <option value="NH">New Hampshire</option> <option value="NJ">New Jersey</option>
-                <option value="NM">New Mexico</option> <option value="NY">New York</option>
-                <option value="NC">North Carolina</option> <option value="ND">North Dakota</option>
-                <option value="OH">Ohio</option> <option value="OK">Oklahoma</option>
-                <option value="OR">Oregon</option> <option value="PA">Pennsylvania</option>
-                <option value="RI">Rhode Island</option> <option value="SC">South Carolina</option>
-                <option value="SD">South Dakota</option> <option value="TN">Tennessee</option>
-                <option value="TX">Texas</option> <option value="UT">Utah</option>
-                <option value="VT">Vermont</option> <option value="VA">Virginia</option>
-                <option value="WA">Washington</option> <option value="WV">West Virginia</option>
-                <option value="WI">Wisconsin</option> <option value="WY">Wyoming</option>
+                <option value="AZ">Arizona</option><option value="AR">Arkansas</option>
+                <option value="CA">California</option><option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option><option value="DE">Delaware</option>
+                <option value="FL">Florida</option><option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option><option value="ID">Idaho</option>
+                <option value="IL">Illinois</option><option value="IN">Indiana</option>
+                <option value="IA">Iowa</option><option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option><option value="LA">Louisiana</option>
+                <option value="ME">Maine</option><option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option><option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option><option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option><option value="MT">Montana</option>
+                <option value="NE">Nebraska</option><option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option><option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option><option value="NY">New York</option>
+                <option value="NC">North Carolina</option><option value="ND">North Dakota</option>
+                <option value="OH">Ohio</option><option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option><option value="PA">Pennsylvania</option>
+                <option value="RI">Rhode Island</option><option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option><option value="TN">Tennessee</option>
+                <option value="TX">Texas</option><option value="UT">Utah</option>
+                <option value="VT">Vermont</option><option value="VA">Virginia</option>
+                <option value="WA">Washington</option><option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
             </select>
             <label for="D_Zip_Code">Zip Code </label>
             <input type="text" id="D_Zip_Code" name="D_Zip_Code" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['zip_code']; ?>" <?php } ?> placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
         </div><br>
-        
+
         <div>
             <label for="Amount">Amount </label>
             <input type="text" id="Amount" name="Amount" <?php if (isset($_SESSION['totalPrice'])) { ?> value=" <?php echo $totalPrice ?>" <?php } ?> placeholder="Amount" style="width: 100px;" required readonly>
 
             <label for="Amount_Tipped">Tip Amount </label>
-            <input type="number" id="Amount_Tipped" name="Amount_Tipped" min = 0 placeholder="Tip" style="width: 100px;">
+            <input type="number" id="Amount_Tipped" name="Amount_Tipped" min=0 placeholder="Tip" style="width: 100px;">
         </div><br>
-
-        <div>
-            <label for="Total_Amount_Charged">Total Amount </label>
-            <input type="text" id="Total_Amount_Charged" name="Total_Amount_Charged" placeholder="Total Amount" style="width: 100px;" required readonly> <!--readonly -->
-        </div><br>
-
-        <script>
-            function calculateTotal() {
-                var amount = parseFloat(document.getElementById('Amount').value) || 0;
-                var tip = parseFloat(document.getElementById('Amount_Tipped').value) || 0;
-                var total = amount + tip;
-                document.getElementById('Total_Amount_Charged').value = total.toFixed(2);
-            }
-            document.getElementById('Amount').addEventListener('input', calculateTotal);
-            document.getElementById('Amount_Tipped').addEventListener('input', calculateTotal);
-        </script>
-
-        <div>
-            <select id="Payment_Method" name="Payment_Method" required>
-                <option value="" selected disabled>Select Payment Method</option>
-                <option value="Cash">Cash</option>
-                <option value="Credit Card">Credit Card</option>
-                <option value="Bitcoin">Bitcoin</option>
-                <option value="V-Bucks">V-Bucks</option>
-            </select>
-        </div><br>
-
 
         <?php
-        //displays error messages here 
-        if (isset($_SESSION['error'])) {
-            echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
-            unset($_SESSION['error']);  // Unset the error message after displaying it
-        }
-        ?>
+        if ($discountAmount > 0) { ?>
+            <div>
+                <label for="Discount_Amount">Discount Applied </label>
+                <input type="text" id="Discount_Amount" name="Discount_Amount" value="<?php echo $discountAmount; ?>" placeholder="Discount Amount" style="width: 100px;" required readonly>
+            <?php } else { ?>
+                <div>
+                <?php } ?>
 
-        <div>
-            <input class=button type="submit" value="Finalize Order">
+                <label for="Total_Amount_Charged">Total Amount </label>
+                <input type="text" id="Total_Amount_Charged" name="Total_Amount_Charged" placeholder="Total Amount" style="width: 100px;" required readonly>
+                </div><br>
+
+
+                <script>
+                    function calculateTotal() {
+                        var amount = parseFloat(document.getElementById('Amount').value) || 0;
+                        var tip = parseFloat(document.getElementById('Amount_Tipped').value) || 0;
+                        var discount = parseFloat(<?php echo $discountAmount; ?>) || 0;
+                        var total = amount + tip - discount;
+                        document.getElementById('Total_Amount_Charged').value = total.toFixed(2);
+                    }
+                    document.getElementById('Amount').addEventListener('input', calculateTotal);
+                    document.getElementById('Amount_Tipped').addEventListener('input', calculateTotal);
+                </script>
+
+                <div>
+                    <select id="Payment_Method" name="Payment_Method" required>
+                        <option value="" selected disabled>Select Payment Method</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Bitcoin">Bitcoin</option>
+                        <option value="V-Bucks">V-Bucks</option>
+                    </select>
+                </div><br>
+
+
+                <?php
+                //displays error messages here 
+                if (isset($_SESSION['error'])) {
+                    echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                    unset($_SESSION['error']);  // Unset the error message after displaying it
+                }
+                ?>
+
+                <div>
+                    <input class=button type="submit" value="Finalize Order">
     </form>
 </body>
 
