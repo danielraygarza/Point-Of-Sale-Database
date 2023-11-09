@@ -19,13 +19,28 @@
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
-        //get the customer id of current user
         
-        //handle if customer is a guest
-        //INSERT INTO GUEST AND GET AUTO INCREMENTED ID
+        //get the customer id of current user
+        if (isset($_SESSION['user']['customer_id'])) {
+            //get ID if customer is logged in
+            $customerID = $_SESSION['user']['customer_id'];
+        } else {
+            //guest table
+            $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
+            $email = $mysqli->real_escape_string($_POST['email']);
+            $first_name = $mysqli->real_escape_string($_POST['first_name']);
+            $last_name = $mysqli->real_escape_string($_POST['last_name']);
+            //get ID if guest
+            if ($connection->query("INSERT INTO guest (G_Email, G_Phone_Number, G_First_Name, G_Last_Name)
+                                    VALUES ('$email', '$phone_number', '$first_name', '$last_name')")) {
+                // Retrieve the last auto incremented ID
+                $customerID = $connection->insert_id;
+            } else {
+                die("Error: " . $connection->error);
+            }
+        }
         
         //order table
-        $customerID = $_SESSION['user']['customer_id'];
         $Current_Date = $mysqli->real_escape_string($_POST['Current_Date']);
         $Current_Time = $mysqli->real_escape_string($_POST['Current_Time']);
         $Order_Type = "Delivery";
@@ -36,8 +51,6 @@
         $D_City = $mysqli->real_escape_string($_POST['D_City']);
         $D_State = $mysqli->real_escape_string($_POST['D_State']);
         $D_Zip_Code = $mysqli->real_escape_string($_POST['D_Zip_Code']);
-        // $Estimated_Delivery_Time = $mysqli->real_escape_string($_POST['Estimated_Delivery_Time']);
-        // $Time_Delivered = $mysqli->real_escape_string($_POST['Time_Delivered']);
         
         //transaction table
         $Total_Amount_Charged = $mysqli->real_escape_string($_POST['Total_Amount_Charged']);
@@ -45,7 +58,6 @@
         $Payment_Method = $mysqli->real_escape_string($_POST['Payment_Method']);
         $T_Date = $mysqli->real_escape_string($_POST['Current_Date']);
         $Time_Processed = $mysqli->real_escape_string($_POST['Current_Time']);
-        
 
         // Inserting the data into the orders table first
         $ordersSQL = "INSERT INTO orders (O_Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID)
@@ -159,6 +171,26 @@
             });
         </script>
 
+        <!-- if customer if guest, name, phone number, and email will be prompted for guest table -->
+        <?php
+        if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) { ?>
+            <div>
+                <label for="phone_number">Phone Number  </label>
+                <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="^\d{10}$|^\d{3}-\d{3}-\d{4}$" style="width: 120px;" required>
+                <label for="email">Email  </label>
+                <!-- input requires "@" and "." -->
+                <input type="email" id="email" name="email" placeholder="Enter email address" pattern=".*\..*" required>
+            </div><br>
+            
+            <div>       
+            <label for="first_name">Name  </label>
+            <input type="text" id="first_name" name="first_name" placeholder="First" style="width: 75px;" required>
+
+            <label for="last_name"></label>
+            <input type="text" id="last_name" name="last_name" placeholder="Last" style="width: 75px;" required>
+            </div><br>
+        <?php } ?>
+
         <div>
             <label for="D_Address">Address </label>
             <input type="text" id="D_Address" name="D_Address" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['address']; ?>"  <?php } ?> placeholder="Enter deilvery address" required>
@@ -173,7 +205,9 @@
 
             <label for="D_State">State </label>
             <select id="D_State" name="D_State" placeholder="Select state" style="width: 100px;" required>
-                <option <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['state']; ?>"  <?php } ?>> <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?><?php echo $_SESSION['user']['state']; ?> <?php } ?></option>
+                <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true): ?>
+                <option value="<?php echo $_SESSION['user']['state']; ?>" selected> <?php echo $_SESSION['user']['state']; ?> </option>
+                <?php else: ?> <option value="" selected disabled>Select</option> <?php endif; ?>
                 <option value="AL">Alabama</option> <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
                 <option value="CA">California</option> <option value="CO">Colorado</option>
@@ -205,8 +239,8 @@
         </div><br>
 
         <div>
-            <label for="">Amount </label>
-            <input type="text" placeholder="Amount" style="width: 100px;" required> <!--readonly -->
+            <label for="Amount">Amount </label>
+            <input type="text" id="Amount" placeholder="Amount" style="width: 100px;" required> 
 
             <label for="Amount_Tipped">Tip Amount </label>
             <input type="text" id="Amount_Tipped" name="Amount_Tipped" placeholder="Tip" style="width: 100px;">
@@ -214,8 +248,19 @@
 
         <div>
             <label for="Total_Amount_Charged">Total Amount </label>
-            <input type="text" id="Total_Amount_Charged" name="Total_Amount_Charged" placeholder="Total Amount" style="width: 100px;" required> <!--readonly -->
+            <input type="text" id="Total_Amount_Charged" name="Total_Amount_Charged" placeholder="Total Amount" style="width: 100px;" required readonly> <!--readonly -->
         </div><br>
+
+        <script>
+            function calculateTotal() {
+                var amount = parseFloat(document.getElementById('Amount').value) || 0;
+                var tip = parseFloat(document.getElementById('Amount_Tipped').value) || 0;
+                var total = amount + tip;
+                document.getElementById('Total_Amount_Charged').value = total.toFixed(2);
+            }
+            document.getElementById('Amount').addEventListener('input', calculateTotal);
+            document.getElementById('Amount_Tipped').addEventListener('input', calculateTotal);
+        </script>
 
         <div>
             <select id="Payment_Method" name="Payment_Method" required>
