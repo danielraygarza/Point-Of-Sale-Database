@@ -203,6 +203,9 @@ function getStoreID(){
             var storeSelection = document.getElementById('storeSelection');
             var dateOptions = document.getElementById('dateOptions');
 
+            // Store report type
+            var storeType = document.getElementById('storeType');
+
 
             //This if/else determines which sub menu is visible
             //To set a new one visible, set reportType === 'newMenu'
@@ -222,7 +225,7 @@ function getStoreID(){
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
                 dateOptions.style.display = 'none';
-                if(storeSelection.value === 'orderdates'){
+                if(storeType.value === 'orderdates'){
                     dateOptions.style.display = 'block';
                 }
 
