@@ -110,7 +110,7 @@ function getStoreID(){
                         }
                     }
                 ?>
-1            </select>
+            </select>
 
         </div><br>
 
@@ -143,7 +143,25 @@ function getStoreID(){
                 <option value="date">Total Sales From:</option>
             </select>
         </div><br>
-        <!-- //To here// -->        
+        <!-- //To here// -->
+
+        <div id="dateOptions" style="display: none;">
+            <label for="start_year">Start Year:</label>
+            <select id="start_year" name="start_year" onchange="dateOptions()">
+                <option value="2022">2022</option>
+            </select>
+
+            <label for="start_month">Start Month:</lable>
+            <select id="start_month" name="start_month" onchange="dateOptions()">
+                <option value="01">January</option>
+            </select>
+            
+            <label for="start_day">Start Day:</label>
+            <select id="start_day" name="start_day">
+                <!-- Should be populated by function dateOptions -->
+            </select>
+                
+        </div><br>
 
         <!-- Add more drop down sub-menus here -->
         <div id="Employer" style="display: none;">
@@ -182,8 +200,7 @@ function getStoreID(){
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
-
-            //sub-sub menu stuff deleted
+            var dateOptions = document.getElementById('dateOptions');
 
 
             //This if/else determines which sub menu is visible
@@ -195,23 +212,72 @@ function getStoreID(){
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
+                dateOptions.style.display = 'block';
                 // newMenuOptions.style.display = 'none'
+
             } else if (reportType.value === 'store') {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                
+                dateOptions.style.display = 'block';
+
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
+                dateOptions.style.display = 'block';
+
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
+                dateOptions.style.display = 'none';
+            }
+        }
+
+        // Function to set start and end dates
+        function dateOptions(){
+            //Function to ensure dates are valid
+            function daysInMonth(year, month){
+                // Setting the day to zero returns the last day of the previous month
+                return new Date(year, month, 0).getDate();
+            }
+
+            //Start and end date selection
+            var startYear = document.getElementById('start_year').value;
+            var startMonth = document.getElementById('start_month').value;
+            var startDay = document.getElementById('start_day').value;
+            var stDate = startYear + startMonth + startDay;
+
+            var endYear = document.getElementById('end_year').value;
+            var endMonth = document.getElementById('end_month').value;
+            var endDay = document.getElementById('end_day').value;
+            var endDate = endYear + endMonth + endDay;
+
+            // Update days based on selected year and month
+            var startDayDropdown = document.getElementById('start_day');
+            var endDayDropdown = document.getElementById('end_day');
+
+            // Clear existing options
+            startDayDropdown.innerHTML = '';
+            endDayDropdown.innerHTML = '';
+
+            // Populate proper num days per selected month
+            for (var i = 1; i <= daysInMonth(startYear, startMonth); i++){
+                var option = document.createElement('option');
+                option.value = i;
+                option.text = i;
+                startDayDropdown.add(option);
+            }
+
+            for (var j = 1; j <= daysInMonth(endYear, endMonth); j++){
+                var endopt = document.createElement('endopt');
+                endopt.value = j;
+                endopt.text = j;
+                endDayDropdown.add(endopt);
             }
         }
     </script>
