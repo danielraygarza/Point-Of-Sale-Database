@@ -48,10 +48,12 @@
             ?>
         </div>
 
-        <main>
-            <div class = "order-display">
-
-                <p class = "od-header">Assigned Orders: <?php echo $getOrderCount["COUNT(Order_ID)"]; ?></p>
+        <?php
+        // only shows orders for team members and supervisor roles
+        if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+            ?>
+                <main>
+                    <div class = "order-display">
                 
                 <?php while($row = mysqli_fetch_assoc($result)) { 
                     $customerID = $row["O_Customer_ID"];
@@ -90,15 +92,17 @@
                             
                             <p class = "type">Order Type: <?php echo $row["Order_Type"]; ?></p>
                         </div>
-
-                        <p class ="status"><?php echo $row["Order_Status"];?></p>
-                    </div>
-                </div>
+                        
+                        <?php } ?>
                 
-                <?php } ?>
+                    </div>
+            </main>
+            <?php
+        }
+        ?>
 
-            </div>
-        </main>
+
+
             
         </div>
 

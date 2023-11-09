@@ -11,18 +11,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $result->fetch_assoc();
         
         if (password_verify($password, $user['password'])) {
-            // Successful login
             session_start();
-            $_SESSION['loggedin'] = true;
             $_SESSION['user'] = $user;  //assigns all employee attributes inside an array
-
-            //Updates clocked in to true when employee logs in
-            $Employee_ID = $user['Employee_ID'];
-            $mysqli->query("UPDATE employee SET clocked_in=1 WHERE Employee_ID='$Employee_ID'");
-
-
-            // Redirect to a employee page
-            header("Location: employee_home.php");
+            
+            // Check if employee is active
+            if ($user['active_employee'] == '0') {
+                echo "";
+                $_SESSION['error'] = "This account has been disabled. Please contact your manager.";
+            } else {
+                // Successful login
+                 $_SESSION['loggedin'] = true;
+                 
+                 //Updates clocked in to true when employee logs in
+                 $Employee_ID = $user['Employee_ID'];
+                 $mysqli->query("UPDATE employee SET clocked_in=1 WHERE Employee_ID='$Employee_ID'");
+                 
+                 
+                 // Redirect to a employee page
+                 header("Location: employee_home.php");
+            }
         } else {
             // Password doesn't match
             echo "";

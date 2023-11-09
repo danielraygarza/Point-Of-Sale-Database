@@ -89,7 +89,7 @@ To connect Web App to Azure Database:
 
     In your web app, under "Configuration", select "New application setting" and enter the following individually:
         Name: DB_HOST | Value: your server name
-        Name: DB_NAME | Value: admin username
+        Name: DB_USER | Value: admin username
         Name: DB_PASS | Value: admin's password
         Name: DB_NAME | Value: database name you created earlier
     Your Azure database is now connected to the Web App.
@@ -97,14 +97,16 @@ To connect Web App to Azure Database:
 
 The next steps will show how to store user input from your web page into your database. In this example, we will have the user sign up with a username and password and store the data.
 
-In MySQL Workbench, create a table titled "users" by running the following SQL command:
+In MySQL Workbench, locate your database under the schema tab. Right click your database and select "Set as Default Schema". This will ensure the commands run in your database.
+
+Create a table titled "users" by running the following SQL command:
 
     CREATE TABLE users (
         username VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL    
     );
 
-Create a database.php file in the GitHub repository and paste the following:
+Create a database.php file in the GitHub repository and paste the following. Update the file by filling in your own information:
 
     <?php
         $host = "{servername}.mysql.database.azure.com";

@@ -9,12 +9,3 @@ mysqli_ssl_set($mysqli, NULL, NULL, "./DigiCertGlobalRootCA.crt.pem", NULL, NULL
 if (!$mysqli->real_connect($host, $username, $password, $dbname, $port, NULL, MYSQLI_CLIENT_SSL)) {
     die("Connection error: " . $mysqli->connect_error);
 }
-
-
-/*
-$con = mysqli_init();
-mysqli_ssl_set($con, NULL, NULL, "./DigiCertGlobalRootCA.crt.pem", NULL, NULL);
-if (!$con->real_connect($host, $username, $password, $dbname, $port, NULL, MYSQLI_CLIENT_SSL)) {
-    die("Error: Unable to connect: " . $con->connect_error);
-}
-// */

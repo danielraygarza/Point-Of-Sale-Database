@@ -15,7 +15,9 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['action']) && $_POST['action'] == 'get_employee_details') {
             $Employee_ID = $mysqli->real_escape_string($_POST['employee_id']);
-            $sql = "SELECT E_First_Name, E_Last_Name, Employee_ID, Title_Role, Store_ID, Supervisor_ID, Hire_Date FROM employee WHERE Employee_ID = $Employee_ID";
+            $sql = "SELECT E_First_Name, E_Last_Name, Employee_ID, Title_Role, Store_ID, Supervisor_ID, Hire_Date 
+                    FROM employee 
+                    WHERE Employee_ID = $Employee_ID";
             $result = $mysqli->query($sql);
 
             if ($result) {
@@ -29,31 +31,41 @@
                 exit;
             }
         } else {
-            // Regular form submission handling
             $E_First_Name = $mysqli->real_escape_string($_POST['E_First_Name']);
             $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
             $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
             $Supervisor_ID = $mysqli->real_escape_string($_POST['Supervisor_ID']);
             $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
             $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
+            $active_employee = $mysqli->real_escape_string($_POST['active_employee']);
     
             // Check if Employee_ID and Supervisor_ID match
             if ($Employee_ID == $Supervisor_ID) {
                 echo "";
                 $_SESSION['error'] = "Employee cannot be their own supervisor";
             } else {
-                // IDs do not match; proceed with the update
-                $sql = "UPDATE employee 
-                        SET E_First_Name='$E_First_Name', E_Last_Name='$E_Last_Name', Title_Role='$Title_Role', Supervisor_ID='$Supervisor_ID', Store_ID='$Store_ID'
-                        WHERE Employee_ID = $Employee_ID";
-    
-                if ($mysqli->query($sql) === TRUE) {
-                    $mysqli->close();
-                    header('Location: employee_home.php');
-                    exit;
-                } else {
-                    echo "Error: " . $sql . "<br>" . $mysqli->error;
+                $mysqli->begin_transaction();
+
+                $storeManagerId = null;
+                // If the employee is set to inactive, get the store manager's ID
+                if ($active_employee == '0') {
+                    $storeManagerId = $mysqli->query("SELECT Store_Manager_ID FROM pizza_store WHERE Pizza_Store_ID = $Store_ID")->fetch_object()->Store_Manager_ID;
+                    
+                    // Reassign supervisors as needed
+                    $mysqli->query("UPDATE employee SET Supervisor_ID = $storeManagerId WHERE Supervisor_ID = $Employee_ID");
                 }
+
+                $stmt = $mysqli->prepare("UPDATE employee 
+                                        SET E_First_Name=?, E_Last_Name=?, Title_Role=?, Supervisor_ID=?, Store_ID=?, active_employee=? 
+                                        WHERE Employee_ID = ?");
+                $stmt->bind_param("sssiisi", $E_First_Name, $E_Last_Name, $Title_Role, $Supervisor_ID, $Store_ID, $active_employee, $Employee_ID);
+                $stmt->execute();
+                $stmt->close();
+
+                $mysqli->commit();
+                $mysqli->close();
+                header('Location: employee_home.php');
+                exit;
             }
         }
     }
@@ -87,7 +99,7 @@
                 <option value="" selected disabled>Select Employee</option>
                 <?php
                  if ($_SESSION['user']['Title_Role'] == 'CEO') {
-                     $allEmployees = $mysqli->query("SELECT * FROM employee");
+                     $allEmployees = $mysqli->query("SELECT * FROM employee WHERE active_employee = '1'");
                      if ($allEmployees->num_rows > 0) {
                         while ($row = $allEmployees->fetch_assoc()) {
                             echo '<option value="' . $row["Employee_ID"] . '" ' . $selected . '>' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
@@ -183,7 +195,7 @@
                 <option value="" selected disabled>Select</option>
                 <?php
                     $currentEmployeeId = 'employeeId';
-                    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role IN ('SUP', 'MAN', 'CEO')");
+                    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'");
                     if ($supervisors->num_rows > 0) {
                         while ($row = $supervisors->fetch_assoc()) {
                             if ($row["Employee_ID"] == $currentEmployeeId) { continue; }
@@ -193,6 +205,28 @@
                 ?>
             </select>
         </div><br>
+        
+        <div>
+            <label for="active_employee">Remove Employee </label>
+            <select id="active_employee" name="active_employee" onchange="showWarning(this.value)">
+                <option value="1">Optional</option>
+                <option value="0">Yes</option>
+            </select>
+            <p id="warning_message" style="display: none; color: black ; text-shadow: none;">Removing an employee will inactive their account. Please proceed with caution.
+        <br>You cannot remove a manager without assigning a new one to that location.<br>Removing an individual's supervisor will assign their store manager as new supervisor.</p>
+        </div><br>
+
+        <script>
+            function showWarning(value) {
+                var warningMessage = document.getElementById('warning_message');
+                if (value === '0') {
+                    warningMessage.style.display = 'block';
+                } else {
+                    warningMessage.style.display = 'none';
+                }
+            }
+        </script>
+
 
 
         <?php

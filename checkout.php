@@ -5,19 +5,30 @@ include 'database.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-// Clear the cart if the "Clear Cart" button is clicked
-if (isset($_POST['clear-cart'])) {
-    $_SESSION['cart'] = [];
-}
+// $_SESSION['selected_store_id'] = $store_id;
 
 // when you click "place order", it will run this code
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo "<h2>Success</h2>";
     // echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
     // redirect to the chosen page when click "place order"
-    header('Location: checkout.php');
-    exit;
+    $Order_Type = $mysqli->real_escape_string($_POST['Order_Type']);
+    $_SESSION['selected_store_id'] = $_POST['Store_ID']; // Replace 'store_location' with the actual form field name
+    if($Order_Type == 'Pickup'){
+        header('Location: pickup.php');
+        exit;
+    } else if($Order_Type == 'Delivery'){
+        header('Location: delivery.php');
+        exit;
+    } else {
+        header('Location: checkout.php');
+        exit;
+    }
+}
+
+// Clear the cart if the "Clear Cart" button is clicked
+if (isset($_POST['clear-cart'])) {
+    $_SESSION['cart'] = [];
 }
 
 // Initialize the cart as an empty array if it doesn't exist
@@ -84,7 +95,7 @@ function getCartItemCount()
             }
             ?>
             <div>
-                <select id="Store_ID" name="Store_ID" style="margin-right: 10px">
+                <select id="Store_ID" name="Store_ID" style="margin-right: 10px" required>
                     <option value="" selected disabled>Select Location to Order</option>
                     <?php
                     $stores = $mysqli->query("SELECT * FROM pizza_store");
@@ -97,10 +108,10 @@ function getCartItemCount()
                     }
                     ?>
                 </select>
-                <select id="Order_Type" name="Order_Type">
+                <select id="Order_Type" name="Order_Type" required>
                     <option value="" selected disabled>Select Order Method</option>
                     <option value="Pickup">Pick Up</option>
-                    <option value="Deilvery">Deilvery</option>
+                    <option value="Delivery">Delivery</option>
                 </select>
             </div>
             <div class="cart-panel">
