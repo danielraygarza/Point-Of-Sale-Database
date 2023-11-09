@@ -4,6 +4,8 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+// echo "";
+// $_SESSION['error'] = "Store location already exist";
 
 function getCartItemCount()
 {
@@ -19,27 +21,6 @@ if (isset($_SESSION['selected_store_id'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
-
-    //get the customer id of current user
-    if (isset($_SESSION['user']['customer_id'])) {
-        //get ID if customer is logged in
-        $customerID = $_SESSION['user']['customer_id'];
-    } else {
-        //guest table
-        $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
-        $email = $mysqli->real_escape_string($_POST['email']);
-        $first_name = $mysqli->real_escape_string($_POST['first_name']);
-        $last_name = $mysqli->real_escape_string($_POST['last_name']);
-        //get ID if guest
-        $guestSQL = "INSERT INTO guest (G_Email, G_Phone_Number, G_First_Name, G_Last_Name)
-                    VALUES ('$email', '$phone_number', '$first_name', '$last_name')";
-
-        if ($mysqli->query($guestSQL) === TRUE) {
-            $customerID = $mysqli->insert_id; // get new auto incremented ID
-        } else {
-            throw new Exception("Error inserting into guest: " . $mysqli->error);
-        }
-    }
 
     //order table
     $Current_Date = $mysqli->real_escape_string($_POST['Current_Date']);
@@ -70,6 +51,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
     try {
         $result = $mysqli->query($findEmployeeSQL);
         if ($result && $result->num_rows > 0) {
+            //get the customer id of current user
+            if (isset($_SESSION['user']['customer_id'])) {
+                //get ID if customer is logged in
+                $customerID = $_SESSION['user']['customer_id'];
+            } else {
+                //guest table
+                $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
+                $email = $mysqli->real_escape_string($_POST['email']);
+                $first_name = $mysqli->real_escape_string($_POST['first_name']);
+                $last_name = $mysqli->real_escape_string($_POST['last_name']);
+                $guestSQL = "INSERT INTO guest (G_Email, G_Phone_Number, G_First_Name, G_Last_Name)
+                            VALUES ('$email', '$phone_number', '$first_name', '$last_name')";
+
+                //get ID if guest
+                if ($mysqli->query($guestSQL) === TRUE) {
+                    $customerID = $mysqli->insert_id; // get new auto incremented ID
+                } else {
+                    header('Location: checkout.php');
+                    exit;
+                }
+            }
             $employee = $result->fetch_assoc();
             $employee_id_assigned = $employee['Employee_ID'];
             $ordersSQL = "INSERT INTO orders (O_Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned)
@@ -92,7 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                     SET assigned_orders = assigned_orders + 1 
                                                     WHERE Employee_ID = '$employee_id_assigned'";
                         if ($mysqli->query($incrementAssignedOrdersSQL) === TRUE) {
-                            // Commit the transaction
                             $mysqli->commit();
                             // Redirect to the thank you page
                             header('Location: thankyou.php');
@@ -110,7 +111,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                 throw new Exception("Error inserting into orders: " . $mysqli->error);
             }
         } else {
-            throw new Exception("No available employees to assign the order to.");
+            echo "";
+            $_SESSION['error'] = "Sorry, we're closed! We are POS!";
+            header('Location: delivery.php');
+            exit;
+            // throw new Exception("No available employees to assign the order to.");
         }
     } catch (Exception $e) {
         $e->getMessage();
@@ -204,56 +209,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) : ?>
                     <option value="<?php echo $_SESSION['user']['state']; ?>" selected> <?php echo $_SESSION['user']['state']; ?> </option>
                 <?php else : ?> <option value="" selected disabled>Select</option> <?php endif; ?>
-                <option value="AL">Alabama</option>
-                <option value="AK">Alaska</option>
-                <option value="AZ">Arizona</option>
-                <option value="AR">Arkansas</option>
-                <option value="CA">California</option>
-                <option value="CO">Colorado</option>
-                <option value="CT">Connecticut</option>
-                <option value="DE">Delaware</option>
-                <option value="FL">Florida</option>
-                <option value="GA">Georgia</option>
-                <option value="HI">Hawaii</option>
-                <option value="ID">Idaho</option>
-                <option value="IL">Illinois</option>
-                <option value="IN">Indiana</option>
-                <option value="IA">Iowa</option>
-                <option value="KS">Kansas</option>
-                <option value="KY">Kentucky</option>
-                <option value="LA">Louisiana</option>
-                <option value="ME">Maine</option>
-                <option value="MD">Maryland</option>
-                <option value="MA">Massachusetts</option>
-                <option value="MI">Michigan</option>
-                <option value="MN">Minnesota</option>
-                <option value="MS">Mississippi</option>
-                <option value="MO">Missouri</option>
-                <option value="MT">Montana</option>
-                <option value="NE">Nebraska</option>
-                <option value="NV">Nevada</option>
-                <option value="NH">New Hampshire</option>
-                <option value="NJ">New Jersey</option>
-                <option value="NM">New Mexico</option>
-                <option value="NY">New York</option>
-                <option value="NC">North Carolina</option>
-                <option value="ND">North Dakota</option>
-                <option value="OH">Ohio</option>
-                <option value="OK">Oklahoma</option>
-                <option value="OR">Oregon</option>
-                <option value="PA">Pennsylvania</option>
-                <option value="RI">Rhode Island</option>
-                <option value="SC">South Carolina</option>
-                <option value="SD">South Dakota</option>
-                <option value="TN">Tennessee</option>
-                <option value="TX">Texas</option>
-                <option value="UT">Utah</option>
-                <option value="VT">Vermont</option>
-                <option value="VA">Virginia</option>
-                <option value="WA">Washington</option>
-                <option value="WV">West Virginia</option>
-                <option value="WI">Wisconsin</option>
-                <option value="WY">Wyoming</option>
+                <option value="AL">Alabama</option><option value="AK">Alaska</option>
+                <option value="AZ">Arizona</option> <option value="AR">Arkansas</option>
+                <option value="CA">California</option> <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option> <option value="DE">Delaware</option>
+                <option value="FL">Florida</option> <option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option> <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option> <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option> <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option> <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option> <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option> <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option> <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option> <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option> <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option> <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option> <option value="NY">New York</option>
+                <option value="NC">North Carolina</option> <option value="ND">North Dakota</option>
+                <option value="OH">Ohio</option> <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option> <option value="PA">Pennsylvania</option>
+                <option value="RI">Rhode Island</option> <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option> <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option> <option value="UT">Utah</option>
+                <option value="VT">Vermont</option> <option value="VA">Virginia</option>
+                <option value="WA">Washington</option> <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option> <option value="WY">Wyoming</option>
             </select>
             <label for="D_Zip_Code">Zip Code </label>
             <input type="text" id="D_Zip_Code" name="D_Zip_Code" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['zip_code']; ?>" <?php } ?> placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
