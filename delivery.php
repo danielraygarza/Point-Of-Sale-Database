@@ -60,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
     $T_Date = $mysqli->real_escape_string($_POST['Current_Date']);
     $Time_Processed = $mysqli->real_escape_string($_POST['Current_Time']);
 
-    // Before inserting into orders, check if the selected employee exists and is available
     // SQL to find an available employee at the selected store with the least number of assigned orders
     $findEmployeeSQL = "SELECT Employee_ID FROM employee  WHERE Store_ID = '$store_id' AND clocked_in = 1 
                             ORDER BY assigned_orders ASC LIMIT 1";
@@ -96,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                             // Commit the transaction
                             $mysqli->commit();
                             // Redirect to the thank you page
-                            // header('Location: thankyou.php');
+                            header('Location: thankyou.php');
                             exit;
                         } else {
                             throw new Exception("Error updating employee assignments: " . $mysqli->error);
