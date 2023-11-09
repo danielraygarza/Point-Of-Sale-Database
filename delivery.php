@@ -20,6 +20,11 @@ if (isset($_SESSION['selected_store_id'])) {
     exit;
 }
 
+//gets total price from checkout page
+if (isset($_SESSION['totalPrice'])) {
+    $totalPrice = $_SESSION['totalPrice'];
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
     //order table
@@ -91,9 +96,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                     if ($mysqli->query($transactionSQL) === TRUE) {
                         // After successfully inserting into orders, deliveries, and transactions, assign the employee
                         $incrementAssignedOrdersSQL = "UPDATE employee 
-                                                    SET assigned_orders = assigned_orders + 1 
-                                                    WHERE Employee_ID = '$employee_id_assigned'";
+                                                SET assigned_orders = assigned_orders + 1 
+                                                WHERE Employee_ID = '$employee_id_assigned'";
+                        
                         if ($mysqli->query($incrementAssignedOrdersSQL) === TRUE) {
+                            //adds to customers total spent to date
+                            $addToCustomerTotal = "UPDATE customers
+                                                    SET total_spent_toDate = total_spent_toDate + $Total_Amount_Charged 
+                                                    WHERE customer_id = '$customerID'";
+                            $result = $mysqli->query($addToCustomerTotal); //process update
+
                             $mysqli->commit();
                             // Redirect to the thank you page
                             header('Location: thankyou.php');
@@ -238,13 +250,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             <label for="D_Zip_Code">Zip Code </label>
             <input type="text" id="D_Zip_Code" name="D_Zip_Code" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['zip_code']; ?>" <?php } ?> placeholder="Enter Zip Code" pattern="\d{5}(-\d{4})?" style="width: 100px;" required>
         </div><br>
-
+        
         <div>
             <label for="Amount">Amount </label>
-            <input type="text" id="Amount" name="Amount" placeholder="Amount" style="width: 100px;" required>
+            <input type="text" id="Amount" name="Amount" <?php if (isset($_SESSION['totalPrice'])) { ?> value=" <?php echo $totalPrice ?>" <?php } ?> placeholder="Amount" style="width: 100px;" required readonly>
 
             <label for="Amount_Tipped">Tip Amount </label>
-            <input type="text" id="Amount_Tipped" name="Amount_Tipped" placeholder="Tip" style="width: 100px;">
+            <input type="number" id="Amount_Tipped" name="Amount_Tipped" min = 0 placeholder="Tip" style="width: 100px;">
         </div><br>
 
         <div>
