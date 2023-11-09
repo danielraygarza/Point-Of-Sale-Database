@@ -20,6 +20,13 @@
 <body>
   <div class="navbar">
       <a href="index.php">Home</a>
+      <?php
+        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+            echo '<a href="update_profile.php">Profile</a>';
+        } else {
+            echo '<a href="customer_login.php">Login</a>';
+        }
+        ?>
   </div>
 
   <form action="" method="post">
@@ -27,7 +34,9 @@
 
       <a href="menu.php" class="button">Place Another Order</a>
 
-      <a href="logout.php" class="button">Logout</a>
+    <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?>
+        <a href="logout.php" class="button">Logout</a>
+    <?php } ?>
       
   </form> 
 </body>
