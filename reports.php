@@ -213,7 +213,7 @@ function getStoreID(){
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
-                dateOptions.style.display = 'block';
+                dateOptions.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -221,7 +221,10 @@ function getStoreID(){
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                dateOptions.style.display = 'block';
+                if(storeSelection = 'orderdates'){
+                    dateOptions.style.display = 'block';
+                }
+                
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
