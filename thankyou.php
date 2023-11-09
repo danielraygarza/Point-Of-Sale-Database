@@ -31,13 +31,20 @@
 
   <form action="" method="post">
       <h2>Thank you, we hope your enjoy your POS Pizza!</h2>
-
-      <a href="menu.php" class="button">Place Another Order</a>
-
-    <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?>
-        <a href="logout.php" class="button">Logout</a>
-    <?php } ?>
       
-  </form> 
+      <a href="menu.php" class="button">Place Another Order</a>
+      
+      <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?>
+        <a href="logout.php" class="button">Logout</a>
+        <?php } ?> 
+    </form> 
+
+    <?php if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) { ?>
+    <br>
+      <form>
+          <h2>Sign up up to join our rewards program!</h2>
+          <a href="signup.php" class="button">Sign Up Here</a>
+      </form>
+    <?php } ?> 
 </body>
 </html>
