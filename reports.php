@@ -151,16 +151,19 @@
         <div id="dateOptions" style="display: none;">
             <label for="start_year">Start Year:</label>
             <select id="start_year" name="start_year" onchange="dateOptions()">
+                <option value="" selected disabled>-</option>
                 <option value="2022">2022</option>
             </select>
 
             <label for="start_month">Start Month:</lable>
             <select id="start_month" name="start_month" onchange="dateOptions()">
+                <option value="" selected disabled>-</option>
                 <option value="01">January</option>
             </select>
             
             <label for="start_day">Start Day:</label>
             <select id="start_day" name="start_day">
+                <option value="" selected disabled>-</option>
                 <!-- Should be populated by function dateOptions -->
             </select>
                 
@@ -170,6 +173,7 @@
         <div id="Employer" style="display: none;">
             <label for="employeeDropdown">Select Employee:</label>
             <select name="employeeDropdown" id="employeeDropdown">
+                <option value="" selected disabled>-</option>
                 <?php
                 $employeeData = getEmployeeData($mysqli);
                 foreach ($employeeData as $employee) {
@@ -196,9 +200,12 @@
         function showOptions() {
             //This reads which main report group is currently selected
             var reportType = document.getElementById('reportType');
-            storeId.value = ""; //resets store dropdown when you change report type
+            
+            // Resets store dropdown when you change report type
+            storeId.value = ""; 
             inventoryType.value = "";
             storeType.value = "";
+            employeeDropdown.value = "";
 
             //If you add a new sub menu, define it here then refence it by it's id like so:
             var inventoryOptions = document.getElementById('inventoryOptions');
