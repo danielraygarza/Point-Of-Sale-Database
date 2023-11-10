@@ -201,7 +201,7 @@ function getStoreID(){
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
-            var dateOpts = document.getElementById('dateOptions');
+            //var dateOpts = document.getElementById('dateOptions');
 
 
             //This if/else determines which sub menu is visible
@@ -213,7 +213,7 @@ function getStoreID(){
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
-                dateOpts.style.display = 'none';
+                //dateOpts.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -221,21 +221,21 @@ function getStoreID(){
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                dateOpts.style.display = 'none';
+                //dateOpts.style.display = 'none';
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
-                dateOpts.style.display = 'none';
+                //dateOpts.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
-                dateOpts.style.display = 'none';
+                //dateOpts.style.display = 'none';
             }
         }
 
