@@ -38,23 +38,23 @@
 
 // Get a list of Store Ids from Pizza_Store table as array $storeIdData
 // Function may be fucked, won't generate properly, breaks page
-function getStoreID(){
-    $sql = "SELECT `Pizza_Store_ID` FROM `pizza_store`";
-    $result = mysqli_query($mysqli, $sql);
+// function getStoreID(){
+//     $sql = "SELECT `Pizza_Store_ID` FROM `pizza_store`";
+//     $result = mysqli_query($mysqli, $sql);
 
-    if(!$result){
-        die("Error: " . mysqli_error($connection));
-    }
+//     if(!$result){
+//         die("Error: " . mysqli_error($connection));
+//     }
 
-    $storeIdData = array();
-    while($row = mysqli_fetch_assoc($result)){
-        $storeIdData[] = [
-            'Pizza_Store_ID' => $row['Pizza_Store_ID'],
-        ];
-        mysqli_free_result($result);
-        return $storeIdData;
-    }
-}
+//     $storeIdData = array();
+//     while($row = mysqli_fetch_assoc($result)){
+//         $storeIdData[] = [
+//             'Pizza_Store_ID' => $row['Pizza_Store_ID'],
+//         ];
+//         mysqli_free_result($result);
+//         return $storeIdData;
+//     }
+// }
 
 ?>
 
@@ -246,7 +246,7 @@ function getStoreID(){
 
             if(storeType.value === 'orderdates'){
                 dateOptions.style.display = 'block';
-            } elseif(storeType.value === 'date'){
+            } else if(storeType.value === 'date'){
                 dateOptions.style.display = 'block';
             } else{
                 dateOptions.style.display = 'none';
