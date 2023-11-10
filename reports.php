@@ -254,6 +254,9 @@
             start_year.value = "";
             start_month.value = "";
             start_day.value = "";
+            end_year.value = "";
+            end_month.value = "";
+            end_day.value = "";
 
             //If you add a new sub menu, define it here then refence it by it's id like so:
             var inventoryOptions = document.getElementById('inventoryOptions');
