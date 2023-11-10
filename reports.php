@@ -338,7 +338,6 @@
             var startYear = document.getElementById('start_year').value;
             var startMonth = document.getElementById('start_month').value;
             var startDay = document.getElementById('start_day').value;
-
             var stDate = startYear + startMonth + padWithZero(startDay);
 
             var endYear = document.getElementById('end_year').value;
@@ -373,6 +372,7 @@
                 endDayDropdown.add(endopt);
             }
 
+            //Debug
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
         }
