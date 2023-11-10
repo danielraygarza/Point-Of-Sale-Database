@@ -133,7 +133,7 @@ function getStoreID(){
             <label for="storeType">Select Store Report Type:</label>
             <!-- Here you set your id that you'll reference on generate_report.php -->
             <!-- This will tell the page which sub report you want to run -->
-            <select name="storeType" id="storeType">
+            <select name="storeType" id="storeType" onchange="dateOptions()">
                 <!-- Here are the different options you can display in your sub menu -->
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
                 <option value="orders">Daily Orders</option>
@@ -201,10 +201,7 @@ function getStoreID(){
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
-            var dateOptions = document.getElementById('dateOptions');
-
-            // Store report type
-            var storeType = document.getElementById('storeType');
+            
 
 
             //This if/else determines which sub menu is visible
@@ -240,16 +237,20 @@ function getStoreID(){
                 storeSelection.style.display = 'none';
                 //dateOptions.style.display = 'none';
             }
-
-            if(storeType.value === 'orderdates'){
-                dateOptions.style.display = 'block';
-            } else{
-                dateOptions.style.display = 'none';
-            }
         }
 
         // Function to set start and end dates
         function dateOptions(){
+            // Store report type
+            var storeType = document.getElementById('storeType');
+            var dateOptions = document.getElementById('dateOptions');
+
+            if(storeType === 'orderdates'){
+                dateOptions.style.display = 'block';
+            } else{
+                dateOptions.style.display = 'none';
+            }
+
             //Function to ensure dates are valid
             function daysInMonth(year, month){
                 // Setting the day to zero returns the last day of the previous month
