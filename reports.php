@@ -366,6 +366,9 @@
                 console.log('Adding option for end day');
                 endDayDropdown.add(endopt);
             }
+
+            console.log('Start Date:', stDate);
+            console.log('End Date:', endDate);
         }
     </script>
 </body>
