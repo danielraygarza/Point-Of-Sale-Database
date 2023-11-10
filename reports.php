@@ -182,14 +182,14 @@
         </div><br>
 
         <div id="endDateOptions" style="display: none;">
-            <label for="end_year">Start Year:</label>
+            <label for="end_year">End Year:</label>
             <select id="end_year" name="end_year" onchange="dateOptions()">
                 <option value="" selected disabled>-</option>
                 <option value="2022">2022</option>
                 <option value="2023">2023</option>
             </select>
 
-            <label for="end_month">Start Month:</lable>
+            <label for="end_month">End Month:</lable>
             <select id="end_month" name="end_month" onchange="dateOptions()">
                 <option value="" selected disabled>-</option>
                 <option value="01">January</option>
@@ -206,7 +206,7 @@
                 <option value="12">December</option>
             </select>
             
-            <label for="end_day">Start Day:</label>
+            <label for="end_day">End Day:</label>
             <select id="end_day" name="end_day">
                 <option value="" selected disabled>-</option>
                 <!-- Should be populated by function dateOptions -->
