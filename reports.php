@@ -301,7 +301,7 @@
             }
 
             for (var j = 1; j <= daysInMonth(endYear, endMonth); j++){
-                var endopt = document.createElement('endopt');
+                var endopt = document.createElement('option');
                 endopt.value = j;
                 endopt.text = j;
                 endDayDropdown.add(endopt);
