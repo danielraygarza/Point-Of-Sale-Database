@@ -201,7 +201,6 @@ function getStoreID(){
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
-            //var dateOpts = document.getElementById('dateOptions');
 
 
             //This if/else determines which sub menu is visible
