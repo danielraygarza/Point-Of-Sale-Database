@@ -189,7 +189,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <!-- pulls current date and assigns to Delivery and transaction date -->
         <input type="hidden" id="Current_Date" name="Current_Date">
         <input type="hidden" id="Current_Time" name="Current_Time">
-        <input type="hidden" id="Estimated_Order_Completion" name="Estimated_Order_Completion">
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const currentDate = new Date();
@@ -198,11 +197,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
                 const formattedTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
                 document.getElementById('Current_Time').value = formattedTime;
-
-                // Estimated time ready (current time + 30 minutes)
-                currentDate.setMinutes(currentDate.getMinutes() + 30);
-                const estimatedTimeReady = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
-                document.getElementById('Estimated_Order_Completion').value = estimatedTimeReady;
             });
         </script>
 
