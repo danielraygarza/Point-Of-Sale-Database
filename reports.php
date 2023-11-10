@@ -303,6 +303,11 @@
             }
         }
 
+        // Date padding function
+        function padWithZero(number){
+            return number < 10 ? '0' + number : number;
+        }
+
         // Function to set start and end dates
         function dateOptions(){
             // Debug
@@ -333,12 +338,13 @@
             var startYear = document.getElementById('start_year').value;
             var startMonth = document.getElementById('start_month').value;
             var startDay = document.getElementById('start_day').value;
-            var stDate = startYear + startMonth + startDay;
+
+            var stDate = startYear + startMonth + padWithZero(startDay);
 
             var endYear = document.getElementById('end_year').value;
             var endMonth = document.getElementById('end_month').value;
             var endDay = document.getElementById('end_day').value;
-            var endDate = endYear + endMonth + endDay;
+            var endDate = endYear + endMonth + padWithZero(endDay);
 
             // Update days based on selected year and month
             var startDayDropdown = document.getElementById('start_day');
