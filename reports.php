@@ -255,6 +255,9 @@
 
         // Function to set start and end dates
         function dateOptions(){
+            // Debug
+            console.log('dateOptions function called');
+
             // Store report type
             var storeType = document.getElementById('storeType');
             var dateOptions = document.getElementById('dateOptions');
@@ -297,6 +300,8 @@
                 var option = document.createElement('option');
                 option.value = i;
                 option.text = i;
+                // Debug
+                console.log('Adding option for start day');
                 startDayDropdown.add(option);
             }
 
