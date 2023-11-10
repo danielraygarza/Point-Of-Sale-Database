@@ -291,82 +291,94 @@ select:focus {
     padding-left: 8px;
 }
 
-main .order-display {
-    position: relative; 
+main .main-holder {
+    display: flex;
+    justify-content: center;
+}
+
+main .main-holder .order-display {
+    position: absolute; 
     width: 1000px;
     display: flex;
     flex-direction: column;
     margin: 5px;
 }
 
-main .order-display .od-header {
+main .main-holder .order-display .od-header {
     color: rgb(245, 245, 245);
     font-weight: bold;
     text-align: right;
 }
 
-main .order-display .order-card {
+main .main-holder .order-display .order-card {
     border-radius: 10px;
-    height: 180px;
+    height: 250px;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    margin: 10px
 }
 
-main .order-display .order-card .order-card-left {
+main .main-holder .order-display .order-card-info {
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+}
+
+
+main .main-holder .order-display .order-card .order-card-info .order-card-left {
     width: 50%;
     border-right: 1px dashed black;
 }
 
-main .order-display .order-card p {
-    margin: 15px;
+main .main-holder .order-display .order-card .order-card-info p {
+    margin: 25px;
 }
 
-main .order-display .order-card .order-card-left .order-id {
+main .main-holder .order-display .order-card .order-card-info .order-card-left .order-id {
     color: black;
 }
 
-main .order-display .order-card .order-card-left .customer {
+main .main-holder .order-display .order-card .order-card-info .order-card-left .customer {
     color: black;
 }
 
-main .order-display .order-card .order-card-left .date {
+main .main-holder .order-display .order-card .order-card-info .order-card-left .date {
     color: black;
 }
 
-main .order-display .order-card .order-card-left .time {
+main .main-holder .order-display .order-card .order-card-info .order-card-left .time {
     color: black;
 }
 
-main .order-display .order-card .order-card-left .total {
+main .main-holder .order-display .order-card .order-card-info .order-card-left .total {
     color: black;
 }
 
-main .order-display .order-card .order-card-right {
-    width: 50%;
+main .main-holder .order-display .order-card .order-card-info .order-card-right {
+    width: 47%;
     border-right: 1px solid black;
 }
 
-main .order-display .order-card .order-card-right .items-ordered{
+main .main-holder .order-display .order-card .order-card-info .order-card-right .items-ordered{
     color: black;
     width: 90%;
 }
 
-main .order-display .order-card .order-card-right .items{
+main .main-holder .order-display .order-card .order-card-info .order-card-right .items{
     color: black;
     width: 90%;
     margin: 1px;
     margin-left: 15px;
 }
 
-main .order-display .order-card .order-card-right .type{
+main .main-holder .order-display .order-card .order-card-info .order-card-right .type{
     color: black;
     width: 90%;
     position: absolute;
-    bottom: 0;
 }
 
-main .order-display .order-card .status {
+main .main-holder .order-display .order-card .order-card-info .status {
     color: black;
     text-orientation: upright;
     writing-mode: vertical-lr;
