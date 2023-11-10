@@ -13,8 +13,6 @@
     // }
 
     //TO DO://
-    // ADD DATE RANGE SELECTOR FOR SPECIFIC DATE REPORTS
-    // $stDate and $endDate ARE THE VARIABLES FOR DATE RANGE SELECTOR
     // FIX BUG THAT ALLOWS NOTHING TO BE SELECTED AND STILL HAVE A REPORT GENERATED
 
     //Daniel: altered function above to not include "database.php" inside function. 
