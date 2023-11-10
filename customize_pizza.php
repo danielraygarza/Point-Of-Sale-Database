@@ -1,29 +1,30 @@
 <?php
-    include 'database.php';
-    session_start();
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
+include 'database.php';
+session_start();
 
-    $toppingsQuery = "SELECT Item_Cost, Item_Name FROM items";
-    $toppingsResult = $mysqli->query($toppingsQuery);
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
 
-    function addToCart($itemIDs) {
-        foreach ($itemIDs as $itemID) {
-            $_SESSION['cart'][] = $itemID;
-        }
-    }
+$toppingsQuery = "SELECT Item_Cost, Item_Name FROM items";
+$toppingsResult = $mysqli->query($toppingsQuery);
 
-    function getCartItemCount() {
-        return count($_SESSION['cart']);
+function addToCart($itemIDs) {
+    foreach ($itemIDs as $itemID) {
+        $_SESSION['cart'][] = $itemID;
     }
+}
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (isset($_POST['add-to-cart'])) {
-            $selectedToppings = isset($_POST['toppings']) ? $_POST['toppings'] : [];
-            addToCart($selectedToppings);
-        }
+function getCartItemCount() {
+    return count($_SESSION['cart']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add-to-cart'])) {
+        $selectedToppings = isset($_POST['toppings']) ? $_POST['toppings'] : [];
+        addToCart($selectedToppings);
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -71,18 +72,15 @@
                     }
                     ?>
                 </div>
-                <input type="submit" class = button name="add-to-cart" value="Add to Cart">
+                <input type="submit" class="button" name="add-to-cart" value="Add to Cart">
             </form>
         </div>
     </main>
 
-    <div class = "bottom-bar">
-        <p class = "total"><b>Total:</b></p>
-        <p class = "price">$12.99</p>
-        <div class = "add-to-cart"> ADD TO CART</div>
+    <div class="bottom-bar">
+        <p class="total"><b>Total:</b></p>
+        <p class="price">$12.99</p>
+        <div class="add-to-cart">ADD TO CART</div>
     </div>
-    
-
-
 </body>
 </html>
