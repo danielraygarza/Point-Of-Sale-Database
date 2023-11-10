@@ -261,6 +261,7 @@
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
             var startDateOptions = document.getElementById('startDateOptions');
+            var endDateOptions = document.getElementById('endDateOptions');
 
 
             //This if/else determines which sub menu is visible
@@ -273,6 +274,7 @@
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
                 startDateOptions.style.display = 'none';
+                endDateOptions.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -281,6 +283,7 @@
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
                 startDateOptions.style.display = 'none';
+                endDateOptions.style.display = 'none';
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
@@ -288,6 +291,7 @@
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
                 startDateOptions.style.display = 'none';
+                endDateOptions.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
@@ -295,6 +299,7 @@
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
                 startDateOptions.style.display = 'none';
+                endDateOptions.style.display = 'none';
             }
         }
 
@@ -309,10 +314,13 @@
 
             if(storeType.value === 'orderdates'){
                 startDateOptions.style.display = 'block';
+                endDateOptions.style.display = 'block';
             } else if(storeType.value === 'date'){
                 startDateOptions.style.display = 'block';
+                endDateOptions.style.display = 'block';
             } else{
                 startDateOptions.style.display = 'none';
+                endDateOptions.style.display = 'none';
             }
 
             //Function to ensure dates are valid
