@@ -212,7 +212,7 @@ function getStoreID(){
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
-                //dateOpts.style.display = 'none';
+                //dateOptions.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -220,21 +220,21 @@ function getStoreID(){
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                //dateOpts.style.display = 'none';
+                //dateOptions.style.display = 'none';
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
-                //dateOpts.style.display = 'none';
+                //dateOptions.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
-                //dateOpts.style.display = 'none';
+                //dateOptions.style.display = 'none';
             }
         }
 
