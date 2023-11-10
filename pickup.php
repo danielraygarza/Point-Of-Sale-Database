@@ -23,6 +23,21 @@ if (isset($_SESSION['selected_store_id'])) {
 if (isset($_SESSION['totalPrice'])) {
     $totalPrice = $_SESSION['totalPrice'];
 }
+//gets cart from checkout page
+if (isset($_SESSION['cart'])) {
+    $cart = $_SESSION['cart'];
+}
+
+$discountAmount = 0;
+if (isset($_SESSION['user']['customer_id'])) {
+    $customerID = $_SESSION['user']['customer_id'];
+    $checkDiscount = "SELECT store_credit FROM customers WHERE customer_id = '$customerID'";
+    $result = $mysqli->query($checkDiscount);
+    $row = $result->fetch_assoc();
+    if ($row && $row['store_credit'] > 0) {
+        $discountAmount = $row['store_credit'];
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
 
@@ -84,6 +99,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                             VALUES ('$Order_ID', '$Current_Date', '$Current_Time', '$employee_id_assigned', '$first_name', '$last_name')";
 
                 if ($mysqli->query($pickupSQL) === TRUE) {
+                    // Update the customer's store credit after applying the discount
+                    $newStoreCredit = $row['store_credit'] - $discountAmount;
+                    $updateCustomerCredit = "UPDATE customers SET store_credit = $newStoreCredit WHERE customer_id = '$customerID'";
+                    if (!$mysqli->query($updateCustomerCredit)) {
+                        throw new Exception("Error updating customer's store credit: " . $mysqli->error);
+                    }
                     // Inserting the data into the transactions table with the same Order_ID
                     $transactionSQL = "INSERT INTO transactions (T_Order_ID, Total_Amount_Charged, Amount_Tipped, Payment_Method, T_Date, Time_Processed)
                                 VALUES ('$Order_ID', '$Total_Amount_Charged', '$Amount_Tipped', '$Payment_Method', '$Current_Date','$Current_Time')";
@@ -98,6 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                     SET total_spent_toDate = total_spent_toDate + $Total_Amount_Charged 
                                                     WHERE customer_id = '$customerID'";
                             $result = $mysqli->query($addToCustomerTotal); //process update
+                            $_SESSION['cart'] = []; //empties cart after everything
+
                             $mysqli->commit();
                             // Redirect to the thank you page
                             header('Location: thankyou.php');
@@ -159,7 +182,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <!-- pulls current date and assigns to Delivery and transaction date -->
         <input type="hidden" id="Current_Date" name="Current_Date">
         <input type="hidden" id="Current_Time" name="Current_Time">
-        <input type="hidden" id="Estimated_Order_Completion" name="Estimated_Order_Completion">
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const currentDate = new Date();
@@ -168,11 +190,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
                 const formattedTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
                 document.getElementById('Current_Time').value = formattedTime;
-
-                // Estimated time ready (current time + 30 minutes)
-                currentDate.setMinutes(currentDate.getMinutes() + 30);
-                const estimatedTimeReady = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
-                document.getElementById('Estimated_Order_Completion').value = estimatedTimeReady;
             });
         </script>
 
@@ -204,7 +221,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             <input type="number" id="Amount_Tipped" name="Amount_Tipped" min=0 placeholder="Tip" style="width: 100px;">
         </div><br>
 
-        <div>
+        <?php
+        if ($discountAmount > 0) { ?>
+            <div>
+                <label for="Discount_Amount">Discount Applied </label>
+                <input type="text" id="Discount_Amount" name="Discount_Amount" value="<?php echo $discountAmount; ?>" placeholder="Discount Amount" style="width: 100px;" required readonly>
+            <?php } else { ?>
+                <div>
+                <?php } ?>
+
             <label for="Total_Amount_Charged">Total Amount </label>
             <input type="text" id="Total_Amount_Charged" name="Total_Amount_Charged" placeholder="Total Amount" style="width: 100px;" required readonly>
         </div><br>
@@ -213,7 +238,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             function calculateTotal() {
                 var amount = parseFloat(document.getElementById('Amount').value) || 0;
                 var tip = parseFloat(document.getElementById('Amount_Tipped').value) || 0;
-                var total = amount + tip;
+                var discount = parseFloat(<?php echo $discountAmount; ?>) || 0;
+                var total = amount + tip - discount;
                 document.getElementById('Total_Amount_Charged').value = total.toFixed(2);
             }
             document.getElementById('Amount').addEventListener('input', calculateTotal);
