@@ -119,6 +119,7 @@
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
             <select name="inventoryType" id="inventoryType">
+                <option value="" selected disabled>-</option>
                 <option value="all">All Stock</option>
                 <option value="low">Low Stock</option>
                 <option value="out">Out of Stock</option>
@@ -136,6 +137,7 @@
             <select name="storeType" id="storeType" onchange="dateOptions()">
                 <!-- Here are the different options you can display in your sub menu -->
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
+                <option value="" selected disabled>-</option>
                 <option value="orders">Daily Orders</option>
                 <option value="orderdates">Total Orders From:</option>
                 <!-- <option value="pizzas">Daily Pizzas Sold</option> -->
@@ -195,6 +197,8 @@
             //This reads which main report group is currently selected
             var reportType = document.getElementById('reportType');
             storeId.value = ""; //resets store dropdown when you change report type
+            inventoryType.value = "";
+            storeType.value = "";
 
             //If you add a new sub menu, define it here then refence it by it's id like so:
             var inventoryOptions = document.getElementById('inventoryOptions');
