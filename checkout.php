@@ -5,19 +5,16 @@ include 'database.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-// $_SESSION['selected_store_id'] = $store_id;
 
 // when you click "place order", it will run this code
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // echo "<h2>Success</h2>";
-    // echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
-    // redirect to the chosen page when click "place order"
+    // Redirect to the chosen page when you click "place order"
     $Order_Type = $mysqli->real_escape_string($_POST['Order_Type']);
     $_SESSION['selected_store_id'] = $_POST['Store_ID']; // Replace 'store_location' with the actual form field name
-    if($Order_Type == 'Pickup'){
+    if ($Order_Type == 'Pickup') {
         header('Location: pickup.php');
         exit;
-    } else if($Order_Type == 'Delivery'){
+    } else if ($Order_Type == 'Delivery') {
         header('Location: delivery.php');
         exit;
     } else {
@@ -59,7 +56,7 @@ function getCartItemCount()
 </head>
 
 <body>
-    <div class="navbar">
+    <div class "navbar">
         <a href="index.php">Home</a>
         <a href="menu.php">Order now</a>
         <?php echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>'; ?>
@@ -74,48 +71,48 @@ function getCartItemCount()
     </div>
 
     <form action="checkout.php" method="post">
-        <div class="checkout-window">
-            <!-- <h2 class="cart-heading">Pizza Cart</h2> -->
+        <div class "checkout-window">
+            <!-- <h2 class "cart-heading">Pizza Cart</h2> -->
             <?php
             $today = date('m-d');
             // if logged in, greet customer with name
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                echo "<h2 class='php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
+                echo "<h2 class 'php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
                 if (isset($_SESSION['user']['birthday'])) {
                     $birthday = strtotime($_SESSION['user']['birthday']);
                     $birthdayMonthDay = date('m-d', $birthday);
                 }
                 if (isset($birthdayMonthDay) && $birthdayMonthDay == $today) {
-                    echo "<h2 class='php-heading'>Happy Birthday, enjoy your POS pizza!</h2>";
+                    echo "<h2 class 'php-heading'>Happy Birthday, enjoy your POS pizza!</h2>";
                 } else {
-                    // echo "<h2 class='php-heading'>Not your birthday, sorry loser</h2>";
+                    // echo "<h2 class 'php-heading'>Not your birthday, sorry loser</h2>";
                 }
             } else {
-                echo "<h2 class='php-heading'>Review your cart!</h2>";
+                echo "<h2 class 'php-heading'>Review your cart!</h2>";
             }
             ?>
             <div>
-                <select id="Store_ID" name="Store_ID" style="margin-right: 10px" required>
-                    <option value="" selected disabled>Select Location to Order</option>
+                <select id "Store_ID" name "Store_ID" style "margin-right: 10px" required>
+                    <option value "" selected disabled>Select Location to Order</option>
                     <?php
                     $stores = $mysqli->query("SELECT * FROM pizza_store");
                     if ($stores->num_rows > 0) {
                         while ($row = $stores->fetch_assoc()) {
                             // does not show store ID 1
                             if ($row["Pizza_Store_ID"] == 1) { continue; }
-                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                            echo '<option value "' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
                     ?>
                 </select>
-                <select id="Order_Type" name="Order_Type" required>
-                    <option value="" selected disabled>Select Order Method</option>
-                    <option value="Pickup">Pick Up</option>
-                    <option value="Delivery">Delivery</option>
+                <select id "Order_Type" name "Order_Type" required>
+                    <option value "" selected disabled>Select Order Method</option>
+                    <option value "Pickup">Pick Up</option>
+                    <option value "Delivery">Delivery</option>
                 </select>
             </div>
-            <div class="cart-panel">
-                <ul class="cart-items">
+            <div class "cart-panel">
+                <ul class "cart-items">
                     <?php
                     // Assuming you have a cart stored in a session or database
                     $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
@@ -129,22 +126,22 @@ function getCartItemCount()
                             $row = $result->fetch_assoc();
                             if($result){
                                 $toppingPrice = $row['Item_Cost'];
-                                $totalPrice += $toppingPrice; //accumlating total price
+                                $totalPrice += $toppingPrice; //accumulating total price
                             }
                             echo "<li>$item - $toppingPrice</li>";
                         }
                         echo "<li>----------------------</li>";
                         echo "<li>Total Price: $$totalPrice</li>"; //prints total price
 
-                        echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
+                        echo '<li><button name "clear-cart" type "submit" class "clear-cart-button">Clear Cart</button></li>';
                     } else {
-                        echo "<h2 class='php-heading'> Your cart is empty</h2>";
+                        echo "<h2 class 'php-heading'> Your cart is empty</h2>";
                     }
                     $_SESSION['totalPrice'] = $totalPrice; //saves total price to session
                     ?>
                 </ul>
             </div>
-            <input class="button orderbutton" type="submit" value="Place Order">
+            <input class "button orderbutton" type "submit" value "Place Order">
         </div>
     </form>
 </body>
