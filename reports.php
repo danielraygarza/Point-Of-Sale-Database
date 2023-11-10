@@ -133,7 +133,7 @@
             <label for="storeType">Select Store Report Type:</label>
             <!-- Here you set your id that you'll reference on generate_report.php -->
             <!-- This will tell the page which sub report you want to run -->
-            <select name="storeType" id="storeType">
+            <select name="storeType" id="storeType" onchange="dateOptions()">
                 <!-- Here are the different options you can display in your sub menu -->
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
                 <option value="orders">Daily Orders</option>
@@ -201,6 +201,7 @@
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
+            var dateOptions = document.getElementById('dateOptions');
 
 
             //This if/else determines which sub menu is visible
@@ -212,7 +213,7 @@
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
-                //dateOptions.style.display = 'none';
+                dateOptions.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -220,21 +221,21 @@
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                //dateOptions.style.display = 'none';
+                dateOptions.style.display = 'none';
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
-                //dateOptions.style.display = 'none';
+                dateOptions.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
-                //dateOptions.style.display = 'none';
+                dateOptions.style.display = 'none';
             }
         }
 
