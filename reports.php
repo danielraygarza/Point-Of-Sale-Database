@@ -293,7 +293,7 @@
 
             // Clear existing options
             startDayDropdown.innerHTML = '';
-            endDayDropdown.innerHTML = '';
+            //endDayDropdown.innerHTML = '';
 
             // Populate proper num days per selected month
             for (var i = 1; i <= daysInMonth(startYear, startMonth); i++){
