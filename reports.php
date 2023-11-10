@@ -148,7 +148,7 @@
         </div><br>
         <!-- //To here// -->
 
-        <div id="dateOptions" style="display: none;">
+        <div id="startDateOptions" style="display: none;">
             <label for="start_year">Start Year:</label>
             <select id="start_year" name="start_year" onchange="dateOptions()">
                 <option value="" selected disabled>-</option>
@@ -163,6 +163,27 @@
             
             <label for="start_day">Start Day:</label>
             <select id="start_day" name="start_day">
+                <option value="" selected disabled>-</option>
+                <!-- Should be populated by function dateOptions -->
+            </select>
+                
+        </div><br>
+
+        <div id="endDateOptions" style="display: none;">
+            <label for="end_year">Start Year:</label>
+            <select id="end_year" name="end_year" onchange="dateOptions()">
+                <option value="" selected disabled>-</option>
+                <option value="2022">2022</option>
+            </select>
+
+            <label for="end_month">Start Month:</lable>
+            <select id="end_month" name="end_month" onchange="dateOptions()">
+                <option value="" selected disabled>-</option>
+                <option value="01">January</option>
+            </select>
+            
+            <label for="end_day">Start Day:</label>
+            <select id="end_day" name="end_day">
                 <option value="" selected disabled>-</option>
                 <!-- Should be populated by function dateOptions -->
             </select>
@@ -215,7 +236,7 @@
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
-            var dateOptions = document.getElementById('dateOptions');
+            var startDateOptions = document.getElementById('startDateOptions');
 
 
             //This if/else determines which sub menu is visible
@@ -227,7 +248,7 @@
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
-                dateOptions.style.display = 'none';
+                startDateOptions.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -235,21 +256,21 @@
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                dateOptions.style.display = 'none';
+                startDateOptions.style.display = 'none';
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
-                dateOptions.style.display = 'none';
+                startDateOptions.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
-                dateOptions.style.display = 'none';
+                startDateOptions.style.display = 'none';
             }
         }
 
@@ -263,11 +284,11 @@
             var dateOptions = document.getElementById('dateOptions');
 
             if(storeType.value === 'orderdates'){
-                dateOptions.style.display = 'block';
+                startDateOptions.style.display = 'block';
             } else if(storeType.value === 'date'){
-                dateOptions.style.display = 'block';
+                startDateOptions.style.display = 'block';
             } else{
-                dateOptions.style.display = 'none';
+                startDateOptions.style.display = 'none';
             }
 
             //Function to ensure dates are valid
