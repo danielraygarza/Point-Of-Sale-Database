@@ -335,10 +335,10 @@
             var startDay = document.getElementById('start_day').value;
             var stDate = startYear + startMonth + startDay;
 
-            //var endYear = document.getElementById('end_year').value;
-            //var endMonth = document.getElementById('end_month').value;
-            //var endDay = document.getElementById('end_day').value;
-            //var endDate = endYear + endMonth + endDay;
+            var endYear = document.getElementById('end_year').value;
+            var endMonth = document.getElementById('end_month').value;
+            var endDay = document.getElementById('end_day').value;
+            var endDate = endYear + endMonth + endDay;
 
             // Update days based on selected year and month
             var startDayDropdown = document.getElementById('start_day');
@@ -346,7 +346,7 @@
 
             // Clear existing options
             startDayDropdown.innerHTML = '';
-            //endDayDropdown.innerHTML = '';
+            endDayDropdown.innerHTML = '';
 
             // Populate proper num days per selected month
             for (var i = 1; i <= daysInMonth(startYear, startMonth); i++){
@@ -358,12 +358,14 @@
                 startDayDropdown.add(option);
             }
 
-            // for (var j = 1; j <= daysInMonth(endYear, endMonth); j++){
-            //     var endopt = document.createElement('option');
-            //     endopt.value = j;
-            //     endopt.text = j;
-            //     endDayDropdown.add(endopt);
-            // }
+            for (var j = 1; j <= daysInMonth(endYear, endMonth); j++){
+                var endopt = document.createElement('option');
+                endopt.value = j;
+                endopt.text = j;
+                // Debug
+                console.log('Adding option for end day');
+                endDayDropdown.add(endopt);
+            }
         }
     </script>
 </body>
