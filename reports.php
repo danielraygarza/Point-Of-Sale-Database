@@ -247,6 +247,8 @@ function getStoreID(){
 
             if(storeType.value === 'orderdates'){
                 dateOptions.style.display = 'block';
+            } elseif(storeType.value === 'date'){
+                dateOptions.style.display = 'block';
             } else{
                 dateOptions.style.display = 'none';
             }
