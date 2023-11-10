@@ -201,11 +201,14 @@
             //This reads which main report group is currently selected
             var reportType = document.getElementById('reportType');
             
-            // Resets store dropdown when you change report type
+            // Resets dropdowns when you change report type
             storeId.value = ""; 
             inventoryType.value = "";
             storeType.value = "";
             employeeDropdown.value = "";
+            start_year.value = "";
+            start_month.value = "";
+            start_day.value = "";
 
             //If you add a new sub menu, define it here then refence it by it's id like so:
             var inventoryOptions = document.getElementById('inventoryOptions');
