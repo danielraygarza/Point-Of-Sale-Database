@@ -318,7 +318,6 @@
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
-                            if()
 
                         }
                     } else {
