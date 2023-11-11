@@ -310,7 +310,7 @@
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
-                            if((storeType === 'orderdates') || ($storeType === 'date')){
+                            if(($storeType === 'orderdates') || ($storeType === 'date')){
                                 echo 'From ' . $stDate . ' to ' . $endDate;
                             }
 
