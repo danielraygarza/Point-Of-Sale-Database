@@ -83,7 +83,7 @@ function getCartItemCount()
             }
             ?>
             <div>
-                <select id="Store_ID" name="Store_ID" style="margin-right: 10px" required>
+                <select id="Store_ID" name="Store_ID" style="margin-right: 10px">
                     <option value="" selected disabled>Select Location to Order</option>
                     <?php
                     $stores = $mysqli->query("SELECT * FROM pizza_store");
@@ -96,7 +96,7 @@ function getCartItemCount()
                     }
                     ?>
                 </select>
-                <select id="Order_Type" name="Order_Type" required>
+                <select id="Order_Type" name="Order_Type">
                     <option value="" selected disabled>Select Order Method</option>
                     <option value="Pickup">Pick Up</option>
                     <option value="Delivery">Delivery</option>
@@ -123,7 +123,6 @@ function getCartItemCount()
                         }
                         echo "<li>----------------------</li>";
                         echo "<li>Total Price: $$totalPrice</li>"; //prints total price
-
                         echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
                     } else {
                         echo "<h2 class='php-heading'> Your cart is empty</h2>";
@@ -132,9 +131,16 @@ function getCartItemCount()
                     ?>
                 </ul>
             </div>
-            <input class="button orderbutton" type="submit" name = "place-order" value="Place Order">
+            <script>
+            function setRequiredFields() {
+                document.getElementById('Store_ID').required = true;
+                document.getElementById('Order_Type').required = true;
+            }
+            </script>
+            <input class="button orderbutton" type="submit" name="place-order" value="Place Order" onclick="setRequiredFields()">
         </div>
     </form>
+
 </body>
 
 </html>
