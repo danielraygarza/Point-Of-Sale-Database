@@ -164,7 +164,6 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
             function completeOrder(ORDERID) {
-                alert(ORDERID)
                 $.ajax({
                     type: "POST",
                     url: "employee_home.php",
