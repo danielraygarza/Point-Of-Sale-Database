@@ -6,16 +6,20 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-$sql = "SELECT * FROM pizza;";
+$sql = "SELECT * FROM menu;";
 $result = $mysqli->query($sql);
 
-function addToCart($pizzaId, $size, $price) {
-    $pizzaItem = [
-        'pizza_id' => $pizzaId,
-        'size' => $size,
-        'price' => $price,
-    ];
-    $_SESSION['cart'][] = $pizzaItem;
+// function addToCart($pizzaId, $size, $price) {
+//     $pizzaItem = [
+//         'pizza_id' => $pizzaId,
+//         'size' => $size,
+//         'price' => $price,
+//     ];
+//     $_SESSION['cart'][] = $pizzaItem;
+// }
+
+function addToCart($itemID) {
+    $_SESSION['cart'][] = $itemID;
 }
 
 function getCartItemCount() {
