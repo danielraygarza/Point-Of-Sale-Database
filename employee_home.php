@@ -164,13 +164,12 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
             function completeOrder(ORDERID) {
+                message = "Successfull Updated Order Status for OrderID: " + ORDERID;
+                alert(message);
                 $.ajax({
                     type: "POST",
                     url: "employee_home.php",
-                    data: { ORDERID: ORDERID },
-                    success: function(response) {
-                        alert(response);  // Handle the response from the PHP script
-                    }
+                    data: { ORDERID: ORDERID }
                 });
             }
         </script>
