@@ -14,6 +14,7 @@
 
     //TO DO://
     // FIX BUG THAT ALLOWS NOTHING TO BE SELECTED AND STILL HAVE A REPORT GENERATED
+    // CURRENTLY SELECTING ANY MONTH OR YEAR REPOPULATES DAYS FOR BOTH START AND END FORCING USER TO RESELECT ANY VALUES ALREADY SELECTED THERE
 
     //Daniel: altered function above to not include "database.php" inside function. 
     // it was causing continuity errors. database.php included is at top of file
