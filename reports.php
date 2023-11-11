@@ -155,6 +155,8 @@
                 <option value="" selected disabled>-</option>
                 <!-- Should be populated by function dateOptions -->
             </select>
+
+            <input type="hidden" id="stDate" name="stDate">
                 
         </div><br>
 
@@ -319,6 +321,7 @@
             var startMonth = document.getElementById('start_month').value;
             var startDay = document.getElementById('start_day').value;
             var stDate = startYear + startMonth + padWithZero(startDay);
+            document.getElementById('stDate').value = stDate;
 
             var endYear = document.getElementById('end_year').value;
             var endMonth = document.getElementById('end_month').value;
