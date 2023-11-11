@@ -397,6 +397,8 @@ main .main-holder .order-display .order-card .order-card-info .complete_button {
     font-size: 12px;
     display: flex;
     justify-content: center;
+    cursor: pointer; /* Changes the cursor to a hand when hovering */
+
 }
 
 main .main-holder .order-display .order-card .order-card-info .complete_button:hover {
