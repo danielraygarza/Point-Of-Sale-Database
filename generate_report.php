@@ -205,23 +205,15 @@
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
                             $stDate = $_POST['stDate'];
-                            // Debug
-                            error_log('stDate set to value: ' . $stDate);
                         } else {
                             // Default test values for stDate
                             $stDate = date("Y-m-d");
-                            // Debug
-                            error_log('stDate not set. Default value: ' . $stDate);
                         }
                         if (isset($_POST['endDate'])) {
                             $endDate = $_POST['endDate'];
-                            // Debug
-                            error_log('endDate set to value: ' . $endDate);
                         } else {
                             // Default test values for endDate
                             $endDate = date("Y-m-d");
-                            // Debug
-                            error_log('endDate not set. Default value: ' . $endDate);
                         }
                         // TO COMPLETE: Query for orders by date
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
@@ -318,7 +310,9 @@
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
-                            //if()
+                            if((storeType === 'orderdates') || ($storeType === 'date')){
+                                echo 'From ' . $stDate . ' to ' . $endDate;
+                            }
 
                         }
                     } else {
