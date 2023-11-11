@@ -221,7 +221,7 @@
                             // Default test values for endDate
                             $endDate = date("Y-m-d");
                             // Debug
-                            error_log('endDate not set. Default value: ' . $sendDate);
+                            error_log('endDate not set. Default value: ' . $endDate);
                         }
                         // TO COMPLETE: Query for orders by date
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
@@ -318,6 +318,7 @@
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
+                            //if()
 
                         }
                     } else {
