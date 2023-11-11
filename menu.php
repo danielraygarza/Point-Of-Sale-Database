@@ -25,6 +25,16 @@ function addToCart($itemID) {
 function getCartItemCount() {
     return count($_SESSION['cart']);
 }
+
+if (isset($_POST['add_to_cart'])) {
+    $itemID = $_POST['pizza_id'];
+    
+    addToCart($itemID);
+    
+    header('Location: menu.php');
+    // exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +58,7 @@ function getCartItemCount() {
          <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
     </div>
 
-    <form action="" method="post">
+    <form action="menu.php" method="post">
         <h2>Menu</h2>
     </form>
 
@@ -66,9 +76,12 @@ function getCartItemCount() {
             <p class="price"><b>$<?php echo $row["Price"]; ?></b></p>
             <?php
             if ($row["Is_Pizza"] == 1) {
-                echo '<div class="customize"><a href="customize_pizza.php?pizza_id=' . $row["Pizza_ID"] . '&size=' . $row["Size_Option"] . '&price=' . $row["Cost"] . '">CUSTOMIZE</a></div>';
+                echo '<div class="customize" ><a href="customize_pizza.php?pizza_id=' . $row["Pizza_ID"] . '&size=' . $row["Size_Option"] . '&price=' . $row["Price"] . '">CUSTOMIZE</a></div>';
             } else {
-                echo '<div class="add-to-cart"><button onclick="addToCart(' . $row["Pizza_ID"] . ', \'' . $row["Size_Option"] . '\', ' . $row["Cost"] . ')">Add to Cart</button></div>';
+                echo '<form action="menu.php" method="post" style="background-color: transparent; border: none;>';
+                echo '<input type="hidden" name="pizza_id" value="' . $row["Pizza_ID"] . '">';
+                echo '<div class=""><button type="submit" name="add_to_cart" class = "button" ">Add to Cart</button></div>';
+                echo '</form>';
             }
             ?>
         </div>
