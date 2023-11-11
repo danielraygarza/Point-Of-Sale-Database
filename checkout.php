@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 // $_SESSION['selected_store_id'] = $store_id;
 
 // when you click "place order", it will run this code
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['place-order'])) {
     // echo "<h2>Success</h2>";
     // echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
     // redirect to the chosen page when click "place order"
@@ -134,7 +134,7 @@ function getCartItemCount()
                     ?>
                 </ul>
             </div>
-            <input class="button orderbutton" type="submit" value="Place Order">
+            <input class="button orderbutton" type="submit" name = "place-order" value="Place Order">
         </div>
     </form>
 </body>
