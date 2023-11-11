@@ -287,7 +287,11 @@
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo '<table border="1" class="table_update">';
-                            echo '<tr><th>Pizza Store ID</th><th>Pizza Store Address</th><th>Order Count</th></tr>';
+                            echo "<tr>
+                                    <th class='th-spacing'>Pizza Store ID</th>
+                                    <th class='th-spacing'>Pizza Store Address</th>
+                                    <th class='th-spacing'>Order Count</th>
+                                </tr>";
 
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
@@ -338,8 +342,6 @@
                      } else {
                         $employeeId = 0;
                     }
-                    
-                    
                 
                     $employeeSql = "SELECT  `E_First_Name`, `E_Last_Name`, `Title_Role`, `Hire_Date`, `assigned_orders`, `completed_orders` FROM `employee`
                     WHERE `Employee_ID` = $employeeId";
@@ -378,46 +380,46 @@
                         $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `O_Customer_ID`, `Store_ID` FROM `orders` WHERE `Employee_ID_assigned` = $employeeId";
                         $orderResult = mysqli_query($mysqli, $orderSql);
 
-        if ($orderResult) {
-            if (mysqli_num_rows($orderResult) > 0) {
-                echo '<h2>Order Details</h2>';
-                echo "<table border='1' class='table_update'>";
-                echo "<tr>
-                        <th class='th-spacing'>Order ID</th>
-                        <th class='th-spacing'>Date Of Order</th>
-                        <th class='th-spacing'>Time Of Order</th>
-                        <th class='th-spacing'>Order Type</th>
-                        <th class='th-spacing'>Order Status</th>
-                        <th class='th-spacing'>Total Amount</th>
-                        <th class='th-spacing'>Customer ID</th>
-                        <th class='th-spacing'>Store ID</th>
-                    </tr>";
+                    if ($orderResult) {
+                        if (mysqli_num_rows($orderResult) > 0) {
+                            echo '<h2>Order Details</h2>';
+                            echo "<table border='1' class='table_update'>";
+                            echo "<tr>
+                                    <th class='th-spacing'>Order ID</th>
+                                    <th class='th-spacing'>Date Of Order</th>
+                                    <th class='th-spacing'>Time Of Order</th>
+                                    <th class='th-spacing'>Order Type</th>
+                                    <th class='th-spacing'>Order Status</th>
+                                    <th class='th-spacing'>Total Amount</th>
+                                    <th class='th-spacing'>Customer ID</th>
+                                    <th class='th-spacing'>Store ID</th>
+                                </tr>";
 
-                while ($orderRow = mysqli_fetch_assoc($orderResult)) {
-                    echo "<tr>";
-                    echo "<td>" . $orderRow['Order_ID'] . "</td>";
-                    echo "<td>" . $orderRow['Date_Of_Order'] . "</td>";
-                    echo "<td>" . $orderRow['Time_Of_Order'] . "</td>";
-                    echo "<td>" . $orderRow['Order_Type'] . "</td>";
-                    echo "<td>" . $orderRow['Order_Status'] . "</td>";
-                    echo "<td>" . $orderRow['Total_Amount'] . "</td>";
-                    echo "<td>" . $orderRow['O_Customer_ID'] . "</td>";
-                    echo "<td>" . $orderRow['Store_ID'] . "</td>";
-                    echo "</tr>";
+                            while ($orderRow = mysqli_fetch_assoc($orderResult)) {
+                                echo "<tr>";
+                                echo "<td>" . $orderRow['Order_ID'] . "</td>";
+                                echo "<td>" . $orderRow['Date_Of_Order'] . "</td>";
+                                echo "<td>" . $orderRow['Time_Of_Order'] . "</td>";
+                                echo "<td>" . $orderRow['Order_Type'] . "</td>";
+                                echo "<td>" . $orderRow['Order_Status'] . "</td>";
+                                echo "<td>" . $orderRow['Total_Amount'] . "</td>";
+                                echo "<td>" . $orderRow['O_Customer_ID'] . "</td>";
+                                echo "<td>" . $orderRow['Store_ID'] . "</td>";
+                                echo "</tr>";
+                            }
+
+                            echo "</table>";
+                        }
+                    } else {
+                        echo 'Error executing the Order SQL query: ' . mysqli_error($mysqli);
+                    }
+                } else {
+                    echo 'Error executing the Employee SQL query: ' . mysqli_error($mysqli);
                 }
 
-                echo "</table>";
-            }
-        } else {
-            echo 'Error executing the Order SQL query: ' . mysqli_error($mysqli);
-        }
-    } else {
-        echo 'Error executing the Employee SQL query: ' . mysqli_error($mysqli);
-    }
-
-    // Close the database connection
-    mysqli_close($mysqli);
-}
+                // Close the database connection
+                mysqli_close($mysqli);
+                }
                 /////////////////////////
                 //END EMPLOYEE QUERIES///
                 /////////////////////////
