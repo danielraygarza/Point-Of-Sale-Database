@@ -190,6 +190,8 @@
                 <option value="" selected disabled>-</option>
                 <!-- Should be populated by function dateOptions -->
             </select>
+
+            <input type="hidden" id="endDate" name="endDate">
                 
         </div><br>
 
@@ -327,6 +329,7 @@
             var endMonth = document.getElementById('end_month').value;
             var endDay = document.getElementById('end_day').value;
             var endDate = endYear + endMonth + padWithZero(endDay);
+            document.getElementById('endDate').value = endDate;
 
             // Update days based on selected year and month
             var startDayDropdown = document.getElementById('start_day');
