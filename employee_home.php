@@ -23,6 +23,19 @@
         header("Location: index.php");
         exit(); //ensures code is killed
     }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST["ORDERID"])) {
+            // Retrieve orderID from POST data
+            $ORDERID = $_POST["ORDERID"];
+    
+            $updateOrderStatus = "UPDATE orders SET Order_Status = 'Completed' WHERE Order_ID = $ORDERID";
+            $runUpdate = $mysqli->query($updateOrderStatus);
+        } else {
+            echo "orderID is not set in the POST data.";
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -131,7 +144,15 @@
                                                 
                                                 <p class = "type">Order Type: <?php echo $row["Order_Type"]; ?></p>
                                             </div>
-                                            <p class = "status"><?php echo $row["Order_Status"]; ?></p>
+                                            <?php 
+                                                $orderID = $row["Order_ID"];
+                                                if ($row["Order_Status"] == "Completed") {
+                                                    echo "<p class = status>" . $row["Order_Status"] . "</p>";
+                                                } else if ($row["Order_Status"] == "In Progress") {
+                                                    echo "<div class = complete_button onclick = completeOrder(" . $orderID . ")>" . "<input type=hidden id=ordID name=ordID value=" . $orderID . ">" . "<p class = status>" . $row["Order_Status"] . "</p>" . "</div>";
+                                                }
+                                            ?>
+                                            
                                         </div>
                                 </div>
                             <?php } ?>
@@ -139,6 +160,21 @@
                     </div>
             </main>
         <?php } ?>
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+            function completeOrder(ORDERID) {
+                alert(ORDERID)
+                $.ajax({
+                    type: "POST",
+                    url: "employee_home.php",
+                    data: { ORDERID: ORDERID },
+                    success: function(response) {
+                        alert(response);  // Handle the response from the PHP script
+                    }
+                });
+            }
+        </script>
         
 
     </body>
