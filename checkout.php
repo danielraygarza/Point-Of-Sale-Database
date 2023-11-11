@@ -5,15 +5,12 @@ include 'database.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-// $_SESSION['selected_store_id'] = $store_id;
 
 // when you click "place order", it will run this code
 if (isset($_POST['place-order'])) {
-    // echo "<h2>Success</h2>";
-    // echo '<script>setTimeout(function(){ window.location.href="checkout.php"; }, 400);</script>';
     // redirect to the chosen page when click "place order"
     $Order_Type = $mysqli->real_escape_string($_POST['Order_Type']);
-    $_SESSION['selected_store_id'] = $_POST['Store_ID']; // Replace 'store_location' with the actual form field name
+    $_SESSION['selected_store_id'] = $_POST['Store_ID'];
     if($Order_Type == 'Pickup'){
         header('Location: pickup.php');
         exit;
@@ -31,22 +28,23 @@ if (isset($_POST['clear-cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Initialize the cart as an empty array if it doesn't exist
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
-// Add an item to the cart (you can call this function when a user adds an item)
-function addToCart($itemId)
-{
-    $_SESSION['cart'][] = $itemId;
-}
-
 // Get the number of items in the cart
 function getCartItemCount()
 {
     return count($_SESSION['cart']);
 }
+
+// // Initialize the cart as an empty array if it doesn't exist
+// if (!isset($_SESSION['cart'])) {
+//     $_SESSION['cart'] = [];
+// }
+
+// // Add an item to the cart (you can call this function when a user adds an item)
+// function addToCart($itemId)
+// {
+//     $_SESSION['cart'][] = $itemId;
+// }
+
 ?>
 
 <!DOCTYPE html>
