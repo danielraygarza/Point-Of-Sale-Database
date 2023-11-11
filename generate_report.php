@@ -220,7 +220,7 @@
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
-                        WHERE DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
+                        WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate' 
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } elseif ($storeType === 'pizzas') {
                         // Header for pizzas sold
