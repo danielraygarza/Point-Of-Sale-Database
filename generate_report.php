@@ -339,58 +339,85 @@
                         $employeeId = 0;
                     }
                     
-                    $sql = '';
+                    
                 
-                    $sql = "SELECT e.`Employee_ID`, e.`E_First_Name`, e.`E_Last_Name`, e.`Title_Role`, 
-                    e.`Hire_Date`, e.`assigned_orders`, e.`completed_orders`, d.`Time_Delivered`, 
-                    d.`Delivery_Status`
-                    FROM `employee` e
-                    LEFT JOIN `delivery` d ON e.`Employee_ID` = d.`employee`
-                    WHERE e.`Employee_ID` = $employeeId;";
+                    $employeeSql = "SELECT  `E_First_Name`, `E_Last_Name`, `Title_Role`, `Hire_Date`, `assigned_orders`, `completed_orders` FROM `employee`
+                    WHERE `Employee_ID` = $employeeId";
 
-                     $result = mysqli_query($mysqli, $sql);
+                     $employeeResult = mysqli_query($mysqli, $employeeSql);
 
-                    if ($result) {
+                    if ($employeeResult) {
                         // Check if there are rows returned
-                        if (mysqli_num_rows($result) > 0) {
+                        if (mysqli_num_rows($employeeResult) > 0) {
                             echo '<h2>' . $setHeader . '<h2>';
                             echo "<table border='1' class='table_update'>";
 
                             echo "<tr>
-                                <th class='th-spacing'>Employee ID</th>
-                                <th class='th-spacing'>First Name</th>
-                                <th class='th-spacing'>Last Name</th>
-                                <th class='th-spacing'>Title/Role</th>
-                                <th class='th-spacing'>Hire Date</th>
-                                <th class='th-spacing'>Assigned Orders</th>
-                                <th class='th-spacing'>Completed Orders</th>
-                                <th class='th-spacing'>Time Delivered</th>
-                                <th class='th-spacing'>Delivery Status</th>
+                                    <th class='th-spacing'>First Name</th>
+                                    <th class='th-spacing'>Last Name</th>
+                                    <th class='th-spacing'>Title/Role</th>
+                                    <th class='th-spacing'>Hire Date</th>
+                                    <th class='th-spacing'>Assigned Orders</th>
+                                    <th class='th-spacing'>Completed Orders</th>
                                 </tr>";
                     
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            while ($row = mysqli_fetch_assoc($employeeResult)) {
                                 echo "<tr>";
-                                echo "<td>" . $row['Employee_ID'] . "</td>";
                                 echo "<td>" . $row['E_First_Name'] . "</td>";
                                 echo "<td>" . $row['E_Last_Name'] . "</td>";
                                 echo "<td>" . $row['Title_Role'] . "</td>";
                                 echo "<td>" . $row['Hire_Date'] . "</td>";
                                 echo "<td>" . $row['assigned_orders'] . "</td>";
                                 echo "<td>" . $row['completed_orders'] . "</td>";
-                                echo "<td>" . $row['Time_Delivered'] . "</td>";
-                                echo "<td>" . $row['Delivery_Status'] . "</td>";
                                 echo "</tr>";
                             }
                     
                             echo "</table>";
                         } 
-                    } else {
-                        echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
-                    }
+                        // Display Order Details Table
+                        $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `O_Customer_ID`, `Store_ID` FROM `orders` WHERE `Employee_ID_assigned` = $employeeId";
+                        $orderResult = mysqli_query($mysqli, $orderSql);
 
-                    // Close the database connection
-                    mysqli_close($mysqli);
+        if ($orderResult) {
+            if (mysqli_num_rows($orderResult) > 0) {
+                echo '<h2>Order Details</h2>';
+                echo "<table border='1' class='table_update'>";
+                echo "<tr>
+                        <th class='th-spacing'>Order ID</th>
+                        <th class='th-spacing'>Date Of Order</th>
+                        <th class='th-spacing'>Time Of Order</th>
+                        <th class='th-spacing'>Order Type</th>
+                        <th class='th-spacing'>Order Status</th>
+                        <th class='th-spacing'>Total Amount</th>
+                        <th class='th-spacing'>Customer ID</th>
+                        <th class='th-spacing'>Store ID</th>
+                    </tr>";
+
+                while ($orderRow = mysqli_fetch_assoc($orderResult)) {
+                    echo "<tr>";
+                    echo "<td>" . $orderRow['Order_ID'] . "</td>";
+                    echo "<td>" . $orderRow['Date_Of_Order'] . "</td>";
+                    echo "<td>" . $orderRow['Time_Of_Order'] . "</td>";
+                    echo "<td>" . $orderRow['Order_Type'] . "</td>";
+                    echo "<td>" . $orderRow['Order_Status'] . "</td>";
+                    echo "<td>" . $orderRow['Total_Amount'] . "</td>";
+                    echo "<td>" . $orderRow['O_Customer_ID'] . "</td>";
+                    echo "<td>" . $orderRow['Store_ID'] . "</td>";
+                    echo "</tr>";
                 }
+
+                echo "</table>";
+            }
+        } else {
+            echo 'Error executing the Order SQL query: ' . mysqli_error($mysqli);
+        }
+    } else {
+        echo 'Error executing the Employee SQL query: ' . mysqli_error($mysqli);
+    }
+
+    // Close the database connection
+    mysqli_close($mysqli);
+}
                 /////////////////////////
                 //END EMPLOYEE QUERIES///
                 /////////////////////////
