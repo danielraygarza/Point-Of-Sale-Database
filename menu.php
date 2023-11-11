@@ -59,7 +59,7 @@ function getCartItemCount() {
             <p class="pizza_name"><?php echo $row["Name"]; ?> (<?php echo $row["Size_Option"]; ?>)</p>
             <p class="description"><?php echo $row["Description"]; ?></p>
             <p class="calories"><?php echo $row["Calories"]; ?> cals</p>
-            <p class="price"><b>$<?php echo $row["Cost"]; ?></b></p>
+            <p class="price"><b>$<?php echo $row["Price"]; ?></b></p>
             <?php
             if ($row["Is_Pizza"] == 1) {
                 echo '<div class="customize"><a href="customize_pizza.php?pizza_id=' . $row["Pizza_ID"] . '&size=' . $row["Size_Option"] . '&price=' . $row["Cost"] . '">CUSTOMIZE</a></div>';
