@@ -248,6 +248,32 @@
                         GROUP BY I.Item_Name
                         ORDER BY Item_Count DESC
                         LIMIT 1;";
+                    } elseif ($storeType === 'allpopular') {
+                        // IN PROGRESS
+                        // Header for most popular item for date range
+                        $setHeader = 'Most Popular Item by Date';
+                        // Get the selected date range
+                        if (isset($_POST['stDate'])) {
+                            $stDate = $_POST['stDate'];
+                        } else {
+                            // Default test values for stDate
+                            $stDate = date("Y-m-d");
+                        }
+                        if (isset($_POST['endDate'])) {
+                            $endDate = $_POST['endDate'];
+                        } else {
+                            // Default test values for endDate
+                            $endDate = date("Y-m-d");
+                        }
+                        // TO COMPLETE: Query for most popular item today
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        FROM ORDER_ITEMS OI
+                        JOIN ORDERS O ON OI.Order_ID = O.Order_ID
+                        JOIN ITEMS I ON OI.Item_ID = I.Item_ID
+                        WHERE O.Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
+                        GROUP BY I.Item_Name
+                        ORDER BY Item_Count DESC
+                        LIMIT 1;";
                     } elseif ($storeType === 'sales') {
                         // IN PROGRESS
                         // Header for total sales today

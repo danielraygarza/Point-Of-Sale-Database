@@ -119,12 +119,14 @@
                 <option value="orders">Daily Orders</option>
                 <option value="orderdates">Total Orders From:</option>
                 <option value="popular">Today's Most Popular Item</option>
+                <option value="datepopular">Most Popular Item From:</option>
                 <option value="sales">Total Sales Today</option>
                 <option value="date">Total Sales From:</option>
             </select>
         </div><br>
         <!-- //To here// -->
 
+        <!-- Start/End Y-M-D drop down boxes -->
         <div id="startDateOptions" style="display: none;">
             <label for="start_year">Start Year:</label>
             <select id="start_year" name="start_year" onchange="dateOptions()">
@@ -153,9 +155,10 @@
             <label for="start_day">Start Day:</label>
             <select id="start_day" name="start_day">
                 <option value="" selected disabled>-</option>
-                <!-- Should be populated by function dateOptions -->
+                <!-- Populated by function dateOptions -->
             </select>
 
+            <!-- Save stDate to post -->
             <input type="hidden" id="stDate" name="stDate">
                 
         </div><br>
@@ -188,9 +191,10 @@
             <label for="end_day">End Day:</label>
             <select id="end_day" name="end_day">
                 <option value="" selected disabled>-</option>
-                <!-- Should be populated by function dateOptions -->
+                <!-- Populated by function dateOptions -->
             </select>
 
+            <!-- Saves endDate to post -->
             <input type="hidden" id="endDate" name="endDate">
                 
         </div><br>
@@ -305,6 +309,9 @@
                 startDateOptions.style.display = 'block';
                 endDateOptions.style.display = 'block';
             } else if(storeType.value === 'date'){
+                startDateOptions.style.display = 'block';
+                endDateOptions.style.display = 'block';
+            } else if(storeType.value === 'allpopular'){
                 startDateOptions.style.display = 'block';
                 endDateOptions.style.display = 'block';
             } else{
