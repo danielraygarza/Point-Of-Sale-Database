@@ -227,6 +227,10 @@
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate' 
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
+                        // Get order info for daily orders
+                        $ordSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID
+                        FROM ORDERS
+                        WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
                     } elseif ($storeType === 'pizzas') {
                         // NOT CURRENT VALID SELECTION
                         // Header for pizzas sold
