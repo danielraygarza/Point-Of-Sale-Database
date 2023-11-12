@@ -13,7 +13,6 @@
     // }
 
     //TO DO://
-    // FIX BUG THAT ALLOWS NOTHING TO BE SELECTED AND STILL HAVE A REPORT GENERATED
     // CURRENTLY SELECTING ANY MONTH OR YEAR REPOPULATES DAYS FOR BOTH START AND END FORCING USER TO RESELECT ANY VALUES ALREADY SELECTED THERE
 
     //Daniel: altered function above to not include "database.php" inside function. 
@@ -397,7 +396,7 @@
 
             // Can change to make initialize variable with if statement instead if needed for fringe cases
             if (reportType.value !== '' && (storeId.value !== '' || employeeSelect.value !== '') && (inventoryType.value !== '' || storeType.value !== '' || employeeSelect.value !== '')){
-                if ((storeType.value === 'orderdates' || storeType.value === 'datepopular' || storeType.value === 'date') && (startDate.value < 20220100 && endDate.value < 20220100)) {
+                if ((storeType.value === 'orderdates' || storeType.value === 'datepopular' || storeType.value === 'date') && (startDate.value < 20220100 || endDate.value < 20220100)) {
                     selectionMade = false;
                 } else {
                     selectionMade = true;
