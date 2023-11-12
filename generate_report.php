@@ -234,7 +234,7 @@
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
                     } elseif ($storeType === 'popular') {
-                        // IN PROGRESS
+                        // DONE PENDING DATABASE TESTING
                         // Header for most popular item today
                         $setHeader = 'Most Popular Item';
                         // Get the current Date
@@ -249,7 +249,7 @@
                         ORDER BY Item_Count DESC
                         LIMIT 1;";
                     } elseif ($storeType === 'datepopular') {
-                        // IN PROGRESS
+                        // DONE PENDING DATABASE TESTING
                         // Header for most popular item for date range
                         $setHeader = 'Most Popular Item by Date';
                         // Get the selected date range
@@ -331,6 +331,11 @@
                                         <th class='th-spacing'>Item Name</th>
                                         <th class='th-spacing'>Sold Today</th>
                                     </tr>";
+                            } elseif ($storeType === 'sales' || $storeType === 'date') {
+                                echo "<tr>
+                                        <th class='th-spacing'>Item Name</th>
+                                        <th class='th-spacing'>Sold Today</th>
+                                    </tr>";
                             } else {
                                 echo "<tr>
                                         <th class='th-spacing'>Pizza Store ID</th>
@@ -344,6 +349,11 @@
                                 //NEED TO FINISH DECIDING WHAT TO DISPLAY FOR REPORTS
                                 //MAY HAVE TO MAKE SEPARATE DISPLAYS FOR SEPARATE STORE REPORT TYPES
                                 if ($storeType === 'popular' || $storeType === 'datepopular') {
+                                    echo '<tr>';
+                                    echo '<td>' . $row['Most_Popular_Item'] . '</td>';
+                                    echo '<td>' . $row['Item_Count'] . '</td>';
+                                    echo '</tr>';
+                                } elseif ($storeType === 'sales' || $storeType === 'date') {
                                     echo '<tr>';
                                     echo '<td>' . $row['Most_Popular_Item'] . '</td>';
                                     echo '<td>' . $row['Item_Count'] . '</td>';
