@@ -290,7 +290,9 @@
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
-                    $ordResult = mysqli_query($mysqli, $ordSql);
+                    if(!empty(trim($ordResult))){
+                        $ordResult = mysqli_query($mysqli, $ordSql);
+                    }
 
                     if ($result) {
                         // Check if there are rows returned
