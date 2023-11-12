@@ -96,7 +96,7 @@
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
-            <select name="inventoryType" id="inventoryType">
+            <select name="inventoryType" id="inventoryType" onchange="checkSelection()">
                 <option value="" selected disabled>-</option>
                 <option value="all">All Stock</option>
                 <option value="low">Low Stock</option>
