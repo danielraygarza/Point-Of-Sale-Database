@@ -189,6 +189,7 @@
 
                     // Define your SQL queries for Inventory selection
                     if ($storeType === 'orders') {
+                        // DONE
                         // Header for daily orders
                         $setHeader = 'Daily Orders';
                         // Get the current Date
@@ -205,6 +206,7 @@
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) = '$currentDate';";
                     } elseif ($storeType === 'orderdates') {
+                        // DONE
                         // Header for daily orders
                         $setHeader = 'Orders by Date';
                         // Get the selected date range
@@ -236,8 +238,9 @@
                         // Header for pizzas sold
                         $setHeader = 'Pizzas Sold Today';
                         // TO COMPLETE: Query for pizzas sold today
-                        $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+                        //$sql = "SELECT Pizza_Store_ID FROM pizza_store";
                     } elseif ($storeType === 'popular') {
+                        // IN PROGRESS
                         // Header for most popular item today
                         $setHeader = 'Most Popular Item';
                         // Get the current Date
@@ -252,6 +255,7 @@
                         ORDER BY Item_Count DESC
                         LIMIT 1;";
                     } elseif ($storeType === 'sales') {
+                        // IN PROGRESS
                         // Header for total sales today
                         $setHeader = 'Total Sales Today';
                         // Get the current Date
@@ -264,6 +268,7 @@
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } else {
+                        // IN PROGRESS
                         //Header for total sales to date
                         $setHeader = 'Total Sales For Date Range';
                         // Get the selected date range

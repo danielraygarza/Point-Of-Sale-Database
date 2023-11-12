@@ -361,6 +361,7 @@
             //Debug
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
+            console.log('Report:', storeType);
         }
     </script>
 </body>
