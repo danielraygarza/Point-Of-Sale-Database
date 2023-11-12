@@ -325,7 +325,7 @@
 
                             echo '</table>';
                             // Should check if $ordResult populated
-                            if ($ordResult){
+                            if (!empty(trim($ordSql)) && $ordResult){
                                 // Seems redundant, but second check
                                 if (mysqli_num_rows($ordResult) > 0){
                                     echo '<h2>Order Details</h2>';
