@@ -304,10 +304,11 @@ main .main-holder .order-display {
     margin: 5px;
 }
 
-main .main-holder .order-display .od-header {
+main .od-header {
     color: rgb(245, 245, 245);
     font-weight: bold;
     text-align: right;
+    width: 1000px;
 }
 
 main .main-holder .order-display .order-card {
