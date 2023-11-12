@@ -22,6 +22,7 @@
         $Item_Cost = $mysqli->real_escape_string($_POST['Item_Cost']);
         $Reorder_Threshold = $mysqli->real_escape_string($_POST['Reorder_Threshold']);
         $Days_to_expire = $mysqli->real_escape_string($_POST['Days_to_expire']);
+        $Amount_per_order = $mysqli->real_escape_string($_POST['Amount_per_order']);
         
         $existingItems = $mysqli->query("SELECT * FROM items WHERE Item_Name='$Item_Name'");
 
@@ -30,8 +31,8 @@
             $_SESSION['error'] = "Item already exist!";
         } else {
             // Inserting the data into the database if item doesnt exist already
-            $sql = "INSERT INTO items (Item_Type, Item_Name, Item_Cost, Reorder_Threshold, Days_to_expire) 
-                    VALUES ('$Item_Type', '$Item_Name','$Item_Cost', '$Reorder_Threshold', '$Days_to_expire')";
+            $sql = "INSERT INTO items (Item_Type, Item_Name, Item_Cost, Reorder_Threshold, Days_to_expire, Amount_per_order) 
+                    VALUES ('$Item_Type', '$Item_Name','$Item_Cost', '$Reorder_Threshold', '$Days_to_expire', '$Amount_per_order')";
 
             if ($mysqli->query($sql) === TRUE) {
                 $mysqli->close();
@@ -102,6 +103,11 @@
         <div>
             <label for="Days_to_expire">Days to Expire  </label>
             <input type="number" id="Days_to_expire" name="Days_to_expire" min=0 placeholder="Enter days to expire" required>
+        </div><br>
+
+        <div>
+            <label for="Amount_per_order">Amount per Order </label>
+            <input type="number" id="Amount_per_order" name="Amount_per_order" min=1 placeholder="Enter amount" required>
         </div><br>
 
         <?php
