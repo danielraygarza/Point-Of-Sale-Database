@@ -326,7 +326,7 @@
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo '<table border="1" class="table_update">';
-                            if ($storeType === 'popular') {
+                            if ($storeType === 'popular' || $storeType === 'datepopular') {
                                 echo "<tr>
                                         <th class='th-spacing'>Item Name</th>
                                         <th class='th-spacing'>Sold Today</th>
@@ -343,7 +343,7 @@
                                 //TO DO://
                                 //NEED TO FINISH DECIDING WHAT TO DISPLAY FOR REPORTS
                                 //MAY HAVE TO MAKE SEPARATE DISPLAYS FOR SEPARATE STORE REPORT TYPES
-                                if ($storeType === 'popular') {
+                                if ($storeType === 'popular' || $storeType === 'datepopular') {
                                     echo '<tr>';
                                     echo '<td>' . $row['Most_Popular_Item'] . '</td>';
                                     echo '<td>' . $row['Item_Count'] . '</td>';
