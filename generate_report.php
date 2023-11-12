@@ -326,27 +326,40 @@
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo '<table border="1" class="table_update">';
-                            echo "<tr>
-                                    <th class='th-spacing'>Pizza Store ID</th>
-                                    <th class='th-spacing'>Pizza Store Address</th>
-                                    <th class='th-spacing'>Order Count</th>
-                                </tr>";
-
+                            if ($storeType === 'popular') {
+                                echo "<tr>
+                                        <th class='th-spacing'>Item Name</th>
+                                        <th class='th-spacing'>Sold Today</th>
+                                    </tr>";
+                            } else {
+                                echo "<tr>
+                                        <th class='th-spacing'>Pizza Store ID</th>
+                                        <th class='th-spacing'>Pizza Store Address</th>
+                                        <th class='th-spacing'>Order Count</th>
+                                    </tr>";
+                            }
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
                                 //TO DO://
                                 //NEED TO FINISH DECIDING WHAT TO DISPLAY FOR REPORTS
                                 //MAY HAVE TO MAKE SEPARATE DISPLAYS FOR SEPARATE STORE REPORT TYPES
-                                echo '<tr>';
-                                echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
-                                echo '<td>' . $row['Store_Address'] . '</td>';
-                                echo '<td>' . $row['OrderCount'] . '</td>';
-                                //echo '<td>' . $row['Item_Cost'] . '</td>';
-                                //echo '<td>' . $row['Vendor_Name'] . '</td>';
-                                //echo '<td>' . $row['Vendor_Rep'] . '</td>';
-                                //echo '<td>' . $row['Vendor_Email'] . '</td>';
-                                //echo '<td>' . $row['Vendor_Phone'] . '</td>';
-                                echo '</tr>';
+                                if ($storeType === 'popular') {
+                                    echo '<tr>';
+                                    echo '<td>' . $row['Most_Popular_Item'] . '</td>';
+                                    echo '<td>' . $row['Item_Count'] . '</td>';
+                                    echo '</tr>';
+                                } else {
+                                    echo '<tr>';
+                                    echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
+                                    echo '<td>' . $row['Store_Address'] . '</td>';
+                                    echo '<td>' . $row['OrderCount'] . '</td>';
+                                    //echo '<td>' . $row['Item_Cost'] . '</td>';
+                                    //echo '<td>' . $row['Vendor_Name'] . '</td>';
+                                    //echo '<td>' . $row['Vendor_Rep'] . '</td>';
+                                    //echo '<td>' . $row['Vendor_Email'] . '</td>';
+                                    //echo '<td>' . $row['Vendor_Phone'] . '</td>';
+                                    echo '</tr>';
+                                }
                             }
 
                             echo '</table>';
