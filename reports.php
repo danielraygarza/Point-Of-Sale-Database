@@ -118,7 +118,6 @@
                 <option value="" selected disabled>-</option>
                 <option value="orders">Daily Orders</option>
                 <option value="orderdates">Total Orders From:</option>
-                <!-- <option value="pizzas">Daily Pizzas Sold</option> -->
                 <option value="popular">Today's Most Popular Item</option>
                 <option value="sales">Total Sales Today</option>
                 <option value="date">Total Sales From:</option>
