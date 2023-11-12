@@ -290,7 +290,8 @@
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
-                    if(!empty(trim($ordResult))){
+                    // Check to see if $ordSql set
+                    if(!empty(trim($ordSql))){
                         $ordResult = mysqli_query($mysqli, $ordSql);
                     }
 
