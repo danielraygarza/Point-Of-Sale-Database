@@ -451,7 +451,7 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($employeeResult) > 0) {
                             echo '<h2>' . $setHeader . '<h2>';
-                            echo "<table border='1' class='table_update'>";
+                            echo "<table border='1' class='centered_table'>";
 
                             echo "<tr>
                                     <th class='th-spacing'>First Name</th>
@@ -481,7 +481,7 @@
                     if ($orderResult) {
                         if (mysqli_num_rows($orderResult) > 0) {
                             echo '<h2>Order Details</h2>';
-                            echo "<table border='1' class='centered-table'>";
+                            echo "<table border='1' class='centered_table'>";
                             echo "<tr>
                                 <th class='th-spacing'>Order ID</th>
                                 <th class='th-spacing'>Date Of Order</th>
@@ -499,7 +499,12 @@
                                 echo "<td>" . $orderRow['Order_ID'] . "</td>";
                                 echo "<td>" . $orderRow['Date_Of_Order'] . "</td>";
                                 echo "<td>" . $orderRow['Time_Of_Order'] . "</td>";
-                                echo "<td>" . $orderRow['Time_Of_Order'] . "</td>"; //need to change to time completed when table updated
+                                // If order is not completed display "-"
+                                if ($orderRow['Time_Completed'] === '00:00:00') {
+                                    echo "<td>-</td>";
+                                } else {
+                                    echo "<td>" . $orderRow['Time_Completed'] . "</td>";
+                                }
                                 echo "<td>" . $orderRow['Order_Type'] . "</td>";
                                 echo "<td>" . $orderRow['Order_Status'] . "</td>";
                                 echo "<td>" . $orderRow['Total_Amount'] . "</td>";
