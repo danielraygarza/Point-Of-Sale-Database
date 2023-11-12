@@ -379,6 +379,7 @@
         // Activate Generate Reports button
         function checkSelections(){
             var reportType = document.getElementById('reportType');
+            var selectionMade = false;
 
             var inventoryOptions = document.getElementById('inventoryOptions');
             var storeOptions = document.getElementById('storeOptions');
@@ -388,8 +389,10 @@
             var endDateOptions = document.getElementById('endDateOptions');
 
             if (reportType.value === 'inventory' && inventoryOptions.value !== ''){
-                document.getElementById('submitButton').disabled = false;
+                selectionMade = true;
             }
+
+            document.getElementById('submitButton').disabled = !selectionMade;
 
         }
     </script>
