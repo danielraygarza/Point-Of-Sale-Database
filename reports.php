@@ -215,7 +215,7 @@
             </select>
         </div><br>
 
-        <!-- When ready, add 'disabled' to the end of the button and create a function to enable it when selection criteria met -->
+        <!-- Working on function to restrict Generate Report button -->
         <input type="submit" class="button" value="Generate Report" id="submitButton" disabled>
     </form>
 
@@ -387,9 +387,10 @@
             var startDateOptions = document.getElementById('startDateOptions');
             var endDateOptions = document.getElementById('endDateOptions');
 
-            if (reportType.value !== ''){
+            if (reportType.value === 'inventory' && inventoryOptions.value !== ''){
                 document.getElementById('submitButton').disabled = false;
             }
+
         }
     </script>
 </body>
