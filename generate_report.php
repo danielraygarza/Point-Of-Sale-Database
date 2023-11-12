@@ -324,19 +324,19 @@
                             echo '</table>';
                             // Should check if $ordResult populated
                             if ($ordResult){
-                            //     // Seems redundant, but second check
-                            //     if (mysqli_num_rows($ordResult) > 0){
-                            //         echo '<h2>Order Details</h2>'
-                            //         echo '<table border="1" class="table_update">';
-                            //         echo "<tr>
-                            //                 <th class='th-spacing'>Order ID</th>
-                            //                 <th class='th-spacing'>Date Of Order</th>
-                            //                 <th class='th-spacing'>Time Of Order</th>
-                            //                 <th class='th-spacing'>Order Type</th>
-                            //                 <th class='th-spacing'>Order Status</th>
-                            //                 <th class='th-spacing'>Total Amount</th>
-                            //                 <th class='th-spacing'>Customer ID</th>
-                            //             </tr>"
+                                // Seems redundant, but second check
+                                if (mysqli_num_rows($ordResult) > 0){
+                                    echo '<h2>Order Details</h2>';
+                                    echo '<table border="1" class="table_update">';
+                                    echo "<tr>
+                                            <th class='th-spacing'>Order ID</th>
+                                            <th class='th-spacing'>Date Of Order</th>
+                                            <th class='th-spacing'>Time Of Order</th>
+                                            <th class='th-spacing'>Order Type</th>
+                                            <th class='th-spacing'>Order Status</th>
+                                            <th class='th-spacing'>Total Amount</th>
+                                            <th class='th-spacing'>Customer ID</th>
+                                        </tr>";
 
                             //         // Loop through order detail results
                             //         while ($ordRow = mysqli_fetch_assoc($ordResult)){
@@ -352,7 +352,7 @@
                             //         }
 
                             //         echo '</table>';
-                            //     }
+                                }
                             }
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
