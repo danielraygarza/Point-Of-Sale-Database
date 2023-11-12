@@ -67,6 +67,7 @@ if (isset($_POST['add_to_cart_and_customize'])) {
             }
         ?>
          <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
+         
     </div>
 
     <form action="menu.php" method="post">
@@ -75,12 +76,16 @@ if (isset($_POST['add_to_cart_and_customize'])) {
 
     <main>
         <?php
+        echo '<pre>'; var_dump($cart);   echo '</pre>';
             while ($row = mysqli_fetch_assoc($result)) {
         ?>
         <div class="card">
             <div class="image">
                 <img src=<?php echo $row["Image_Path"]; ?> alt="">
             </div>
+              
+               
+              
             <p class="pizza_name"><?php echo $row["Name"]; ?> (<?php echo $row["Size_Option"]; ?>)</p>
             <p class="description"><?php echo $row["Description"]; ?></p>
             <p class="calories"><?php echo $row["Calories"]; ?> cals</p>
