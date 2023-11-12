@@ -110,7 +110,7 @@ if (isset($_POST['add_to_cart_and_customize'])) {
             }
             ?>
         </div>
-        <?php echo '<pre>'; var_dump($cart);   echo '</pre>'; } ?>
+        <?php echo '<pre>'; echo $cart[];   echo '</pre>'; } ?>
     </main>
 </body>
 </html>
