@@ -338,20 +338,20 @@
                                             <th class='th-spacing'>Customer ID</th>
                                         </tr>";
 
-                            //         // Loop through order detail results
-                            //         while ($ordRow = mysqli_fetch_assoc($ordResult)){
-                            //             echo '<tr>';
-                            //             echo '<td>' . $ordRow['Order_ID'] . "</td>";
-                            //             echo "<td>" . $ordRow['Date_Of_Order'] . "</td>";
-                            //             echo "<td>" . $ordRow['Time_Of_Order'] . "</td>";
-                            //             echo "<td>" . $ordRow['Order_Type'] . "</td>";
-                            //             echo "<td>" . $ordRow['Order_Status'] . "</td>";
-                            //             echo "<td>" . $ordRow['Total_Amount'] . "</td>";
-                            //             echo "<td>" . $ordRow['O_Customer_ID'] . "</td>";
-                            //             echo "</tr>";
-                            //         }
+                                    // Loop through order detail results
+                                    while ($ordRow = mysqli_fetch_assoc($ordResult)){
+                                        echo '<tr>';
+                                        echo '<td>' . $ordRow['Order_ID'] . "</td>";
+                                        echo "<td>" . $ordRow['Date_Of_Order'] . "</td>";
+                                        echo "<td>" . $ordRow['Time_Of_Order'] . "</td>";
+                                        echo "<td>" . $ordRow['Order_Type'] . "</td>";
+                                        echo "<td>" . $ordRow['Order_Status'] . "</td>";
+                                        echo "<td>" . $ordRow['Total_Amount'] . "</td>";
+                                        echo "<td>" . $ordRow['O_Customer_ID'] . "</td>";
+                                        echo "</tr>";
+                                    }
 
-                            //         echo '</table>';
+                                    echo '</table>';
                                 }
                             }
                         } else {
