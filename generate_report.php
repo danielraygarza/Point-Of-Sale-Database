@@ -291,7 +291,7 @@
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
-                    //$ordResult = mysqli_query($mysqli, $ordSql);
+                    $ordResult = mysqli_query($mysqli, $ordSql);
 
                     if ($result) {
                         // Check if there are rows returned
@@ -323,37 +323,37 @@
 
                             echo '</table>';
                             // Should check if $ordResult populated
-                            // if ($ordResult){
-                            //     // Seems redundant, but second check
-                            //     if (mysqli_num_rows($ordResult) > 0){
-                            //         echo '<h2>Order Details</h2>'
-                            //         echo '<table border="1" class="table_update">';
-                            //         echo "<tr>
-                            //                 <th class='th-spacing'>Order ID</th>
-                            //                 <th class='th-spacing'>Date Of Order</th>
-                            //                 <th class='th-spacing'>Time Of Order</th>
-                            //                 <th class='th-spacing'>Order Type</th>
-                            //                 <th class='th-spacing'>Order Status</th>
-                            //                 <th class='th-spacing'>Total Amount</th>
-                            //                 <th class='th-spacing'>Customer ID</th>
-                            //             </tr>"
+                            if ($ordResult){
+                                // Seems redundant, but second check
+                                if (mysqli_num_rows($ordResult) > 0){
+                                    echo '<h2>Order Details</h2>'
+                                    echo '<table border="1" class="table_update">';
+                                    echo "<tr>
+                                            <th class='th-spacing'>Order ID</th>
+                                            <th class='th-spacing'>Date Of Order</th>
+                                            <th class='th-spacing'>Time Of Order</th>
+                                            <th class='th-spacing'>Order Type</th>
+                                            <th class='th-spacing'>Order Status</th>
+                                            <th class='th-spacing'>Total Amount</th>
+                                            <th class='th-spacing'>Customer ID</th>
+                                        </tr>"
 
-                            //         // Loop through order detail results
-                            //         while ($ordRow = mysqli_fetch_assoc($ordResult)){
-                            //             echo '<tr>';
-                            //             echo '<td>' . $ordRow['Order_ID'] . "</td>";
-                            //             echo "<td>" . $ordRow['Date_Of_Order'] . "</td>";
-                            //             echo "<td>" . $ordRow['Time_Of_Order'] . "</td>";
-                            //             echo "<td>" . $ordRow['Order_Type'] . "</td>";
-                            //             echo "<td>" . $ordRow['Order_Status'] . "</td>";
-                            //             echo "<td>" . $ordRow['Total_Amount'] . "</td>";
-                            //             echo "<td>" . $ordRow['O_Customer_ID'] . "</td>";
-                            //             echo "</tr>";
-                            //         }
+                                    // Loop through order detail results
+                                    while ($ordRow = mysqli_fetch_assoc($ordResult)){
+                                        echo '<tr>';
+                                        echo '<td>' . $ordRow['Order_ID'] . "</td>";
+                                        echo "<td>" . $ordRow['Date_Of_Order'] . "</td>";
+                                        echo "<td>" . $ordRow['Time_Of_Order'] . "</td>";
+                                        echo "<td>" . $ordRow['Order_Type'] . "</td>";
+                                        echo "<td>" . $ordRow['Order_Status'] . "</td>";
+                                        echo "<td>" . $ordRow['Total_Amount'] . "</td>";
+                                        echo "<td>" . $ordRow['O_Customer_ID'] . "</td>";
+                                        echo "</tr>";
+                                    }
 
-                            //         echo '</table>';
-                            //     }
-                            //}
+                                    echo '</table>';
+                                }
+                            }
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
