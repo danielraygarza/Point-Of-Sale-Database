@@ -333,8 +333,9 @@
                                     </tr>";
                             } elseif ($storeType === 'sales' || $storeType === 'date') {
                                 echo "<tr>
-                                        <th class='th-spacing'>Item Name</th>
-                                        <th class='th-spacing'>Sold Today</th>
+                                    <th class='th-spacing'>Pizza Store ID</th>
+                                    <th class='th-spacing'>Pizza Store Address</th>
+                                    <th class='th-spacing'>Total Sales</th>
                                     </tr>";
                             } else {
                                 echo "<tr>
@@ -355,8 +356,9 @@
                                     echo '</tr>';
                                 } elseif ($storeType === 'sales' || $storeType === 'date') {
                                     echo '<tr>';
-                                    echo '<td>' . $row['Most_Popular_Item'] . '</td>';
-                                    echo '<td>' . $row['Item_Count'] . '</td>';
+                                    echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
+                                    echo '<td>' . $row['Store_Address'] . '</td>';
+                                    echo '<td>' . $row['Total_Sales'] . '</td>';
                                     echo '</tr>';
                                 } else {
                                     echo '<tr>';
