@@ -76,7 +76,7 @@ if (isset($_POST['add_to_cart_and_customize'])) {
 
     <main>
         <?php
-        echo '<pre>'; var_dump($cart);   echo '</pre>';
+        
             while ($row = mysqli_fetch_assoc($result)) {
         ?>
         <div class="card">
@@ -91,6 +91,7 @@ if (isset($_POST['add_to_cart_and_customize'])) {
             <p class="calories"><?php echo $row["Calories"]; ?> cals</p>
             <p class="price"><b>$<?php echo $row["Price"]; ?></b></p>
             <?php
+            
             if ($row["Is_Pizza"] == 1) {
                 // echo '<div class="customize"><ahref="customize_pizza.php?pizza_id=' . $row["Pizza_ID"] . '&size=' . $row["Size_Option"] . '&price=' . $row["Price"] . '">CUSTOMIZE</a></div>';
                 echo '<form action="menu.php" method="post" style="background-color: transparent; border: none;>';
@@ -109,7 +110,7 @@ if (isset($_POST['add_to_cart_and_customize'])) {
             }
             ?>
         </div>
-        <?php } ?>
+        <?php echo '<pre>'; var_dump($cart);   echo '</pre>'; } ?>
     </main>
 </body>
 </html>
