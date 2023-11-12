@@ -77,7 +77,7 @@
 
         <div id="storeSelection" style="display: none;">
             <label for="storeId">Select Store:</label>
-            <select name="storeId" id="storeId">
+            <select name="storeId" id="storeId" onchange="checkSelections()">
                 <!-- <option value="test">Default</option> -->
                 <option value="" selected disabled>Select Store</option>
                 <?php
@@ -386,12 +386,15 @@
 
             var inventoryType = document.getElementById('inventoryType');
             var storeType = document.getElementById('storeType');
+            // Next:
             var Employer = document.getElementById('Employer');
-            var storeSelection = document.getElementById('storeSelection');
+            
+            var storeId = document.getElementById('storeId');
+
             var startDateOptions = document.getElementById('startDateOptions');
             var endDateOptions = document.getElementById('endDateOptions');
 
-            if (reportType.value !== '' && (inventoryType.value !== '' || storeType.value !== '')){
+            if (reportType.value !== '' && storeId.value !== '' && (inventoryType.value !== '' || storeType.value !== '')){
                 selectionMade = true;
             }
 
