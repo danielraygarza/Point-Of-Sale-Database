@@ -114,25 +114,21 @@ function getCartItemCount()
                         foreach ($cart as $item) {
                             // $query = "SELECT Item_Cost FROM items WHERE Item_Name = '$item'";
                             $query = "
-                                (SELECT Item_Cost AS Cost FROM items WHERE Item_Name = '$item')
-                                UNION ALL
-                                (SELECT Price AS Cost FROM menu WHERE Pizza_ID = '$item')
-                            ";
-                            
-                            $result = $mysqli->query($query);
-                            // $row = $result->fetch_assoc();
-                            // if($result){
-                            //     $itemCost = $row['Item_Cost'];
-                            //     $totalPrice += $itemCost; //accumlating total price
-                            // }
-                            // echo "<li>$item - $$itemCost</li>";
-                            if ($result) {
-                                while ($row = $result->fetch_assoc()) {
-                                    $itemCost = $row['Cost'];
-                                    $totalPrice += $itemCost;
-                                    echo "<li>$item - $$itemCost</li>";
+                                    SELECT Item_Cost AS Cost FROM items WHERE Item_Name = '$item'
+                                    UNION ALL
+                                    SELECT Price AS Cost FROM menu WHERE Pizza_ID = '$item'
+                                ";
+
+                                $result = $mysqli->query($query);
+
+                    if ($result) {
+                        while ($row = $result->fetch_assoc()) {
+                            $itemCost = $row['Cost'];
+                            $totalPrice += $itemCost;
+                            echo "<li>$item - $$itemCost</li>";
                                 }
-                            }
+            }
+
                         }
                         echo "<li>----------------------</li>";
                         echo "<li>Total Price: $$totalPrice</li>"; //prints total price
