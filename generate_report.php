@@ -290,7 +290,7 @@
                     } else {
                         // IN PROGRESS
                         //Header for total sales to date
-                        $setHeader = 'Total Sales For Date Range';
+                        $setHeader = 'Total Sales by Date:';
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
                             $stDate = $_POST['stDate'];
