@@ -323,7 +323,7 @@
 
                             echo '</table>';
                             // Should check if $ordResult populated
-                            // if ($ordResult){
+                            if ($ordResult){
                             //     // Seems redundant, but second check
                             //     if (mysqli_num_rows($ordResult) > 0){
                             //         echo '<h2>Order Details</h2>'
@@ -353,7 +353,7 @@
 
                             //         echo '</table>';
                             //     }
-                            // }
+                            }
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
