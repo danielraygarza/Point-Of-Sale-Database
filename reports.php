@@ -381,14 +381,14 @@
             var reportType = document.getElementById('reportType');
             var selectionMade = false;
 
-            var inventoryOptions = document.getElementById('inventoryOptions');
+            var inventoryType = document.getElementById('inventoryType');
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
             var startDateOptions = document.getElementById('startDateOptions');
             var endDateOptions = document.getElementById('endDateOptions');
 
-            if (reportType.value === 'inventory' && inventoryOptions.value !== ''){
+            if (reportType.value === 'inventory' && inventoryType.value !== ''){
                 selectionMade = true;
             }
 
