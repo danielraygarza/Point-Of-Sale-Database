@@ -291,7 +291,7 @@
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
-                    $ordResult = mysqli_query($mysqli, $ordSql);
+                    //$ordResult = mysqli_query($mysqli, $ordSql);
 
                     if ($result) {
                         // Check if there are rows returned
@@ -353,15 +353,15 @@
 
                             //         echo '</table>';
                             //     }
-                        }
-                    } else {
-                        echo '<h2>' . $setHeader . '</h2>';
-                        echo 'No order data available for store ' . $storeId;
-                        if(($storeType === 'orderdates') || ($storeType === 'date')){
-                            echo 'From ' . $stDate . ' to ' . $endDate;
-                        }
+                            //}
+                        } else {
+                            echo '<h2>' . $setHeader . '</h2>';
+                            echo 'No order data available for store ' . $storeId;
+                            if(($storeType === 'orderdates') || ($storeType === 'date')){
+                                echo 'From ' . $stDate . ' to ' . $endDate;
+                            }
 
-                    }
+                        }
                     } else {
                         echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
                     }
