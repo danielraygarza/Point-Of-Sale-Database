@@ -216,7 +216,7 @@
         </div><br>
 
         <!-- When ready, add 'disabled' to the end of the button and create a function to enable it when selection criteria met -->
-        <input type="submit" class="button" value="Generate Report" id="submitButton">
+        <input type="submit" class="button" value="Generate Report" id="submitButton" disabled>
     </form>
 
     <script>
@@ -290,6 +290,9 @@
                 startDateOptions.style.display = 'none';
                 endDateOptions.style.display = 'none';
             }
+
+            // Update Generate Report button
+            checkSelections();
         }
 
         // Date padding function
@@ -371,6 +374,22 @@
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
             console.log('Report:', sType);
+        }
+
+        // Activate Generate Reports button
+        function checkSelections(){
+            var reportType = document.getElementById('reportType');
+
+            var inventoryOptions = document.getElementById('inventoryOptions');
+            var storeOptions = document.getElementById('storeOptions');
+            var Employer = document.getElementById('Employer');
+            var storeSelection = document.getElementById('storeSelection');
+            var startDateOptions = document.getElementById('startDateOptions');
+            var endDateOptions = document.getElementById('endDateOptions');
+
+            if (reportType.value !== ''){
+                document.getElementById('submitButton').disabled = false;
+            }
         }
     </script>
 </body>
