@@ -222,7 +222,7 @@
                             // Default test values for endDate
                             $endDate = date("Y-m-d");
                         }
-                        // TO COMPLETE: Query for orders by date
+                        // Query for orders by date
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
@@ -324,7 +324,7 @@
                             }
 
                             echo '</table>';
-                            // Should check if $ordResult populated
+                            // Should check if we have set $ordSql and that $ordResult populated
                             if (!empty(trim($ordSql)) && $ordResult){
                                 // Seems redundant, but second check
                                 if (mysqli_num_rows($ordResult) > 0){
