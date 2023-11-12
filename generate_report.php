@@ -185,6 +185,7 @@
                     // Check the value of the inventoryType
                     $storeType = $_POST['storeType'];
                     $sql = '';
+                    $ordSql = '';
 
                     // Define your SQL queries for Inventory selection
                     if ($storeType === 'orders') {
@@ -194,11 +195,15 @@
                         $currentDate = date("Y-m-d");
                         // Query for daily orders
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
-                        FROM pizza_store P 
-                        LEFT JOIN orders O
+                        FROM PIZZA_STORE P 
+                        LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
+                        // Get order info for daily orders
+                        $ordSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID
+                        FROM ORDERS
+                        WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) = '$currentDate';";
                     } elseif ($storeType === 'orderdates') {
                         // Header for daily orders
                         $setHeader = 'Orders by Date';
@@ -223,6 +228,7 @@
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate' 
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } elseif ($storeType === 'pizzas') {
+                        // NOT CURRENT VALID SELECTION
                         // Header for pizzas sold
                         $setHeader = 'Pizzas Sold Today';
                         // TO COMPLETE: Query for pizzas sold today
@@ -281,6 +287,7 @@
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
+                    $ordResult = mysqli_query($mysqli, $ordSql);
 
                     if ($result) {
                         // Check if there are rows returned
@@ -311,6 +318,38 @@
                             }
 
                             echo '</table>';
+                            // Should check if $ordResult populated
+                            if ($ordResult){
+                                // Seems redundant, but second check
+                                if (mysqli_num_rows($ordResult) > 0){
+                                    echo '<h2>Order Details</h2>'
+                                    echo '<table border="1" class="table_update">';
+                                    echo "<tr>
+                                            <th class='th-spacing'>Order ID</th>
+                                            <th class='th-spacing'>Date Of Order</th>
+                                            <th class='th-spacing'>Time Of Order</th>
+                                            <th class='th-spacing'>Order Type</th>
+                                            <th class='th-spacing'>Order Status</th>
+                                            <th class='th-spacing'>Total Amount</th>
+                                            <th class='th-spacing'>Customer ID</th>
+                                        </tr>"
+
+                                    // Loop through order detail results
+                                    while ($ordRow = mysqli_fetch_assoc($ordResult)){
+                                        echo '<tr>';
+                                        echo '<td>' . $ordRow['Order_ID'] . "</td>";
+                                        echo "<td>" . $ordRow['Date_Of_Order'] . "</td>";
+                                        echo "<td>" . $ordRow['Time_Of_Order'] . "</td>";
+                                        echo "<td>" . $ordRow['Order_Type'] . "</td>";
+                                        echo "<td>" . $ordRow['Order_Status'] . "</td>";
+                                        echo "<td>" . $ordRow['Total_Amount'] . "</td>";
+                                        echo "<td>" . $ordRow['O_Customer_ID'] . "</td>";
+                                        echo "</tr>";
+                                    }
+
+                                    echo '</table>';
+                                }
+                            }
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
