@@ -233,12 +233,6 @@
                         $ordSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
-                    } elseif ($storeType === 'pizzas') {
-                        // NOT CURRENT VALID SELECTION
-                        // Header for pizzas sold
-                        $setHeader = 'Pizzas Sold Today';
-                        // TO COMPLETE: Query for pizzas sold today
-                        //$sql = "SELECT Pizza_Store_ID FROM pizza_store";
                     } elseif ($storeType === 'popular') {
                         // IN PROGRESS
                         // Header for most popular item today
