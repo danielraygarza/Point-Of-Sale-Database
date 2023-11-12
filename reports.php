@@ -202,7 +202,7 @@
         <!-- Add more drop down sub-menus here -->
         <div id="Employer" style="display: none;">
             <label for="employeeDropdown">Select Employee:</label>
-            <select name="employeeDropdown" id="employeeDropdown">
+            <select name="employeeDropdown" id="employeeDropdown" onchange="checkSelections()">
                 <option value="" selected disabled>-</option>
                 <?php
                 $employeeData = getEmployeeData($mysqli);
@@ -386,15 +386,14 @@
 
             var inventoryType = document.getElementById('inventoryType');
             var storeType = document.getElementById('storeType');
-            // Next:
-            var Employer = document.getElementById('Employer');
+            var employeeSelect = document.getElementById('employeeDropdown');
             
             var storeId = document.getElementById('storeId');
 
             var startDateOptions = document.getElementById('startDateOptions');
             var endDateOptions = document.getElementById('endDateOptions');
 
-            if (reportType.value !== '' && storeId.value !== '' && (inventoryType.value !== '' || storeType.value !== '')){
+            if (reportType.value !== '' && (storeId.value !== '' || employeeSelect.value !== '') && (inventoryType.value !== '' || storeType.value !== '' || employeeSelect.value !== '')){
                 selectionMade = true;
             }
 
