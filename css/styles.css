@@ -407,7 +407,7 @@ main .main-holder .order-display .order-card .order-card-info .complete_button:h
     border-bottom-right-radius: 10px;
 }
 
-.centered-table {
+.centered_table {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
