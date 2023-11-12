@@ -369,6 +369,9 @@
                 endDayDropdown.add(endopt);
             }
 
+            // Update Generate Report button
+            checkSelections();
+
             //Debug
             var sType = storeType.value;
             console.log('Start Date:', stDate);
