@@ -215,7 +215,8 @@
             </select>
         </div><br>
 
-        <input type="submit" class="button" value="Generate Report">
+        <!-- When ready, add 'disabled' to the end of the button and create a function to enable it when selection criteria met -->
+        <input type="submit" class="button" value="Generate Report" id="submitButton">
     </form>
 
     <script>
@@ -311,7 +312,7 @@
             } else if(storeType.value === 'date'){
                 startDateOptions.style.display = 'block';
                 endDateOptions.style.display = 'block';
-            } else if(storeType.value === 'allpopular'){
+            } else if(storeType.value === 'datepopular'){
                 startDateOptions.style.display = 'block';
                 endDateOptions.style.display = 'block';
             } else{

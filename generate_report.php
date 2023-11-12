@@ -248,7 +248,7 @@
                         GROUP BY I.Item_Name
                         ORDER BY Item_Count DESC
                         LIMIT 1;";
-                    } elseif ($storeType === 'allpopular') {
+                    } elseif ($storeType === 'datepopular') {
                         // IN PROGRESS
                         // Header for most popular item for date range
                         $setHeader = 'Most Popular Item by Date';
