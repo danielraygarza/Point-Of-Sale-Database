@@ -14,6 +14,7 @@
 
     //TO DO://
     // FIX BUG THAT ALLOWS NOTHING TO BE SELECTED AND STILL HAVE A REPORT GENERATED
+    // CURRENTLY SELECTING ANY MONTH OR YEAR REPOPULATES DAYS FOR BOTH START AND END FORCING USER TO RESELECT ANY VALUES ALREADY SELECTED THERE
 
     //Daniel: altered function above to not include "database.php" inside function. 
     // it was causing continuity errors. database.php included is at top of file
@@ -76,7 +77,7 @@
 
         <div id="storeSelection" style="display: none;">
             <label for="storeId">Select Store:</label>
-            <select name="storeId" id="storeId">
+            <select name="storeId" id="storeId" onchange="checkSelections()">
                 <!-- <option value="test">Default</option> -->
                 <option value="" selected disabled>Select Store</option>
                 <?php
@@ -95,7 +96,7 @@
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
             <label for="inventoryType">Select Inventory Report Type:</label>
-            <select name="inventoryType" id="inventoryType">
+            <select name="inventoryType" id="inventoryType" onchange="checkSelections()">
                 <option value="" selected disabled>-</option>
                 <option value="all">All Stock</option>
                 <option value="low">Low Stock</option>
@@ -117,14 +118,15 @@
                 <option value="" selected disabled>-</option>
                 <option value="orders">Daily Orders</option>
                 <option value="orderdates">Total Orders From:</option>
-                <!-- <option value="pizzas">Daily Pizzas Sold</option> -->
                 <option value="popular">Today's Most Popular Item</option>
+                <option value="datepopular">Most Popular Item From:</option>
                 <option value="sales">Total Sales Today</option>
                 <option value="date">Total Sales From:</option>
             </select>
         </div><br>
         <!-- //To here// -->
 
+        <!-- Start/End Y-M-D drop down boxes -->
         <div id="startDateOptions" style="display: none;">
             <label for="start_year">Start Year:</label>
             <select id="start_year" name="start_year" onchange="dateOptions()">
@@ -153,9 +155,10 @@
             <label for="start_day">Start Day:</label>
             <select id="start_day" name="start_day">
                 <option value="" selected disabled>-</option>
-                <!-- Should be populated by function dateOptions -->
+                <!-- Populated by function dateOptions -->
             </select>
 
+            <!-- Save stDate to post -->
             <input type="hidden" id="stDate" name="stDate">
                 
         </div><br>
@@ -188,9 +191,10 @@
             <label for="end_day">End Day:</label>
             <select id="end_day" name="end_day">
                 <option value="" selected disabled>-</option>
-                <!-- Should be populated by function dateOptions -->
+                <!-- Populated by function dateOptions -->
             </select>
 
+            <!-- Saves endDate to post -->
             <input type="hidden" id="endDate" name="endDate">
                 
         </div><br>
@@ -211,7 +215,8 @@
             </select>
         </div><br>
 
-        <input type="submit" class="button" value="Generate Report">
+        <!-- Working on function to restrict Generate Report button -->
+        <input type="submit" class="button" value="Generate Report" id="submitButton" disabled>
     </form>
 
     <script>
@@ -285,6 +290,9 @@
                 startDateOptions.style.display = 'none';
                 endDateOptions.style.display = 'none';
             }
+
+            // Update Generate Report button
+            checkSelections();
         }
 
         // Date padding function
@@ -305,6 +313,9 @@
                 startDateOptions.style.display = 'block';
                 endDateOptions.style.display = 'block';
             } else if(storeType.value === 'date'){
+                startDateOptions.style.display = 'block';
+                endDateOptions.style.display = 'block';
+            } else if(storeType.value === 'datepopular'){
                 startDateOptions.style.display = 'block';
                 endDateOptions.style.display = 'block';
             } else{
@@ -358,9 +369,37 @@
                 endDayDropdown.add(endopt);
             }
 
+            // Update Generate Report button
+            checkSelections();
+
             //Debug
+            var sType = storeType.value;
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
+            console.log('Report:', sType);
+        }
+
+        // Activate Generate Reports button
+        function checkSelections(){
+            var reportType = document.getElementById('reportType');
+            var selectionMade = false;
+
+            var inventoryType = document.getElementById('inventoryType');
+            var storeType = document.getElementById('storeType');
+            // Next:
+            var Employer = document.getElementById('Employer');
+            
+            var storeId = document.getElementById('storeId');
+
+            var startDateOptions = document.getElementById('startDateOptions');
+            var endDateOptions = document.getElementById('endDateOptions');
+
+            if (reportType.value !== '' && storeId.value !== '' && (inventoryType.value !== '' || storeType.value !== '')){
+                selectionMade = true;
+            }
+
+            document.getElementById('submitButton').disabled = !selectionMade;
+
         }
     </script>
 </body>

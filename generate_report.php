@@ -185,21 +185,28 @@
                     // Check the value of the inventoryType
                     $storeType = $_POST['storeType'];
                     $sql = '';
+                    $ordSql = '';
 
                     // Define your SQL queries for Inventory selection
                     if ($storeType === 'orders') {
+                        // DONE
                         // Header for daily orders
                         $setHeader = 'Daily Orders';
                         // Get the current Date
                         $currentDate = date("Y-m-d");
                         // Query for daily orders
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
-                        FROM pizza_store P 
-                        LEFT JOIN orders O
+                        FROM PIZZA_STORE P 
+                        LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
+                        // Get order info for daily orders
+                        $ordSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID
+                        FROM ORDERS
+                        WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) = '$currentDate';";
                     } elseif ($storeType === 'orderdates') {
+                        // DONE
                         // Header for daily orders
                         $setHeader = 'Orders by Date';
                         // Get the selected date range
@@ -215,19 +222,19 @@
                             // Default test values for endDate
                             $endDate = date("Y-m-d");
                         }
-                        // TO COMPLETE: Query for orders by date
+                        // Query for orders by date
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
-                        WHERE DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
+                        WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate' 
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
-                    } elseif ($storeType === 'pizzas') {
-                        // Header for pizzas sold
-                        $setHeader = 'Pizzas Sold Today';
-                        // TO COMPLETE: Query for pizzas sold today
-                        $sql = "SELECT Pizza_Store_ID FROM pizza_store";
+                        // Get order info for daily orders
+                        $ordSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID
+                        FROM ORDERS
+                        WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
                     } elseif ($storeType === 'popular') {
+                        // DONE PENDING DATABASE TESTING
                         // Header for most popular item today
                         $setHeader = 'Most Popular Item';
                         // Get the current Date
@@ -241,7 +248,34 @@
                         GROUP BY I.Item_Name
                         ORDER BY Item_Count DESC
                         LIMIT 1;";
+                    } elseif ($storeType === 'datepopular') {
+                        // DONE PENDING DATABASE TESTING
+                        // Header for most popular item for date range
+                        $setHeader = 'Most Popular Item by Date';
+                        // Get the selected date range
+                        if (isset($_POST['stDate'])) {
+                            $stDate = $_POST['stDate'];
+                        } else {
+                            // Default test values for stDate
+                            $stDate = date("Y-m-d");
+                        }
+                        if (isset($_POST['endDate'])) {
+                            $endDate = $_POST['endDate'];
+                        } else {
+                            // Default test values for endDate
+                            $endDate = date("Y-m-d");
+                        }
+                        // TO COMPLETE: Query for most popular item today
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        FROM ORDER_ITEMS OI
+                        JOIN ORDERS O ON OI.Order_ID = O.Order_ID
+                        JOIN ITEMS I ON OI.Item_ID = I.Item_ID
+                        WHERE O.Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
+                        GROUP BY I.Item_Name
+                        ORDER BY Item_Count DESC
+                        LIMIT 1;";
                     } elseif ($storeType === 'sales') {
+                        // IN PROGRESS
                         // Header for total sales today
                         $setHeader = 'Total Sales Today';
                         // Get the current Date
@@ -254,8 +288,9 @@
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     } else {
+                        // IN PROGRESS
                         //Header for total sales to date
-                        $setHeader = 'Total Sales For Date Range';
+                        $setHeader = 'Total Sales by Date:';
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
                             $stDate = $_POST['stDate'];
@@ -274,39 +309,107 @@
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
-                        WHERE DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
+                        WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                     }
 
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
+                    // Check to see if $ordSql set
+                    if(!empty(trim($ordSql))){
+                        $ordResult = mysqli_query($mysqli, $ordSql);
+                    }
 
                     if ($result) {
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo '<table border="1" class="table_update">';
-                            echo '<tr><th>Pizza Store ID</th><th>Pizza Store Address</th><th>Order Count</th></tr>';
-
+                            // Returns table columns for popular item by day and date range
+                            if ($storeType === 'popular' || $storeType === 'datepopular') {
+                                echo "<tr>
+                                        <th class='th-spacing'>Item Name</th>
+                                        <th class='th-spacing'>Sold Today</th>
+                                    </tr>";
+                            // Returns table colums for sales by day and sales by date range
+                            } elseif ($storeType === 'sales' || $storeType === 'date') {
+                                echo "<tr>
+                                    <th class='th-spacing'>Pizza Store ID</th>
+                                    <th class='th-spacing'>Pizza Store Address</th>
+                                    <th class='th-spacing'>Total Sales</th>
+                                    </tr>";
+                            // Returns table columns for orders by day and orders by date range
+                            } else {
+                                echo "<tr>
+                                        <th class='th-spacing'>Pizza Store ID</th>
+                                        <th class='th-spacing'>Pizza Store Address</th>
+                                        <th class='th-spacing'>Order Count</th>
+                                    </tr>";
+                            }
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
-                                //TO DO://
-                                //NEED TO FINISH DECIDING WHAT TO DISPLAY FOR REPORTS
-                                //MAY HAVE TO MAKE SEPARATE DISPLAYS FOR SEPARATE STORE REPORT TYPES
-                                echo '<tr>';
-                                echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
-                                echo '<td>' . $row['Store_Address'] . '</td>';
-                                echo '<td>' . $row['OrderCount'] . '</td>';
-                                //echo '<td>' . $row['Item_Cost'] . '</td>';
-                                //echo '<td>' . $row['Vendor_Name'] . '</td>';
-                                //echo '<td>' . $row['Vendor_Rep'] . '</td>';
-                                //echo '<td>' . $row['Vendor_Email'] . '</td>';
-                                //echo '<td>' . $row['Vendor_Phone'] . '</td>';
-                                echo '</tr>';
+                                // Populates columns for popular item by day and date range
+                                if ($storeType === 'popular' || $storeType === 'datepopular') {
+                                    echo '<tr>';
+                                    echo '<td>' . $row['Most_Popular_Item'] . '</td>';
+                                    echo '<td>' . $row['Item_Count'] . '</td>';
+                                    echo '</tr>';
+                                // Populates columns for sales by day and sales by date range
+                                } elseif ($storeType === 'sales' || $storeType === 'date') {
+                                    echo '<tr>';
+                                    echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
+                                    echo '<td>' . $row['Store_Address'] . '</td>';
+                                    echo '<td>' . $row['Total_Sales'] . '</td>';
+                                    echo '</tr>';
+                                // Populates columns for orders by day and orders by date range
+                                } else {
+                                    echo '<tr>';
+                                    echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
+                                    echo '<td>' . $row['Store_Address'] . '</td>';
+                                    echo '<td>' . $row['OrderCount'] . '</td>';
+                                    //echo '<td>' . $row['Item_Cost'] . '</td>';
+                                    //echo '<td>' . $row['Vendor_Name'] . '</td>';
+                                    //echo '<td>' . $row['Vendor_Rep'] . '</td>';
+                                    //echo '<td>' . $row['Vendor_Email'] . '</td>';
+                                    //echo '<td>' . $row['Vendor_Phone'] . '</td>';
+                                    echo '</tr>';
+                                }
                             }
 
                             echo '</table>';
+                            // Should check if we have set $ordSql and that $ordResult populated
+                            if (!empty(trim($ordSql)) && $ordResult){
+                                // Seems redundant, but second check
+                                if (mysqli_num_rows($ordResult) > 0){
+                                    echo '<h2>Order Details</h2>';
+                                    echo '<table border="1" class="table_update">';
+                                    echo "<tr>
+                                            <th class='th-spacing'>Order ID</th>
+                                            <th class='th-spacing'>Date Of Order</th>
+                                            <th class='th-spacing'>Time Of Order</th>
+                                            <th class='th-spacing'>Order Type</th>
+                                            <th class='th-spacing'>Order Status</th>
+                                            <th class='th-spacing'>Total Amount</th>
+                                            <th class='th-spacing'>Customer ID</th>
+                                        </tr>";
+
+                                    // Loop through order detail results
+                                    while ($ordRow = mysqli_fetch_assoc($ordResult)){
+                                        echo '<tr>';
+                                        echo '<td>' . $ordRow['Order_ID'] . "</td>";
+                                        echo "<td>" . $ordRow['Date_Of_Order'] . "</td>";
+                                        echo "<td>" . $ordRow['Time_Of_Order'] . "</td>";
+                                        echo "<td>" . $ordRow['Order_Type'] . "</td>";
+                                        echo "<td>" . $ordRow['Order_Status'] . "</td>";
+                                        echo "<td>" . $ordRow['Total_Amount'] . "</td>";
+                                        echo "<td>" . $ordRow['O_Customer_ID'] . "</td>";
+                                        echo "</tr>";
+                                    }
+
+                                    echo '</table>';
+                                }
+                            }
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
@@ -338,58 +441,83 @@
                      } else {
                         $employeeId = 0;
                     }
-                    
-                    $sql = '';
                 
-                    $sql = "SELECT e.`Employee_ID`, e.`E_First_Name`, e.`E_Last_Name`, e.`Title_Role`, 
-                    e.`Hire_Date`, e.`assigned_orders`, e.`completed_orders`, d.`Time_Delivered`, 
-                    d.`Delivery_Status`
-                    FROM `employee` e
-                    LEFT JOIN `delivery` d ON e.`Employee_ID` = d.`employee`
-                    WHERE e.`Employee_ID` = $employeeId;";
+                    $employeeSql = "SELECT  `E_First_Name`, `E_Last_Name`, `Title_Role`, `Hire_Date`, `assigned_orders`, `completed_orders` FROM `employee`
+                    WHERE `Employee_ID` = $employeeId";
 
-                     $result = mysqli_query($mysqli, $sql);
+                     $employeeResult = mysqli_query($mysqli, $employeeSql);
 
-                    if ($result) {
+                    if ($employeeResult) {
                         // Check if there are rows returned
-                        if (mysqli_num_rows($result) > 0) {
+                        if (mysqli_num_rows($employeeResult) > 0) {
                             echo '<h2>' . $setHeader . '<h2>';
                             echo "<table border='1' class='table_update'>";
 
                             echo "<tr>
-                                <th class='th-spacing'>Employee ID</th>
-                                <th class='th-spacing'>First Name</th>
-                                <th class='th-spacing'>Last Name</th>
-                                <th class='th-spacing'>Title/Role</th>
-                                <th class='th-spacing'>Hire Date</th>
-                                <th class='th-spacing'>Assigned Orders</th>
-                                <th class='th-spacing'>Completed Orders</th>
-                                <th class='th-spacing'>Time Delivered</th>
-                                <th class='th-spacing'>Delivery Status</th>
+                                    <th class='th-spacing'>First Name</th>
+                                    <th class='th-spacing'>Last Name</th>
+                                    <th class='th-spacing'>Title/Role</th>
+                                    <th class='th-spacing'>Hire Date</th>
+                                    <th class='th-spacing'>Assigned Orders</th>
+                                    <th class='th-spacing'>Completed Orders</th>
                                 </tr>";
                     
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            while ($row = mysqli_fetch_assoc($employeeResult)) {
                                 echo "<tr>";
-                                echo "<td>" . $row['Employee_ID'] . "</td>";
                                 echo "<td>" . $row['E_First_Name'] . "</td>";
                                 echo "<td>" . $row['E_Last_Name'] . "</td>";
                                 echo "<td>" . $row['Title_Role'] . "</td>";
                                 echo "<td>" . $row['Hire_Date'] . "</td>";
                                 echo "<td>" . $row['assigned_orders'] . "</td>";
                                 echo "<td>" . $row['completed_orders'] . "</td>";
-                                echo "<td>" . $row['Time_Delivered'] . "</td>";
-                                echo "<td>" . $row['Delivery_Status'] . "</td>";
                                 echo "</tr>";
                             }
                     
                             echo "</table>";
                         } 
-                    } else {
-                        echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
-                    }
+                        // Display Order Details Table
+                        $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `O_Customer_ID`, `Store_ID` FROM `orders` WHERE `Employee_ID_assigned` = $employeeId";
+                        $orderResult = mysqli_query($mysqli, $orderSql);
 
-                    // Close the database connection
-                    mysqli_close($mysqli);
+                    if ($orderResult) {
+                        if (mysqli_num_rows($orderResult) > 0) {
+                            echo '<h2>Order Details</h2>';
+                            echo "<table border='1' class='table_update'>";
+                            echo "<tr>
+                                    <th class='th-spacing'>Order ID</th>
+                                    <th class='th-spacing'>Date Of Order</th>
+                                    <th class='th-spacing'>Time Of Order</th>
+                                    <th class='th-spacing'>Order Type</th>
+                                    <th class='th-spacing'>Order Status</th>
+                                    <th class='th-spacing'>Total Amount</th>
+                                    <th class='th-spacing'>Customer ID</th>
+                                    <th class='th-spacing'>Store ID</th>
+                                </tr>";
+
+                            while ($orderRow = mysqli_fetch_assoc($orderResult)) {
+                                echo "<tr>";
+                                echo "<td>" . $orderRow['Order_ID'] . "</td>";
+                                echo "<td>" . $orderRow['Date_Of_Order'] . "</td>";
+                                echo "<td>" . $orderRow['Time_Of_Order'] . "</td>";
+                                echo "<td>" . $orderRow['Order_Type'] . "</td>";
+                                echo "<td>" . $orderRow['Order_Status'] . "</td>";
+                                echo "<td>" . $orderRow['Total_Amount'] . "</td>";
+                                echo "<td>" . $orderRow['O_Customer_ID'] . "</td>";
+                                echo "<td>" . $orderRow['Store_ID'] . "</td>";
+                                echo "</tr>";
+                            }
+
+                            echo "</table>";
+                        }
+                    } else {
+                        echo 'Error executing the Order SQL query: ' . mysqli_error($mysqli);
+                    }
+                } else {
+                    echo 'Error executing the Employee SQL query: ' . mysqli_error($mysqli);
+                }
+
+                // Close the database connection
+                mysqli_close($mysqli);
                 }
                 /////////////////////////
                 //END EMPLOYEE QUERIES///
