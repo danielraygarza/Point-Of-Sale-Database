@@ -382,13 +382,13 @@
             var selectionMade = false;
 
             var inventoryType = document.getElementById('inventoryType');
-            var storeOptions = document.getElementById('storeOptions');
+            var storeType = document.getElementById('storeType');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
             var startDateOptions = document.getElementById('startDateOptions');
             var endDateOptions = document.getElementById('endDateOptions');
 
-            if (reportType.value === 'inventory' && inventoryType.value !== ''){
+            if (reportType.value !== '' && (inventoryType.value !== '' || storeType.value !== '')){
                 selectionMade = true;
             }
 
