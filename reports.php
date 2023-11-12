@@ -13,7 +13,6 @@
     // }
 
     //TO DO://
-    // FIX BUG THAT ALLOWS NOTHING TO BE SELECTED AND STILL HAVE A REPORT GENERATED
     // CURRENTLY SELECTING ANY MONTH OR YEAR REPOPULATES DAYS FOR BOTH START AND END FORCING USER TO RESELECT ANY VALUES ALREADY SELECTED THERE
 
     //Daniel: altered function above to not include "database.php" inside function. 
@@ -381,20 +380,27 @@
 
         // Activate Generate Reports button
         function checkSelections(){
-            var reportType = document.getElementById('reportType');
+            // Bool
             var selectionMade = false;
-
+            // Main report type selection
+            var reportType = document.getElementById('reportType');
+            // Secondary report type selection
             var inventoryType = document.getElementById('inventoryType');
             var storeType = document.getElementById('storeType');
             var employeeSelect = document.getElementById('employeeDropdown');
-            
+            // Store selection
             var storeId = document.getElementById('storeId');
+            // Start/End date selection
+            var startDate = document.getElementById('stDate');
+            var endDate = document.getElementById('endDate');
 
-            var startDateOptions = document.getElementById('startDateOptions');
-            var endDateOptions = document.getElementById('endDateOptions');
-
+            // Can change to make initialize variable with if statement instead if needed for fringe cases
             if (reportType.value !== '' && (storeId.value !== '' || employeeSelect.value !== '') && (inventoryType.value !== '' || storeType.value !== '' || employeeSelect.value !== '')){
-                selectionMade = true;
+                if ((storeType.value === 'orderdates' || storeType.value === 'datepopular' || storeType.value === 'date') && (startDate.value < 20220100 || endDate.value < 20220100)) {
+                    selectionMade = false;
+                } else {
+                    selectionMade = true;
+                }
             }
 
             document.getElementById('submitButton').disabled = !selectionMade;
