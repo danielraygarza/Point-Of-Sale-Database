@@ -74,7 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             } else {
                 //guest table
                 $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
-                $email = $mysqli->real_escape_string($_POST['email']);
                 $guestSQL = "INSERT INTO guest (G_Email, G_Phone_Number, G_First_Name, G_Last_Name)
                             VALUES ('$email', '$phone_number', '$first_name', '$last_name')";
 
@@ -199,9 +198,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             <div>
                 <label for="phone_number">Phone Number </label>
                 <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="^\d{10}$|^\d{3}-\d{3}-\d{4}$" style="width: 120px;" required>
-                <label for="email">Email </label>
-                <!-- input requires "@" and "." -->
-                <input type="email" id="email" name="email" placeholder="Enter email address" pattern=".*\..*" required>
             </div><br>
         <?php } ?>
 
