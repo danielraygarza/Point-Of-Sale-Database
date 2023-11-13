@@ -8,7 +8,7 @@
     $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID";
     $result = $mysqli->query($sql);
 
-    $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders");
+    $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID");
     $getOrderCount = $orderCount->fetch_assoc();
 
 
@@ -124,7 +124,7 @@
         if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
             ?>
                 <main>
-                    <div class = "od-header">Total Assigned Orders: </div>
+                    <div class = "od-header">Total Assigned Orders: <?php echo $getOrderCount['COUNT(Order_ID)'] ?> </div>
                     <div class = "main-holder">
                         <div class = "order-display">
                     
@@ -192,7 +192,7 @@
                 const TIME = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
                 document.getElementById('Current_Time').value = TIME;
 
-                message = "Successfull Updated Order Status for OrderID: " + ORDERID + " at " + TIME + " " + ORDERTYPE;
+                message = "Successfull Updated Order Status for OrderID: " + ORDERID + " at " + TIME;
                 alert(message);
                 $.ajax({
                     type: "POST",
