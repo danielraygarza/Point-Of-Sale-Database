@@ -11,10 +11,10 @@ if (isset($_POST['place-order'])) {
     // redirect to the chosen page when click "place order"
     $Order_Type = $mysqli->real_escape_string($_POST['Order_Type']);
     $_SESSION['selected_store_id'] = $_POST['Store_ID'];
-    if($Order_Type == 'Pickup'){
+    if ($Order_Type == 'Pickup') {
         header('Location: pickup.php');
         exit;
-    } else if($Order_Type == 'Delivery'){
+    } else if ($Order_Type == 'Delivery') {
         header('Location: delivery.php');
         exit;
     } else {
@@ -90,7 +90,9 @@ function getCartItemCount()
                     if ($stores->num_rows > 0) {
                         while ($row = $stores->fetch_assoc()) {
                             // does not show store ID 1
-                            if ($row["Pizza_Store_ID"] == 1) { continue; }
+                            if ($row["Pizza_Store_ID"] == 1) {
+                                continue;
+                            }
                             echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
@@ -110,25 +112,28 @@ function getCartItemCount()
 
                     $totalPrice = 0; //start total at zero
                     if (count($cart) > 0) {
-                        // Loop through the items in the cart and display them
+                        //loop through the items in the cart and display them
                         foreach ($cart as $item) {
-                            // $query = "SELECT Item_Cost FROM items WHERE Item_Name = '$item'";
-                            $query = "
-                                    SELECT Item_Cost AS Cost FROM items WHERE Item_Name = '$item'
+                            $query = "SELECT Item_Cost AS Cost, Item_Name AS Name, 'item' AS Source FROM items WHERE Item_Name = '$item'
                                     UNION ALL
-                                    SELECT Price AS Cost FROM menu WHERE Pizza_ID = '$item'
-                                ";
-
-                                $result = $mysqli->query($query);
-
-                    if ($result) {
-                        while ($row = $result->fetch_assoc()) {
-                            $itemCost = $row['Cost'];
-                            $totalPrice += $itemCost;
-                            echo "<li>$item - $$itemCost</li>";
+                                    SELECT Price AS Cost, Name, 'menu' AS Source FROM menu WHERE Pizza_ID = '$item'";
+                        
+                            $result = $mysqli->query($query);
+                        
+                            if ($result) {
+                                while ($row = $result->fetch_assoc()) {
+                                    $itemName = $row['Name'];
+                                    $itemCost = $row['Cost'];
+                                    $totalPrice += $itemCost;
+                                    
+                                    //check source and indent toppings from item table
+                                    if ($row['Source'] === 'item') {
+                                        echo "<li class='item-style'>$itemName - $$itemCost</li>";
+                                    } else {
+                                        echo "<li class='menu-style'>$itemName - $$itemCost</li>";
+                                    }
                                 }
-            }
-
+                            }
                         }
                         echo "<li>----------------------</li>";
                         echo "<li>Total Price: $$totalPrice</li>"; //prints total price
@@ -141,10 +146,10 @@ function getCartItemCount()
                 </ul>
             </div>
             <script>
-            function setRequiredFields() {
-                document.getElementById('Store_ID').required = true;
-                document.getElementById('Order_Type').required = true;
-            }
+                function setRequiredFields() {
+                    document.getElementById('Store_ID').required = true;
+                    document.getElementById('Order_Type').required = true;
+                }
             </script>
             <input class="button orderbutton" type="submit" name="place-order" value="Place Order" onclick="setRequiredFields()">
         </div>
