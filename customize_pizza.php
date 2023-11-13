@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p class="calories">Somewhere between 3 and 9871 Calories</p>
                 </div>
             </div>
-            <p class="price"><b>Calculated Price: AUTO UPDATE TOTAL PRICE</b></p>
+            <!-- <p class="price"><b>Calculated Price: AUTO UPDATE TOTAL PRICE</b></p> -->
             <form action="" method="post">
                 <div class="toppings-list">
                     <?php
