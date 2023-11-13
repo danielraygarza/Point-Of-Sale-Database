@@ -80,7 +80,7 @@
                         FROM INVENTORY I
                         INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
                         INNER JOIN ITEMS ON I.Item_ID = Items.Item_ID
-                        WHERE I.Inventory_Amount <= Items.Reorder_Threshold + 5 AND I.Store_ID = '$storeId';";
+                        WHERE I.Inventory_Amount <= Items.Reorder_Threshold + 30 AND I.Store_ID = '$storeId';";
                     } elseif ($inventoryType === 'out') {
                         // Header for out of stock items
                         // $setHeader = 'Out of Stock Items';
