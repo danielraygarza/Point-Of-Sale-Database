@@ -34,6 +34,8 @@ if (isset($_SESSION['cart'])) {
     $cart = $_SESSION['cart'];
 }
 
+
+
 $discountAmount = 0;
 if (isset($_SESSION['user']['customer_id'])) {
     $customerID = $_SESSION['user']['customer_id'];
@@ -130,6 +132,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                     SET total_spent_toDate = total_spent_toDate + $Total_Amount_Charged 
                                                     WHERE customer_id = '$customerID'";
                             $result = $mysqli->query($addToCustomerTotal); //process update
+
+                            foreach ($_SESSION['cart'] as $itemId) {
+                                //check if item is in items table
+                                $itemDetailsQuery = "SELECT Item_ID, Item_Cost AS Price, Item_Name AS Name FROM items WHERE Item_Name = ?";
+                                $stmt = $mysqli->prepare($itemDetailsQuery);
+                                $stmt->bind_param("s", $itemId);
+                                $stmt->execute();
+                                $itemDetailsResult = $stmt->get_result();
+                                
+                                if ($itemDetailsResult->num_rows > 0) {
+                                    $source = 'item';
+                                } else {
+                                    //else check menu table
+                                    $itemDetailsQuery = "SELECT Pizza_ID AS Item_ID, Price, Name FROM menu WHERE Pizza_ID = ?";
+                                    $stmt = $mysqli->prepare($itemDetailsQuery);
+                                    $stmt->bind_param("i", $itemId);
+                                    $stmt->execute();
+                                    $itemDetailsResult = $stmt->get_result();
+                                    if ($itemDetailsResult->num_rows > 0) {
+                                        $source = 'menu';
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                            
+                                //holds attributes for cart item
+                                $itemDetails = $itemDetailsResult->fetch_assoc();
+                            
+                                // insert into order_items
+                                $insertOrderItemSQL = "INSERT INTO order_items (Item_ID, Order_ID, Price, Item_Name, Date_Ordered) 
+                                                       VALUES (?, ?, ?, ?, ?)";
+                                $insertStmt = $mysqli->prepare($insertOrderItemSQL);
+                                $insertStmt->bind_param("iidss", $itemDetails['Item_ID'], $Order_ID, $itemDetails['Price'], $itemDetails['Name'], $Current_Date);
+                                $insertStmt->execute();
+                            
+                                if ($mysqli->error) {
+                                    break;
+                                }
+                            }
                             
                             $_SESSION['cart'] = []; //empties cart after everything
                             $_SESSION['order_completed'] = true; //variable to restrict access to thank you page
@@ -199,6 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                 document.getElementById('Current_Time').value = formattedTime;
             });
         </script>
+        
 
         <!-- if customer if guest, name, phone number, and email will be prompted for guest table -->
         <?php
@@ -206,9 +248,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             <div>
                 <label for="phone_number">Phone Number </label>
                 <input type="tel" id="phone_number" name="phone_number" placeholder="Enter 10 digits" pattern="^\d{10}$|^\d{3}-\d{3}-\d{4}$" style="width: 120px;" required>
-            </div><br>
 
-            <div>
                 <label for="first_name">Name </label>
                 <input type="text" id="first_name" name="first_name" placeholder="First" style="width: 75px;" required>
 
