@@ -29,11 +29,12 @@
         $Expiration_Date = $date->format('Y-m-d');
 
         $checkExistence = $mysqli->prepare("SELECT COUNT(*) FROM inventory WHERE Store_ID = ? AND Item_ID = ?");
-        $checkExistence->bind_param("ss", $Store_ID, $Item_ID);
+        $checkExistence->bind_param("ii", $Store_ID, $Item_ID);
         $checkExistence->execute();
         $result = $checkExistence->get_result();
         $row = $result->fetch_array();
-        if ($result->num_rows > 0) {
+        $count = $row[0];
+        if ($count > 0) {
             // Inventory exists for this store and item, update it
             $sql = "UPDATE inventory 
                     SET Inventory_Amount = Inventory_Amount + '$Inventory_Amount', Vend_ID='$Vend_ID', Last_Stock_Shipment_Date='$Last_Stock_Shipment_Date', Expiration_Date='$Expiration_Date' 
