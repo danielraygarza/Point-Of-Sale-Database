@@ -18,8 +18,8 @@ $result = $mysqli->query($sql);
 //     $_SESSION['cart'][] = $pizzaItem;
 // }
 
-function addToCart($itemID) {
-    $_SESSION['cart'][] = $itemID;
+function addToCart($item) {
+    $_SESSION['cart'][] = $item;
 }
 
 function getCartItemCount() {
@@ -34,6 +34,7 @@ if (isset($_POST['add_to_cart'])) {
     header('Location: menu.php');
     // exit;
 }
+
 
 if (isset($_POST['add_to_cart_and_customize'])) {
     $itemID = $_POST['pizza_id'];
@@ -84,8 +85,6 @@ if (isset($_POST['add_to_cart_and_customize'])) {
                 <img src=<?php echo $row["Image_Path"]; ?> alt="">
             </div>
               
-               
-              
             <p class="pizza_name"><?php echo $row["Name"]; ?> (<?php echo $row["Size_Option"]; ?>)</p>
             <p class="description"><?php echo $row["Description"]; ?></p>
             <p class="calories"><?php echo $row["Calories"]; ?> cals</p>
@@ -94,18 +93,19 @@ if (isset($_POST['add_to_cart_and_customize'])) {
             
             if ($row["Is_Pizza"] == 1) {
                 // echo '<div class="customize"><ahref="customize_pizza.php?pizza_id=' . $row["Pizza_ID"] . '&size=' . $row["Size_Option"] . '&price=' . $row["Price"] . '">CUSTOMIZE</a></div>';
-                echo '<form action="menu.php" method="post" style="background-color: transparent; border: none;>';
+                echo '<form action="menu.php" method="post" style="background-color: transparent; border: none;">';
                 echo '<input type="hidden" name="pizza_id" value="' . $row["Pizza_ID"] . '">';
                 echo '<input type="hidden" name="size" value="' . $row["Size_Option"] . '">';
                 echo '<input type="hidden" name="price" value="' . $row["Price"] . '">';
-                echo '<input type="hidden" name="redirect" value="customize_pizza.php?pizza_id=' . $row["Pizza_ID"] . '&size=' . $row["Size_Option"] . '&price=' . $row["Price"] . '">';
+                echo '<input type="hidden" name="menu_name" value="' . $row["Name"] . '">';
+                echo '<input type="hidden" name="redirect" value="customize_pizza.php?pizza_id=' . $row["Pizza_ID"] . '&size=' . $row["Size_Option"] . '&price=' . $row["Price"] . '&menu_name=' . $row["Name"] .'">';
                 echo '<button type="submit" name="add_to_cart_and_customize" class="button">Customize</button>';
                 echo '</form>';
-
             } else {
-                echo '<form action="menu.php" method="post" style="background-color: transparent; border: none;>';
+                echo '<form action="menu.php" method="post" style="background-color: transparent; border: none;">';
                 echo '<input type="hidden" name="pizza_id" value="' . $row["Pizza_ID"] . '">';
-                echo '<div class=""><button type="submit" name="add_to_cart" class = "button" ">Add to Cart</button></div>';
+                echo '<input type="hidden" name="menu_name" value="' . $row["Name"] . '">';
+                echo '<div class="add-to-cart"><button type="submit" name="add_to_cart" class="button">Add to Cart</button></div>';
                 echo '</form>';
             }
             ?>
