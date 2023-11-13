@@ -414,7 +414,7 @@
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
                             if(($storeType === 'orderdates') || ($storeType === 'date')){
-                                echo 'From ' . $stDate . ' to ' . $endDate;
+                                echo ' From ' . $stDate . ' to ' . $endDate;
                             }
 
                         }
@@ -451,7 +451,7 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($employeeResult) > 0) {
                             echo '<h2>' . $setHeader . '<h2>';
-                            echo "<table border='1' class='table_update'>";
+                            echo "<table border='1' class='centered_table'>";
 
                             echo "<tr>
                                     <th class='th-spacing'>First Name</th>
@@ -475,35 +475,41 @@
                     
                             echo "</table>";
                         } 
-                        // Display Order Details Table
-                        $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `O_Customer_ID`, `Store_ID` FROM `orders` WHERE `Employee_ID_assigned` = $employeeId";
-                        $orderResult = mysqli_query($mysqli, $orderSql);
+                    $orderSql = "SELECT * FROM `orders` WHERE `Employee_ID_assigned` = $employeeId";
+                    $orderResult = mysqli_query($mysqli, $orderSql);
 
                     if ($orderResult) {
                         if (mysqli_num_rows($orderResult) > 0) {
                             echo '<h2>Order Details</h2>';
-                            echo "<table border='1' class='table_update'>";
+                            echo "<table border='1' class='centered_table'>";
                             echo "<tr>
-                                    <th class='th-spacing'>Order ID</th>
-                                    <th class='th-spacing'>Date Of Order</th>
-                                    <th class='th-spacing'>Time Of Order</th>
-                                    <th class='th-spacing'>Order Type</th>
-                                    <th class='th-spacing'>Order Status</th>
-                                    <th class='th-spacing'>Total Amount</th>
-                                    <th class='th-spacing'>Customer ID</th>
-                                    <th class='th-spacing'>Store ID</th>
+                                <th class='th-spacing'>Order ID</th>
+                                <th class='th-spacing'>Date Of Order</th>
+                                <th class='th-spacing'>Time Of Order</th>
+                                <th class='th-spacing'>Time Completed</th>
+                                <th class='th-spacing'>Order Type</th>
+                                <th class='th-spacing'>Order Status</th>
+                                <th class='th-spacing'>Total Amount</th>
                                 </tr>";
+                                // <th class='th-spacing'>Customer ID</th> // TA says this info isnt needed
+                                // <th class='th-spacing'>Store ID</th>
 
                             while ($orderRow = mysqli_fetch_assoc($orderResult)) {
                                 echo "<tr>";
                                 echo "<td>" . $orderRow['Order_ID'] . "</td>";
                                 echo "<td>" . $orderRow['Date_Of_Order'] . "</td>";
                                 echo "<td>" . $orderRow['Time_Of_Order'] . "</td>";
+                                // If order is not completed display "-"
+                                if ($orderRow['Time_Completed'] === '00:00:00') {
+                                    echo "<td>-</td>";
+                                } else {
+                                    echo "<td>" . $orderRow['Time_Completed'] . "</td>";
+                                }
                                 echo "<td>" . $orderRow['Order_Type'] . "</td>";
                                 echo "<td>" . $orderRow['Order_Status'] . "</td>";
                                 echo "<td>" . $orderRow['Total_Amount'] . "</td>";
-                                echo "<td>" . $orderRow['O_Customer_ID'] . "</td>";
-                                echo "<td>" . $orderRow['Store_ID'] . "</td>";
+                                // echo "<td>" . $orderRow['O_Customer_ID'] . "</td>"; // TA says this info isnt needed
+                                // echo "<td>" . $orderRow['Store_ID'] . "</td>";
                                 echo "</tr>";
                             }
 
