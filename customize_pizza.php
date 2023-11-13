@@ -2,6 +2,13 @@
 include 'database.php';
 session_start();
 
+//ensures page was accessed by menu only
+if (empty($_SESSION['item_selected'])) {
+    // Redirect them to the menu page
+    header('Location: menu.php');
+    exit;
+}
+
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
@@ -42,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             echo '<a href="logout.php">Logout</a>';
+        } else {
+            echo '<a href="customer_login.php">Login</a>';
         }
         ?>
         <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
