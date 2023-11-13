@@ -41,11 +41,6 @@ function getCartItemCount()
 //     $_SESSION['cart'] = [];
 // }
 
-// // Add an item to the cart (you can call this function when a user adds an item)
-// function addToCart($itemId)
-// {
-//     $_SESSION['cart'][] = $itemId;
-// }
 
 ?>
 
@@ -80,8 +75,8 @@ function getCartItemCount()
             // if logged in, greet customer with name
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo "<h2 class='php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
-            } else {
-                echo "<h2 class='php-heading'>Review your cart!</h2>";
+            } else { // checks if the user is logged in. If so, it returns a welcome with their name.
+                echo "<h2 class='php-heading'>Review your cart!</h2>"; // or a generic welcome if not
             }
             ?>
             <div>
@@ -94,17 +89,19 @@ function getCartItemCount()
                             // does not show store ID 1
                             if ($row["Pizza_Store_ID"] == 1) {
                                 continue;
-                            }
+                            } // A query to report the different stores we have and put them into a drop down box.
                             echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                         }
                     }
                     ?>
                 </select>
+                <!-- Select box containing the order method to be selected -->
                 <select id="Order_Type" name="Order_Type">
                     <option value="" selected disabled>Select Order Method</option>
                     <option value="Pickup">Pick Up</option>
                     <option value="Delivery">Delivery</option>
                 </select>
+                    <!-- END SELECT BOX -->
             </div>
             <div class="cart-panel">
                 <ul class="cart-items">
@@ -115,11 +112,13 @@ function getCartItemCount()
                     $totalPrice = 0; //start total at zero
                     if (count($cart) > 0) {
                         //loop through the items in the cart and display them
+
+                        //---------QUERY FOR RETURNING CART ITEMS AS NAMES WITH PRICES---------------------------//
                         foreach ($cart as $item) {
                             $query = "SELECT Item_Cost AS Cost, Item_Name AS Name, 'item' AS Source FROM items WHERE Item_Name = '$item'
                                     UNION ALL
                                     SELECT Price AS Cost, Name, 'menu' AS Source FROM menu WHERE Pizza_ID = '$item'";
-                        
+                        // returns The topping name as item, and the pizza name as Source. Also returns price as cost.
                             $result = $mysqli->query($query);
                         
                             if ($result) {
