@@ -42,6 +42,7 @@
             $updateTimeCompleted = $mysqli->query($timeComplete);
 
             $updateNumCompletedOrder = $mysqli->query("UPDATE employee SET completed_orders = completed_orders + 1 WHERE Employee_ID = $EMPID");
+            $updateAssignedOrders = $mysqli->query("UPDATE employee SET assigned_orders = assigned_orders - 1 WHERE Employee_ID = $EMPID");
 
             if ($ORDERTYPE == "Delivery") {
                 $updateDelivery = "UPDATE delivery SET Time_Delivered = '$TIME' WHERE D_Order_ID = $ORDERID";
