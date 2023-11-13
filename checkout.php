@@ -15,9 +15,9 @@ if (isset($_POST['place-order'])) {
         $_SESSION['checkout_completed'] = true;
         header('Location: pickup.php');
         exit;
-    else if ($Order_Type == 'Digiorno'){
+    } else if ($Order_Type == 'Digiorno') {
         header('Location: https://www.goodnes.com/digiorno/');
-    }
+        exit;
     } else if ($Order_Type == 'Delivery') {
         $_SESSION['checkout_completed'] = true;
         header('Location: delivery.php');
@@ -38,13 +38,6 @@ function getCartItemCount()
 {
     return count($_SESSION['cart']);
 }
-
-// // Initialize the cart as an empty array if it doesn't exist
-// if (!isset($_SESSION['cart'])) {
-//     $_SESSION['cart'] = [];
-// }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -105,7 +98,7 @@ function getCartItemCount()
                     <option value="Delivery">Delivery</option>
                     <option value="Digiorno">Digiorno</option>
                 </select>
-                    <!-- END SELECT BOX -->
+                <!-- END SELECT BOX -->
             </div>
             <div class="cart-panel">
                 <ul class="cart-items">
@@ -122,17 +115,16 @@ function getCartItemCount()
                             $query = "SELECT Item_Cost AS Cost, Item_Name AS Name, 'item' AS Source FROM items WHERE Item_Name = '$item'
                                     UNION ALL
                                     SELECT Price AS Cost, Name, 'menu' AS Source FROM menu WHERE Pizza_ID = '$item'";
-                        // returns The topping name as item, and the pizza name as Source. Also returns price as cost.\
+                            // returns The topping name as item, and the pizza name as Source. Also returns price as cost.\
 
-                        
                             $result = $mysqli->query($query);
-                        
+
                             if ($result) {
                                 while ($row = $result->fetch_assoc()) {
                                     $itemName = $row['Name'];
                                     $itemCost = $row['Cost'];
                                     $totalPrice += $itemCost;
-                                    
+
                                     //check source and indent toppings from item table
                                     if ($row['Source'] === 'item') {
                                         echo "<li class='item-style'>$itemName - $$itemCost</li>";
@@ -161,7 +153,6 @@ function getCartItemCount()
             <input class="button orderbutton" type="submit" name="place-order" value="Place Order" onclick="setRequiredFields()">
         </div>
     </form>
-
 </body>
 
 </html>
