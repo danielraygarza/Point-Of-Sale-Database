@@ -123,6 +123,108 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                     SET total_spent_toDate = total_spent_toDate + $Total_Amount_Charged 
                                                     WHERE customer_id = '$customerID'";
                             $result = $mysqli->query($addToCustomerTotal); //process update
+
+                            //LOOP THROUGH ITEMS IN CART TO ADD TO ORDER ITEMS AND UPDATE INVENTORY
+                            foreach ($_SESSION['cart'] as $itemId) {
+                                //check if item is in items table
+                                $itemDetailsQuery = "SELECT Item_ID, Amount_per_order, Item_Cost AS Price, Item_Name AS Name FROM items WHERE Item_Name = ?";
+                                $stmt = $mysqli->prepare($itemDetailsQuery);
+                                $stmt->bind_param("s", $itemId);
+                                $stmt->execute();
+                                $itemDetailsResult = $stmt->get_result();
+
+                                if ($itemDetailsResult->num_rows > 0) {
+                                    $source = 'item'; //mark cart item as 'item'
+                                } else {
+                                    //else check menu table
+                                    $itemDetailsQuery = "SELECT Pizza_ID AS Item_ID, Price, Name FROM menu WHERE Pizza_ID = ?";
+                                    $stmt = $mysqli->prepare($itemDetailsQuery);
+                                    $stmt->bind_param("i", $itemId);
+                                    $stmt->execute();
+                                    $itemDetailsResult = $stmt->get_result();
+                                    if ($itemDetailsResult->num_rows > 0) {
+                                        $source = 'menu';
+                                    } else {
+                                        continue;
+                                    }
+                                }
+
+                                //holds attributes for cart item
+                                $itemDetails = $itemDetailsResult->fetch_assoc();
+
+                                // insert into order_items
+                                $insertOrderItemSQL = "INSERT INTO order_items (Item_ID, Order_ID, Price, Item_Name, Date_Ordered) 
+                                                       VALUES (?, ?, ?, ?, ?)";
+                                $insertStmt = $mysqli->prepare($insertOrderItemSQL);
+                                $insertStmt->bind_param("iidss", $itemDetails['Item_ID'], $Order_ID, $itemDetails['Price'], $itemDetails['Name'], $Current_Date);
+
+                                // UPDATE INVENTORY
+                                if ($insertStmt->execute()) {
+                                    if ($source === 'item') {
+                                        // Update inventory for items int the 'items' table
+                                        $updateInventorySQL = "UPDATE inventory SET Inventory_Amount = Inventory_Amount - {$itemDetails['Amount_per_order']} 
+                                                            WHERE Item_ID = {$itemDetails['Item_ID']} AND Store_ID = $store_id";
+                                        $mysqli->query($updateInventorySQL);
+
+                                    } else if ($source === 'menu') {
+                                        // Check if the menu item is a pizza
+                                        $pizzaDetailsQuery = "SELECT Is_Pizza, Size_Option FROM menu WHERE Pizza_ID = ?";
+                                        $pizzaStmt = $mysqli->prepare($pizzaDetailsQuery);
+                                        $pizzaStmt->bind_param("i", $itemDetails['Item_ID']);
+                                        $pizzaStmt->execute();
+                                        $pizzaDetailsResult = $pizzaStmt->get_result();
+
+                                        if ($pizzaDetails = $pizzaDetailsResult->fetch_assoc()) {
+                                            if ($pizzaDetails['Is_Pizza']) {
+                                                // Determine how much dough to subtract based on pizza size
+                                                $doughAmountToSubtract = 0;
+                                                switch ($pizzaDetails['Size_Option']) {
+                                                    case 'S':
+                                                        $doughAmountToSubtract = 0.3;
+                                                        break;
+                                                    case 'M':
+                                                        $doughAmountToSubtract = 0.5;
+                                                        break;
+                                                    case 'L':
+                                                        $doughAmountToSubtract = 0.7;
+                                                        break;
+                                                    case 'XL':
+                                                        $doughAmountToSubtract = 0.9;
+                                                        break;
+                                                }
+
+                                                // Get the Item_ID for dough from the items table
+                                                $doughIdQuery = "SELECT Item_ID FROM items WHERE Item_Name = 'dough'";
+                                                $doughIdResult = $mysqli->query($doughIdQuery);
+                                                if ($doughIdResult && $doughRow = $doughIdResult->fetch_assoc()) {
+                                                    $doughItemId = $doughRow['Item_ID'];
+
+                                                    // Update inventory for dough based on the pizza size
+                                                    $updateDoughInventorySQL = "UPDATE inventory 
+                                                                                SET Inventory_Amount = Inventory_Amount - $doughAmountToSubtract
+                                                                                WHERE Item_ID = $doughItemId AND Store_ID = $store_id";
+                                                    $mysqli->query($updateDoughInventorySQL);
+
+                                                } else {
+                                                    echo "Error: Dough Item_ID not found.";
+                                                }
+                                            } else { //if not pizza
+                                                continue; //later update for side products
+                                            }
+                                        }
+                                    }
+
+                                } //END UPDATE INVENTORY  
+                                else {
+                                    // Handle error for failed insertion into order_items
+                                    echo "Error inserting into order_items: " . $insertStmt->error;
+                                    break;
+                                }
+
+                                if ($mysqli->error) {
+                                    break;
+                                }
+                            } //end cart item loop
                             
                             $_SESSION['order_completed'] = true; //variable to restrict access to thank you page
                             $_SESSION['cart'] = []; //empties cart after everything
