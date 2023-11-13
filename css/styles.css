@@ -50,6 +50,7 @@ h1 {
     background-color: #F67280; /* Button color */
     color: #ffffff; /* Text color */
     padding: 10px 20px; /* Top/bottom and left/right padding */
+    height: fit-content;
     border-radius: 15px; /* Rounded corners */
     text-decoration: none; /* Removes underline from link */
     font-size: 1rem; /* Text size */
