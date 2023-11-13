@@ -4,7 +4,8 @@
     session_start();
 
     // * NEED TO UPDATE WHERE IT ONLY SHOWS ORDERS ASSIGNED TO SPECIFIC EMPLOPYEE *
-    $sql = "SELECT * FROM orders;";
+    $EMPID = $_SESSION['user']['Employee_ID'];
+    $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID";
     $result = $mysqli->query($sql);
 
     $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders");
@@ -36,6 +37,11 @@
     
             $updateOrderStatus = "UPDATE orders SET Order_Status = 'Completed' WHERE Order_ID = $ORDERID";
             $runUpdate = $mysqli->query($updateOrderStatus);
+
+            $timeComplete = "UPDATE orders SET Time_Completed = '$TIME' WHERE Order_ID = $ORDERID";
+            $updateTimeCompleted = $mysqli->query($timeComplete);
+
+            $updateNumCompletedOrder = $mysqli->query("UPDATE employee SET completed_orders = completed_orders + 1 WHERE Employee_ID = $EMPID");
 
             if ($ORDERTYPE == "Delivery") {
                 $updateDelivery = "UPDATE delivery SET Time_Delivered = '$TIME' WHERE D_Order_ID = $ORDERID";
