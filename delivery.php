@@ -165,7 +165,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                        VALUES (?, ?, ?, ?, ?)";
                                 $insertStmt = $mysqli->prepare($insertOrderItemSQL);
                                 $insertStmt->bind_param("iidss", $itemDetails['Item_ID'], $Order_ID, $itemDetails['Price'], $itemDetails['Name'], $Current_Date);
-                                $insertStmt->execute();
+                                // $insertStmt->execute();
+
+                                if ($insertStmt->execute()) {
+                                    // Successfully inserted into order_items, now update inventory
+                                    if ($source === 'item') {
+                                        // Update inventory for an item from the 'items' table
+                                        $updateInventorySQL = "UPDATE inventory 
+                                                               SET Inventory_Amount = Inventory_Amount - (SELECT Amount_per_order FROM items WHERE Item_Name = ?) 
+                                                               WHERE Item_ID = ? AND Store_ID = ?";
+                                        $updateStmt = $mysqli->prepare($updateInventorySQL);
+                                        $updateStmt->bind_param("ssi", $itemDetails['Item_ID'], $itemDetails['Item_ID'], $Store_ID);
+                                        $updateStmt->execute();
+                                        
+                                        if ($updateStmt->error) {
+                                            echo "Error updating inventory: " . $updateStmt->error;
+                                            break;
+                                        }
+                                    } else if ($source === 'menu') {
+                                        // Check if the menu item is a pizza and update inventory accordingly
+                                        $pizzaDetailsQuery = "SELECT Is_Pizza, Size_Option FROM menu WHERE Pizza_ID = ?";
+                                        $pizzaStmt = $mysqli->prepare($pizzaDetailsQuery);
+                                        $pizzaStmt->bind_param("i", $itemDetails['Item_ID']);
+                                        $pizzaStmt->execute();
+                                        $pizzaDetailsResult = $pizzaStmt->get_result();
+                                        
+                                        if ($pizzaDetails = $pizzaDetailsResult->fetch_assoc()) {
+                                            if ($pizzaDetails['Is_Pizza']) {
+                                                // Determine how much dough to subtract based on pizza size
+                                                $doughAmountToSubtract = 0;
+                                                switch ($pizzaDetails['Size_Option']) {
+                                                    case 'S':
+                                                        $doughAmountToSubtract = 0.3;
+                                                        break;
+                                                    case 'M':
+                                                        $doughAmountToSubtract = 0.5;
+                                                        break;
+                                                    case 'L':
+                                                        $doughAmountToSubtract = 0.7;
+                                                        break;
+                                                    case 'XL':
+                                                        $doughAmountToSubtract = 0.9;
+                                                        break;
+                                                }
+                            
+                                                if ($doughAmountToSubtract > 0) {
+                                                    // Get the Item_ID for dough from the items table
+                                                    $doughIdQuery = "SELECT Item_ID FROM items WHERE Item_Name = 'dough'";
+                                                    $doughIdResult = $mysqli->query($doughIdQuery);
+                                                    if ($doughIdResult && $doughRow = $doughIdResult->fetch_assoc()) {
+                                                        $doughItemId = $doughRow['Item_ID'];
+
+                                                        // Update inventory for dough based on the pizza size
+                                                        $updateDoughInventorySQL = "UPDATE inventory 
+                                                                                    SET Inventory_Amount = Inventory_Amount - ?
+                                                                                    WHERE Item_ID = ? AND Store_ID = ?";
+                                                        $updateDoughStmt = $mysqli->prepare($updateDoughInventorySQL);
+                                                        $updateDoughStmt->bind_param("dii", $doughAmountToSubtract, $doughItemId, $Store_ID);
+                                                        $updateDoughStmt->execute();
+                                                        
+                                                        if ($updateDoughStmt->error) {
+                                                            // Handle error
+                                                            echo "Error updating dough inventory: " . $updateDoughStmt->error;
+                                                            // Optionally, you could break out of the loop or log the error
+                                                        }
+                                                    } else {
+                                                    // Handle error if dough Item_ID not found
+                                                    echo "Error: Dough Item_ID not found.";
+                                                    // Optionally, you could break out of the loop or log the error
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                } else {
+                                    // Handle error for failed insertion into order_items
+                                    echo "Error inserting into order_items: " . $insertStmt->error;
+                                    break;
+                                }
                             
                                 if ($mysqli->error) {
                                     break;
