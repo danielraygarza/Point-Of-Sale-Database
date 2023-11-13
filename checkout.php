@@ -118,7 +118,9 @@ function getCartItemCount()
                             $query = "SELECT Item_Cost AS Cost, Item_Name AS Name, 'item' AS Source FROM items WHERE Item_Name = '$item'
                                     UNION ALL
                                     SELECT Price AS Cost, Name, 'menu' AS Source FROM menu WHERE Pizza_ID = '$item'";
-                        // returns The topping name as item, and the pizza name as Source. Also returns price as cost.
+                        // returns The topping name as item, and the pizza name as Source. Also returns price as cost.\
+
+                        
                             $result = $mysqli->query($query);
                         
                             if ($result) {
