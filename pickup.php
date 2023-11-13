@@ -74,8 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             } else {
                 //guest table
                 $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
-                $guestSQL = "INSERT INTO guest (G_Email, G_Phone_Number, G_First_Name, G_Last_Name)
-                            VALUES ('$email', '$phone_number', '$first_name', '$last_name')";
+                $guestSQL = "INSERT INTO guest (G_Phone_Number, G_First_Name, G_Last_Name)
+                            VALUES ('$phone_number', '$first_name', '$last_name')";
 
                 //get ID if guest
                 if ($mysqli->query($guestSQL) === TRUE) {
@@ -141,15 +141,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             $_SESSION['error'] = "Sorry, we're closed! We are POS!";
             header('Location: pickup.php');
             exit;
-            // throw new Exception("No available employees to assign the order to.");
         }
     } catch (Exception $e) {
         $e->getMessage();
-        // An exception has been thrown, rollback the transaction
         $mysqli->rollback();
-        // header('Location: checkout.php');
-        // Handle error, e.g., redirect to an error page or display an error message
-        // ... [Error handling code]
     }
 }
 ?>
