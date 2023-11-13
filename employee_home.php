@@ -3,6 +3,12 @@
     // Start the session at the beginning of the file
     session_start();
 
+    // Redirects to login if not employee/accessed via URL
+    if (!isset($_SESSION['user']['Title_Role'])) {
+        header("Location: employee_login.php");
+        exit; // Make sure to exit so that the rest of the script won't execute
+    }
+
     // * NEED TO UPDATE WHERE IT ONLY SHOWS ORDERS ASSIGNED TO SPECIFIC EMPLOPYEE *
     $EMPID = $_SESSION['user']['Employee_ID'];
     $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID";

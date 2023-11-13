@@ -2,13 +2,16 @@
 include 'database.php'; // Include the database connection details
 session_start();
 
-//limits access to page
-if (isset($_SESSION['selected_store_id'])) {
-    $store_id = $_SESSION['selected_store_id'];
-} else {
-    header('Location: checkout.php');
+//ensures page is only accessible if order was completed
+if (empty($_SESSION['order_completed'])) {
+    header('Location: menu.php');
     exit;
 }
+
+if (isset($_SESSION['selected_store_id'])) {
+    $store_id = $_SESSION['selected_store_id'];
+}
+
 ?>
 
 <!DOCTYPE html>

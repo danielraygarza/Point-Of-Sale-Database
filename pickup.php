@@ -4,8 +4,13 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-// echo "";
-// $_SESSION['error'] = "Store location already exist";
+
+// Check if the checkout process was completed
+if (empty($_SESSION['checkout_completed'])) {
+    // Redirect them to the checkout page
+    header('Location: checkout.php');
+    exit;
+}
 
 function getCartItemCount()
 {
@@ -118,8 +123,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                     SET total_spent_toDate = total_spent_toDate + $Total_Amount_Charged 
                                                     WHERE customer_id = '$customerID'";
                             $result = $mysqli->query($addToCustomerTotal); //process update
+                            
+                            $_SESSION['order_completed'] = true; //variable to restrict access to thank you page
                             $_SESSION['cart'] = []; //empties cart after everything
-
                             $mysqli->commit();
                             // Redirect to the thank you page
                             header('Location: thankyou.php');

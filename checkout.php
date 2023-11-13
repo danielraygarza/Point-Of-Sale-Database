@@ -12,9 +12,11 @@ if (isset($_POST['place-order'])) {
     $Order_Type = $mysqli->real_escape_string($_POST['Order_Type']);
     $_SESSION['selected_store_id'] = $_POST['Store_ID'];
     if ($Order_Type == 'Pickup') {
+        $_SESSION['checkout_completed'] = true;
         header('Location: pickup.php');
         exit;
     } else if ($Order_Type == 'Delivery') {
+        $_SESSION['checkout_completed'] = true;
         header('Location: delivery.php');
         exit;
     } else {
@@ -59,7 +61,7 @@ function getCartItemCount()
 <body>
     <div class="navbar">
         <a href="index.php">Home</a>
-        <a href="menu.php">Order now</a>
+        <a href="menu.php">Back to Menu</a>
         <?php echo '<a href="checkout.php" id="cart-button">Cart (' . getCartItemCount() . ')</a>'; ?>
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {

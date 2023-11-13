@@ -2,22 +2,29 @@
 include 'database.php';
 session_start();
 
+// if user is logged in as employee, it logs them out and treats user as guest
+if (isset($_SESSION['loggedin']) && isset($_SESSION['Title_Role'])) {
+    $_SESSION = array(); // Unset all session variables
+    session_destroy(); // Destroy the session
+
+    header('Location: menu.php'); //reloads menu page
+    exit;
+}
+
+//create cart if one doesnt exist
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-$sql = "SELECT * FROM menu;";
-$result = $mysqli->query($sql);
-
 // function addToCart($pizzaId, $size, $price) {
-//     $pizzaItem = [
-//         'pizza_id' => $pizzaId,
-//         'size' => $size,
-//         'price' => $price,
-//     ];
-//     $_SESSION['cart'][] = $pizzaItem;
-// }
-
+    //     $pizzaItem = [
+        //         'pizza_id' => $pizzaId,
+        //         'size' => $size,
+        //         'price' => $price,
+        //     ];
+        //     $_SESSION['cart'][] = $pizzaItem;
+        // }
+        
 function addToCart($item) {
     $_SESSION['cart'][] = $item;
 }
@@ -34,18 +41,23 @@ if (isset($_POST['add_to_cart'])) {
     header('Location: menu.php');
     // exit;
 }
-
-
+    
 if (isset($_POST['add_to_cart_and_customize'])) {
     $itemID = $_POST['pizza_id'];
     
     addToCart($itemID);
     
+    //variable to ensure customize pizza cant be accessed by URL
+    $_SESSION['item_selected'] = true; 
+
     // Now redirect to the customize page with the item details
     $redirectUrl = $_POST['redirect'];
-    header("Location: $redirectUrl");
+    header("Location: $redirectUrl"); //sends to customize_pizza.php
     exit;
 }
+
+$sql = "SELECT * FROM menu;";
+$result = $mysqli->query($sql);
 
 ?>
 
@@ -65,6 +77,8 @@ if (isset($_POST['add_to_cart_and_customize'])) {
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo '<a href="update_customer.php">Profile</a>';
                 echo '<a href="logout.php">Logout</a>';
+            } else {
+                echo '<a href="customer_login.php">Login</a>';
             }
         ?>
          <a href="checkout.php" id="cart-button">Cart (<?php echo getCartItemCount(); ?>)</a>
