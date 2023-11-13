@@ -87,10 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
-    <div class="bottom-bar">
+    <!-- <div class="bottom-bar">
         <p class="total"><b>Total:</b></p>
         <p class="price">$12.99</p>
-        <div class="add-to-cart">ADD TO CART</div>
+        <div class="add-to-cart">ADD TO CART</div> -->
     </div>
 </body>
 </html>
