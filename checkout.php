@@ -16,7 +16,7 @@ if (isset($_POST['place-order'])) {
         header('Location: pickup.php');
         exit;
     else if ($Order_Type == 'Digiorno'){
-        $redirectUrl = "https://www.goodnes.com/digiorno/";
+        header('Location: https://www.goodnes.com/digiorno/');
     }
     } else if ($Order_Type == 'Delivery') {
         $_SESSION['checkout_completed'] = true;
