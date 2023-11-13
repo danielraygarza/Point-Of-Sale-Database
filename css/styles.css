@@ -413,3 +413,11 @@ main .main-holder .order-display .order-card .order-card-info .complete_button:h
     margin-right: auto;
     width: 100%;
 }
+
+.item-style {
+    padding-left: 20px;
+}
+
+.menu-style {
+    font-weight: bold;
+}
