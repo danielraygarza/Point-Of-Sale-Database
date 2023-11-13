@@ -3,11 +3,13 @@
     // Start the session at the beginning of the file
     session_start();
 
+    // * NEED TO UPDATE WHERE IT ONLY SHOWS ORDERS ASSIGNED TO SPECIFIC EMPLOPYEE *
     $sql = "SELECT * FROM orders;";
     $result = $mysqli->query($sql);
 
     $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders");
     $getOrderCount = $orderCount->fetch_assoc();
+
 
     // Check if user is logged in
     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
@@ -28,9 +30,21 @@
         if (isset($_POST["ORDERID"])) {
             // Retrieve orderID from POST data
             $ORDERID = $_POST["ORDERID"];
+            $ORDERTYPE = $mysqli->real_escape_string($_POST['ORDERTYPE']);
+            $TIME = $mysqli->real_escape_string($_POST['TIME']);
+
     
             $updateOrderStatus = "UPDATE orders SET Order_Status = 'Completed' WHERE Order_ID = $ORDERID";
             $runUpdate = $mysqli->query($updateOrderStatus);
+
+            if ($ORDERTYPE == "Delivery") {
+                $updateDelivery = "UPDATE delivery SET Time_Delivered = '$TIME' WHERE D_Order_ID = $ORDERID";
+                $runUpdateDelivery = $mysqli->query($updateDelivery);
+            } else if ($ORDERTYPE == "Pickup") {
+                $updatePickUp = "UPDATE pickup SET PU_Time_Picked_Up = '$TIME' WHERE PU_Order_ID = $ORDERID";
+                $runUpdatePickUp = $mysqli->query($updatePickUp);
+            }
+
         } else {
             echo "orderID is not set in the POST data.";
         }
@@ -147,10 +161,11 @@
                                             </div>
                                             <?php 
                                                 $orderID = $row["Order_ID"];
+                                                $orderType = $row["Order_Type"];
                                                 if ($row["Order_Status"] == "Completed") {
                                                     echo "<p class = status>" . $row["Order_Status"] . "</p>";
                                                 } else if ($row["Order_Status"] == "In Progress") {
-                                                    echo "<div class = complete_button onclick = completeOrder(" . $orderID . ")>" . "<input type=hidden id=ordID name=ordID value=" . $orderID . ">" . "<p class = status>" . $row["Order_Status"] . "</p>" . "</div>";
+                                                    echo "<div class = complete_button onclick = completeOrder(" . $orderID . ',' . '"' . $orderType . '"' . ")>" . "<input type=hidden id=Current_Time name=Current_Time>" . "<p class = status>" . $row["Order_Status"] . "</p>" . "</div>";
                                                 }
                                             ?>
                                             
@@ -164,13 +179,19 @@
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
-            function completeOrder(ORDERID) {
-                message = "Successfull Updated Order Status for OrderID: " + ORDERID;
+            function completeOrder(ORDERID, ORDERTYPE) {
+                const currentDate = new Date();
+                const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
+
+                const TIME = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
+                document.getElementById('Current_Time').value = TIME;
+
+                message = "Successfull Updated Order Status for OrderID: " + ORDERID + " at " + TIME + " " + ORDERTYPE;
                 alert(message);
                 $.ajax({
                     type: "POST",
                     url: "employee_home.php",
-                    data: { ORDERID: ORDERID }
+                    data: { ORDERID: ORDERID, ORDERTYPE: ORDERTYPE, TIME: TIME }
                 });
             }
         </script>
