@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="navbar">
         <a href="index.php">Home</a>
-        <a href="menu.php">Order now</a>
+        <a href="menu.php">Back to Menu</a>
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             echo '<a href="logout.php">Logout</a>';
@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <img src="img/cheese_pizza.jpeg" alt="">
                     </div>
                 </div>
+                <a href="menu.php" class="button">Order More</a>
                 <div class="left-top">
                     <p class="pizza_name">Customize Your Pizza</p>
                     <p class="description">Select any of the following toppings for your pizza:</p>
