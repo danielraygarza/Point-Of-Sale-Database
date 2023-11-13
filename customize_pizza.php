@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <img src="img/cheese_pizza.jpeg" alt="">
                     </div>
                 </div>
-                <a href="menu.php" class="button">Order More</a>
+                <!-- <a href="menu.php" class="button">Order More</a> -->
                 <div class="left-top">
                     <p class="pizza_name">Customize Your Pizza</p>
                     <p class="description">Select any of the following toppings for your pizza:</p>
@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ?>
                 </div>
                 <input type="submit" class="button" name="add-to-cart" value="Add to Cart">
+                <a href="menu.php" class="button-order-more">Order More</a>
             </form>
         </div>
     </main>
