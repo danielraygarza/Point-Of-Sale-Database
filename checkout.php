@@ -15,7 +15,7 @@ if (isset($_POST['place-order'])) {
         $_SESSION['checkout_completed'] = true;
         header('Location: pickup.php');
         exit;
-    } else if ($Order_Type == 'Digiorno') {
+    } else if ($Order_Type == 'DIGIORNO') {
         header('Location: https://www.goodnes.com/digiorno/');
         exit;
     } else if ($Order_Type == 'Delivery') {
@@ -96,7 +96,7 @@ function getCartItemCount()
                     <option value="" selected disabled>Select Order Method</option>
                     <option value="Pickup">Pick Up</option>
                     <option value="Delivery">Delivery</option>
-                    <option value="Digiorno">Digiorno</option>
+                    <option value="DIGIORNO">DIGIORNO</option>
                 </select>
                 <!-- END SELECT BOX -->
             </div>
