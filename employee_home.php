@@ -136,7 +136,7 @@
 
                                                 <?php 
                                                     $orderID = $row["Order_ID"];
-                                                    $itemsOrdered = $mysqli->query("SELECT P.Name FROM order_items AS I, pizza AS P WHERE $orderID = I.Order_ID AND I.Item_ID = P.Pizza_ID");
+                                                    $itemsOrdered = $mysqli->query("SELECT M.Name FROM order_items AS I, menu AS M WHERE $orderID = I.Order_ID AND I.Item_ID = M.Pizza_ID");
                                                     while ($itemRow = mysqli_fetch_assoc($itemsOrdered)) {
                                                         echo "<p class = items>" . "-" . " " . $itemRow["Name"] . "</p>";
                                                     }
