@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form action="" method="post">
                 <div class="toppings-list">
                     <?php
-                    $toppingsQuery = "SELECT Item_Cost, Item_Name FROM items WHERE Item_Name <> 'dough'";
+                    $toppingsQuery = "SELECT Item_Cost, Item_Name FROM items WHERE Item_Type = 'Topping'";
                     $toppingsResult = $mysqli->query($toppingsQuery);
                     while ($toppingRow = $toppingsResult->fetch_assoc()) {
                         $toppingName = $toppingRow['Item_Name'];
