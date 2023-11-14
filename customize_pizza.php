@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ?>
                 </div>
                 <input type="submit" class="button" name="add-to-cart" value="Add to Cart">
-                <a href="menu.php" class="button-order-more">Order More</a>
+                <a href="menu.php" class="button">Order More</a>
             </form>
         </div>
     </main>
