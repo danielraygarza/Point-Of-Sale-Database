@@ -185,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
                                         if ($pizzaDetails = $pizzaDetailsResult->fetch_assoc()) {
                                             if ($pizzaDetails['Is_Pizza']) {
-                                                // Determine how much dough to subtract based on pizza size
+                                                // Determine how much dough/sauce/cheese to subtract based on pizza size
                                                 $ingredientAmountToSubtract = 0;
                                                 switch ($pizzaDetails['Size_Option']) {
                                                     case 'S':
@@ -202,22 +202,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                         break;
                                                 }
 
-                                                // // Get the Item_ID for dough from the items table
-                                                // $doughIdQuery = "SELECT Item_ID FROM items WHERE Item_Name = 'dough'";
-                                                // $doughIdResult = $mysqli->query($doughIdQuery);
-                                                // if ($doughIdResult && $doughRow = $doughIdResult->fetch_assoc()) {
-                                                //     $doughItemId = $doughRow['Item_ID'];
-
-                                                //     // Update inventory for dough based on the pizza size
-                                                //     $updateDoughInventorySQL = "UPDATE inventory 
-                                                //                                 SET Inventory_Amount = Inventory_Amount - $ingredientAmountToSubtract
-                                                //                                 WHERE Item_ID = $doughItemId AND Store_ID = $store_id";
-                                                //     $mysqli->query($updateDoughInventorySQL);
-
-                                                // } else {
-                                                //     echo "Error: Dough Item_ID not found.";
-                                                // }
-                                                // Get the Item_ID for dough, cheese, and sauce from the items table
                                                 $ingredientNames = ['dough', 'cheese', 'sauce'];
                                                 $ingredientIds = [];
 
