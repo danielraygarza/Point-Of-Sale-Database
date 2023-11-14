@@ -186,36 +186,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                         if ($pizzaDetails = $pizzaDetailsResult->fetch_assoc()) {
                                             if ($pizzaDetails['Is_Pizza']) {
                                                 // Determine how much dough to subtract based on pizza size
-                                                $doughAmountToSubtract = 0;
+                                                $ingredientAmountToSubtract = 0;
                                                 switch ($pizzaDetails['Size_Option']) {
                                                     case 'S':
-                                                        $doughAmountToSubtract = 0.3;
+                                                        $ingredientAmountToSubtract = 0.3;
                                                         break;
                                                     case 'M':
-                                                        $doughAmountToSubtract = 0.5;
+                                                        $ingredientAmountToSubtract = 0.5;
                                                         break;
                                                     case 'L':
-                                                        $doughAmountToSubtract = 0.7;
+                                                        $ingredientAmountToSubtract = 0.7;
                                                         break;
                                                     case 'XL':
-                                                        $doughAmountToSubtract = 0.9;
+                                                        $ingredientAmountToSubtract = 0.9;
                                                         break;
                                                 }
 
-                                                // Get the Item_ID for dough from the items table
-                                                $doughIdQuery = "SELECT Item_ID FROM items WHERE Item_Name = 'dough'";
-                                                $doughIdResult = $mysqli->query($doughIdQuery);
-                                                if ($doughIdResult && $doughRow = $doughIdResult->fetch_assoc()) {
-                                                    $doughItemId = $doughRow['Item_ID'];
+                                                // // Get the Item_ID for dough from the items table
+                                                // $doughIdQuery = "SELECT Item_ID FROM items WHERE Item_Name = 'dough'";
+                                                // $doughIdResult = $mysqli->query($doughIdQuery);
+                                                // if ($doughIdResult && $doughRow = $doughIdResult->fetch_assoc()) {
+                                                //     $doughItemId = $doughRow['Item_ID'];
 
-                                                    // Update inventory for dough based on the pizza size
-                                                    $updateDoughInventorySQL = "UPDATE inventory 
-                                                                                SET Inventory_Amount = Inventory_Amount - $doughAmountToSubtract
-                                                                                WHERE Item_ID = $doughItemId AND Store_ID = $store_id";
-                                                    $mysqli->query($updateDoughInventorySQL);
+                                                //     // Update inventory for dough based on the pizza size
+                                                //     $updateDoughInventorySQL = "UPDATE inventory 
+                                                //                                 SET Inventory_Amount = Inventory_Amount - $ingredientAmountToSubtract
+                                                //                                 WHERE Item_ID = $doughItemId AND Store_ID = $store_id";
+                                                //     $mysqli->query($updateDoughInventorySQL);
 
-                                                } else {
-                                                    echo "Error: Dough Item_ID not found.";
+                                                // } else {
+                                                //     echo "Error: Dough Item_ID not found.";
+                                                // }
+                                                // Get the Item_ID for dough, cheese, and sauce from the items table
+                                                $ingredientNames = ['dough', 'cheese', 'sauce'];
+                                                $ingredientIds = [];
+
+                                                foreach ($ingredientNames as $ingredientName) {
+                                                    $ingredientIdQuery = "SELECT Item_ID FROM items WHERE Item_Name = ?";
+                                                    $stmt = $mysqli->prepare($ingredientIdQuery);
+                                                    $stmt->bind_param("s", $ingredientName);
+                                                    $stmt->execute();
+                                                    $ingredientIdResult = $stmt->get_result();
+
+                                                    if ($ingredientIdResult && $ingredientRow = $ingredientIdResult->fetch_assoc()) {
+                                                        $ingredientIds[$ingredientName] = $ingredientRow['Item_ID'];
+                                                    } else {
+                                                        echo "Error: $ingredientName Item_ID not found.";
+                                                        // Handle the error as needed
+                                                    }
+                                                }
+                                                // Update inventory for dough, cheese, and sauce based on the pizza size
+                                                foreach ($ingredientIds as $ingredientName => $ingredientId) {
+                                                    $updateIngredientInventorySQL = "UPDATE inventory 
+                                                                                    SET Inventory_Amount = Inventory_Amount - $ingredientAmountToSubtract
+                                                                                    WHERE Item_ID = $ingredientId AND Store_ID = $store_id";
+                                                    $mysqli->query($updateIngredientInventorySQL);
                                                 }
                                             } else { //if not pizza
                                                 continue; //later update for side products
