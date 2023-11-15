@@ -78,8 +78,10 @@
             <label for="storeId">Select Store:</label>
             <select name="storeId" id="storeId" onchange="checkSelections()">
                 <!-- <option value="test">Default</option> -->
+                <!-- get current employee ID -->
                 <option value="" selected disabled>Select Store</option>
                 <?php
+                    // select from store where mananager ID equals current ID. 
                     $stores = $mysqli->query("SELECT * FROM pizza_store");
                     if ($stores->num_rows > 0) {
                         while($row = $stores->fetch_assoc()) {
