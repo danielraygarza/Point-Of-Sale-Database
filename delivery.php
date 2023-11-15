@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                     case 'L':
                                                         $ingredientAmountToSubtract = 0.7;
                                                         break;
-                                                    case 'XL':
+                                                    case 'X':
                                                         $ingredientAmountToSubtract = 0.9;
                                                         break;
                                                 }
