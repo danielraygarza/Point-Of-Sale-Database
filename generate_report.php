@@ -17,6 +17,7 @@
     // UNFUCK DROP DOWN DATE DISPLAY
     // UNFUCK HOW MUCH SHIT IS DISPLAYED
 
+    date_default_timezone_set('America/Chicago');
     $currentDate = date("Y-m-d");
     // echo $currentDate;
 
