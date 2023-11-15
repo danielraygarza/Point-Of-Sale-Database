@@ -38,16 +38,18 @@ if (isset($_SESSION['selected_store_id'])) {
     <form action="" method="post">
         <h2>Thank you, we hope your enjoy your POS Pizza!</h2>
         <?php 
-            //display members store credit if any
-            $customerID = $_SESSION['user']['customer_id'];
-            $query = "SELECT store_credit FROM customers WHERE customer_id = '$customerID'";
-            $result = $mysqli->query($query); 
-            if ($result && $row = $result->fetch_assoc()) {
-                $_SESSION['user']['store_credit'] = $row['store_credit'];
-            }
-            $store_credit = $_SESSION['user']['store_credit'];
-            if ($store_credit > 0) {
-                echo "<h2>Store credit: $store_credit</h2>";
+            if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+                //display members store credit if any
+                $customerID = $_SESSION['user']['customer_id'];
+                $query = "SELECT store_credit FROM customers WHERE customer_id = '$customerID'";
+                $result = $mysqli->query($query); 
+                if ($result && $row = $result->fetch_assoc()) {
+                    $_SESSION['user']['store_credit'] = $row['store_credit'];
+                }
+                $store_credit = $_SESSION['user']['store_credit'];
+                if ($store_credit > 0) {
+                    echo "<h2>Store credit: $store_credit</h2>";
+                }
             }
         ?>
 
