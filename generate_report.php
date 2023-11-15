@@ -18,7 +18,7 @@
     // UNFUCK HOW MUCH SHIT IS DISPLAYED
 
     $currentDate = date("Y-m-d");
-    echo $currentDate;
+    // echo $currentDate;
 
 ?>
 
@@ -202,7 +202,7 @@
                         // Header for daily orders
                         $setHeader = 'Daily Orders';
                         // Get the current Date
-                        $currentDate = 20231116;
+                        // $currentDate = 20231116;
                         // Query for daily orders
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
                         FROM PIZZA_STORE P 
@@ -223,13 +223,13 @@
                             $stDate = $_POST['stDate'];
                         } else {
                             // Default test values for stDate
-                            $stDate = date("Y-m-d");
+                            $stDate = $currentDate;
                         }
                         if (isset($_POST['endDate'])) {
                             $endDate = $_POST['endDate'];
                         } else {
                             // Default test values for endDate
-                            $endDate = date("Y-m-d");
+                            $endDate = $currentDate;
                         }
                         // Query for orders by date
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
@@ -247,7 +247,7 @@
                         // Header for most popular item today
                         $setHeader = 'Most Popular Item';
                         // Get the current Date
-                        $currentDate = 20231114;
+                        // $currentDate = 20231114;
                         // TO COMPLETE: Query for most popular item today
                         $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
@@ -266,13 +266,13 @@
                             $stDate = $_POST['stDate'];
                         } else {
                             // Default test values for stDate
-                            $stDate = date("Y-m-d");
+                            $stDate = $currentDate;
                         }
                         if (isset($_POST['endDate'])) {
                             $endDate = $_POST['endDate'];
                         } else {
                             // Default test values for endDate
-                            $endDate = date("Y-m-d");
+                            $endDate = $currentDate;
                         }
                         // TO COMPLETE: Query for most popular item today
                         $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
@@ -288,7 +288,7 @@
                         // Header for total sales today
                         $setHeader = 'Total Sales Today';
                         // Get the current Date
-                        $currentDate = date("Y-m-d");
+                        // $currentDate = date("Y-m-d");
                         // TO COMPLETE: Query for total sales today
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, SUM(O.Total_Amount) AS Total_Sales
                         FROM PIZZA_STORE P 
@@ -305,13 +305,13 @@
                             $stDate = $_POST['stDate'];
                         } else {
                             // Default test values for stDate
-                            $stDate = date("Y-m-d");
+                            $stDate = $currentDate;
                         }
                         if (isset($_POST['endDate'])) {
                             $endDate = $_POST['endDate'];
                         } else {
                             // Default test values for endDate
-                            $endDate = date("Y-m-d");
+                            $endDate = $currentDate;
                         }
                         // TO COMPLETE: Query for date range sales
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, SUM(O.Total_Amount) AS Total_Sales
