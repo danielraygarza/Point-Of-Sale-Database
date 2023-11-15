@@ -2,13 +2,16 @@
 include 'database.php';
 session_start();
 
-// if user is logged in as employee, it logs them out and treats user as guest
-if (isset($_SESSION['loggedin']) && isset($_SESSION['Title_Role'])) {
-    $_SESSION = array(); // Unset all session variables
-    session_destroy(); // Destroy the session
+// If user is logged in as employee, log them out and treat user as guest.
+if (isset($_GET['guest']) && $_GET['guest'] === '1') {
+    // Unset all of the session variables.
+    $_SESSION = array();
 
-    header('Location: menu.php'); //reloads menu page
-    exit;
+    // Destroy the session.
+    session_destroy();
+
+    // Start a new session for the guest.
+    session_start();
 }
 
 //create cart if one doesnt exist
