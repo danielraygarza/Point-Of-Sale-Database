@@ -33,7 +33,7 @@
     <style>
         /* Style for the scrollable area */
         .scrollable-area {
-            /* height: 300px; Set the desired height */
+            height: 100px; /*Set the desired height */
             overflow: auto; /* Add a scrollbar when content overflows */
             border: 1px solid #ccc; /* Optional border styling */
         }
