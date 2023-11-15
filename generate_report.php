@@ -12,7 +12,6 @@
     // }
 
     // TO DO: //
-    // UNFUCK HOW MUCH SHIT IS DISPLAYED
     // POPULATE DATABASE WITH MORE ORDER INFO AND NEW VENDORS
 
     date_default_timezone_set('America/Chicago');
