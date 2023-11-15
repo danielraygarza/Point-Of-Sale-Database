@@ -158,3 +158,50 @@
 
 
 
+<?php
+/*
+** Title: Comprehensive Store Registration System with CEO Authorization
+**
+** Introduction:
+** This PHP script orchestrates a robust store registration system, offering CEOs the authority
+** to create new store entries with precision and efficiency. The script incorporates extensive
+** security measures, dynamic form handling, and seamless database integration to ensure a
+** seamless and error-free registration process. From CEO-exclusive access checks to
+** real-time error feedback, this script exemplifies a sophisticated approach to store
+** management in pizza establishments.
+**
+** Session Initialization and Security Measures:
+** The script prioritizes security with a session_start() command, creating a secure
+** environment for data handling. Additionally, it includes stringent error reporting settings,
+** actively identifying and addressing potential issues during execution. To maintain CEO
+** exclusivity, the script redirects unauthorized users to the employee login page, ensuring a
+** secure and restricted access model.
+**
+** Manager Selection and Data Validation:
+** A crucial aspect of store registration is the assignment of a manager to the new store.
+** The script retrieves a list of managers from the database, offering CEOs a curated selection
+** for optimal management. The form submission process is fortified with robust data validation
+** and error handling mechanisms, ensuring the integrity of the entered information. Duplicate
+** store location checks contribute to data accuracy, preventing unintentional redundancy.
+**
+** Database Interaction and Insertion Logic:
+** Upon successful validation, the script orchestrates the insertion of store data into the
+** database. The SQL query dynamically adapts to the entered information, guaranteeing
+** accuracy in database records. Furthermore, the script updates the manager's Pizza_Store_ID
+** field, creating an intricate link between store and manager for seamless association.
+**
+** HTML Interface: Aesthetic Simplicity and User-Friendly Design:
+** The HTML section of the script embraces a clean and user-friendly design philosophy.
+** Intuitive form elements enhance the user experience, with error messages intelligently
+** displayed for immediate feedback. The CEO is presented with a straightforward interface to
+** input store details, streamlining the registration process.
+**
+** Conclusion:
+** In conclusion, this PHP script stands as a testament to the intricacies and possibilities
+** of modern store registration systems. CEOs can leverage this script to effortlessly
+** integrate new stores into their pizza establishment, benefitting from a secure, intuitive,
+** and feature-rich registration process. Developers can utilize this script as a foundation
+** for creating sophisticated, user-friendly, and CEO-authorized store management solutions
+** tailored to the unique demands of contemporary businesses.
+*/
+?>
