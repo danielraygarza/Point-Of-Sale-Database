@@ -336,6 +336,10 @@
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
+
+                        // Add to SELECT statement:
+                        // SUM(O.Cost_To_Us) AS Cost_Of_Goods, (Total_Sales - Cost_Of_Goods) AS Profit_Margin
+                        
                     } else {
                         // IN PROGRESS
                         //Header for total sales to date
@@ -360,6 +364,9 @@
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
+
+                        // Add to SELECT statement:
+                        // SUM(O.Cost_To_Us) AS Cost_Of_Goods, (Total_Sales - Cost_Of_Goods) AS Profit_Margin
                     }
 
 
@@ -392,7 +399,11 @@
                                     <th class='th-spacing'>Pizza Store ID</th>
                                     <th class='th-spacing'>Pizza Store Address</th>
                                     <th class='th-spacing'>Total Sales</th>
+                                    
                                     </tr>";
+
+                                    // <th class='th-spacing'>Cost of Goods</th>
+                                    // <th class='th-spacing'>Profit Margin</th>
                             // Returns table columns for orders by day and orders by date range
                             } else {
                                 echo "<tr>
@@ -415,6 +426,8 @@
                                     echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
                                     echo '<td>' . $row['Store_Address'] . '</td>';
                                     echo '<td>' . $row['Total_Sales'] . '</td>';
+                                    // echo '<td>' . $row['Cost_Of_Goods'] . '<.td>';
+                                    // echo '<td>' . $row['Profit_Margin'] . '<.td>';
                                     echo '</tr>';
                                 // Populates columns for orders by day and orders by date range
                                 } else {
