@@ -93,7 +93,7 @@
             </select>
 
             <!-- Save storeId to send to getEmployees -->
-            <input type="hidden" id="storeID" name="storeID" value="1">
+            <input type="hidden" id="storeSelID" name="storeSelID" value="1">
 
         </div><br>
 
@@ -313,11 +313,11 @@
             document.getElementById('submitButton').disabled = !selectionMade;
             
             var storeID = storeId.value;
-            document.getElementById('storeID').value = storeID;
+            document.getElementById('storeSelID').value = storeID;
 
             // Debug
             console.log('Selection Made', selectionMade);
-            console.log('storeID set to:', storeID);
+            console.log('storeSelID set to:', storeID);
 
         }
 
