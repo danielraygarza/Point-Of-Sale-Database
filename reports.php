@@ -347,9 +347,6 @@
 
     <script>
     $(document).ready(function () {
-        
-        // Set the initial value and trigger the function
-        populateEmployeeDropdown($("#storeSelID").val(), $("#emp_status").val());
 
         // Handle store selection change
         $('#storeSelID').on('change', function () {
