@@ -125,14 +125,15 @@ function getCartItemCount()
                     $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
                     $totalPrice = 0; //start total at zero
+                    $totalCOG = 0; //start total at zero
                     if (count($cart) > 0) {
                         //loop through the items in the cart and display them
 
                         //---------QUERY FOR RETURNING CART ITEMS AS NAMES WITH PRICES---------------------------//
                         foreach ($cart as $item) {
-                            $query = "SELECT Item_Cost AS Cost, Item_Name AS Name, 'item' AS Source FROM items WHERE Item_Name = '$item'
+                            $query = "SELECT Item_Cost AS Cost, Item_Name AS Name, Cost_Of_Good, 'item' AS Source FROM items WHERE Item_Name = '$item'
                                     UNION ALL
-                                    SELECT Price AS Cost, Name, 'menu' AS Source FROM menu WHERE Pizza_ID = '$item'";
+                                    SELECT Price AS Cost, Name, Cost_Of_Good, 'menu' AS Source FROM menu WHERE Pizza_ID = '$item'";
                             // returns The topping name as item, and the pizza name as Source. Also returns price as cost.\
 
                             $result = $mysqli->query($query);
@@ -141,7 +142,9 @@ function getCartItemCount()
                                 while ($row = $result->fetch_assoc()) {
                                     $itemName = $row['Name'];
                                     $itemCost = $row['Cost'];
+                                    $itemCOG = $row['Cost_Of_Good'];
                                     $totalPrice += $itemCost;
+                                    $totalCOG += $itemCOG;
 
                                     //check source and indent toppings from item table
                                     if ($row['Source'] === 'item') {
@@ -159,8 +162,8 @@ function getCartItemCount()
                     } else {
                         echo "<h2 class='php-heading'> Your cart is empty</h2>";
                     }
-                    $_SESSION['totalPrice'] = $totalPrice; 
-                    //saves total price to session
+                    $_SESSION['totalPrice'] = $totalPrice; //saves total price to session
+                    $_SESSION['totalCOG'] = $totalCOG; //saves total COG to session
                     ?>
                 </ul>
             </div>

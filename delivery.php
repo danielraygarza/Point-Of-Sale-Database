@@ -29,6 +29,12 @@ if (isset($_SESSION['selected_store_id'])) {
 if (isset($_SESSION['totalPrice'])) {
     $totalPrice = $_SESSION['totalPrice'];
 }
+
+//gets total Cost of goods from checkout page
+if (isset($_SESSION['totalCOG'])) {
+    $totalCOG = $_SESSION['totalCOG'];
+}
+
 //gets cart from checkout page
 if (isset($_SESSION['cart'])) {
     $cart = $_SESSION['cart'];
@@ -52,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
     //order table
     $Current_Date = $mysqli->real_escape_string($_POST['Current_Date']);
     $Current_Time = $mysqli->real_escape_string($_POST['Current_Time']);
+    $Cost_Of_Goods = $mysqli->real_escape_string($_POST['Cost_Of_Goods']);
     $Order_Type = "Delivery";
 
     //delivery table
@@ -100,8 +107,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             }
             $employee = $result->fetch_assoc();
             $employee_id_assigned = $employee['Employee_ID'];
-            $ordersSQL = "INSERT INTO orders (O_Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned)
-                        VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned')";
+            $ordersSQL = "INSERT INTO orders (O_Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned, Cost_Of_Goods)
+                        VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned', '$totalCOG')";
             // Check if the orders table insertion was successful
             if ($mysqli->query($ordersSQL) === TRUE) {
                 $Order_ID = $mysqli->insert_id; //assign new order ID
@@ -381,9 +388,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>
             <label for="Amount">Amount </label>
             <input type="text" id="Amount" name="Amount" <?php if (isset($_SESSION['totalPrice'])) { ?> value=" <?php echo $totalPrice ?>" <?php } ?> placeholder="Amount" style="width: 100px;" required readonly>
-
+            
             <label for="Amount_Tipped">Tip Amount </label>
             <input type="number" id="Amount_Tipped" name="Amount_Tipped" min=0 placeholder="Tip" style="width: 100px;">
+            
+            <input type="hidden" id="Cost_Of_Goods" name="Cost_Of_Goods" <?php if (isset($_SESSION['Cost_Of_Goods'])) { ?> value= <?php $totalCOG ?> <?php } ?>>
         </div><br>
 
         <?php
