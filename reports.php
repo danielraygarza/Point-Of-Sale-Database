@@ -154,7 +154,7 @@
             <label for="start_day">Start Day:</label>
             <select id="start_day" name="start_day" onchange="setDay()">
                 <option value="" selected disabled>-</option>
-                //Populated by function dateOptions
+                // Populated by function dateOptions
 
             </select>
 
@@ -258,20 +258,20 @@
             inventoryType.value = "";
             storeType.value = "";
             employeeDropdown.value = "";
-            start_year.value = "";
-            start_month.value = "";
-            start_day.value = "";
-            end_year.value = "";
-            end_month.value = "";
-            end_day.value = "";
+            // start_year.value = "";
+            // start_month.value = "";
+            // start_day.value = "";
+            // end_year.value = "";
+            // end_month.value = "";
+            // end_day.value = "";
 
             //If you add a new sub menu, define it here then refence it by it's id like so:
             var inventoryOptions = document.getElementById('inventoryOptions');
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
-            var startDateOptions = document.getElementById('startDateOptions');
-            var endDateOptions = document.getElementById('endDateOptions');
+            // var startDateOptions = document.getElementById('startDateOptions');
+            // var endDateOptions = document.getElementById('endDateOptions');
 
 
             //This if/else determines which sub menu is visible
@@ -283,8 +283,8 @@
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
-                startDateOptions.style.display = 'none';
-                endDateOptions.style.display = 'none';
+                // startDateOptions.style.display = 'none';
+                // endDateOptions.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -292,24 +292,24 @@
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                startDateOptions.style.display = 'none';
-                endDateOptions.style.display = 'none';
+                // startDateOptions.style.display = 'none';
+                // endDateOptions.style.display = 'none';
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
-                startDateOptions.style.display = 'none';
-                endDateOptions.style.display = 'none';
+                // startDateOptions.style.display = 'none';
+                // endDateOptions.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
-                startDateOptions.style.display = 'none';
-                endDateOptions.style.display = 'none';
+                // startDateOptions.style.display = 'none';
+                // endDateOptions.style.display = 'none';
             }
 
             // Update Generate Report button
