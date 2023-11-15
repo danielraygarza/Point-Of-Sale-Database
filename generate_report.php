@@ -17,6 +17,9 @@
     // UNFUCK DROP DOWN DATE DISPLAY
     // UNFUCK HOW MUCH SHIT IS DISPLAYED
 
+    $currentDate = date("Y-m-d");
+    echo $currentDate;
+
 ?>
 
 <!DOCTYPE html>
