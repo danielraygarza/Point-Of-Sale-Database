@@ -194,6 +194,7 @@
                         $setHeader = 'Daily Orders';
                         // Get the current Date
                         $currentDate = date("Y-m-d");
+                        $currentDate = 20231114;
                         // Query for daily orders
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
                         FROM PIZZA_STORE P 
