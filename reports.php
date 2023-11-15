@@ -355,6 +355,7 @@
         $('.storeSelID').on('change', function () {
             //alert(1);
             populateEmployeeDropdown($(this).val(), $("#emp_status").val());
+            console.log('storeSelID set to', storeSelID.value);
         });
 
         $('#emp_status').on('change', function () {
