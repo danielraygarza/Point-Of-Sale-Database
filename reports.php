@@ -93,7 +93,7 @@
             </select>
 
             <!-- Save storeId to send to getEmployees -->
-            <input type="hidden" id="storeID" name="storeID">
+            <input type="hidden" id="storeID" name="storeID" value="1">
 
         </div><br>
 
@@ -347,11 +347,11 @@
         
 
         // Handle store selection change
-        //var storeSelection = document.getElementById('storeSelection');
+        //populateEmployeeDropdown($(".storeID").val(), $("#emp_status").val());
 
         $('.storeID').on('change', function () {
             //alert(1);
-            populateEmployeeDropdown($(this).val(), $("#emp_status").val());
+            populateEmployeeDropdown($(".storeID").val(), $("#emp_status").val());
         });
 
         $('#emp_status').on('change', function () {
