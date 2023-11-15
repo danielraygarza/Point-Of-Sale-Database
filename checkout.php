@@ -8,22 +8,36 @@ error_reporting(E_ALL);
 
 // when you click "place order", it will run this code
 if (isset($_POST['place-order'])) {
-    // redirect to the chosen page when click "place order"
-    $Order_Type = $mysqli->real_escape_string($_POST['Order_Type']);
-    $_SESSION['selected_store_id'] = $_POST['Store_ID'];
-    if ($Order_Type == 'Pickup') {
-        $_SESSION['checkout_completed'] = true;
-        header('Location: pickup.php');
-        exit;
-    } else if ($Order_Type == 'DIGIORNO') {
-        header('Location: https://www.goodnes.com/digiorno/');
-        exit;
-    } else if ($Order_Type == 'Delivery') {
-        $_SESSION['checkout_completed'] = true;
-        header('Location: delivery.php');
-        exit;
+    // check if any employees are clocked in at the selected store
+    $selectedStoreId = $mysqli->real_escape_string($_POST['Store_ID']);
+    $checkEmployees = $mysqli->query("SELECT COUNT(*) AS ClockedInEmployees FROM employee WHERE Store_ID = '$selectedStoreId' AND clocked_in = 1");
+    $row = $checkEmployees->fetch_assoc();
+    
+     // redirect if employees are clocked in
+     if ($row['ClockedInEmployees'] > 0) {
+        $Order_Type = $mysqli->real_escape_string($_POST['Order_Type']);
+        $_SESSION['selected_store_id'] = $_POST['Store_ID'];
+        if ($Order_Type == 'Pickup') {
+            $_SESSION['checkout_completed'] = true;
+            header('Location: pickup.php');
+            exit;
+        } else if ($Order_Type == 'DIGIORNO') {
+            header('Location: https://www.goodnes.com/digiorno/');
+            exit;
+        } else if ($Order_Type == 'Delivery') {
+            $_SESSION['checkout_completed'] = true;
+            header('Location: delivery.php');
+            exit;
+        } else {
+            header('Location: checkout.php');
+            exit;
+        }
     } else {
-        header('Location: checkout.php');
+        // Redirect or inform the user if no employees are clocked in
+        // For example, redirect to a notification page or an error page
+        echo "";
+        $_SESSION['error'] = "Sorry, this location is closed!";
+        header('Location: checkout.php'); // Replace with your desired location
         exit;
     }
 }
@@ -152,6 +166,13 @@ function getCartItemCount()
                     document.getElementById('Order_Type').required = true;
                 }
             </script>
+            <?php
+                //displays error messages here 
+                if (isset($_SESSION['error'])) {
+                    echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                    unset($_SESSION['error']);  // Unset the error message after displaying it
+                }
+                ?>
             <input class="button orderbutton" type="submit" name="place-order" value="Place Order" onclick="setRequiredFields()">
         </div>
     </form>
