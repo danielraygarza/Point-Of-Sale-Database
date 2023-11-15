@@ -358,7 +358,8 @@
                 newEndDateOptions.style.display = 'none';
             }
 
-            //Function to ensure dates are valid
+            // NOT NEEDED //
+            // Function to ensure dates are valid
             function daysInMonth(year, month){
                 // Setting the day to zero returns the last day of the previous month
                 return new Date(year, month, 0).getDate();
@@ -467,7 +468,7 @@
             document.getElementById('endDate').value = endDate;
             
             checkSelections();
-            
+
             // Debug
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
