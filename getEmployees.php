@@ -8,7 +8,7 @@
 
 
     // Fetch employee data based on the selected store from the database
-    $storeId = $_GET['storeID'];
+    $storeId = $_GET['storeSelID'];
     $emp_status = $_GET['emp_status'];
     //$result = $mysqli->query("SELECT * FROM employee WHERE Store_ID = $storeId AND active_employee = $emp_status");
 
