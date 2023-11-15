@@ -291,6 +291,8 @@
 
         // Activate Generate Reports button
         function checkSelections(){
+            // Debug
+            console.log('checkSelections function called');
             // Bool
             var selectionMade = false;
             // Main report type selection
@@ -316,6 +318,9 @@
             }
 
             document.getElementById('submitButton').disabled = !selectionMade;
+
+            // Debug
+            console.log('Selection Made', selectionMade);
 
         }
 
