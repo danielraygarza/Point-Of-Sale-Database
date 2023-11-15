@@ -155,12 +155,20 @@
             <select id="start_day" name="start_day" onchange="setDay()">
                 <option value="" selected disabled>-</option>
                 <!-- Populated by function dateOptions -->
+
             </select>
 
             <!-- Save stDate to post -->
             <input type="hidden" id="stDate" name="stDate">
                 
         </div><br>
+
+        <!-- Fixed Date Dropdown -->
+        <div id="newStartDateOptions" style="display: block;">
+            <label for="start_date"></label>
+            <input type="date" id="start_date" name="start_date">
+
+        </div> <br>
 
         <div id="endDateOptions" style="display: none;">
             <label for="end_year">End Year:</label>
