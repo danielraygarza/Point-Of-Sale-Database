@@ -355,6 +355,9 @@
         $('.storeSelID').on('change', function () {
             //alert(1);
             populateEmployeeDropdown($(this).val(), $("#emp_status").val());
+
+            // Debug
+            console.log('onChange function setting SSID ran');
             console.log('storeSelID set to', storeSelID.value);
         });
 
