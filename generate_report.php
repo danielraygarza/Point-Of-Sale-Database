@@ -37,6 +37,10 @@
             /* height: 200px; Set the desired height */
             overflow: auto; /* Add a scrollbar when content overflows */
             border: 1px solid #ccc; /* Optional border styling */
+            color: white; /* Text color */
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8); /* Darker black shadow */
+
+
         }
 
         /* Style for the table */

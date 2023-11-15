@@ -449,3 +449,14 @@ main .main-holder .order-display .order-card .order-card-info .complete_button:h
 .menu-style {
     font-weight: bold;
 }
+
+input[type="date"] {
+    font-family: Arial, sans-serif; 
+    font-size: 14px;
+    color: black; 
+    background-color: #fff; 
+    border: 1px solid #ccc; 
+    border-radius: 10px; 
+    padding: 5px; 
+    margin-right: 10px;
+}
