@@ -14,6 +14,8 @@
     // TO DO: //
     // UNFUCK HOW MUCH SHIT IS DISPLAYED
     // POPULATE DATABASE WITH MORE ORDER INFO AND NEW VENDORS
+    // FIX DATES NOT GOING AWAY
+
 
     date_default_timezone_set('America/Chicago');
     $currentDate = date("Y-m-d");
@@ -33,7 +35,8 @@
     <style>
         /* Style for the scrollable area */
         .scrollable-area {
-            height: 100px; /*Set the desired height */
+            min-height: auto; /* Set the desired min height */
+            max-height: 500px; /* Set the desired max height */
             overflow: auto; /* Add a scrollbar when content overflows */
             border: 1px solid #ccc; /* Optional border styling */
         }
