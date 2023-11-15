@@ -193,8 +193,7 @@
                         // Header for daily orders
                         $setHeader = 'Daily Orders';
                         // Get the current Date
-                        $currentDate = date("YYYYMMDD");
-                        //$currentDate = 20231114;
+                        $currentDate = 20231116;
                         // Query for daily orders
                         $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
                         FROM PIZZA_STORE P 
@@ -239,7 +238,7 @@
                         // Header for most popular item today
                         $setHeader = 'Most Popular Item';
                         // Get the current Date
-                        $currentDate = date("Y-m-d");
+                        $currentDate = 20231114;
                         // TO COMPLETE: Query for most popular item today
                         $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
