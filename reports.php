@@ -349,7 +349,7 @@
         // Handle store selection change
         //var storeSelection = document.getElementById('storeSelection');
 
-        $('.storeId').on('change', function () {
+        $('.storeID').on('change', function () {
             //alert(1);
             populateEmployeeDropdown($(this).val(), $("#emp_status").val());
         });
