@@ -466,6 +466,8 @@
             var endDate = document.getElementById('end_date').value;
             document.getElementById('endDate').value = endDate;
             
+            checkSelections();
+            
             // Debug
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
