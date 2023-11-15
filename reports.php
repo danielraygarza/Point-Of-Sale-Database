@@ -308,6 +308,12 @@
             var storeType = document.getElementById('storeType');
             var dateOptions = document.getElementById('dateOptions');
 
+            // Stop day from changing on selection variables
+            var prevStartYear = "";
+            var prevStartMonth = "";
+            var prevEndYear = "";
+            var prevEndMonth = "";
+
             if(storeType.value === 'orderdates'){
                 startDateOptions.style.display = 'block';
                 endDateOptions.style.display = 'block';
@@ -350,14 +356,20 @@
             endDayDropdown.innerHTML = '';
 
             // Populate proper num days per selected month
-            for (var i = 1; i <= daysInMonth(startYear, startMonth); i++){
-                var option = document.createElement('option');
-                option.value = i;
-                option.text = i;
-                // Debug
-                console.log('Adding option for start day');
-                startDayDropdown.add(option);
+            if(!((prevStartYear === startYear) && (prevStartMonth === startMonth))){
+                for (var i = 1; i <= daysInMonth(startYear, startMonth); i++){
+                    var option = document.createElement('option');
+                    option.value = i;
+                    option.text = i;
+                    // Debug
+                    console.log('Adding option for start day');
+                    startDayDropdown.add(option);
+                }
             }
+
+            prevStartYear = startYear;
+            prevStartMonth = startMonth;
+            
 
             for (var j = 1; j <= daysInMonth(endYear, endMonth); j++){
                 var endopt = document.createElement('option');
