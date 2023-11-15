@@ -24,13 +24,16 @@
         $employees[] = ['id' => $row['Employee_ID'], 'name' => $row['E_First_Name'] . " " .$row['E_Last_Name']];
     }
 
+
+    // Return the data in JSON format
+    header('Content-Type: application/json');
+
     // Debug
     echo '<pre>';
     print_r($employees);
     echo '</pre>';
 
-    // Return the data in JSON format
-    header('Content-Type: application/json');
+    //Output JSON data
     echo json_encode($employees);
 
    
