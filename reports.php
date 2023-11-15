@@ -352,14 +352,14 @@
         // Handle store selection change
         //populateEmployeeDropdown($(".storeID").val(), $("#emp_status").val());
 
-        $('.storeID').on('change', function () {
+        $('.storeSelID').on('change', function () {
             //alert(1);
-            populateEmployeeDropdown($(".storeID").val(), $("#emp_status").val());
+            populateEmployeeDropdown($(".storeSelID").val(), $("#emp_status").val());
         });
 
         $('#emp_status').on('change', function () {
             //alert(1);
-            populateEmployeeDropdown($(".storeID").val(), $(this).val());
+            populateEmployeeDropdown($(".storeSelID").val(), $(this).val());
         });
 
         function populateEmployeeDropdown(storeId, emp_status) {
