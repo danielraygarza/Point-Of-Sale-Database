@@ -331,23 +331,23 @@
             var prevEndMonth = "";
 
             if(storeType.value === 'orderdates'){
-                startDateOptions.style.display = 'block';
-                endDateOptions.style.display = 'block';
+                // startDateOptions.style.display = 'block';
+                // endDateOptions.style.display = 'block';
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
             } else if(storeType.value === 'date'){
-                startDateOptions.style.display = 'block';
-                endDateOptions.style.display = 'block';
+                // startDateOptions.style.display = 'block';
+                // endDateOptions.style.display = 'block';
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
             } else if(storeType.value === 'datepopular'){
-                startDateOptions.style.display = 'block';
-                endDateOptions.style.display = 'block';
+                // startDateOptions.style.display = 'block';
+                // endDateOptions.style.display = 'block';
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
             } else{
-                startDateOptions.style.display = 'none';
-                endDateOptions.style.display = 'none';
+                // startDateOptions.style.display = 'none';
+                // endDateOptions.style.display = 'none';
                 newStartDateOptions.style.display = 'none';
                 newEndDateOptions.style.display = 'none';
             }
