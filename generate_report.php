@@ -37,10 +37,7 @@
             /* height: 200px; Set the desired height */
             overflow: auto; /* Add a scrollbar when content overflows */
             border: 1px solid #ccc; /* Optional border styling */
-            color: white; /* Text color */
-            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8); /* Darker black shadow */
-
-
+            background-color: rgba(122, 119, 119, 0.7);
         }
 
         /* Style for the table */
@@ -70,8 +67,7 @@
         }
         ?>
     </div>
-
-    <form action="generate_report.php" method="post">
+    <form action="generate_report.php" method="post" style="background-color: rgba(122, 119, 119, 0.7);">';
         <?php
         // Check if the form has been submitted
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
