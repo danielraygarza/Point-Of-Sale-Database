@@ -331,10 +331,10 @@
             var dateOptions = document.getElementById('dateOptions');
 
             // Stop day from changing on selection variables
-            var prevStartYear = "";
-            var prevStartMonth = "";
-            var prevEndYear = "";
-            var prevEndMonth = "";
+            // var prevStartYear = "";
+            // var prevStartMonth = "";
+            // var prevEndYear = "";
+            // var prevEndMonth = "";
 
             if(storeType.value === 'orderdates'){
                 // startDateOptions.style.display = 'block';
@@ -360,56 +360,56 @@
 
             // NOT NEEDED //
             // Function to ensure dates are valid
-            function daysInMonth(year, month){
-                // Setting the day to zero returns the last day of the previous month
-                return new Date(year, month, 0).getDate();
-            }
+            // function daysInMonth(year, month){
+            //     // Setting the day to zero returns the last day of the previous month
+            //     return new Date(year, month, 0).getDate();
+            // }
 
             //Start and end date selection
-            var startYear = document.getElementById('start_year').value;
-            var startMonth = document.getElementById('start_month').value;
-            var startDay = document.getElementById('start_day').value;
-            var stDate = startYear + startMonth + padWithZero(startDay);
-            document.getElementById('stDate').value = stDate;
+            // var startYear = document.getElementById('start_year').value;
+            // var startMonth = document.getElementById('start_month').value;
+            // var startDay = document.getElementById('start_day').value;
+            // var stDate = startYear + startMonth + padWithZero(startDay);
+            // document.getElementById('stDate').value = stDate;
 
-            var endYear = document.getElementById('end_year').value;
-            var endMonth = document.getElementById('end_month').value;
-            var endDay = document.getElementById('end_day').value;
-            var endDate = endYear + endMonth + padWithZero(endDay);
-            document.getElementById('endDate').value = endDate;
+            // var endYear = document.getElementById('end_year').value;
+            // var endMonth = document.getElementById('end_month').value;
+            // var endDay = document.getElementById('end_day').value;
+            // var endDate = endYear + endMonth + padWithZero(endDay);
+            // document.getElementById('endDate').value = endDate;
 
             // Update days based on selected year and month
-            var startDayDropdown = document.getElementById('start_day');
-            var endDayDropdown = document.getElementById('end_day');
+            // var startDayDropdown = document.getElementById('start_day');
+            // var endDayDropdown = document.getElementById('end_day');
 
             // Clear existing options
-            startDayDropdown.innerHTML = '';
-            endDayDropdown.innerHTML = '';
+            // startDayDropdown.innerHTML = '';
+            // endDayDropdown.innerHTML = '';
 
             // Populate proper num days per selected month
-            if(!((prevStartYear === startYear) && (prevStartMonth === startMonth))){
-                for (var i = 1; i <= daysInMonth(startYear, startMonth); i++){
-                    var option = document.createElement('option');
-                    option.value = i;
-                    option.text = i;
-                    // Debug
-                    console.log('Adding option for start day');
-                    startDayDropdown.add(option);
-                }
-            }
+            // if(!((prevStartYear === startYear) && (prevStartMonth === startMonth))){
+            //     for (var i = 1; i <= daysInMonth(startYear, startMonth); i++){
+            //         var option = document.createElement('option');
+            //         option.value = i;
+            //         option.text = i;
+            //         // Debug
+            //         console.log('Adding option for start day');
+            //         startDayDropdown.add(option);
+            //     }
+            // }
 
-            prevStartYear = startYear;
-            prevStartMonth = startMonth;
+            // prevStartYear = startYear;
+            // prevStartMonth = startMonth;
             
 
-            for (var j = 1; j <= daysInMonth(endYear, endMonth); j++){
-                var endopt = document.createElement('option');
-                endopt.value = j;
-                endopt.text = j;
-                // Debug
-                console.log('Adding option for end day');
-                endDayDropdown.add(endopt);
-            }
+            // for (var j = 1; j <= daysInMonth(endYear, endMonth); j++){
+            //     var endopt = document.createElement('option');
+            //     endopt.value = j;
+            //     endopt.text = j;
+            //     // Debug
+            //     console.log('Adding option for end day');
+            //     endDayDropdown.add(endopt);
+            // }
 
             // Update Generate Report button
             checkSelections();
