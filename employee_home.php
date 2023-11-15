@@ -211,6 +211,11 @@
                                                 ?>
                                                 
                                                 <p class = "type">Order Type: <?php echo $row["Order_Type"]; ?></p>
+                                                <?php 
+                                                    if ($row["Order_Status"] == "Completed") {
+                                                        echo "<p class = time_completed>" . "Time Completed: " . $row["Time_Completed"] . "</p>";
+                                                    }
+                                                ?>
                                             </div>
                                             <?php 
                                                 $orderID = $row["Order_ID"];

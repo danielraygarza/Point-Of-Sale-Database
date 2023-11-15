@@ -399,6 +399,11 @@ main .main-holder .order-display .order-card .order-card-info .order-card-right 
 main .main-holder .order-display .order-card .order-card-info .order-card-right .type{
     color: black;
     width: 90%;
+}
+
+main .main-holder .order-display .order-card .order-card-info .order-card-right .time_completed{
+    color: black;
+    width: 90%;
     position: absolute;
 }
 
