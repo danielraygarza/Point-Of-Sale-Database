@@ -348,11 +348,11 @@
     <script>
     $(document).ready(function () {
         
+        // Set the initial value and trigger the function
+        populateEmployeeDropdown($("#storeSelID").val(), $("#emp_status").val());
 
         // Handle store selection change
-        //populateEmployeeDropdown($(".storeID").val(), $("#emp_status").val());
-
-        $('.storeSelID').on('change', function () {
+        $('#storeSelID').on('change', function () {
             //alert(1);
             populateEmployeeDropdown($(this).val(), $("#emp_status").val());
 
@@ -363,7 +363,7 @@
 
         $('#emp_status').on('change', function () {
             //alert(1);
-            populateEmployeeDropdown($(".storeSelID").val(), $(this).val());
+            populateEmployeeDropdown($("#storeSelID").val(), $(this).val());
         });
 
         function populateEmployeeDropdown(storeId, emp_status) {
