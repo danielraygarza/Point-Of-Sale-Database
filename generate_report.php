@@ -33,7 +33,9 @@
     <style>
         /* Style for the scrollable area */
         .scrollable-area {
-            height: 100px; /*Set the desired height */
+            min-height: auto;
+            max-height: 500px;
+            /* height: 200px; Set the desired height */
             overflow: auto; /* Add a scrollbar when content overflows */
             border: 1px solid #ccc; /* Optional border styling */
         }
@@ -512,6 +514,10 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($employeeResult) > 0) {
                             echo '<h2>' . $setHeader . '<h2>';
+
+                             // Start scrollable area
+                             echo '<div class="scrollable-area">';
+
                             echo "<table border='1' class='centered_table'>";
 
                             echo "<tr>
@@ -535,6 +541,9 @@
                             }
                     
                             echo "</table>";
+
+                            // End of scrollable area
+                            echo '</div>';
                         } 
                     $orderSql = "SELECT * FROM `orders` WHERE `Employee_ID_assigned` = $employeeId";
                     $orderResult = mysqli_query($mysqli, $orderSql);
@@ -542,6 +551,10 @@
                     if ($orderResult) {
                         if (mysqli_num_rows($orderResult) > 0) {
                             echo '<h2>Order Details</h2>';
+
+                            // Start scrollable area
+                            echo '<div class="scrollable-area">';
+
                             echo "<table border='1' class='centered_table'>";
                             echo "<tr>
                                 <th class='th-spacing'>Order ID</th>
@@ -575,6 +588,9 @@
                             }
 
                             echo "</table>";
+
+                            // End of scrollable area
+                            echo '</div>';
                         }
                     } else {
                         echo 'Error executing the Order SQL query: ' . mysqli_error($mysqli);
