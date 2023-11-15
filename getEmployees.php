@@ -27,11 +27,4 @@
     header('Content-Type: application/json');
     //Output JSON data
     echo json_encode($employees);
-
-    // Debug
-    echo '<pre>';
-    print_r($employees);
-    echo '</pre>';
-
-
 ?>
