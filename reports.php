@@ -125,45 +125,6 @@
         </div><br>
         <!-- //To here// -->
 
-        <!-- Start/End Y-M-D drop down boxes -->
-        <!-- <div id="startDateOptions" style="display: none;">
-            <label for="start_year">Start Year:</label>
-            <select id="start_year" name="start_year" onchange="dateOptions()">
-                <option value="" selected disabled>-</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-            </select>
-
-            <label for="start_month">Start Month:</lable>
-            <select id="start_month" name="start_month" onchange="dateOptions()">
-                <option value="" selected disabled>-</option>
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-            
-            <label for="start_day">Start Day:</label>
-            <select id="start_day" name="start_day" onchange="setDay()">
-                <option value="" selected disabled>-</option>
-                // Populated by function dateOptions
-
-            </select>
-
-            //
-            <input type="hidden" id="stDate" name="stDate">
-                
-        </div><br> -->
-
-
         <!-- Fixed Start Date Dropdown -->
         <div id="newStartDateOptions" style="display: none;">
             <label for="start_date">Start Date:</label>
@@ -183,42 +144,6 @@
             <input type="hidden" id="endDate" name="endDate">
 
         </div> <br>
-
-        <!-- <div id="endDateOptions" style="display: none;">
-            <label for="end_year">End Year:</label>
-            <select id="end_year" name="end_year" onchange="dateOptions()">
-                <option value="" selected disabled>-</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-            </select>
-
-            <label for="end_month">End Month:</lable>
-            <select id="end_month" name="end_month" onchange="dateOptions()">
-                <option value="" selected disabled>-</option>
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-            
-            <label for="end_day">End Day:</label>
-            <select id="end_day" name="end_day" onchange="setDay()">
-                <option value="" selected disabled>-</option>
-                Populated by function dateOptions
-            </select>
-
-            //Saves endDate to post
-            <input type="hidden" id="endDate" name="endDate">
-                
-        </div><br> -->
 
         <!-- Add more drop down sub-menus here -->
         <div id="Employer" style="display: none;">
@@ -258,21 +183,12 @@
             inventoryType.value = "";
             storeType.value = "";
             employeeDropdown.value = "";
-            // start_year.value = "";
-            // start_month.value = "";
-            // start_day.value = "";
-            // end_year.value = "";
-            // end_month.value = "";
-            // end_day.value = "";
 
             //If you add a new sub menu, define it here then refence it by it's id like so:
             var inventoryOptions = document.getElementById('inventoryOptions');
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
-            // var startDateOptions = document.getElementById('startDateOptions');
-            // var endDateOptions = document.getElementById('endDateOptions');
-
 
             //This if/else determines which sub menu is visible
             //To set a new one visible, set reportType === 'newMenu'
@@ -283,8 +199,6 @@
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
-                // startDateOptions.style.display = 'none';
-                // endDateOptions.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -292,24 +206,18 @@
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
-                // startDateOptions.style.display = 'none';
-                // endDateOptions.style.display = 'none';
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
-                // startDateOptions.style.display = 'none';
-                // endDateOptions.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
-                // startDateOptions.style.display = 'none';
-                // endDateOptions.style.display = 'none';
             }
 
             // Update Generate Report button
@@ -330,86 +238,19 @@
             var storeType = document.getElementById('storeType');
             var dateOptions = document.getElementById('dateOptions');
 
-            // Stop day from changing on selection variables
-            // var prevStartYear = "";
-            // var prevStartMonth = "";
-            // var prevEndYear = "";
-            // var prevEndMonth = "";
-
             if(storeType.value === 'orderdates'){
-                // startDateOptions.style.display = 'block';
-                // endDateOptions.style.display = 'block';
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
             } else if(storeType.value === 'date'){
-                // startDateOptions.style.display = 'block';
-                // endDateOptions.style.display = 'block';
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
             } else if(storeType.value === 'datepopular'){
-                // startDateOptions.style.display = 'block';
-                // endDateOptions.style.display = 'block';
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
             } else{
-                // startDateOptions.style.display = 'none';
-                // endDateOptions.style.display = 'none';
                 newStartDateOptions.style.display = 'none';
                 newEndDateOptions.style.display = 'none';
             }
-
-            // NOT NEEDED //
-            // Function to ensure dates are valid
-            // function daysInMonth(year, month){
-            //     // Setting the day to zero returns the last day of the previous month
-            //     return new Date(year, month, 0).getDate();
-            // }
-
-            //Start and end date selection
-            // var startYear = document.getElementById('start_year').value;
-            // var startMonth = document.getElementById('start_month').value;
-            // var startDay = document.getElementById('start_day').value;
-            // var stDate = startYear + startMonth + padWithZero(startDay);
-            // document.getElementById('stDate').value = stDate;
-
-            // var endYear = document.getElementById('end_year').value;
-            // var endMonth = document.getElementById('end_month').value;
-            // var endDay = document.getElementById('end_day').value;
-            // var endDate = endYear + endMonth + padWithZero(endDay);
-            // document.getElementById('endDate').value = endDate;
-
-            // Update days based on selected year and month
-            // var startDayDropdown = document.getElementById('start_day');
-            // var endDayDropdown = document.getElementById('end_day');
-
-            // Clear existing options
-            // startDayDropdown.innerHTML = '';
-            // endDayDropdown.innerHTML = '';
-
-            // Populate proper num days per selected month
-            // if(!((prevStartYear === startYear) && (prevStartMonth === startMonth))){
-            //     for (var i = 1; i <= daysInMonth(startYear, startMonth); i++){
-            //         var option = document.createElement('option');
-            //         option.value = i;
-            //         option.text = i;
-            //         // Debug
-            //         console.log('Adding option for start day');
-            //         startDayDropdown.add(option);
-            //     }
-            // }
-
-            // prevStartYear = startYear;
-            // prevStartMonth = startMonth;
-            
-
-            // for (var j = 1; j <= daysInMonth(endYear, endMonth); j++){
-            //     var endopt = document.createElement('option');
-            //     endopt.value = j;
-            //     endopt.text = j;
-            //     // Debug
-            //     console.log('Adding option for end day');
-            //     endDayDropdown.add(endopt);
-            // }
 
             // Update Generate Report button
             checkSelections();
@@ -455,15 +296,9 @@
             console.log('setDay function called');
 
             //Start and end date selection
-            // var startYear = document.getElementById('start_year').value;
-            // var startMonth = document.getElementById('start_month').value;
-            // var startDay = document.getElementById('start_day').value;
             var stDate = document.getElementById('start_date').value;
             document.getElementById('stDate').value = stDate;
 
-            // var endYear = document.getElementById('end_year').value;
-            // var endMonth = document.getElementById('end_month').value;
-            // var endDay = document.getElementById('end_day').value;
             var endDate = document.getElementById('end_date').value;
             document.getElementById('endDate').value = endDate;
             
@@ -472,7 +307,6 @@
             // Debug
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
-            // <input type="date" id="start_date" name="start_date" onchange="setDay()">
         }
     </script>
 </body>
