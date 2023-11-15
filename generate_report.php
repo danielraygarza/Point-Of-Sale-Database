@@ -363,6 +363,11 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
+
+                            // Start of scrollable area
+                            echo '<div class="scrollable-area">';
+
+                            //Start of table
                             echo '<table border="1" class="table_update">';
                             // Returns table columns for popular item by day and date range
                             if ($storeType === 'popular' || $storeType === 'datepopular') {
@@ -415,12 +420,22 @@
                                 }
                             }
 
+                            // End of table
                             echo '</table>';
+
+                            // End of scrollable area
+                            echo '</div>';
+
                             // Should check if we have set $ordSql and that $ordResult populated
                             if (!empty(trim($ordSql)) && $ordResult){
                                 // Seems redundant, but second check
                                 if (mysqli_num_rows($ordResult) > 0){
                                     echo '<h2>Order Details</h2>';
+
+                                    // Start scrollable area
+                                    echo '<div class="scrollable-area">';
+
+                                    // Start of table
                                     echo '<table border="1" class="table_update">';
                                     echo "<tr>
                                             <th class='th-spacing'>Order ID</th>
@@ -445,7 +460,11 @@
                                         echo "</tr>";
                                     }
 
+                                    // End of table
                                     echo '</table>';
+
+                                    // End of scrollable area
+                                    echo '</div>';
                                 }
                             }
                         } else {
