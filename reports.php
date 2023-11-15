@@ -362,12 +362,12 @@
             populateEmployeeDropdown($(".storeSelID").val(), $(this).val());
         });
 
-        function populateEmployeeDropdown(storeSelID, emp_status) {
+        function populateEmployeeDropdown(storeId, emp_status) {
             // Make an AJAX request to fetch employee data based on the selected store
             $.ajax({
                 url: 'getEmployees.php', // Replace with your server-side script
                 type: 'GET',
-                data: { storeSelID: storeSelID, emp_status: emp_status },
+                data: { storeId: storeId, emp_status: emp_status },
                 dataType: 'json',
                 success: function (employees) {
                     // Clear existing options
