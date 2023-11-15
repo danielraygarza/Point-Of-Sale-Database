@@ -152,7 +152,7 @@
             </select>
             
             <label for="start_day">Start Day:</label>
-            <select id="start_day" name="start_day">
+            <select id="start_day" name="start_day" onchange="setDay()">
                 <option value="" selected disabled>-</option>
                 <!-- Populated by function dateOptions -->
             </select>
@@ -188,7 +188,7 @@
             </select>
             
             <label for="end_day">End Day:</label>
-            <select id="end_day" name="end_day">
+            <select id="end_day" name="end_day" onchange="setDay()">
                 <option value="" selected disabled>-</option>
                 <!-- Populated by function dateOptions -->
             </select>
@@ -405,6 +405,28 @@
 
             document.getElementById('submitButton').disabled = !selectionMade;
 
+        }
+
+        function setDay(){
+            // Debug
+            console.log('setDay function called');
+
+            //Start and end date selection
+            var startYear = document.getElementById('start_year').value;
+            var startMonth = document.getElementById('start_month').value;
+            var startDay = document.getElementById('start_day').value;
+            var stDate = startYear + startMonth + padWithZero(startDay);
+            document.getElementById('stDate').value = stDate;
+
+            var endYear = document.getElementById('end_year').value;
+            var endMonth = document.getElementById('end_month').value;
+            var endDay = document.getElementById('end_day').value;
+            var endDate = endYear + endMonth + padWithZero(endDay);
+            document.getElementById('endDate').value = endDate;
+            
+            // Debug
+            console.log('Start Date:', stDate);
+            console.log('End Date:', endDate);
         }
     </script>
 </body>
