@@ -373,6 +373,7 @@
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching employees:', status, error);
+                    console.log(xhr.responseText);
                 }
             });
         }
