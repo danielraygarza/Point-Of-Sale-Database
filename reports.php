@@ -306,7 +306,8 @@
             var endDate = document.getElementById('endDate');
 
             // Can change to make initialize variable with if statement instead if needed for fringe cases
-            if (reportType.value !== '' && (storeId.value !== '' || employeeSelect.value !== '') && (inventoryType.value !== '' || storeType.value !== '' || employeeSelect.value !== '')){
+            // storeId.value !== '' changed from: (storeId.value !== '' || employeeSelect.value !== '')
+            if (reportType.value !== '' && storeId.value !== '' && (inventoryType.value !== '' || storeType.value !== '' || employeeSelect.value !== '')){
                 if ((storeType.value === 'orderdates' || storeType.value === 'datepopular' || storeType.value === 'date') && (startDate.value < 20220100 || endDate.value < 20220100)) {
                     selectionMade = false;
                 } else {
