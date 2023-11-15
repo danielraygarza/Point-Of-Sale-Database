@@ -160,7 +160,8 @@
                 <option value="1">Current</option>
                 <option value="0">Former</option>
                 
-            </select><br>
+            </select>
+            <!-- </select><br> -->
 
             <label for="employeeDropdown">Select Employee:</label>
             <select name="employeeDropdown" id="employeeDropdown">
