@@ -159,7 +159,7 @@
             </select>
 
             <!-- Save stDate to post -->
-            <input type="hidden" id="stDate" name="stDate">
+            <!-- <input type="hidden" id="stDate" name="stDate"> -->
                 
         </div><br>
 
@@ -167,14 +167,20 @@
         <!-- Fixed Start Date Dropdown -->
         <div id="newStartDateOptions" style="display: none;">
             <label for="start_date">Start Date:</label>
-            <input type="date" id="start_date" name="start_date">
+            <input type="date" id="start_date" name="start_date" onchange="setDay()">
+
+            <!-- Save stDate to post -->
+            <input type="hidden" id="stDate" name="stDate">
 
         </div> <br>
 
         <!-- Fixed End Date Dropdown -->
         <div id="newEndDateOptions" style="display: none;">
             <label for="end_date">End Date:</label>
-            <input type="date" id="end_date" name="end_date">
+            <input type="date" id="end_date" name="end_date" onchange="setDay()">
+
+            <!-- Saves endDate to post -->
+            <input type="hidden" id="endDate" name="endDate">
 
         </div> <br>
 
@@ -210,7 +216,7 @@
             </select>
 
             <!-- Saves endDate to post -->
-            <input type="hidden" id="endDate" name="endDate">
+            <!-- <input type="hidden" id="endDate" name="endDate"> -->
                 
         </div><br>
 
@@ -448,21 +454,22 @@
             console.log('setDay function called');
 
             //Start and end date selection
-            var startYear = document.getElementById('start_year').value;
-            var startMonth = document.getElementById('start_month').value;
-            var startDay = document.getElementById('start_day').value;
-            var stDate = startYear + startMonth + padWithZero(startDay);
-            document.getElementById('stDate').value = stDate;
+            // var startYear = document.getElementById('start_year').value;
+            // var startMonth = document.getElementById('start_month').value;
+            // var startDay = document.getElementById('start_day').value;
+            // var stDate = startYear + startMonth + padWithZero(startDay);
+            document.getElementById('stDate').value = document.getElementById('start_date').value;
 
-            var endYear = document.getElementById('end_year').value;
-            var endMonth = document.getElementById('end_month').value;
-            var endDay = document.getElementById('end_day').value;
-            var endDate = endYear + endMonth + padWithZero(endDay);
-            document.getElementById('endDate').value = endDate;
+            // var endYear = document.getElementById('end_year').value;
+            // var endMonth = document.getElementById('end_month').value;
+            // var endDay = document.getElementById('end_day').value;
+            // var endDate = endYear + endMonth + padWithZero(endDay);
+            document.getElementById('endDate').value = document.getElementById('end_date').value;
             
             // Debug
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
+            // <input type="date" id="start_date" name="start_date" onchange="setDay()">
         }
     </script>
 </body>
