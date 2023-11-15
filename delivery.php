@@ -35,7 +35,7 @@ if (isset($_SESSION['cart'])) {
 }
 
 
-
+//if logged in, assign store credit to discount
 $discountAmount = 0;
 if (isset($_SESSION['user']['customer_id'])) {
     $customerID = $_SESSION['user']['customer_id'];
@@ -112,10 +112,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
                 if ($mysqli->query($deliverySQL) === TRUE) {
                     // Update the customer's store credit after applying the discount
-                    $newStoreCredit = $row['store_credit'] - $discountAmount;
-                    $updateCustomerCredit = "UPDATE customers SET store_credit = $newStoreCredit WHERE customer_id = '$customerID'";
-                    if (!$mysqli->query($updateCustomerCredit)) {
-                        throw new Exception("Error updating customer's store credit: " . $mysqli->error);
+                    if (isset($_SESSION['user']['customer_id'])) {
+                        $newStoreCredit = $row['store_credit'] - $discountAmount;
+                        $updateCustomerCredit = "UPDATE customers SET store_credit = $newStoreCredit WHERE customer_id = '$customerID'";
+                        if (!$mysqli->query($updateCustomerCredit)) {
+                            throw new Exception("Error updating customer's store credit: " . $mysqli->error);
+                            }
                     }
                     //insert transaction table
                     $transactionSQL = "INSERT INTO transactions (T_Order_ID, Total_Amount_Charged, Amount_Tipped, Payment_Method, T_Date, Time_Processed)

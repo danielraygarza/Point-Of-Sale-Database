@@ -6,6 +6,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
 // when you click "place order", it will run this code
 if (isset($_POST['place-order'])) {
     // check if any employees are clocked in at the selected store

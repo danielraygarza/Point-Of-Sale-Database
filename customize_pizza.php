@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
             <!-- <p class="price"><b>Calculated Price: AUTO UPDATE TOTAL PRICE</b></p> -->
-            <form action="" method="post">
+            <form action="" method="post" style="display: block; max-width: none;">
                 <div class="toppings-list">
                     <?php
                     $toppingsQuery = "SELECT Item_Cost, Item_Name FROM items WHERE Item_Type = 'Topping'";
