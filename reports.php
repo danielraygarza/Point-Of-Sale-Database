@@ -149,17 +149,34 @@
 
         <!-- Add more drop down sub-menus here -->
         <div id="Employer" style="display: none;">
-            <label for="employeeDropdown">Select Employee:</label>
-            <select name="employeeDropdown" id="employeeDropdown" onchange="checkSelections()">
-                <option value="" selected disabled>-</option>
+            <label for="storeId">Select Store:</label>
+            <select name="storeId" class="storeId" id="storeId">
+                <!-- <option value="test">Default</option> -->
+                <option value="" selected disabled>Select Store</option>
                 <?php
-                $employeeData = getEmployeeData($mysqli);
-                foreach ($employeeData as $employee) {
-                    $employeeID = $employee['Employee_ID'];
-                    $employeeName = $employee['Name'];
-                    echo "<option value='" . htmlspecialchars($employeeID) . "'>$employeeName</option>";
-                }
+                    $stores = $mysqli->query("SELECT * FROM pizza_store");
+                    if ($stores->num_rows > 0) {
+                        while($row = $stores->fetch_assoc()) {
+                            //if ($row["Pizza_Store_ID"] != 1) { continue; } //only shows store ID 1. can delete to show all
+                            echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                        }
+                    }
                 ?>
+            </select><br>
+
+            <label for="emp_status">Select Employee Status:</label>
+            <select name="emp_status" id="emp_status">
+                <option value="" selected disabled>Select Employee Status</option>
+                
+                <option value="1">Current</option>
+                <option value="0">Former</option>
+                
+            </select><br>
+
+            <label for="employeeDropdown">Select Employee:</label>
+            <select name="employeeDropdown" id="employeeDropdown">
+                <option value="" selected disabled>Select Employee</option>
+                
             </select>
         </div><br>
 
@@ -318,6 +335,50 @@
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
         }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        
+
+        // Handle store selection change
+        $('.storeId').on('change', function () {
+            //alert(1);
+            populateEmployeeDropdown($(this).val(), $("#emp_status").val());
+        });
+
+        $('#emp_status').on('change', function () {
+            //alert(1);
+            populateEmployeeDropdown($(".storeId").val(), $(this).val());
+        });
+
+        function populateEmployeeDropdown(storeId, emp_status) {
+            // Make an AJAX request to fetch employee data based on the selected store
+            $.ajax({
+                url: 'getEmployees.php', // Replace with your server-side script
+                type: 'GET',
+                data: { storeId: storeId, emp_status: emp_status },
+                dataType: 'json',
+                success: function (employees) {
+                    // Clear existing options
+                    $('#employeeDropdown').empty();
+
+                    // Add default option
+                    $('#employeeDropdown').append('<option value="" selected disabled>Select Employee</option>');
+
+                    // Add employee options based on the selected store
+                    $.each(employees, function (index, employee) {
+                        $('#employeeDropdown').append('<option value="' + employee.id + '">' + employee.name + '</option>');
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching employees:', status, error);
+                }
+            });
+        }
+    });
     </script>
 </body>
 
