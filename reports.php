@@ -163,10 +163,17 @@
                 
         </div><br>
 
-        <!-- Fixed Date Dropdown -->
+        <!-- Fixed Start Date Dropdown -->
         <div id="newStartDateOptions" style="display: block;">
             <label for="start_date"></label>
             <input type="date" id="start_date" name="start_date">
+
+        </div> <br>
+
+        <!-- Fixed End Date Dropdown -->
+        <div id="newEndDateOptions" style="display: block;">
+            <label for="end_date"></label>
+            <input type="date" id="end_date" name="end_date">
 
         </div> <br>
 
