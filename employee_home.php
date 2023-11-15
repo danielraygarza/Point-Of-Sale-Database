@@ -15,7 +15,7 @@
     $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID AND Order_Status = 'In Progress'";
     $result = $mysqli->query($sql);
 
-    $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID");
+    $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID AND Order_Status = 'In Progress'");
     $getOrderCount = $orderCount->fetch_assoc();
 
 
