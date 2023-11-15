@@ -150,20 +150,7 @@
         <!-- Add more drop down sub-menus here -->
         <div id="Employer" style="display: none;">
 
-            <!-- <label for="storeId">Select Store:</label>
-            <select name="storeId" class="storeId" id="storeId"> -->
-                <!-- <option value="test">Default</option> -->
-                <!-- <option value="" selected disabled>Select Store</option> -->
-                <?php
-                    // $stores = $mysqli->query("SELECT * FROM pizza_store");
-                    // if ($stores->num_rows > 0) {
-                    //     while($row = $stores->fetch_assoc()) {
-                    //         //if ($row["Pizza_Store_ID"] != 1) { continue; } //only shows store ID 1. can delete to show all
-                    //         echo '<option value="' . $row["Pizza_Store_ID"] . '">' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                    //     }
-                    // }
-                ?>
-            <!-- </select><br> -->
+            <!-- STORE SELECTION WAS HERE -->
             
 
             <label for="emp_status">Select Employee Status:</label>
@@ -352,6 +339,8 @@
         
 
         // Handle store selection change
+        //var storeSelection = document.getElementById('storeSelection');
+
         $('.storeId').on('change', function () {
             //alert(1);
             populateEmployeeDropdown($(this).val(), $("#emp_status").val());
