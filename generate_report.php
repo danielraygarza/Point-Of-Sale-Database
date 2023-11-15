@@ -28,10 +28,12 @@
     <title>POS Pizza</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
+
+    <!-- Scrollable area style: -->
     <style>
         /* Style for the scrollable area */
         .scrollable-area {
-            height: 300px; /* Set the desired height */
+            /* height: 300px; Set the desired height */
             overflow: auto; /* Add a scrollbar when content overflows */
             border: 1px solid #ccc; /* Optional border styling */
         }
@@ -48,6 +50,8 @@
             text-align: left;
         }
     </style>
+    <!-- End Scrollable Area Style -->
+
 </head>
 
 <body>
