@@ -11,11 +11,16 @@
 
     // * NEED TO UPDATE WHERE IT ONLY SHOWS ORDERS ASSIGNED TO SPECIFIC EMPLOPYEE *
     $EMPID = $_SESSION['user']['Employee_ID'];
-    
-    $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID AND Order_Status = 'In Progress'";
-    $result = $mysqli->query($sql);
 
-    $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID AND Order_Status = 'In Progress'");
+    $STATUS = "ALL";
+    $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID";
+    $result = $mysqli->query($sql);
+    
+    //if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        
+    //}
+
+    $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID");
     $getOrderCount = $orderCount->fetch_assoc();
 
 
@@ -35,12 +40,28 @@
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        
+        if(isset($_POST["STATUS"])) 
+        $STATUS = $_POST["STATUS"];
+            if ($STATUS == "ALL") {
+                $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID";
+                $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID");
+            } else if ($STATUS == "COMPLETED") {
+                $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID AND Order_Status = 'Completed'";
+                $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID AND Order_Status = 'Completed'");
+            } else if ($STATUS == "IN PROGRESS") {
+                $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID AND Order_Status = 'In Progress'";
+                $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID AND Order_Status = 'In Progress'");
+            }
+            
+            $getOrderCount = $orderCount->fetch_assoc();
+            $result = $mysqli->query($sql);
+
         if (isset($_POST["ORDERID"])) {
             // Retrieve orderID from POST data
             $ORDERID = $_POST["ORDERID"];
             $ORDERTYPE = $mysqli->real_escape_string($_POST['ORDERTYPE']);
             $TIME = $mysqli->real_escape_string($_POST['TIME']);
-
     
             $updateOrderStatus = "UPDATE orders SET Order_Status = 'Completed' WHERE Order_ID = $ORDERID";
             $runUpdate = $mysqli->query($updateOrderStatus);
@@ -59,8 +80,6 @@
                 $runUpdatePickUp = $mysqli->query($updatePickUp);
             }
 
-        } else {
-            echo "orderID is not set in the POST data.";
         }
     }
 
@@ -73,7 +92,7 @@
         <link rel="stylesheet" href="css/styles.css">
         <link rel="icon" href="img/pizza.ico" type="image/x-icon">
     </head>
-    <body>
+    <body id = "order-display">
         <div class="navbar">
             <a href="index.php">Home</a>
             <!-- <a href="#">Order Now</a>
@@ -132,7 +151,27 @@
         if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
             ?>
                 <main>
-                    <div class = "od-header">Total Assigned Orders: <?php echo $getOrderCount['COUNT(Order_ID)'] ?> </div>
+                    <div class = "od-header">
+                        <div class = "filterALL" onclick = 'filter("ALL")'><p class = "filterLabel">ALL</p></div>
+                        <div class = "filterALL" onclick = 'filter("COMPLETED")'><p class = "filterLabel">Completed</p></div>
+                        <div class = "filterALL" onclick = 'filter("IN PROGRESS")'><p class = "filterLabel">In Progress</p></div>
+                        <p class = "count"> Total Assigned Orders: <?php echo $getOrderCount['COUNT(Order_ID)'] ?> </p>
+                    </div>
+
+                    <script>
+                        function filter(STATUS) {
+                            $.ajax({
+                                type: "POST",
+                                url: "employee_home.php",
+                                data: { STATUS: STATUS },
+                                success: function(response) {
+                                    // Update the resultContainer with the new result
+                                    $("#order-display").html(response);
+                                }
+                            });
+                        }
+                    </script>
+
                     <div class = "main-holder">
                         <div class = "order-display">
                     

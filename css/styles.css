@@ -306,6 +306,28 @@ main .main-holder .order-display {
 }
 
 main .od-header {
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+}
+
+main .od-header .filterALL{
+    width: 200px;
+    text-align: center;
+    background-color: rgba(224, 217, 217, 0.7);
+    margin-left: 10px;
+    border-radius: 10px;
+}
+
+main .od-header .filterALL:hover{
+    background-color: rgba(224, 217, 217, 0.542);;
+}
+
+main .od-header .filterALL .filterLabel{
+
+}
+
+main .od-header .count{
     color: rgb(245, 245, 245);
     font-weight: bold;
     text-align: right;
