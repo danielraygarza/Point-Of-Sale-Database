@@ -163,16 +163,17 @@
                 
         </div><br>
 
+
         <!-- Fixed Start Date Dropdown -->
-        <div id="newStartDateOptions" style="display: block;">
-            <label for="start_date"></label>
+        <div id="newStartDateOptions" style="display: none;">
+            <label for="start_date">Start Date:</label>
             <input type="date" id="start_date" name="start_date">
 
         </div> <br>
 
         <!-- Fixed End Date Dropdown -->
-        <div id="newEndDateOptions" style="display: block;">
-            <label for="end_date"></label>
+        <div id="newEndDateOptions" style="display: none;">
+            <label for="end_date">End Date:</label>
             <input type="date" id="end_date" name="end_date">
 
         </div> <br>
@@ -330,17 +331,25 @@
             var prevEndMonth = "";
 
             if(storeType.value === 'orderdates'){
-                startDateOptions.style.display = 'block';
-                endDateOptions.style.display = 'block';
+                // startDateOptions.style.display = 'block';
+                // endDateOptions.style.display = 'block';
+                newStartDateOptions.style.display = 'block';
+                newEndDateOptions.style.display = 'block';
             } else if(storeType.value === 'date'){
-                startDateOptions.style.display = 'block';
-                endDateOptions.style.display = 'block';
+                // startDateOptions.style.display = 'block';
+                // endDateOptions.style.display = 'block';
+                newStartDateOptions.style.display = 'block';
+                newEndDateOptions.style.display = 'block';
             } else if(storeType.value === 'datepopular'){
-                startDateOptions.style.display = 'block';
-                endDateOptions.style.display = 'block';
+                // startDateOptions.style.display = 'block';
+                // endDateOptions.style.display = 'block';
+                newStartDateOptions.style.display = 'block';
+                newEndDateOptions.style.display = 'block';
             } else{
-                startDateOptions.style.display = 'none';
-                endDateOptions.style.display = 'none';
+                // startDateOptions.style.display = 'none';
+                // endDateOptions.style.display = 'none';
+                newStartDateOptions.style.display = 'none';
+                newEndDateOptions.style.display = 'none';
             }
 
             //Function to ensure dates are valid
