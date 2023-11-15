@@ -12,10 +12,8 @@
     // }
 
     // TO DO: //
-    // UNFUCK TODAY'S DATES VARIABLES
-    // UNFUCK DATE RANGE NOT WORKING
-    // UNFUCK DROP DOWN DATE DISPLAY
     // UNFUCK HOW MUCH SHIT IS DISPLAYED
+    // POPULATE DATABASE WITH MORE ORDER INFO AND NEW VENDORS
 
     date_default_timezone_set('America/Chicago');
     $currentDate = date("Y-m-d");
@@ -30,6 +28,26 @@
     <title>POS Pizza</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
+    <style>
+        /* Style for the scrollable area */
+        .scrollable-area {
+            height: 300px; /* Set the desired height */
+            overflow: auto; /* Add a scrollbar when content overflows */
+            border: 1px solid #ccc; /* Optional border styling */
+        }
+
+        /* Style for the table */
+        .table_update {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .table_update th, .table_update td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body>
@@ -131,6 +149,11 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
                             echo '<h2>' . $setHeader . '</h2>';
+
+                            // Start scrollable area
+                            echo '<div class="scrollable-area">';
+
+                            // Start of table
                             echo '<table border="1" class="table_update">';
                             // <th class='th-spacing'>Product ID</th>
                             echo "<tr>
@@ -157,7 +180,12 @@
                                 echo '</tr>';
                             }
 
+                            // End of table
                             echo '</table>';
+
+                            // End of scrollable area
+                            echo '</div>';
+
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No inventory data available.';
