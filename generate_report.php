@@ -177,7 +177,13 @@
                                 // echo '<td>' . $row['Inventory_ID'] . '</td>';
                                 echo '<td>' . $row['Item_Name'] . '</td>';
                                 echo '<td>' . $row['Inventory_Amount'] . '</td>';
-                                echo '<td>' . $row['Item_Cost'] . '</td>';
+                                // If cost is 0.00 display "-"
+                                if ($row['Item_Cost'] === '0.00') {
+                                    echo "<td>-</td>";
+                                } else {
+                                    echo "<td>" . $row['Item_Cost'] . "</td>";
+                                }
+                                //echo '<td>' . $row['Item_Cost'] . '</td>';
                                 echo '<td>' . $row['Vendor_Name'] . '</td>';
                                 echo '<td>' . $row['Vendor_Rep'] . '</td>';
                                 echo '<td>' . $row['Vendor_Email'] . '</td>';
