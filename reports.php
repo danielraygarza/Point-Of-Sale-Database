@@ -236,7 +236,7 @@
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
-                storeSelection.style.display = 'none';
+                storeSelection.style.display = 'block';
                 newStartDateOptions.style.display = 'none';
                 newEndDateOptions.style.display = 'none';
 
