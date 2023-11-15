@@ -160,71 +160,69 @@ function getCartItemCount()
 </html>
 <?php
 /*
-** Title: Exploring a Pizza Ordering System with Dynamic Checkout
+** Title: In-Depth Analysis of Dynamic Pizza Ordering System with Enhanced Checkout Features
 **
 ** Introduction:
-
-** The PHP code presented here forms the backbone of a dynamic pizza ordering system
-** with an emphasis on a versatile checkout process. The system leverages PHP sessions
-** and incorporates a seamless interface for users to place orders, clear their shopping
-** carts, and navigate through various ordering options.
+** This PHP script embodies a comprehensive pizza ordering system, designed with a focus on
+** dynamic checkout functionality. By leveraging PHP sessions and a responsive interface,
+** users can seamlessly navigate through the ordering process, experiencing a highly
+** personalized and interactive pizza ordering platform.
 **
 ** Session Management:
-
-** The initiation of a PHP session at the beginning of the code ensures the persistence
-** of user data across different pages. This is crucial for maintaining the state of the
-** shopping cart, the selected store, and the order type throughout the user's journey.
+** The initiation of a PHP session at the script's inception is paramount for maintaining
+** user-specific data across different pages. This facilitates the persistence of critical
+** information, including the shopping cart contents, selected store, and chosen order type
+** throughout the user's entire journey. The meticulous use of sessions ensures a cohesive
+** and intuitive user experience.
 **
 ** Error Reporting for Debugging:
-
-** To facilitate the debugging process during development, error reporting is enabled,
-** offering real-time insights into any potential issues. This feature aids developers in
-** identifying and addressing errors promptly.
+** To streamline the development process, the code employs robust error reporting, offering
+** real-time insights into potential issues. This not only aids developers in identifying and
+** addressing errors promptly but also enhances the overall reliability of the system during
+** its lifecycle.
 **
 ** Order Placement Logic:
-
-** The core of the code lies in the logic that handles order placement. When a user clicks
-** the "Place Order" button, the system captures the selected order type and store ID.
-** Depending on the chosen order type, the system redirects the user to the appropriate
-** page for further processing. For example, if "Pickup" is selected, the user is directed
-** to the pickup.php page. A special case is implemented for "DIGIORNO," redirecting the
-** user to an external website. This showcases the system's flexibility in accommodating
-** various order types.
+** At the core of the system lies a sophisticated order placement logic. When users click the
+** "Place Order" button, the script captures the selected order type and store ID, directing
+** the user to the appropriate page for further processing. The conditional branching ensures
+** a flexible system capable of handling diverse order types. Notably, a unique case is
+** implemented for "DIGIORNO," showcasing the script's adaptability to redirect users to an
+** external website for a specific order type.
 **
 ** Shopping Cart Management:
-
-** The system allows users to add items to their shopping carts dynamically. The cart
-** content is stored in a session variable, ensuring that the selected items persist as
-** the user navigates through different pages. The "Clear Cart" button efficiently empties
-** the cart, providing users with the flexibility to modify their orders.
+** The shopping cart functionality is a hallmark of the system, allowing users to dynamically
+** add items to their carts. The seamless integration with session variables guarantees that
+** selected items persist as users navigate different pages. The "Clear Cart" button enhances
+** user control, providing a convenient mechanism for modifying orders on the fly.
 **
 ** User Interface:
-
-** The HTML structure creates an intuitive and user-friendly interface. The navigation bar
-** offers links to essential sections such as Home, Menu, Cart, Profile, and Login/Logout,
-** enhancing user experience and facilitating seamless navigation.
+** The HTML structure is meticulously crafted to deliver an intuitive and user-friendly
+** interface. The navigation bar presents quick links to essential sections, including Home,
+** Menu, Cart, Profile, and Login/Logout. This thoughtful arrangement contributes to a
+** streamlined user experience, enabling users to effortlessly traverse the platform.
 **
 ** Dynamic Dropdowns:
-
-** Dropdown menus for selecting the store and order method enhance the user interface.
-** The system dynamically populates the store dropdown based on data retrieved from the
-** pizza_store table, excluding a specific store with ID 1. Users can choose their preferred
-** store and order method, contributing to a personalized ordering experience.
+** The dynamic dropdown menus for selecting the store and order method are a testament to the
+** script's user-centric design. Drawing data from the pizza_store table, the store dropdown
+** is dynamically populated, excluding a specific store with ID 1. This dynamic approach allows
+** users to personalize their pizza ordering experience by choosing their preferred store and
+** order method.
 **
 ** Detailed Cart Display:
-
-** The shopping cart panel presents a detailed list of items selected by the user. The system
-** fetches item names and prices from the database, providing a comprehensive breakdown of the
-** order. Items from the 'items' table are identified as toppings, while items from the 'menu'
-** table represent full pizzas. This distinction is elegantly displayed in the cart.
+** A standout feature is the comprehensive cart panel that provides users with a detailed list
+** of selected items. The script intelligently fetches item names and prices from the database,
+** presenting a breakdown of the order. Toppings, sourced from the 'items' table, are distinctly
+** identified, creating an elegant distinction from full pizzas sourced from the 'menu' table.
+** This meticulous detailing contributes to a visually appealing and informative cart display.
 **
 ** Conclusion:
-
-** In conclusion, this PHP code encapsulates a robust and flexible pizza ordering system.
-** From session management to order placement logic and dynamic user interface elements,
-** the code ensures a smooth and engaging experience for users. The thoughtful design allows
-** for easy customization, making it adaptable to different scenarios within the realm of
-** online pizza ordering. Developers can leverage this code as a foundation for building and
-** expanding upon sophisticated e-commerce platforms.
+** In summation, this PHP script encapsulates not just a pizza ordering system but a
+** sophisticated and adaptable platform for online pizza commerce. From robust session
+** management to flexible order placement and a polished user interface, the script provides
+** developers with a solid foundation for creating advanced e-commerce solutions. This
+** in-depth analysis emphasizes the script's attention to detail and user-centric design,
+** making it an ideal starting point for developers aiming to create a seamless and
+** feature-rich pizza ordering experience.
 */
 ?>
+
