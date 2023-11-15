@@ -457,14 +457,14 @@
             // var startYear = document.getElementById('start_year').value;
             // var startMonth = document.getElementById('start_month').value;
             // var startDay = document.getElementById('start_day').value;
-            // var stDate = startYear + startMonth + padWithZero(startDay);
-            document.getElementById('stDate').value = document.getElementById('start_date').value;
+            var stDate = document.getElementById('start_date').value;
+            document.getElementById('stDate').value = stDate;
 
             // var endYear = document.getElementById('end_year').value;
             // var endMonth = document.getElementById('end_month').value;
             // var endDay = document.getElementById('end_day').value;
-            // var endDate = endYear + endMonth + padWithZero(endDay);
-            document.getElementById('endDate').value = document.getElementById('end_date').value;
+            var endDate = document.getElementById('end_date').value;
+            document.getElementById('endDate').value = endDate;
             
             // Debug
             console.log('Start Date:', stDate);
