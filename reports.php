@@ -312,7 +312,10 @@
 
             document.getElementById('submitButton').disabled = !selectionMade;
             
-            var storeID = storeId.value;
+            var storeID = 1;
+            if(storeId.value !== ''){
+                storeID = storeId.value;
+            }
             document.getElementById('storeSelID').value = storeID;
 
             // Debug
