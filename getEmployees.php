@@ -10,7 +10,14 @@
     // Fetch employee data based on the selected store from the database
     $storeId = $_GET['storeId'];
     $emp_status = $_GET['emp_status'];
-    $result = $mysqli->query("SELECT * FROM employee WHERE Store_ID = $storeId AND active_employee = $emp_status");
+    //$result = $mysqli->query("SELECT * FROM employee WHERE Store_ID = $storeId AND active_employee = $emp_status");
+
+    // Use prepared statement to prevent SQL injection
+    $stmt = $mysqli->prepare("SELECT * FROM employee WHERE store_id = ? AND active_employee = ?");
+    $stmt->bind_param("ii", $storeId, $emp_status);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
 
     $employees = [];
     while ($row = $result->fetch_assoc()) {
