@@ -92,6 +92,9 @@
                 ?>
             </select>
 
+            <!-- Save storeId to send to getEmployees -->
+            <input type="hidden" id="storeID" name="storeID">
+
         </div><br>
 
         <div id="inventoryOptions" style="display: none;">
@@ -308,9 +311,13 @@
             }
 
             document.getElementById('submitButton').disabled = !selectionMade;
+            
+            var storeID = storeId.value;
+            document.getElementById('storeID').value = storeID;
 
             // Debug
             console.log('Selection Made', selectionMade);
+            console.log('storeID set to:', storeID);
 
         }
 
