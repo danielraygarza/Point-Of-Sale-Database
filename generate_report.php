@@ -11,6 +11,12 @@
     //     exit; // Make sure to exit so that the rest of the script won't execute
     // }
 
+    // TO DO: //
+    // UNFUCK TODAY'S DATES VARIABLES
+    // UNFUCK DATE RANGE NOT WORKING
+    // UNFUCK DROP DOWN DATE DISPLAY
+    // UNFUCK HOW MUCH SHIT IS DISPLAYED
+
 ?>
 
 <!DOCTYPE html>
