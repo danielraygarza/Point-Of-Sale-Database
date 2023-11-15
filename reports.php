@@ -199,6 +199,8 @@
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'block';
+                newStartDateOptions.style.display = 'none';
+                newEndDateOptions.style.display = 'none';
                 // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
@@ -206,18 +208,24 @@
                 storeOptions.style.display = 'block';
                 storeSelection.style.display = 'block';
                 Employer.style.display = 'none';
+                newStartDateOptions.style.display = 'none';
+                newEndDateOptions.style.display = 'none';
 
             } else if (reportType.value === 'performance') {
                 Employer.style.display = 'block';
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 storeSelection.style.display = 'none';
+                newStartDateOptions.style.display = 'none';
+                newEndDateOptions.style.display = 'none';
 
             } else {
                 inventoryOptions.style.display = 'none';
                 storeOptions.style.display = 'none';
                 Employer.style.display = 'none';
                 storeSelection.style.display = 'none';
+                newStartDateOptions.style.display = 'none';
+                newEndDateOptions.style.display = 'none';
             }
 
             // Update Generate Report button
