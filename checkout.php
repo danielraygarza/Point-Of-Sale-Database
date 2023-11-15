@@ -118,7 +118,7 @@ function getCartItemCount()
                             // returns The topping name as item, and the pizza name as Source. Also returns price as cost.\
 
                             $result = $mysqli->query($query);
-
+                            // Start query to load items for the checkout
                             if ($result) {
                                 while ($row = $result->fetch_assoc()) {
                                     $itemName = $row['Name'];
@@ -135,12 +135,14 @@ function getCartItemCount()
                             }
                         }
                         echo "<li>----------------------</li>";
-                        echo "<li>Total Price: $$totalPrice</li>"; //prints total price
+                        echo "<li>Total Price: $$totalPrice</li>";
+                         //prints total price
                         echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
                     } else {
                         echo "<h2 class='php-heading'> Your cart is empty</h2>";
                     }
-                    $_SESSION['totalPrice'] = $totalPrice; //saves total price to session
+                    $_SESSION['totalPrice'] = $totalPrice; 
+                    //saves total price to session
                     ?>
                 </ul>
             </div>
@@ -156,3 +158,4 @@ function getCartItemCount()
 </body>
 
 </html>
+
