@@ -126,7 +126,7 @@
         <!-- //To here// -->
 
         <!-- Start/End Y-M-D drop down boxes -->
-        <div id="startDateOptions" style="display: none;">
+        <!-- <div id="startDateOptions" style="display: none;">
             <label for="start_year">Start Year:</label>
             <select id="start_year" name="start_year" onchange="dateOptions()">
                 <option value="" selected disabled>-</option>
@@ -154,14 +154,14 @@
             <label for="start_day">Start Day:</label>
             <select id="start_day" name="start_day" onchange="setDay()">
                 <option value="" selected disabled>-</option>
-                <!-- Populated by function dateOptions -->
+                //Populated by function dateOptions
 
             </select>
 
-            <!-- Save stDate to post -->
-            <!-- <input type="hidden" id="stDate" name="stDate"> -->
+            //
+            <input type="hidden" id="stDate" name="stDate">
                 
-        </div><br>
+        </div><br> -->
 
 
         <!-- Fixed Start Date Dropdown -->
@@ -184,7 +184,7 @@
 
         </div> <br>
 
-        <div id="endDateOptions" style="display: none;">
+        <!-- <div id="endDateOptions" style="display: none;">
             <label for="end_year">End Year:</label>
             <select id="end_year" name="end_year" onchange="dateOptions()">
                 <option value="" selected disabled>-</option>
@@ -212,13 +212,13 @@
             <label for="end_day">End Day:</label>
             <select id="end_day" name="end_day" onchange="setDay()">
                 <option value="" selected disabled>-</option>
-                <!-- Populated by function dateOptions -->
+                Populated by function dateOptions
             </select>
 
-            <!-- Saves endDate to post -->
-            <!-- <input type="hidden" id="endDate" name="endDate"> -->
+            //Saves endDate to post
+            <input type="hidden" id="endDate" name="endDate">
                 
-        </div><br>
+        </div><br> -->
 
         <!-- Add more drop down sub-menus here -->
         <div id="Employer" style="display: none;">
