@@ -317,13 +317,18 @@
             // Debug
             console.log('checkVal:', checkVal);
 
+            // If store selection not changing, don't call setNewStoreSelID again
             if(checkVal !== storeId.value){
                 var storeID = 1;
+                // If not set, sets an initial value for hidden storeId value
+                // May not be necessary anymore
                 if(storeId.value !== ''){
                     storeID = storeId.value;
                 }
+                // Sets the hidden value to the selected storeId value
                 document.getElementById('storeSelID').value = storeID;
 
+                // Updates employee drop down
                 setNewStoreSelID();
             }
             // Debug
