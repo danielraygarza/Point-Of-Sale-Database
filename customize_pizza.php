@@ -27,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add-to-cart'])) {
         $selectedToppings = isset($_POST['toppings']) ? $_POST['toppings'] : [];
         addToCart($selectedToppings);
+        header('Location: menu.php');
+        exit;
     }
 }
 ?>
@@ -72,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form action="" method="post" style="display: block; max-width: none;">
                 <div class="toppings-list">
                     <?php
-                    $toppingsQuery = "SELECT Item_Cost, Item_Name FROM items WHERE Item_Type = 'Topping'";
+                    $toppingsQuery = "SELECT Item_Cost, Item_Name FROM items WHERE Item_Type = 'Topping' AND Reorder_Threshold > 0";
                     $toppingsResult = $mysqli->query($toppingsQuery);
                     while ($toppingRow = $toppingsResult->fetch_assoc()) {
                         $toppingName = $toppingRow['Item_Name'];
@@ -82,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ?>
                 </div>
                 <input type="submit" class="button" name="add-to-cart" value="Add to Cart">
-                <a href="menu.php" class="button">Order More</a>
+                <!-- <a href="menu.php" class="button">Order More</a> -->
             </form>
         </div>
     </main>

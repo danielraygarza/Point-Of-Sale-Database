@@ -78,6 +78,7 @@ h1 {
     text-shadow: none;
     margin-bottom: 10px;
     vertical-align: middle;
+    overflow: auto;
 }
 
 input[type="checkbox"] {
