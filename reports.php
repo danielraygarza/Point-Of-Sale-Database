@@ -348,15 +348,18 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <script>
-    $(document).ready(function () {
 
-        // Handle store selection change
         function setNewStoreSelID(){
             populateEmployeeDropdown($('#storeSelID').val(), $("#emp_status").val());
             // Debug
             console.log('onChange function setting SSID ran');
             console.log('storeSelID set to', storeSelID.value);
         }
+
+    $(document).ready(function () {
+
+        // Handle store selection change
+        
         // $('#storeSelID').on('change', function () {
         //     //alert(1);
         //     populateEmployeeDropdown($(this).val(), $("#emp_status").val());
