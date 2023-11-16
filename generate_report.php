@@ -597,7 +597,7 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($employeeResult) > 0) {
                             $is_result = 1;
-                            echo '<div style="float:right;"><button id="export-pdf" style="font-size:medium;" class="btn btn-primary">Export to PDF</button>
+                            echo '<div style="float:right;">
 <button id="export-csv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
 </div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
