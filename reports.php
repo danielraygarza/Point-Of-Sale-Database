@@ -124,8 +124,8 @@
                 <option value="orderdates">Total Orders From:</option>
                 <option value="popular">Today's Most Popular Item</option>
                 <option value="datepopular">Most Popular Item From:</option>
-                <option value="sales">Total Sales Today</option>
-                <option value="date">Total Sales From:</option>
+                <!-- <option value="sales">Total Sales Today</option>
+                <option value="date">Total Sales From:</option> -->
             </select>
         </div><br>
         <!-- //To here// -->
