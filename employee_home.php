@@ -152,9 +152,9 @@
             ?>
                 <main>
                     <div class = "od-header">
-                        <div class = "filterALL" onclick = 'filter("ALL")'><p class = "filterLabel">ALL</p></div>
-                        <div class = "filterALL" onclick = 'filter("COMPLETED")'><p class = "filterLabel">Completed</p></div>
-                        <div class = "filterALL" onclick = 'filter("IN PROGRESS")'><p class = "filterLabel">In Progress</p></div>
+                        <div class = "filterALL" style="cursor: pointer;" onclick = 'filter("ALL")'><p class = "filterLabel">ALL</p></div>
+                        <div class = "filterALL" style="cursor: pointer;" onclick = 'filter("COMPLETED")'><p class = "filterLabel">Completed</p></div>
+                        <div class = "filterALL" style="cursor: pointer;" onclick = 'filter("IN PROGRESS")'><p class = "filterLabel">In Progress</p></div>
                         <p class = "count"> Total Assigned Orders: <?php echo $getOrderCount['COUNT(Order_ID)'] ?> </p>
                     </div>
 
