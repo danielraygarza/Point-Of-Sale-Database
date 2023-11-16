@@ -380,7 +380,6 @@
                     console.log(xhr.responseText);
                 }
             });
-            checkSelections();
         }
 
         $('#emp_status').on('change', function () {
