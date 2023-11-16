@@ -95,9 +95,6 @@
     <body id = "order-display">
         <div class="navbar">
             <a href="index.php">Home</a>
-            <!-- <a href="#">Order Now</a>
-            <a href="#">Profile</a> -->
-            <!-- if user is logged in, logout button will display -->
             <?php
             if ($_SESSION['user']['Title_Role'] == 'MAN' || $_SESSION['user']['Title_Role'] == 'CEO' && $_SERVER['REQUEST_URI'] != '/reports.php') {
                 echo '<a href="reports.php">Reports</a>';
