@@ -349,14 +349,20 @@
     $(document).ready(function () {
 
         // Handle store selection change
-        $('#storeSelID').on('change', function () {
-            //alert(1);
-            populateEmployeeDropdown($(this).val(), $("#emp_status").val());
-
+        function setNewStoreSelID(){
+            populateEmployeeDropdown($('#storeSelID').val(), $("#emp_status").val());
             // Debug
             console.log('onChange function setting SSID ran');
             console.log('storeSelID set to', storeSelID.value);
-        });
+        }
+        // $('#storeSelID').on('change', function () {
+        //     //alert(1);
+        //     populateEmployeeDropdown($(this).val(), $("#emp_status").val());
+
+        //     // Debug
+        //     console.log('onChange function setting SSID ran');
+        //     console.log('storeSelID set to', storeSelID.value);
+        // });
 
         $('#emp_status').on('change', function () {
             //alert(1);
