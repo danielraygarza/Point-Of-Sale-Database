@@ -93,7 +93,7 @@
             </select>
 
             <!-- Save storeId to send to getEmployees -->
-            <input type="hidden" id="storeSelID" name="storeSelID" value="1" onchange="setNewStoreSelID()">
+            <input type="hidden" id="storeSelID" name="storeSelID" value="1">
 
         </div><br>
 
