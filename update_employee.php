@@ -51,7 +51,7 @@
                 if ($active_employee == '0') {
                     $storeManagerId = $mysqli->query("SELECT Store_Manager_ID FROM pizza_store WHERE Pizza_Store_ID = $Store_ID")->fetch_object()->Store_Manager_ID;
                     
-                    // Reassign supervisors as needed
+                    // if employee is a supervisor, it will assign the manager of that store as new supervisor
                     $mysqli->query("UPDATE employee SET Supervisor_ID = $storeManagerId WHERE Supervisor_ID = $Employee_ID");
                 }
 
@@ -213,7 +213,7 @@
                 <option value="0">Yes</option>
             </select>
             <p id="warning_message" style="display: none; color: black ; text-shadow: none;">Removing an employee will inactive their account. Please proceed with caution.
-        <br>You cannot remove a manager without assigning a new one to that location.<br>Removing an individual's supervisor will assign their store manager as new supervisor.</p>
+            <br>Removing an individual's supervisor will assign their store manager as new supervisor.</p>
         </div><br>
 
         <script>
