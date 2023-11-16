@@ -356,24 +356,6 @@
             console.log('storeSelID set to', storeSelID.value);
         }
 
-    $(document).ready(function () {
-
-        // Handle store selection change
-        
-        // $('#storeSelID').on('change', function () {
-        //     //alert(1);
-        //     populateEmployeeDropdown($(this).val(), $("#emp_status").val());
-
-        //     // Debug
-        //     console.log('onChange function setting SSID ran');
-        //     console.log('storeSelID set to', storeSelID.value);
-        // });
-
-        $('#emp_status').on('change', function () {
-            //alert(1);
-            populateEmployeeDropdown($("#storeSelID").val(), $(this).val());
-        });
-
         function populateEmployeeDropdown(storeId, emp_status) {
             // Make an AJAX request to fetch employee data based on the selected store
             $.ajax({
@@ -399,6 +381,55 @@
                 }
             });
         }
+
+        $('#emp_status').on('change', function () {
+            //alert(1);
+            populateEmployeeDropdown($("#storeSelID").val(), $(this).val());
+        });
+
+    $(document).ready(function () {
+
+        // Handle store selection change
+        
+        // $('#storeSelID').on('change', function () {
+        //     //alert(1);
+        //     populateEmployeeDropdown($(this).val(), $("#emp_status").val());
+
+        //     // Debug
+        //     console.log('onChange function setting SSID ran');
+        //     console.log('storeSelID set to', storeSelID.value);
+        // });
+
+        // $('#emp_status').on('change', function () {
+        //     //alert(1);
+        //     populateEmployeeDropdown($("#storeSelID").val(), $(this).val());
+        // });
+
+        // function populateEmployeeDropdown(storeId, emp_status) {
+        //     // Make an AJAX request to fetch employee data based on the selected store
+        //     $.ajax({
+        //         url: 'getEmployees.php', // Replace with your server-side script
+        //         type: 'GET',
+        //         data: { storeId: storeId, emp_status: emp_status },
+        //         dataType: 'json',
+        //         success: function (employees) {
+        //             // Clear existing options
+        //             $('#employeeDropdown').empty();
+
+        //             // Add default option
+        //             $('#employeeDropdown').append('<option value="" selected disabled>Select Employee</option>');
+
+        //             // Add employee options based on the selected store
+        //             $.each(employees, function (index, employee) {
+        //                 $('#employeeDropdown').append('<option value="' + employee.id + '">' + employee.name + '</option>');
+        //             });
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error('Error fetching employees:', status, error);
+        //             console.log(xhr.responseText);
+        //         }
+        //     });
+        // }
     });
     </script>
 </body>
