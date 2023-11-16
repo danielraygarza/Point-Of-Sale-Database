@@ -652,7 +652,7 @@
                                  // Start scrollable area
                                 echo '<div class="scrollable-area">';
 
-                                echo "<table border='1' class='table_update'>";
+                                echo "<table border='1' class='table_update' id='export-data'>";
                                 echo "<tr>
                                         <th class='th-spacing'>Order ID</th>
                                         <th class='th-spacing'>Date Of Order</th>
