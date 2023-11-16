@@ -398,7 +398,7 @@
             populateEmployeeDropdown($("#storeSelID").val(), $(this).val());
         });
 
-    $(document).ready(function () {
+    //$(document).ready(function () {
 
         // Handle store selection change
         
@@ -441,7 +441,7 @@
         //         }
         //     });
         // }
-    });
+    //});
     </script>
 </body>
 
