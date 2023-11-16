@@ -258,7 +258,7 @@
                         Order_Status, 
                         Total_Amount, 
                         Cost_Of_Goods,
-                        O_Customer_ID
+                        Customer_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) = '$currentDate';";
                     } elseif ($storeType === 'orderdates') {
@@ -305,7 +305,7 @@
                         Order_Status, 
                         Total_Amount, 
                         Cost_Of_Goods,
-                        O_Customer_ID
+                        Customer_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
                     } elseif ($storeType === 'popular') {
@@ -515,7 +515,7 @@
                                         echo "<td>" . $ordRow['Order_Status'] . "</td>";
                                         echo "<td>" . $ordRow['Total_Amount'] . "</td>";
                                         echo "<td>" . $ordRow['Cost_Of_Goods'] . "</td>";
-                                        echo "<td>" . $ordRow['O_Customer_ID'] . "</td>";
+                                        echo "<td>" . $ordRow['Customer_ID'] . "</td>";
                                         echo "</tr>";
                                     }
 
@@ -615,11 +615,11 @@
                         }
                 
                         // Display Order Details Table
-                        // $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `O_Customer_ID`, `orders`.Store_ID 
+                        // $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `Customer_ID`, `orders`.Store_ID 
                         //             FROM `orders` LEFT JOIN `employee` ON `employee`.Employee_ID = `orders`.Employee_ID_assigned 
                         //             WHERE `Employee_ID_assigned` = $employeeId AND `orders`.Store_ID = $storeId AND `active_employee` = $active_employee";
 
-                        $orderSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID, pizza_store.Store_Address
+                        $orderSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, Customer_ID, pizza_store.Store_Address
                                     FROM orders LEFT JOIN employee ON employee.Employee_ID = orders.Employee_ID_assigned LEFT JOIN pizza_store ON pizza_store.Pizza_Store_ID = orders.Store_ID
                                     WHERE Employee_ID_assigned = $employeeId AND orders.Store_ID = $storeId AND active_employee = $active_employee";
 
@@ -653,7 +653,7 @@
                                     echo "<td>" . $orderRow['Order_Type'] . "</td>";
                                     echo "<td>" . $orderRow['Order_Status'] . "</td>";
                                     echo "<td>" . $orderRow['Total_Amount'] . "</td>";
-                                    echo "<td>" . $orderRow['O_Customer_ID'] . "</td>";
+                                    echo "<td>" . $orderRow['Customer_ID'] . "</td>";
                                     echo "<td>" . $orderRow['Store_Address'] . "</td>";
                                     echo "</tr>";
                                 }
