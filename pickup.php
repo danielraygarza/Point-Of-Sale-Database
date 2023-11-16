@@ -190,16 +190,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                 $ingredientAmountToSubtract = 0;
                                                 switch ($pizzaDetails['Size_Option']) {
                                                     case 'S':
-                                                        $ingredientAmountToSubtract = 0.3;
-                                                        break;
-                                                    case 'M':
                                                         $ingredientAmountToSubtract = 0.5;
                                                         break;
+                                                    case 'M':
+                                                        $ingredientAmountToSubtract = 1.0;
+                                                        break;
                                                     case 'L':
-                                                        $ingredientAmountToSubtract = 0.7;
+                                                        $ingredientAmountToSubtract = 1.5;
                                                         break;
                                                     case 'X':
-                                                        $ingredientAmountToSubtract = 0.9;
+                                                        $ingredientAmountToSubtract = 2.0;
                                                         break;
                                                 }
 
