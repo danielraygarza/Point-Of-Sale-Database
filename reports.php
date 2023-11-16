@@ -317,7 +317,7 @@
             // Debug
             console.log('checkVal:', checkVal);
 
-            if(checkVal === '' || (checVal !== storeId.value)){
+            if(checkVal === '' || (checkVal !== storeId.value)){
                 var storeID = 1;
                 if(storeId.value !== ''){
                     storeID = storeId.value;
