@@ -93,7 +93,7 @@
             </select>
 
             <!-- Save storeId to send to getEmployees -->
-            <input type="hidden" id="storeSelID" name="storeSelID" value="1" onchange="setNewStoreSelID()">
+            <input type="hidden" id="storeSelID" name="storeSelID" value="1">
 
         </div><br>
 
@@ -312,14 +312,20 @@
 
             document.getElementById('submitButton').disabled = !selectionMade;
             
-            var storeID = 1;
-            if(storeId.value !== ''){
-                storeID = storeId.value;
+            var checkVal = document.getElementById('storeSelID').value;
+            
+            // Debug
+            console.log('checkVal:', checkVal);
+
+            if(checkVal === '' || (checkVal !== storeId.value)){
+                var storeID = 1;
+                if(storeId.value !== ''){
+                    storeID = storeId.value;
+                }
+                document.getElementById('storeSelID').value = storeID;
+
+                setNewStoreSelID();
             }
-            document.getElementById('storeSelID').value = storeID;
-
-            setNewStoreSelID();
-
             // Debug
             console.log('Selection Made', selectionMade);
             console.log('storeSelID set to:', storeID);
