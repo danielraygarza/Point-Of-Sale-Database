@@ -267,6 +267,7 @@
                         Order_Type, 
                         Order_Status, 
                         Total_Amount, 
+                        Cost_Of_Goods,
                         O_Customer_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) = '$currentDate';";
@@ -313,6 +314,7 @@
                         Order_Type, 
                         Order_Status, 
                         Total_Amount, 
+                        Cost_Of_Goods,
                         O_Customer_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
@@ -509,6 +511,7 @@
                                             <th class='th-spacing'>Order Type</th>
                                             <th class='th-spacing'>Order Status</th>
                                             <th class='th-spacing'>Total Amount</th>
+                                            <th class='th-spacing'>Cost</th>
                                             <th class='th-spacing'>Customer ID</th>
                                         </tr>";
 
@@ -521,6 +524,7 @@
                                         echo "<td>" . $ordRow['Order_Type'] . "</td>";
                                         echo "<td>" . $ordRow['Order_Status'] . "</td>";
                                         echo "<td>" . $ordRow['Total_Amount'] . "</td>";
+                                        echo "<td>" . $ordRow['Cost_Of_Goods'] . "</td>";
                                         echo "<td>" . $ordRow['O_Customer_ID'] . "</td>";
                                         echo "</tr>";
                                     }
