@@ -51,7 +51,7 @@
                 if ($active_employee == '0') {
                     $storeManagerId = $mysqli->query("SELECT Store_Manager_ID FROM pizza_store WHERE Pizza_Store_ID = $Store_ID")->fetch_object()->Store_Manager_ID;
                     
-                    // Reassign supervisors as needed
+                    // if employee is a supervisor, it will assign the manager of that store as new supervisor
                     $mysqli->query("UPDATE employee SET Supervisor_ID = $storeManagerId WHERE Supervisor_ID = $Employee_ID");
                 }
 
