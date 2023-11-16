@@ -62,11 +62,8 @@
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="employee_home.php">Employee Home</a>
-        <?php
-            if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                echo '<a href="logout.php">Logout</a>';
-            }
-        ?>
+        <?php echo '<a href="logout.php">Logout</a>';?>
+        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
     <form action="employee_register.php" method="post">
         <h2>Create Employee Account</h2>

@@ -58,12 +58,8 @@
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="reports.php">Back to Reports</a>
-        <?php
-        //shows logout button if logged in
-        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-            echo '<a href="logout.php">Logout</a>';
-        }
-        ?>
+        <?php echo '<a href="logout.php">Logout</a>';?>
+        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
     <form action="generate_report.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">
         <?php

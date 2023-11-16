@@ -6,11 +6,11 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    // Redirects if not manager or accessed directly via URL
-    // if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-    //     header("Location: employee_login.php");
-    //     exit; // Make sure to exit so that the rest of the script won't execute
-    // }
+    // Redirects if not manager/CEO or accessed directly via URL
+    if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+        header("Location: employee_login.php");
+        exit; // Make sure to exit so that the rest of the script won't execute
+    }
 
     //TO DO://
     // CURRENTLY SELECTING ANY MONTH OR YEAR REPOPULATES DAYS FOR BOTH START AND END FORCING USER TO RESELECT ANY VALUES ALREADY SELECTED THERE
@@ -50,14 +50,8 @@
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="employee_home.php">Employee Home</a>
-        <?php
-        //shows logout button if logged in
-        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-            echo '<a href="logout.php">Logout</a>';
-        }
-        ?>
-
-
+        <?php echo '<a href="logout.php">Logout</a>';?>
+        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
 
     <form action="generate_report.php" method="post">

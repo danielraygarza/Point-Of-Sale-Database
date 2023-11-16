@@ -7,10 +7,10 @@
     session_start();
 
     // Redirects if not manager/CEO or accessed directly via URL
-    //  if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-    //     header("Location: employee_login.php");
-    //     exit; // Make sure to exit so that the rest of the script won't execute
-    // }
+     if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+        header("Location: employee_login.php");
+        exit; // Make sure to exit so that the rest of the script won't execute
+    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
         // Extracting data from the form
@@ -75,11 +75,8 @@
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="employee_home.php">Employee Home</a>
-        <?php
-        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-            echo '<a href="logout.php">Logout</a>';
-        }
-        ?>
+        <?php echo '<a href="logout.php">Logout</a>';?>
+        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
     <form action="inventory.php" method="post">
         <h2>Inventory</h2>
