@@ -76,8 +76,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
     $Time_Processed = $mysqli->real_escape_string($_POST['Current_Time']);
 
     // SQL to find an available employee at the selected store with the least number of assigned orders
-    $findEmployeeSQL = "SELECT Employee_ID FROM employee  WHERE Store_ID = '$store_id' AND clocked_in = 1 
-                            ORDER BY assigned_orders ASC LIMIT 1";
+    $findEmployeeSQL = "SELECT Employee_ID FROM employee 
+                        WHERE Store_ID = '$store_id' AND clocked_in = 1 AND Title_Role IN ('TM', 'SUP')
+                        ORDER BY assigned_orders ASC LIMIT 1";
+        
 
     // Start a transaction
     $mysqli->begin_transaction();
