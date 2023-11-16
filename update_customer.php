@@ -69,7 +69,7 @@
             }
         ?>
     </div>
-    <form action="update_profile.php" method="post">
+    <form action="update_customer.php" method="post">
         <h2>Update your POS Pizza Account</h2>
         <div>       
             <label for="first_name">Name  </label>
