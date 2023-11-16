@@ -581,6 +581,9 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($employeeResult) > 0) {
                             $is_result = 1;
+                            echo '<div style="float:right;"><button id="export-pdf" style="font-size:medium;" class="btn btn-primary">Export to PDF</button>
+<button id="export-csv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
+</div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start scrollable area
@@ -688,6 +691,58 @@
         ?>
 
     </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="table2csv.js"></script>
+
+    <script type="text/javascript">
+        $(document).on('click', '#export-csv', function(e) {
+                e.preventDefault();
+                $("#export-data").table2csv({
+                    filename:'export-csv.csv'
+                });
+
+
+
+        });
+
+        $('#export-pdf').on('click', function (e) {
+             e.preventDefault();
+
+             var tableHtml = $('#export-data').html();
+
+             $.post('export_pdf.php', { data: tableHtml }, function (response) {
+                // Convert base64 PDF data to Blob
+                var byteCharacters = atob(response.fileData);
+                var byteArrays = [];
+
+                for (var offset = 0; offset < byteCharacters.length; offset += 512) {
+                    var slice = byteCharacters.slice(offset, offset + 512);
+
+                    var byteNumbers = new Array(slice.length);
+                    for (var i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+
+                    var byteArray = new Uint8Array(byteNumbers);
+                    byteArrays.push(byteArray);
+                }
+
+                var blob = new Blob(byteArrays, { type: 'application/pdf' });
+
+                // Create a download link and trigger the download
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'table.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, 'json');
+            
+        });
+
+       
+    </script>
 
 </body>
 
