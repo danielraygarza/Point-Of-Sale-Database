@@ -318,6 +318,8 @@
             }
             document.getElementById('storeSelID').value = storeID;
 
+            setNewStoreSelID();
+
             // Debug
             console.log('Selection Made', selectionMade);
             console.log('storeSelID set to:', storeID);
@@ -387,8 +389,6 @@
                     $.each(employees, function (index, employee) {
                         $('#employeeDropdown').append('<option value="' + employee.id + '">' + employee.name + '</option>');
                     });
-
-                    checkSelections();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching employees:', status, error);
