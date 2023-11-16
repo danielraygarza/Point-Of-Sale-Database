@@ -167,7 +167,7 @@
             <!-- </select><br> -->
 
             <label for="employeeDropdown">Select Employee:</label>
-            <select name="employeeDropdown" id="employeeDropdown">
+            <select name="employeeDropdown" id="employeeDropdown" onchange="checkSelections()">
                 <option value="" selected disabled>Select Employee</option>
                 
             </select>
