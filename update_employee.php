@@ -1,28 +1,29 @@
 <?php
-    // Start the session at the beginning of the file
-    include 'database.php';
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-    session_start();
+// Start the session at the beginning of the file
+include 'database.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
 
-    // Redirects if not manager/CEO or accessed directly via URL
-    if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-        header("Location: employee_login.php");
-        exit; // Make sure to exit so that the rest of the script won't execute
-    }
+// Redirects if not manager/CEO or accessed directly via URL
+if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    header("Location: employee_login.php");
+    exit; // Make sure to exit so that the rest of the script won't execute
+}
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST['action']) && $_POST['action'] == 'get_employee_details') {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['action'])) {
+        if ($_POST['action'] == 'get_employee_details') {
             $Employee_ID = $mysqli->real_escape_string($_POST['employee_id']);
             $sql = "SELECT E_First_Name, E_Last_Name, Employee_ID, Title_Role, Store_ID, Supervisor_ID, Hire_Date 
-                    FROM employee 
-                    WHERE Employee_ID = $Employee_ID";
+                        FROM employee 
+                        WHERE Employee_ID = $Employee_ID";
             $result = $mysqli->query($sql);
 
             if ($result) {
                 $employeeData = $result->fetch_assoc();
-                echo json_encode($employeeData); 
+                echo json_encode($employeeData);
                 $mysqli->close();
                 exit;
             } else {
@@ -30,49 +31,74 @@
                 $mysqli->close();
                 exit;
             }
-        } else {
-            $E_First_Name = $mysqli->real_escape_string($_POST['E_First_Name']);
-            $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
-            $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
-            $Supervisor_ID = $mysqli->real_escape_string($_POST['Supervisor_ID']);
-            $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
-            $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
-            $active_employee = $mysqli->real_escape_string($_POST['active_employee']);
-    
-            // Check if Employee_ID and Supervisor_ID match
-            if ($Employee_ID == $Supervisor_ID) {
-                echo "";
-                $_SESSION['error'] = "Employee cannot be their own supervisor";
-            } else {
-                $mysqli->begin_transaction();
+        } elseif ($_POST['action'] == 'get_supervisors_for_store') {
+            $storeId = $mysqli->real_escape_string($_POST['store_id']);
+            $role = $_POST['role'];
 
-                $storeManagerId = null;
-                // If the employee is set to inactive, get the store manager's ID
-                if ($active_employee == '0') {
-                    $storeManagerId = $mysqli->query("SELECT Store_Manager_ID FROM pizza_store WHERE Pizza_Store_ID = $Store_ID")->fetch_object()->Store_Manager_ID;
-                    
-                    // if employee is a supervisor, it will assign the manager of that store as new supervisor
-                    $mysqli->query("UPDATE employee SET Supervisor_ID = $storeManagerId WHERE Supervisor_ID = $Employee_ID");
+            $sql = "SELECT Employee_ID, E_First_Name, E_Last_Name, Title_Role 
+                        FROM employee 
+                        WHERE Store_ID = '$storeId' AND Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'";
+
+            $result = $mysqli->query($sql);
+            $supervisors = [];
+
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    // If the role is SUP, only include managers and CEOs
+                    if ($role === 'SUP' && $row['Title_Role'] === 'TM') continue;
+                    $supervisors[] = $row;
                 }
+                echo json_encode($supervisors);
+            } else {
+                echo json_encode(array('error' => $mysqli->error));
+            }
+            $mysqli->close();
+            exit;
+        }
+    } else {
+        $E_First_Name = $mysqli->real_escape_string($_POST['E_First_Name']);
+        $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
+        $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
+        $Supervisor_ID = $mysqli->real_escape_string($_POST['Supervisor_ID']);
+        $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
+        $Employee_ID = $mysqli->real_escape_string($_POST['Employee_ID']);
+        $active_employee = $mysqli->real_escape_string($_POST['active_employee']);
 
-                $stmt = $mysqli->prepare("UPDATE employee 
+        // Check if Employee_ID and Supervisor_ID match
+        if ($Employee_ID == $Supervisor_ID) {
+            echo "";
+            $_SESSION['error'] = "Employee cannot be their own supervisor";
+        } else {
+            $mysqli->begin_transaction();
+
+            $storeManagerId = null;
+            // If the employee is set to inactive, get the store manager's ID
+            if ($active_employee == '0') {
+                $storeManagerId = $mysqli->query("SELECT Store_Manager_ID FROM pizza_store WHERE Pizza_Store_ID = $Store_ID")->fetch_object()->Store_Manager_ID;
+
+                // if employee is a supervisor, it will assign the manager of that store as new supervisor
+                $mysqli->query("UPDATE employee SET Supervisor_ID = $storeManagerId WHERE Supervisor_ID = $Employee_ID");
+            }
+
+            $stmt = $mysqli->prepare("UPDATE employee 
                                         SET E_First_Name=?, E_Last_Name=?, Title_Role=?, Supervisor_ID=?, Store_ID=?, active_employee=? 
                                         WHERE Employee_ID = ?");
-                $stmt->bind_param("sssiisi", $E_First_Name, $E_Last_Name, $Title_Role, $Supervisor_ID, $Store_ID, $active_employee, $Employee_ID);
-                $stmt->execute();
-                $stmt->close();
+            $stmt->bind_param("sssiisi", $E_First_Name, $E_Last_Name, $Title_Role, $Supervisor_ID, $Store_ID, $active_employee, $Employee_ID);
+            $stmt->execute();
+            $stmt->close();
 
-                $mysqli->commit();
-                $mysqli->close();
-                header('Location: employee_home.php');
-                exit;
-            }
+            $mysqli->commit();
+            $mysqli->close();
+            header('Location: employee_home.php');
+            exit;
         }
     }
+}
 
 ?>
 
 <!DOCTYPE html>
+
 <head>
     <title>POS Employee Management</title>
     <link rel="stylesheet" href="css/styles.css">
@@ -85,8 +111,8 @@
         <a href="index.php">Home</a>
         <a href="employee_home.php">Employee Home</a>
         <a href="reports.php">Reports</a>
-        <?php echo '<a href="logout.php">Logout</a>';?>
-        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
+        <?php echo '<a href="logout.php">Logout</a>'; ?>
+        <a id="cart-button" style="background-color: transparent;"><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
     <form action="update_employee.php" method="post">
         <h2>Update Employee Accounts</h2>
@@ -95,9 +121,9 @@
             <select onchange="getEmployeeDetails(this.value)">
                 <option value="" selected disabled>Select Employee</option>
                 <?php
-                 if ($_SESSION['user']['Title_Role'] == 'CEO') {
-                     $allEmployees = $mysqli->query("SELECT * FROM employee WHERE active_employee = '1'");
-                     if ($allEmployees->num_rows > 0) {
+                if ($_SESSION['user']['Title_Role'] == 'CEO') {
+                    $allEmployees = $mysqli->query("SELECT * FROM employee WHERE active_employee = '1'");
+                    if ($allEmployees->num_rows > 0) {
                         while ($row = $allEmployees->fetch_assoc()) {
                             echo '<option value="' . $row["Employee_ID"] . '" ' . $selected . '>' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
                         }
@@ -106,10 +132,10 @@
                     $managerStore = $_SESSION['user']['Store_ID'];
                     $allEmployees = $mysqli->query("SELECT * FROM employee WHERE Store_ID = $managerStore");
                     if ($allEmployees->num_rows > 0) {
-                       while ($row = $allEmployees->fetch_assoc()) {
-                           echo '<option value="' . $row["Employee_ID"] . '" ' . $selected . '>' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
-                       }
-                   }
+                        while ($row = $allEmployees->fetch_assoc()) {
+                            echo '<option value="' . $row["Employee_ID"] . '" ' . $selected . '>' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                        }
+                    }
                 }
                 ?>
             </select>
@@ -119,7 +145,7 @@
                 if (employeeId) {
                     $.ajax({
                         type: 'POST',
-                        url: '', // Empty means current file in this case
+                        url: '',
                         data: {
                             action: 'get_employee_details',
                             employee_id: employeeId
@@ -144,11 +170,10 @@
 
         <div>
             <label for="E_First_Name">Name </label>
-            <input type="text" id="E_First_Name" name="E_First_Name" placeholder="First" style="width: 75px;" required>
-            <!-- <input type="text" id="E_First_Name" name="E_First_Name" value="<?php //echo $_SESSION['user']['E_First_Name']; ?>" placeholder="First" style="width: 75px;" required> -->
+            <input type="text" id="E_First_Name" name="E_First_Name" placeholder="First" style="width: 100px;" required>
 
             <label for="E_Last_Name"></label>
-            <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 75px;" required>
+            <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 100px;" required>
         </div><br>
 
         <div>
@@ -171,9 +196,36 @@
             </select>
         </div><br>
 
+        <script>
+            function roleRequirement() {
+                const role = document.getElementById('Title_Role');
+                const store = document.getElementById('Store_ID');
+                const supervisor = document.getElementById('Supervisor_ID');
+
+                if (role.value === 'MAN') {
+                    //set value to CEO and store 1
+                    supervisor.value = '12345678';
+                    supervisor.setAttribute('disabled', 'disabled');
+                    store.value = '1';
+                    store.setAttribute('disabled', 'disabled');
+                } else {
+                    // Enable the store and supervisor dropdowns for other roles
+                    supervisor.removeAttribute('disabled');
+                    store.removeAttribute('disabled');
+
+                    if (store.value) {
+                        updateSupervisorsForStore(store.value);
+                    }
+
+                    // reset supervisor value 
+                    supervisor.value = '';
+                }
+            }
+        </script>
+
         <div>
             <label for="Store_ID">Change Location </label>
-            <select id="Store_ID" name="Store_ID" required>
+            <select id="Store_ID" name="Store_ID" required onchange="updateSupervisorsForStore(this.value)">
                 <option value="" selected disabled>Select</option>
                 <?php
                 $stores = $mysqli->query("SELECT * FROM pizza_store");
@@ -186,23 +238,72 @@
             </select>
         </div><br>
 
+        <script>
+            function updateSupervisorsForStore(storeId) {
+                const role = document.getElementById('Title_Role').value;
+                const supervisorDropdown = $('#Supervisor_ID');
+                const selectedEmployeeId = $('#Employee_ID').val(); // Get current employee
+
+                $.ajax({
+                    type: 'POST',
+                    url: '',
+                    data: {
+                        action: 'get_supervisors_for_store',
+                        store_id: storeId,
+                        role: role,
+                        exclude_employee_id: selectedEmployeeId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        supervisorDropdown.empty();
+                        supervisorDropdown.append('<option value="" disabled selected>Select</option>');
+
+                        //disable the CEO if manager
+                        if (role === 'MAN') {
+                            supervisorDropdown.append('<option value="12345678" disabled>Shasta VII</option>');
+                        }
+
+
+                        //show supervisors excluding current employee
+                        response.forEach(function(supervisor) {
+                            if (supervisor.Employee_ID !== selectedEmployeeId) {
+                                supervisorDropdown.append('<option value="' + supervisor.Employee_ID + '">' + supervisor.E_First_Name + ' ' + supervisor.E_Last_Name + '</option>');
+                            }
+                        });
+
+                        if (role === 'MAN') {
+                            supervisorDropdown.val('12345678'); //assign to CEO
+                            supervisorDropdown.attr('disabled', 'disabled');
+                        } else {
+                            supervisorDropdown.removeAttr('disabled');
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        </script>
+
         <div>
             <label for="Supervisor_ID">Change Supervisor </label>
             <select id="Supervisor_ID" name="Supervisor_ID" required>
                 <option value="" selected disabled>Select</option>
                 <?php
-                    $currentEmployeeId = 'employeeId';
-                    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'");
-                    if ($supervisors->num_rows > 0) {
-                        while ($row = $supervisors->fetch_assoc()) {
-                            if ($row["Employee_ID"] == $currentEmployeeId) { continue; }
-                            echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                $currentEmployeeId = 'employeeId';
+                $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'");
+                if ($supervisors->num_rows > 0) {
+                    while ($row = $supervisors->fetch_assoc()) {
+                        if ($row["Employee_ID"] == $currentEmployeeId) {
+                            continue;
                         }
+                        echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
                     }
+                }
                 ?>
             </select>
         </div><br>
-        
+
         <div>
             <label for="active_employee">Remove Employee </label>
             <select id="active_employee" name="active_employee" onchange="showWarning(this.value)">
@@ -210,7 +311,8 @@
                 <option value="0">Yes</option>
             </select>
             <p id="warning_message" style="display: none; color: black ; text-shadow: none;">Removing an employee will inactive their account. Please proceed with caution.
-            <br>Removing an individual's supervisor will assign their store manager as new supervisor.</p>
+                <br>Removing an individual's supervisor will assign their store manager as new supervisor.
+            </p>
         </div><br>
 
         <script>
