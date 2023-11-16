@@ -263,7 +263,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             supervisorDropdown.append('<option value="12345678" disabled>Shasta VII</option>');
                         }
 
-
                         //show supervisors excluding current employee
                         response.forEach(function(supervisor) {
                             if (supervisor.Employee_ID !== selectedEmployeeId) {
