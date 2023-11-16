@@ -110,41 +110,6 @@ input[type="checkbox"] {
     color: black;
 }
 
-/* Dropdown styling to match navbar links */
-/* select#Store_ID { */
-    /* font-family: 'Trebuchet MS', sans-serif;
-    font-size: 16px;
-    float: inline-end;
-    display: block;
-    color: white;
-    text-align: right;
-    padding: 14px 16px;
-    border-radius: 0px;
-    overflow: hidden;
-    top: 0;           /* Aligns the navbar to the top */
-    /* text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-    border: none;
-    background-color: transparent;
-    appearance: none;
-    -webkit-appearance: none; */
-    /* background-position: right 15px center; */
-    /* background-size: 10px; */
-    /* cursor: pointer;
-    border-color:none; 
-    box-shadow: none; Add a subtle shadow */
-/* } */
-
-/* select#Store_ID:hover { */
-    /* background-color: #ddd;
-    color: black; */
-/* } */
-
-/* select#Store_ID option { */
-    /* color: black;
-    background-color: white;
-    padding: 10px; */
-/* } */
-
 /* Report Header Styling */
 .report_header {
     background-color: rgba(7, 4, 4, 0.7);
@@ -252,6 +217,7 @@ select:focus {
     top: 0;  /* Reset the top positioning */
     left: 0;  /* Reset the left positioning */
     transform: none; 
+    overflow: auto;
     
 }
 
@@ -274,10 +240,6 @@ select:focus {
 
 .orderbutton {
     display: block; /* Ensures it's on a new line */
-    /* position: absolute; */
-    /* bottom: -50px;  Moves the button outside and below the container */
-    /* left: 50%; */
-    /* transform: translateX(-50%); This centers the button based on its width */
 }
 
 .php-heading {
