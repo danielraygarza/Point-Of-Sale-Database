@@ -15,6 +15,18 @@
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
+        //handles dropdown to update supervisors based on the store selected
+        if (isset($_POST['requestType']) && $_POST['requestType'] == 'ajaxUpdate') {
+            $storeID = $_POST['store_selected'];
+            $supervisors = $mysqli->query("SELECT * FROM employee WHERE Store_ID = '$storeID' AND Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'");
+            echo '<option value="" selected disabled>Assign Supervisor</option>';
+            if ($supervisors->num_rows > 0) {
+                while($row = $supervisors->fetch_assoc()) {
+                    echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
+                }
+            }
+            exit;
+        }
 
         // Extracting data from the form
         $E_First_Name = $mysqli->real_escape_string($_POST['E_First_Name']);
@@ -69,9 +81,9 @@
         <h2>Create Employee Account</h2>
         <div>       
             <label for="E_First_Name">Name  </label>
-            <input type="text" id="E_First_Name" name="E_First_Name" placeholder="First" style="width: 75px;" required>
+            <input type="text" id="E_First_Name" name="E_First_Name" placeholder="First" style="width: 100px;" required>
             <label for="E_Last_Name"></label>
-            <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 75px;" required>
+            <input type="text" id="E_Last_Name" name="E_Last_Name" placeholder="Last" style="width: 100px;" required>
         </div><br>
 
         <div>
@@ -90,35 +102,31 @@
                 const role = document.getElementById('Title_Role');
                 const supervisor = document.getElementById('Supervisor_ID');
                 const store = document.getElementById('Store_ID');
-                const CEO = supervisor.querySelector('option[value="12345678"]');
-                const HQ = store.querySelector('option[value="1"]');
+                const HQ = store.querySelector('option[value="1"]'); // Option for Store ID 1
 
-                // if manager role is selected, supervisor is CEO and store ID is one
                 if (role.value === 'MAN') {
+                    //assigns new managers to the CEO and Store 1
                     supervisor.value = '12345678';
                     supervisor.setAttribute('disabled', '');
-                    CEO.removeAttribute('disabled');
-                    
-                    //when CEO creates managers, store set to store 1 until new store created
                     store.value = '1';
                     store.setAttribute('disabled', '');
+
                     HQ.removeAttribute('disabled');
                 } else {
-                    supervisor.removeAttribute('disabled');
-                    store.removeAttribute('disabled');
-                    CEO.setAttribute('disabled', '');
-                    HQ.setAttribute('disabled', '');
-                    
-                    //reset dropdown
                     supervisor.value = "";
                     store.value = "";
+
+                    supervisor.removeAttribute('disabled');
+                    store.removeAttribute('disabled');
+
+                    HQ.setAttribute('disabled', ''); //cannnot select store 1
                 }
             }
         </script>
         
         <div>
             <label for="Store_ID">Store Location </label>
-            <select id="Store_ID" name="Store_ID" required>
+            <select id="Store_ID" name="Store_ID" required onchange="updateSupervisorDropdown()">
                 <option value="" selected disabled>Select Store</option>
                 <?php
                     $stores = $mysqli->query("SELECT * FROM pizza_store");
@@ -131,29 +139,26 @@
             </select>
         </div><br>
 
-        <!-- pulls current date and assigns to Hire_Date -->
-        <input type="hidden" id="Hire_Date" name="Hire_Date">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const currentDate = new Date();
-                const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
-                document.getElementById('Hire_Date').value = formattedDate;
+        function updateSupervisorDropdown() {
+            var storeID = $('#Store_ID').val();
+            $.ajax({
+                url: 'employee_register.php',
+                type: 'post',
+                data: {'store_selected': storeID, 'requestType': 'ajaxUpdate'},
+                success: function(response){
+                    $("#Supervisor_ID").html(response);
+                }
             });
+        }
         </script>
-
 
         <div>
             <label for="Supervisor_ID">Supervisor </label>
             <select id="Supervisor_ID" name="Supervisor_ID" required>
                 <option value="" selected disabled>Assign Supervisor</option>
-                <?php
-                    $supervisors = $mysqli->query("SELECT * FROM employee WHERE Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'");
-                    if ($supervisors->num_rows > 0) {
-                        while($row = $supervisors->fetch_assoc()) {
-                            echo '<option value="' . $row["Employee_ID"] . '">' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
-                        }
-                    }
-                ?>
+                <!-- DROPDOWN AT TOP OF FILE -->
             </select>
         </div><br>
         
@@ -183,6 +188,16 @@
                     alert('Passwords do not match!');
                     e.preventDefault();  // stops form from submitting
                 }
+            });
+        </script>
+
+        <!-- pulls current date and assigns to Hire_Date -->
+        <input type="hidden" id="Hire_Date" name="Hire_Date">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const currentDate = new Date();
+                const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
+                document.getElementById('Hire_Date').value = formattedDate;
             });
         </script>
 
