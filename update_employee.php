@@ -213,7 +213,7 @@
                 <option value="0">Yes</option>
             </select>
             <p id="warning_message" style="display: none; color: black ; text-shadow: none;">Removing an employee will inactive their account. Please proceed with caution.
-        <br>You cannot remove a manager without assigning a new one to that location.<br>Removing an individual's supervisor will assign their store manager as new supervisor.</p>
+            <br>Removing an individual's supervisor will assign their store manager as new supervisor.</p>
         </div><br>
 
         <script>
