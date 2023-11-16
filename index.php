@@ -14,7 +14,7 @@
               
   </div>
 
-  <form action="" method="post">
+  <form action="" method="post" style="width: 400px; ">
       <h2>Welcome to POS Pizza!</h2>
 
       <a href="customer_login.php" class="button">Login</a>
