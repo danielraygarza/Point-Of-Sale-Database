@@ -101,7 +101,7 @@
                             $setHeader = 'Low Stock Items for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
@@ -116,7 +116,7 @@
                             $setHeader = 'Out of Stock for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -131,7 +131,7 @@
                             $setHeader = 'Inventory Report for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -158,6 +158,8 @@
                             echo "<tr>
                                 <th class='th-spacing'>Product</th>
                                 <th class='th-spacing'>Quantity in Stock</th>
+                                <th class='th-spacing'>Last Ordered</th>
+                                <th class='th-spacing'>Expiration Date</th>
                                 <th class='th-spacing'>Cost</th>
                                 <th class='th-spacing'>Vendor</th>
                                 <th class='th-spacing'>Vendor Rep</th>
@@ -171,6 +173,8 @@
                                 // echo '<td>' . $row['Inventory_ID'] . '</td>';
                                 echo '<td>' . $row['Item_Name'] . '</td>';
                                 echo '<td>' . $row['Inventory_Amount'] . '</td>';
+                                echo "<td>" . $row['Last_Stock_Shipment_Date'] . "</td>";
+                                echo "<td>" . $row['Expiration_Date'] . "</td>";
                                 echo "<td>" . $row['Cost_Of_Good'] . "</td>";
                                 echo '<td>' . $row['Vendor_Name'] . '</td>';
                                 echo '<td>' . $row['Vendor_Rep'] . '</td>';
@@ -264,7 +268,7 @@
                     } elseif ($storeType === 'orderdates') {
                         // DONE
                         // Header for daily orders
-                        $setHeader = 'Orders by Date';
+                        // $setHeader = 'Orders by Date';
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
                             $stDate = $_POST['stDate'];
@@ -278,6 +282,9 @@
                             // Default test values for endDate
                             $endDate = $currentDate;
                         }
+
+                        $setHeader = 'Orders from ' . $stDate . ' to ' .  $endDate; //header with date range
+
                         // Query for orders by date
                         $sql = "SELECT Pizza_Store_ID,
                         Store_Address,
@@ -311,7 +318,12 @@
                     } elseif ($storeType === 'popular') {
                         // DONE PENDING DATABASE TESTING
                         // Header for most popular item today
-                        $setHeader = 'Most Popular Item';
+                        // $setHeader = 'Most Popular item';
+                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        if ($addressRow = $address->fetch_assoc()) {
+                            $setHeader = 'Most Popular item today from ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
+                        }
+
                         // Get the current Date
                         // $currentDate = 20231114;
                         // TO COMPLETE: Query for most popular item today
@@ -326,7 +338,7 @@
                     } elseif ($storeType === 'datepopular') {
                         // DONE PENDING DATABASE TESTING
                         // Header for most popular item for date range
-                        $setHeader = 'Most Popular Item by Date';
+                        // $setHeader = 'Most Popular Item by Date';
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
                             $stDate = $_POST['stDate'];
@@ -340,6 +352,10 @@
                             // Default test values for endDate
                             $endDate = $currentDate;
                         }
+
+                        // Header for most popular item for date range
+                        $setHeader = 'Most Popular item from ' . $stDate . ' to ' .  $endDate; //header with date range
+                        
                         // TO COMPLETE: Query for most popular item today
                         $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
