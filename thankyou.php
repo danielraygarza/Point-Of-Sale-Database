@@ -28,7 +28,7 @@ if (isset($_SESSION['selected_store_id'])) {
         <a href="index.php">Home</a>
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-            echo '<a href="update_profile.php">Profile</a>';
+            echo '<a href="update_customer.php">Profile</a>';
         } else {
             echo '<a href="customer_login.php">Login</a>';
         }
