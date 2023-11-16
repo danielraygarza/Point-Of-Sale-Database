@@ -242,14 +242,32 @@
                         // Get the current Date
                         // $currentDate = 20231116;
                         // Query for daily orders
-                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
+                        $sql = "SELECT Pizza_Store_ID,
+                        Store_Address,
+                        OrderCount,
+                        Total_Sales,
+                        Cost_Of_Goods,
+                        (Total_Sales - Cost_Of_Goods) AS Profit_Margin
+                        FROM(
+                        SELECT P.Pizza_Store_ID, 
+                        P.Store_Address, 
+                        COUNT(O.Order_ID) AS OrderCount, 
+                        SUM(O.Total_Amount) AS Total_Sales, 
+                        SUM(O.Cost_To_Us) AS Cost_Of_Goods
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
-                        GROUP BY P.Pizza_Store_ID, P.Store_Address;";
+                        GROUP BY P.Pizza_Store_ID, P.Store_Address)
+                        AS Subquery;";
                         // Get order info for daily orders
-                        $ordSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID
+                        $ordSql = "SELECT Order_ID, 
+                        Date_Of_Order, 
+                        Time_Of_Order, 
+                        Order_Type, 
+                        Order_Status, 
+                        Total_Amount, 
+                        O_Customer_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) = '$currentDate';";
                     } elseif ($storeType === 'orderdates') {
@@ -270,14 +288,31 @@
                             $endDate = $currentDate;
                         }
                         // Query for orders by date
-                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, COUNT(O.Order_ID) AS OrderCount
+                        $sql = "SELECT Pizza_Store_ID,
+                        Store_Address,
+                        OrderCount,
+                        Total_Sales,
+                        Cost_Of_Goods,
+                        (Total_Sales - Cost_Of_Goods) AS Profit_Margin
+                        FROM(
+                        SELECT P.Pizza_Store_ID, 
+                        P.Store_Address, 
+                        COUNT(O.Order_ID) AS OrderCount, 
+                        SUM(O.Total_Amount) AS Total_Sales, 
+                        SUM(O.Cost_To_Us) AS Cost_Of_Goods
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate' 
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
                         // Get order info for daily orders
-                        $ordSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID
+                        $ordSql = "SELECT Order_ID, 
+                        Date_Of_Order, 
+                        Time_Of_Order, 
+                        Order_Type, 
+                        Order_Status, 
+                        Total_Amount, 
+                        O_Customer_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
                     } elseif ($storeType === 'popular') {
@@ -408,7 +443,13 @@
                                         <th class='th-spacing'>Pizza Store ID</th>
                                         <th class='th-spacing'>Pizza Store Address</th>
                                         <th class='th-spacing'>Order Count</th>
+                                        <th class='th-spacing'>Total Sales</th>
+                                        <th class='th-spacing'>Cost of Goods</th>
+                                        <th class='th-spacing'>Profit Margin</th>
                                     </tr>";
+                                    // <th class='th-spacing'>Total Sales</th>
+                                    // <th class='th-spacing'>Cost of Goods</th>
+                                    // <th class='th-spacing'>Profit Margin</th>
                             }
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
@@ -433,9 +474,10 @@
                                     echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
                                     echo '<td>' . $row['Store_Address'] . '</td>';
                                     echo '<td>' . $row['OrderCount'] . '</td>';
-                                    //echo '<td>' . $row['Item_Cost'] . '</td>';
-                                    //echo '<td>' . $row['Vendor_Name'] . '</td>';
-                                    //echo '<td>' . $row['Vendor_Rep'] . '</td>';
+                                    echo '<td>' . $row['Total_Sales'] . '</td>';
+                                    echo '<td>' . $row['Cost_Of_Goods'] . '</td>';
+                                    echo '<td>' . $row['Profit_Margin'] . '</td>';
+                                    
                                     //echo '<td>' . $row['Vendor_Email'] . '</td>';
                                     //echo '<td>' . $row['Vendor_Phone'] . '</td>';
                                     echo '</tr>';
