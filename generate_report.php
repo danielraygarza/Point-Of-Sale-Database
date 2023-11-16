@@ -253,7 +253,7 @@
                         P.Store_Address, 
                         COUNT(O.Order_ID) AS OrderCount, 
                         SUM(O.Total_Amount) AS Total_Sales, 
-                        SUM(O.Cost_To_Us) AS Cost_Of_Goods
+                        SUM(O.Cost_Of_Goods) AS Cost_Of_Goods
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
@@ -299,7 +299,7 @@
                         P.Store_Address, 
                         COUNT(O.Order_ID) AS OrderCount, 
                         SUM(O.Total_Amount) AS Total_Sales, 
-                        SUM(O.Cost_To_Us) AS Cost_Of_Goods
+                        SUM(O.Cost_Of_Goods) AS Cost_Of_Goods
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
