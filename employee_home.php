@@ -172,7 +172,7 @@
                         <div class = "order-display">
                     
                             <?php while($row = mysqli_fetch_assoc($result)) { 
-                                $customerID = $row["O_Customer_ID"];
+                                $customerID = $row["Customer_ID"];
                                 $customerName = $mysqli->query("SELECT C.first_name, C.last_name FROM customers AS C WHERE $customerID = C.customer_id");
                                 $getCustomerName = $customerName->fetch_assoc();
                             ?>

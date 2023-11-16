@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             }
             $employee = $result->fetch_assoc();
             $employee_id_assigned = $employee['Employee_ID'];
-            $ordersSQL = "INSERT INTO orders (O_Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned, Cost_Of_Goods)
+            $ordersSQL = "INSERT INTO orders (Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned, Cost_Of_Goods)
                         VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned', '$totalCOG')";
             // Check if the orders table insertion was successful
             if ($mysqli->query($ordersSQL) === TRUE) {
