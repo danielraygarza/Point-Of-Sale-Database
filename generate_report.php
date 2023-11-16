@@ -105,7 +105,7 @@
                             $setHeader = 'Low Stock Items for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
@@ -120,7 +120,7 @@
                             $setHeader = 'Out of Stock for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -135,7 +135,7 @@
                             $setHeader = 'Inventory Report for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Item_Cost, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -175,13 +175,7 @@
                                 // echo '<td>' . $row['Inventory_ID'] . '</td>';
                                 echo '<td>' . $row['Item_Name'] . '</td>';
                                 echo '<td>' . $row['Inventory_Amount'] . '</td>';
-                                // If cost is 0.00 display "-"
-                                if ($row['Item_Cost'] === '0.00') {
-                                    echo "<td>-</td>";
-                                } else {
-                                    echo "<td>" . $row['Item_Cost'] . "</td>";
-                                }
-                                //echo '<td>' . $row['Item_Cost'] . '</td>';
+                                echo "<td>" . $row['Cost_Of_Good'] . "</td>";
                                 echo '<td>' . $row['Vendor_Name'] . '</td>';
                                 echo '<td>' . $row['Vendor_Rep'] . '</td>';
                                 echo '<td>' . $row['Vendor_Email'] . '</td>';
