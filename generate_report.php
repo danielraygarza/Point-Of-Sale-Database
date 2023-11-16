@@ -34,10 +34,8 @@
         .scrollable-area {
             min-height: auto;
             max-height: 500px;
-            /* height: 200px; Set the desired height */
             overflow: auto; /* Add a scrollbar when content overflows */
             border: 1px solid #ccc; /* Optional border styling */
-            background-color: rgba(122, 119, 119, 0.7);
         }
 
         /* Style for the table */
@@ -67,7 +65,7 @@
         }
         ?>
     </div>
-    <form action="generate_report.php" method="post" style="background-color: rgba(122, 119, 119, 0.7);">';
+    <form action="generate_report.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">
         <?php
         // Check if the form has been submitted
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -533,7 +531,8 @@
                     $active_employee = $_POST['emp_status'];
                     
                 
-                    $employeeSql = "SELECT  `E_First_Name`, `E_Last_Name`, `Title_Role`, `Hire_Date`, `assigned_orders`, `completed_orders` FROM `employee`
+                    $employeeSql = "SELECT  `E_First_Name`, `E_Last_Name`, `Title_Role`, `Hire_Date`, `assigned_orders`, `completed_orders` 
+                                    FROM `employee`
                                     WHERE  `Store_ID` = '".$storeId."' AND `active_employee` = '".$active_employee."' AND  `Employee_ID` = $employeeId";
                 
                 
@@ -546,6 +545,10 @@
                         if (mysqli_num_rows($employeeResult) > 0) {
                             $is_result = 1;
                             echo '<h2>' . $setHeader . '</h2>';
+
+                            // Start scrollable area
+                            echo '<div class="scrollable-area">';
+
                             echo "<table border='1' class='table_update'>";
                 
                             echo "<tr>
@@ -569,17 +572,30 @@
                             }
                 
                             echo "</table>";
+
+                            // End of scrollable area
+                            echo '</div>';
                         }
                 
                         // Display Order Details Table
-                        $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `O_Customer_ID`, `orders`.Store_ID FROM `orders` LEFT JOIN `employee` ON `employee`.Employee_ID = `orders`.Employee_ID_assigned WHERE `Employee_ID_assigned` = $employeeId AND `orders`.Store_ID = $storeId AND `active_employee` = $active_employee";
-                
+                        // $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `O_Customer_ID`, `orders`.Store_ID 
+                        //             FROM `orders` LEFT JOIN `employee` ON `employee`.Employee_ID = `orders`.Employee_ID_assigned 
+                        //             WHERE `Employee_ID_assigned` = $employeeId AND `orders`.Store_ID = $storeId AND `active_employee` = $active_employee";
+
+                        $orderSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, O_Customer_ID, pizza_store.Store_Address
+                                    FROM orders LEFT JOIN employee ON employee.Employee_ID = orders.Employee_ID_assigned LEFT JOIN pizza_store ON pizza_store.Pizza_Store_ID = orders.Store_ID
+                                    WHERE Employee_ID_assigned = $employeeId AND orders.Store_ID = $storeId AND active_employee = $active_employee";
+
                 
                         $orderResult = mysqli_query($mysqli, $orderSql);
                 
                         if ($orderResult) {
                             if (mysqli_num_rows($orderResult) > 0) {
                                 echo '<h2>Order Details</h2>';
+
+                                 // Start scrollable area
+                                echo '<div class="scrollable-area">';
+
                                 echo "<table border='1' class='table_update'>";
                                 echo "<tr>
                                         <th class='th-spacing'>Order ID</th>
@@ -589,7 +605,7 @@
                                         <th class='th-spacing'>Order Status</th>
                                         <th class='th-spacing'>Total Amount</th>
                                         <th class='th-spacing'>Customer ID</th>
-                                        <th class='th-spacing'>Store ID</th>
+                                        <th class='th-spacing'>Store Location</th>
                                     </tr>";
                 
                                 while ($orderRow = mysqli_fetch_assoc($orderResult)) {
@@ -601,11 +617,14 @@
                                     echo "<td>" . $orderRow['Order_Status'] . "</td>";
                                     echo "<td>" . $orderRow['Total_Amount'] . "</td>";
                                     echo "<td>" . $orderRow['O_Customer_ID'] . "</td>";
-                                    echo "<td>" . $orderRow['Store_ID'] . "</td>";
+                                    echo "<td>" . $orderRow['Store_Address'] . "</td>";
                                     echo "</tr>";
                                 }
                 
                                 echo "</table>";
+
+                                // End of scrollable area
+                            echo '</div>';
                             }
                         } else {
                             echo 'Error executing the Order SQL query: ' . mysqli_error($mysqli);
