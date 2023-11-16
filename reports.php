@@ -381,8 +381,8 @@
                     $.each(employees, function (index, employee) {
                         $('#employeeDropdown').append('<option value="' + employee.id + '">' + employee.name + '</option>');
                     });
-                    
-                    checkSelection();
+
+                    checkSelections();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching employees:', status, error);
