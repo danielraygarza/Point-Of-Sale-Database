@@ -101,7 +101,12 @@
                             $setHeader = 'Low Stock Items for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, 
+                        Items.Item_Name, 
+                        Items.Cost_Of_Good, 
+                        I.Last_Stock_Shipment_Date, 
+                        I.Expiration_Date, 
+                        V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
@@ -111,12 +116,20 @@
                     } elseif ($inventoryType === 'out') {
                         // Header for out of stock items
                         // $setHeader = 'Out of Stock Items';
-                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, 
+                        Store_City 
+                        FROM pizza_store 
+                        WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Out of Stock for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, 
+                        Items.Item_Name, 
+                        Items.Cost_Of_Good, 
+                        I.Last_Stock_Shipment_Date, 
+                        I.Expiration_Date, 
+                        V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -131,9 +144,15 @@
                             $setHeader = 'Inventory Report for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, 
+                        Items.Item_Name, 
+                        Items.Cost_Of_Good, 
+                        I.Last_Stock_Shipment_Date, 
+                        I.Expiration_Date, 
+                        V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
-                        V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                        V.V_Email AS Vendor_Email, 
+                        V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
                         INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
                         INNER JOIN ITEMS ON I.Item_ID = Items.Item_ID
@@ -147,9 +166,9 @@
                     if ($result) {
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
-                            echo '<div style="float:right;">
-                                <button id="export-wcsv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
-                                </div><br>';
+                            // echo '<div style="float:right;">
+                            //     <button id="export-wcsv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
+                            //     </div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start scrollable area
@@ -322,7 +341,10 @@
                         // DONE PENDING DATABASE TESTING
                         // Header for most popular item today
                         // $setHeader = 'Most Popular item';
-                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, 
+                        Store_City 
+                        FROM pizza_store 
+                        WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Most Popular item today from ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
@@ -330,7 +352,8 @@
                         // Get the current Date
                         // $currentDate = 20231114;
                         // TO COMPLETE: Query for most popular item today
-                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
+                        COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
                         JOIN ORDERS O ON OI.Order_ID = O.Order_ID
                         JOIN ITEMS I ON OI.Item_ID = I.Item_ID
@@ -360,7 +383,8 @@
                         $setHeader = 'Most Popular item from ' . $stDate . ' to ' .  $endDate; //header with date range
                         
                         // TO COMPLETE: Query for most popular item today
-                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
+                        COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
                         JOIN ORDERS O ON OI.Order_ID = O.Order_ID
                         JOIN ITEMS I ON OI.Item_ID = I.Item_ID
@@ -375,7 +399,9 @@
                         // Get the current Date
                         // $currentDate = date("Y-m-d");
                         // TO COMPLETE: Query for total sales today
-                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, SUM(O.Total_Amount) AS Total_Sales
+                        $sql = "SELECT P.Pizza_Store_ID, 
+                        P.Store_Address, 
+                        SUM(O.Total_Amount) AS Total_Sales
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
@@ -425,9 +451,9 @@
                     if ($result) {
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
-                            echo '<div style="float:right;">
-                                <button id="export-wcsv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
-                                </div><br>';
+                            // echo '<div style="float:right;">
+                            //     <button id="export-wcsv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
+                            //     </div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start of scrollable area
@@ -770,62 +796,7 @@
 <!-- Windows CSV Export Functionality -->
 <!-- //////////////////////////////// -->
     
-    <script>
-        // Export to CSV
-        $('#export-wcsv').on('click', function () {
-            exportTableToCSV('export-data.csv');
-        });
 
-        function exportTableToCSV(filename) {
-            var csv = [];
-            var rows = $('#export-data').find('tr');
-
-            // Get header cells
-            var headerCells = $(rows[0]).find('th');
-            var headerRow = [];
-            headerCells.each(function () {
-                headerRow.push($(this).text());
-            });
-            csv.push(headerRow.join(','));
-
-            // Get data cells
-            rows.slice(1).each(function () {
-                var dataCells = $(this).find('td');
-                var dataRow = [];
-                dataCells.each(function () {
-                    dataRow.push($(this).text());
-                });
-                csv.push(dataRow.join(','));
-            });
-
-            // Create CSV content
-            var csvContent = csv.join('\n');
-
-            // Create a Blob containing the CSV content
-            var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-
-            // Create a link element to trigger the download
-            var link = document.createElement('a');
-            if (link.download !== undefined) {
-                var url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', filename);
-
-                // Append the link to the body
-                document.body.appendChild(link);
-
-                // Trigger the click event
-                link.click();
-
-                // Remove the link from the body
-                document.body.removeChild(link);
-            } else {
-                alert(echo 'Your browser does not support the download functionality. Please try a different browser.';);
-            }
-        }
-
-
-    </script>
 
 </body>
 
