@@ -820,7 +820,7 @@
                 // Remove the link from the body
                 document.body.removeChild(link);
             } else {
-                alert('Your browser does not support the download functionality. Please try a different browser.');
+                alert(echo 'Your browser does not support the download functionality. Please try a different browser.';);
             }
         }
 
