@@ -9,17 +9,15 @@
         exit; // Make sure to exit so that the rest of the script won't execute
     }
 
-    // * NEED TO UPDATE WHERE IT ONLY SHOWS ORDERS ASSIGNED TO SPECIFIC EMPLOPYEE *
+    // Gets ID of the user currently logged in
     $EMPID = $_SESSION['user']['Employee_ID'];
 
+    // Sets current filter for order to ALL
     $STATUS = "ALL";
     $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID";
     $result = $mysqli->query($sql);
-    
-    //if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        
-    //}
 
+    // Sets order count to order status of ALL
     $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID");
     $getOrderCount = $orderCount->fetch_assoc();
 
@@ -39,10 +37,12 @@
         exit(); //ensures code is killed
     }
 
+    // RUN code once POST 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if(isset($_POST["STATUS"])) 
         $STATUS = $_POST["STATUS"];
+        // Changes query of orders displayed based on which filter user clicks
             if ($STATUS == "ALL") {
                 $sql = "SELECT * FROM orders WHERE Employee_ID_assigned = $EMPID";
                 $orderCount = $mysqli->query("SELECT COUNT(Order_ID) FROM orders WHERE Employee_ID_assigned = $EMPID");
@@ -63,15 +63,19 @@
             $ORDERTYPE = $mysqli->real_escape_string($_POST['ORDERTYPE']);
             $TIME = $mysqli->real_escape_string($_POST['TIME']);
     
+            // Updates order status of specific ORDERIF to complete
             $updateOrderStatus = "UPDATE orders SET Order_Status = 'Completed' WHERE Order_ID = $ORDERID";
             $runUpdate = $mysqli->query($updateOrderStatus);
 
+            // Update completion time of order once order is complete
             $timeComplete = "UPDATE orders SET Time_Completed = '$TIME' WHERE Order_ID = $ORDERID";
             $updateTimeCompleted = $mysqli->query($timeComplete);
 
+            // Update number of completed orders for employee
             $updateNumCompletedOrder = $mysqli->query("UPDATE employee SET completed_orders = completed_orders + 1 WHERE Employee_ID = $EMPID");
             $updateAssignedOrders = $mysqli->query("UPDATE employee SET assigned_orders = assigned_orders - 1 WHERE Employee_ID = $EMPID");
 
+            // Update in respective DELIVERY or PICKUP tables 
             if ($ORDERTYPE == "Delivery") {
                 $updateDelivery = "UPDATE delivery SET Time_Delivered = '$TIME' WHERE D_Order_ID = $ORDERID";
                 $runUpdateDelivery = $mysqli->query($updateDelivery);
