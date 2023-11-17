@@ -427,7 +427,7 @@ input[type="date"] {
 .customerinfo {
     background-color: rgba(224, 217, 217, 0.7);
     border-radius: 15px;
-    width: 50%;
+    width: 60%;
     display: flex;
     justify-content: center;
     flex-direction: column;
