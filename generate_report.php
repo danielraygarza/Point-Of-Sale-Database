@@ -148,7 +148,7 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
                             echo '<div style="float:right;">
-                                <button id="export-csv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
+                                <button id="export-wcsv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
                                 </div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
 
@@ -426,7 +426,7 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
                             echo '<div style="float:right;">
-                                <button id="export-csv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
+                                <button id="export-wcsv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
                                 </div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
 
@@ -764,6 +764,67 @@
         });
 
        
+    </script>
+
+<!-- //////////////////////////////// -->
+<!-- Windows CSV Export Functionality -->
+<!-- //////////////////////////////// -->
+    
+    <script>
+        // Export to CSV
+        $('#export-wcsv').on('click', function () {
+            exportTableToCSV('export-data.csv');
+        });
+
+        function exportTableToCSV(filename) {
+            var csv = [];
+            var rows = $('#export-data').find('tr');
+
+            // Get header cells
+            var headerCells = $(rows[0]).find('th');
+            var headerRow = [];
+            headerCells.each(function () {
+                headerRow.push($(this).text());
+            });
+            csv.push(headerRow.join(','));
+
+            // Get data cells
+            rows.slice(1).each(function () {
+                var dataCells = $(this).find('td');
+                var dataRow = [];
+                dataCells.each(function () {
+                    dataRow.push($(this).text());
+                });
+                csv.push(dataRow.join(','));
+            });
+
+            // Create CSV content
+            var csvContent = csv.join('\n');
+
+            // Create a Blob containing the CSV content
+            var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+            // Create a link element to trigger the download
+            var link = document.createElement('a');
+            if (link.download !== undefined) {
+                var url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+
+                // Append the link to the body
+                document.body.appendChild(link);
+
+                // Trigger the click event
+                link.click();
+
+                // Remove the link from the body
+                document.body.removeChild(link);
+            } else {
+                alert('Your browser does not support the download functionality. Please try a different browser.');
+            }
+        }
+
+
     </script>
 
 </body>
