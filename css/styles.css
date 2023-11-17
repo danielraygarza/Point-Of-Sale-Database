@@ -423,3 +423,45 @@ input[type="date"] {
     padding: 5px; 
     margin-right: 10px;
 }
+
+.customerinfo {
+    background-color: rgba(224, 217, 217, 0.7);
+    border-radius: 15px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.customerinfo .triggerDisplay {
+    margin: 10px;
+    color: rgba(63, 63, 63, 0.7);
+}
+
+.customerinfo .totalspent {
+    margin: 10px;
+    color: black;
+}
+
+.customerinfo .storecredit {
+    margin: 10px;
+    color: black;
+}
+
+.customerinfo .remainingNeeded {
+    margin: 10px;
+    color: rgba(63, 63, 63, 0.7);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.customerinfo .remainingNeeded .needed{
+    color: rgb(75, 171, 70);
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+

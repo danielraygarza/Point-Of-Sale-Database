@@ -1,5 +1,6 @@
 <?php
     // Start the session at the beginning of the file
+    include 'database.php';
     session_start();
 
     // Check if user is logged in
@@ -33,6 +34,21 @@
             
         </div>
 
+        <?php 
+            $userID = $_SESSION['user']['customer_id'];
+            $totalSpent = $mysqli->query("SELECT total_spent_toDate FROM customers WHERE customer_id = $userID");
+            $getTotalSpent = $totalSpent->fetch_assoc();
+
+            $storeCredit = $mysqli->query("SELECT store_credit FROM customers WHERE customer_id = $userID");
+            $getStoreCredit = $storeCredit->fetch_assoc();
+        ?>
+
+        <div class = "customerinfo">
+            <p class = "triggerDisplay">TIP: For every $100 you spend you will get $10 in store credit!</p> 
+            <div class = "totalspent">Total Amount Spent To Date: $<?php echo $getTotalSpent["total_spent_toDate"]; ?></div>
+            <div class = "storecredit">Store Credit Available: $<?php echo $getStoreCredit["store_credit"]; ?> </div>
+            <div class = "remainingNeeded">You need to spend a total of  <p class = "needed"> $<?php echo 100 - $getTotalSpent["total_spent_toDate"]; ?> </p>  more to get store credit!</div>
+        </div>
         <a href="menu.php" class="button">Order now!</a>
 
     </body>
