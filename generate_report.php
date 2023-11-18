@@ -167,13 +167,22 @@
                     if ($result) {
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
+
+                            // Build exportArray
+                            while ($row = mysqli_fetch_assoc($result)){
+                                $exportArray[] = $row;
+                            }
+
                             // Export to CSV button hidden input field
-                            echo '<form method="post" action="export_wcsv.php">';
+                            ?>
+                            <form method="post" action="export_wcsv.php">
+                            <?php
                             echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
                             echo '<input type="submit" name="export" value="Export to CSV">';
                             echo 'DID YOU SEND MY SHIT?!?!?!';
-                            echo '</form>';
-
+                            ?>
+                            </form>
+                            <?php
                             // Header
                             echo '<h2>' . $setHeader . '</h2>';
 
@@ -217,10 +226,10 @@
                             // End of scrollable area
                             echo '</div>';
 
-                            // Build exportArray
-                            while ($row = mysqli_fetch_assoc($result)){
-                                $exportArray[] = $row;
-                            }
+                            // // Build exportArray
+                            // while ($row = mysqli_fetch_assoc($result)){
+                            //     $exportArray[] = $row;
+                            // }
 
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
