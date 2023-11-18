@@ -168,10 +168,10 @@
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
 
-                            // Build exportArray
-                            while ($row = mysqli_fetch_assoc($result)){
-                                $exportArray[] = $row;
-                            }
+                            // // Build exportArray
+                            // while ($row = mysqli_fetch_assoc($result)){
+                            //     $exportArray[] = $row;
+                            // }
 
                             // Export to CSV button hidden input field
                             ?>
