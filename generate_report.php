@@ -468,15 +468,15 @@
 
                             // Build exportArray
                             if ($storeType === 'popular' || $storeType === 'datepopular') {
-                                while ($row = mysqli_fetch_assoc($ordExResult)){
-                                    $exportArray[] = $row;
-                                }
-                            } else {
                                 while ($row = mysqli_fetch_assoc($exResult)){
                                     $exportArray[] = $row;
                                 }
+                            } else {
+                                while ($row = mysqli_fetch_assoc($ordExResult)){
+                                    $exportArray[] = $row;
+                                }
                             }
-                            
+
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start of scrollable area
