@@ -11,6 +11,10 @@
         exit; // Make sure to exit so that the rest of the script won't execute
     }
 
+    // Set the headers for CSV file
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="exported_data.csv"');
+
 ?>
 <!-- Welcome page after user creates new account -->
 <!DOCTYPE html>
@@ -41,9 +45,9 @@ if (isset($_POST['export'])) {
     // Retrieve data
     $exportData = json_decode($_POST['export_data'], true);
 
-    // Set the headers for CSV file
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="exported_data.csv"');
+    // // Set the headers for CSV file
+    // header('Content-Type: text/csv');
+    // header('Content-Disposition: attachment; filename="exported_data.csv"');
 
     // Debug
     echo 'Exported Data:<br>';
