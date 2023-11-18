@@ -46,7 +46,7 @@ if (isset($_POST['export'])) {
     header('Content-Disposition: attachment; filename="exported_data.csv"');
 
     // Debug
-    echo 'Exported Data:<br>'
+    echo 'Exported Data:<br>';
     print_r($exportData);
 
     // Open a file pointer
