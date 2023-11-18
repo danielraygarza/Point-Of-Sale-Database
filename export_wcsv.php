@@ -12,13 +12,13 @@ if (isset($_POST['export'])) {
     // Each associative array represents a row from the query result
 
     // Output the column headings dynamically
-    if (!empty($yourFetchedResultsArray)) {
-        $firstRow = reset($yourFetchedResultsArray);
+    if (!empty($exportArray)) {
+        $firstRow = reset($exportArray);
         fputcsv($output, array_keys($firstRow));
     }
 
     // Loop through the fetched results and output data
-    foreach ($yourFetchedResultsArray as $row) {
+    foreach ($exportArray as $row) {
         fputcsv($output, $row);
     }
 
