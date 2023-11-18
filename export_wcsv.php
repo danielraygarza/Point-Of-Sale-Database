@@ -1,4 +1,38 @@
 <?php
+    session_start();
+    include 'database.php'; // Include the database connection details
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+   // Redirects if not manager/CEO or accessed directly via URL
+    if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+        header("Location: employee_login.php");
+        exit; // Make sure to exit so that the rest of the script won't execute
+    }
+
+?>
+<!-- Welcome page after user creates new account -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>POS Pizza</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/pizza.ico" type="image/x-icon">
+
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="index.php">Home</a>
+        <a href="employee_home.php">Employee Home</a>
+        <?php echo '<a href="logout.php">Logout</a>';?>
+        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
+    </div>
+
+
+<?php
 
 if (isset($_POST['export'])) {
     // Debug
@@ -35,3 +69,5 @@ if (isset($_POST['export'])) {
     echo 'Form not submitted';
 }
 ?>
+
+</body>
