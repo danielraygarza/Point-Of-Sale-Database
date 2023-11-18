@@ -174,9 +174,6 @@
                                 $exportArray[] = $row;
                             }
 
-                            // Export to CSV button hidden input field
-                            // New form was here
-
                             // Header
                             echo '<h2>' . $setHeader . '</h2>';
 
@@ -457,17 +454,29 @@
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
+                    $exResult = mysqli_query($mysqli, $sql);
+
                     // Check to see if $ordSql set
                     if(!empty(trim($ordSql))){
                         $ordResult = mysqli_query($mysqli, $ordSql);
+                        $ordExResult = mysqli_query($mysqli, $ordSql);
                     }
 
                     if ($result) {
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
-                            // echo '<div style="float:right;">
-                            //     <button id="export-wcsv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
-                            //     </div><br>';
+
+                            // Build exportArray
+                            if ($storeType === 'popular' || $storeType === 'datepopular') {
+                                while ($row = mysqli_fetch_assoc($ordExResult)){
+                                    $exportArray[] = $row;
+                                }
+                            } else {
+                                while ($row = mysqli_fetch_assoc($exResult)){
+                                    $exportArray[] = $row;
+                                }
+                            }
+                            
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start of scrollable area
@@ -754,12 +763,19 @@
 
     </form>
 
+    
+<!-- //////////////////////////////// -->
+<!-- Windows CSV Export Functionality -->
+<!-- //////////////////////////////// -->
     <form action="export_wcsv.php" method="post">
         <?php
         echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
         echo '<input type="submit" name="export" value="Export to CSV">';
         ?>
     </form>
+<!-- //////////////////////////////// -->
+<!-- /////End Windows CSV Export///// -->
+<!-- //////////////////////////////// -->
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="table2csv.js"></script>
@@ -813,13 +829,6 @@
        
     </script>
 
-<!-- //////////////////////////////// -->
-<!-- Windows CSV Export Functionality -->
-<!-- //////////////////////////////// -->
-    
-<script>
-
-</script>
 
 </body>
 
