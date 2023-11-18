@@ -171,6 +171,7 @@
                             echo '<form method="post" action="export_wcsv.php">';
                             echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
                             echo '<input type="submit" name="export" value="Export to CSV">';
+                            echo 'DID YOU SEND MY SHIT?!?!?!';
                             echo '</form>';
 
                             // Header
