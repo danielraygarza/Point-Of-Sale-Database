@@ -167,7 +167,7 @@
             </select>
         </div><br>
 
-        <!-- Working on function to restrict Generate Report button -->
+        <!-- Completed function to restrict Generate Report button -->
         <input type="submit" class="button" value="Generate Report" id="submitButton">
     </form>
 

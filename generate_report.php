@@ -68,6 +68,7 @@
             if (isset($_POST['reportType'])) {
                 $reportType = $_POST['reportType'];
                 $setHeader = '';
+                $exportArray = array(); // array to export data to csv
 
                 /////////////////////////
                 ////INVENTORY QUERIES////
@@ -101,7 +102,12 @@
                             $setHeader = 'Low Stock Items for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for low stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, 
+                        Items.Item_Name, 
+                        Items.Cost_Of_Good, 
+                        I.Last_Stock_Shipment_Date, 
+                        I.Expiration_Date, 
+                        V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone, I.Store_Id
                         FROM INVENTORY I
@@ -111,12 +117,20 @@
                     } elseif ($inventoryType === 'out') {
                         // Header for out of stock items
                         // $setHeader = 'Out of Stock Items';
-                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, 
+                        Store_City 
+                        FROM pizza_store 
+                        WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Out of Stock for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for out of stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, 
+                        Items.Item_Name, 
+                        Items.Cost_Of_Good, 
+                        I.Last_Stock_Shipment_Date, 
+                        I.Expiration_Date, 
+                        V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
                         V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
@@ -131,9 +145,15 @@
                             $setHeader = 'Inventory Report for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
                         // Query for all stock items
-                        $sql = "SELECT I.Inventory_Amount, Items.Item_Name, Items.Cost_Of_Good, I.Last_Stock_Shipment_Date, I.Expiration_Date, V.Vendor_Name,
+                        $sql = "SELECT I.Inventory_Amount, 
+                        Items.Item_Name, 
+                        Items.Cost_Of_Good, 
+                        I.Last_Stock_Shipment_Date, 
+                        I.Expiration_Date, 
+                        V.Vendor_Name,
                         CONCAT(V.V_Rep_Fname, ' ', V.V_Rep_Lname) AS Vendor_Rep,
-                        V.V_Email AS Vendor_Email, V.V_Phone AS Vendor_Phone 
+                        V.V_Email AS Vendor_Email, 
+                        V.V_Phone AS Vendor_Phone 
                         FROM INVENTORY I
                         INNER JOIN VENDOR V ON I.Vend_ID = V.Vendor_ID
                         INNER JOIN ITEMS ON I.Item_ID = Items.Item_ID
@@ -143,10 +163,18 @@
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
+                    $exResult = mysqli_query($mysqli, $sql);
 
                     if ($result) {
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
+
+                            // Build exportArray
+                            while ($row = mysqli_fetch_assoc($exResult)){
+                                $exportArray[] = $row;
+                            }
+
+                            // Header
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start scrollable area
@@ -188,6 +216,11 @@
 
                             // End of scrollable area
                             echo '</div>';
+
+                            // // Build exportArray
+                            // while ($row = mysqli_fetch_assoc($result)){
+                            //     $exportArray[] = $row;
+                            // }
 
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
@@ -319,7 +352,10 @@
                         // DONE PENDING DATABASE TESTING
                         // Header for most popular item today
                         // $setHeader = 'Most Popular item';
-                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, 
+                        Store_City 
+                        FROM pizza_store 
+                        WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Most Popular item today from ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
@@ -327,7 +363,8 @@
                         // Get the current Date
                         // $currentDate = 20231114;
                         // TO COMPLETE: Query for most popular item today
-                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
+                        COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
                         JOIN ORDERS O ON OI.Order_ID = O.Order_ID
                         JOIN ITEMS I ON OI.Item_ID = I.Item_ID
@@ -357,7 +394,8 @@
                         $setHeader = 'Most Popular item from ' . $stDate . ' to ' .  $endDate; //header with date range
                         
                         // TO COMPLETE: Query for most popular item today
-                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
+                        COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
                         JOIN ORDERS O ON OI.Order_ID = O.Order_ID
                         JOIN ITEMS I ON OI.Item_ID = I.Item_ID
@@ -372,7 +410,9 @@
                         // Get the current Date
                         // $currentDate = date("Y-m-d");
                         // TO COMPLETE: Query for total sales today
-                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, SUM(O.Total_Amount) AS Total_Sales
+                        $sql = "SELECT P.Pizza_Store_ID, 
+                        P.Store_Address, 
+                        SUM(O.Total_Amount) AS Total_Sales
                         FROM PIZZA_STORE P 
                         LEFT JOIN ORDERS O
                         ON P.Pizza_Store_ID = O.Store_ID
@@ -414,17 +454,29 @@
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
+                    $exResult = mysqli_query($mysqli, $sql);
+
                     // Check to see if $ordSql set
                     if(!empty(trim($ordSql))){
                         $ordResult = mysqli_query($mysqli, $ordSql);
+                        $ordExResult = mysqli_query($mysqli, $ordSql);
                     }
 
                     if ($result) {
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
-                            echo '<div style="float:right;">
-                                <button id="export-csv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
-                                </div><br>';
+
+                            // Build exportArray
+                            if ($storeType === 'popular' || $storeType === 'datepopular') {
+                                while ($row = mysqli_fetch_assoc($exResult)){
+                                    $exportArray[] = $row;
+                                }
+                            } else {
+                                while ($row = mysqli_fetch_assoc($ordExResult)){
+                                    $exportArray[] = $row;
+                                }
+                            }
+
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start of scrollable area
@@ -601,7 +653,7 @@
                         if (mysqli_num_rows($employeeResult) > 0) {
                             $is_result = 1;
                             echo '<div style="float:right;">
-                                <button id="export-csv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
+                                <button id="export-csv" style="font-size:medium;" class="button">Export to CSV</button>
                                 </div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
 
@@ -711,6 +763,23 @@
 
     </form>
 
+    
+<!-- //////////////////////////////////// -->
+<!-- //Windows CSV Export Functionality// -->
+<!-- //////////////////////////////////// -->
+    <?php
+        if ($reportType !== "performance") {
+            // Only display the form if the reportType is not "performance"
+            echo '<form action="export_wcsv.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">';
+            echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
+            echo '<input type="submit" class="button" name="export" value="Export to CSV">';
+            echo '</form>';
+        }
+    ?>
+<!-- //////////////////////////////////// -->
+<!-- ///////End Windows CSV Export/////// -->
+<!-- //////////////////////////////////// -->
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="table2csv.js"></script>
 
@@ -762,6 +831,7 @@
 
        
     </script>
+
 
 </body>
 
