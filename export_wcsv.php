@@ -1,15 +1,15 @@
 <?php
 
 if (isset($_POST['export'])) {
+    // Debug
+    echo 'Export button clicked!';
+
     // Set the headers for CSV file
     header('Content-Type: text/csv');
     header('Content-Disposition: attachment; filename="exported_data.csv"');
 
     // Open a file pointer
     $output = fopen('php://output', 'w');
-
-    // Assume $yourFetchedResultsArray is an array of associative arrays
-    // Each associative array represents a row from the query result
 
     // Output the column headings dynamically
     if (!empty($exportArray)) {
