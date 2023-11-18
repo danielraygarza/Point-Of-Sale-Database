@@ -767,12 +767,15 @@
 <!-- //////////////////////////////// -->
 <!-- Windows CSV Export Functionality -->
 <!-- //////////////////////////////// -->
-    <form action="export_wcsv.php" method="post">
-        <?php
-        echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
-        echo '<input type="submit" name="export" value="Export to CSV">';
-        ?>
-    </form>
+    <?php
+        if ($reportType !== "performance") {
+            // Only display the form if the reportType is not "performance"
+            echo '<form action="export_wcsv.php" method="post">';
+            echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
+            echo '<input type="submit" name="export" value="Export to CSV">';
+            echo '</form>';
+        }
+    ?>
 <!-- //////////////////////////////// -->
 <!-- /////End Windows CSV Export///// -->
 <!-- //////////////////////////////// -->
