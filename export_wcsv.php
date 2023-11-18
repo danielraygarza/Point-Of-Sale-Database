@@ -27,5 +27,7 @@ if (isset($_POST['export'])) {
 
     // Close the file pointer
     fclose($output);
+} else{
+    echo 'Form not submitted';
 }
 ?>
