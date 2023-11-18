@@ -47,7 +47,7 @@
             <p class = "triggerDisplay">TIP: For every $100 you spend you will get $10 in store credit!</p> 
             <div class = "totalspent">Total Amount Spent To Date: $<?php echo $getTotalSpent["total_spent_toDate"]; ?></div>
             <div class = "storecredit">Store Credit Available: $<?php echo $getStoreCredit["store_credit"]; ?> </div>
-            <div class = "remainingNeeded">You need to spend a total of <p class = "needed">$<?php echo number_format((float)100 - $getTotalSpent["total_spent_toDate"], 2, '.', ''); ?> </p> more to get store credit!</div>
+            <div class = "remainingNeeded">You need to spend a total of <p class = "needed">$<?php echo number_format((float)100 - fmod($getTotalSpent["total_spent_toDate"], 100), 2, '.', ''); ?> </p> more to get store credit!</div>
         </div>
         <a href="menu.php" class="button">Order now!</a>
 
