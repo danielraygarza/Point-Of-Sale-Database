@@ -175,15 +175,8 @@
                             }
 
                             // Export to CSV button hidden input field
-                            ?>
-                            <form method="post" action="export_wcsv.php">
-                                <?php
-                                echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
-                                echo '<input type="submit" name="export" value="Export to CSV">';
-                                echo 'DID YOU SEND MY SHIT?!?!?!';
-                                ?>
-                            </form>
-                            <?php
+                            // New form was here
+
                             // Header
                             echo '<h2>' . $setHeader . '</h2>';
 
@@ -759,6 +752,14 @@
         }
         ?>
 
+    </form>
+
+    <form action="export_wcsv.php" method="post">
+        <?php
+        echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
+        echo '<input type="submit" name="export" value="Export to CSV">';
+        echo 'DID YOU SEND MY SHIT?!?!?!';
+        ?>
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
