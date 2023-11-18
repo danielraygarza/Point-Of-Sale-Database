@@ -369,6 +369,7 @@ main .main-holder .order-display .order-card .order-card-info .order-card-right 
     color: black;
     width: 90%;
     position: absolute;
+    margin-top: 10px;
 }
 
 main .main-holder .order-display .order-card .order-card-info .status {
