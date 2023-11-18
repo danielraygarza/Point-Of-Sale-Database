@@ -68,6 +68,7 @@
             if (isset($_POST['reportType'])) {
                 $reportType = $_POST['reportType'];
                 $setHeader = '';
+                $exportArray = array(); // array to export data to csv
 
                 /////////////////////////
                 ////INVENTORY QUERIES////
@@ -166,9 +167,13 @@
                     if ($result) {
                         // Check if there are rows returned
                         if (mysqli_num_rows($result) > 0) {
-                            // echo '<div style="float:right;">
-                            //     <button id="export-wcsv" style="font-size:medium;" class="btn btn-success">Export to CSV</button>
-                            //     </div><br>';
+                            // Export to CSV button hidden input field
+                            echo '<form method="post" action="export_wcsv.php">';
+                            echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
+                            echo '<input type="submit" name="export" value="Export to CSV">';
+                            echo '</form>';
+
+                            // Header
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start scrollable area
@@ -210,6 +215,11 @@
 
                             // End of scrollable area
                             echo '</div>';
+
+                            // Build exportArray
+                            while ($row = mysqli_fetch_assoc($result)){
+                                $exportArray = $row;
+                            }
 
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
@@ -796,7 +806,9 @@
 <!-- Windows CSV Export Functionality -->
 <!-- //////////////////////////////// -->
     
+<script>
 
+</script>
 
 </body>
 
