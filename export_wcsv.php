@@ -11,67 +11,40 @@
         exit; // Make sure to exit so that the rest of the script won't execute
     }
 
-    // Set the headers for CSV file
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="exported_data.csv"');
+    if (isset($_POST['export'])) {
+        // Debug
+        echo 'Export button clicked!<br>';
 
-?>
-<!-- Welcome page after user creates new account -->
-<!DOCTYPE html>
-<html>
+        // Retrieve data
+        $exportData = json_decode($_POST['export_data'], true);
 
-<head>
-    <title>POS Pizza</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="img/pizza.ico" type="image/x-icon">
+        // // Set the headers for CSV file
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="exported_data.csv"');
 
-</head>
+        // Debug
+        echo 'Exported Data:<br>';
+        print_r($exportData);
 
-<body>
-    <div class="navbar">
-        <a href="index.php">Home</a>
-        <a href="employee_home.php">Employee Home</a>
-        <?php echo '<a href="logout.php">Logout</a>';?>
-        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
-    </div>
+        // Open a file pointer
+        $output = fopen('php://output', 'w');
 
+        // Output the column headings dynamically
+        if (!empty($exportData)) {
+            $firstRow = reset($exportData);
+            fputcsv($output, array_keys($firstRow));
+        }
 
-<?php
+        // Loop through the fetched results and output data
+        foreach ($exportData as $row) {
+            fputcsv($output, $row);
+        }
 
-if (isset($_POST['export'])) {
-    // Debug
-    echo 'Export button clicked!<br>';
-
-    // Retrieve data
-    $exportData = json_decode($_POST['export_data'], true);
-
-    // // Set the headers for CSV file
-    // header('Content-Type: text/csv');
-    // header('Content-Disposition: attachment; filename="exported_data.csv"');
-
-    // Debug
-    echo 'Exported Data:<br>';
-    print_r($exportData);
-
-    // Open a file pointer
-    $output = fopen('php://output', 'w');
-
-    // Output the column headings dynamically
-    if (!empty($exportData)) {
-        $firstRow = reset($exportData);
-        fputcsv($output, array_keys($firstRow));
+        // Close the file pointer
+        fclose($output);
+    } else{
+        echo 'Form not submitted';
     }
-
-    // Loop through the fetched results and output data
-    foreach ($exportData as $row) {
-        fputcsv($output, $row);
-    }
-
-    // Close the file pointer
-    fclose($output);
-} else{
-    echo 'Form not submitted';
-}
 ?>
 
 </body>
