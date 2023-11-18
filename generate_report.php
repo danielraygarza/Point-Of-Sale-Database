@@ -219,7 +219,7 @@
 
                             // Build exportArray
                             while ($row = mysqli_fetch_assoc($result)){
-                                $exportArray = $row;
+                                $exportArray[] = $row;
                             }
 
                         } else {
