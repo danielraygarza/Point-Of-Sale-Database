@@ -764,21 +764,21 @@
     </form>
 
     
-<!-- //////////////////////////////// -->
-<!-- Windows CSV Export Functionality -->
-<!-- //////////////////////////////// -->
+<!-- //////////////////////////////////// -->
+<!-- //Windows CSV Export Functionality// -->
+<!-- //////////////////////////////////// -->
     <?php
         if ($reportType !== "performance") {
             // Only display the form if the reportType is not "performance"
-            echo '<form action="export_wcsv.php" method="post">';
+            echo '<form action="export_wcsv.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">';
             echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
             echo '<input type="submit" name="export" value="Export to CSV">';
             echo '</form>';
         }
     ?>
-<!-- //////////////////////////////// -->
-<!-- /////End Windows CSV Export///// -->
-<!-- //////////////////////////////// -->
+<!-- //////////////////////////////////// -->
+<!-- ///////End Windows CSV Export/////// -->
+<!-- //////////////////////////////////// -->
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="table2csv.js"></script>
