@@ -2,7 +2,7 @@
 
 if (isset($_POST['export'])) {
     // Debug
-    echo 'Export button clicked!';
+    echo 'Export button clicked!<br>';
 
     // Retrieve data
     $exportData = json_decode($_POST['export_data'], true);
@@ -10,6 +10,10 @@ if (isset($_POST['export'])) {
     // Set the headers for CSV file
     header('Content-Type: text/csv');
     header('Content-Disposition: attachment; filename="exported_data.csv"');
+
+    // Debug
+    echo 'Exported Data:<br>'
+    print_r($exportData);
 
     // Open a file pointer
     $output = fopen('php://output', 'w');
