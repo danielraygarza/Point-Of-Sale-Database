@@ -12,15 +12,17 @@
     }
 
     if (isset($_POST['export'])) {
+        
+
+        // // Set the headers for CSV file
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="exported_data.csv"');
+
         // Debug
         echo 'Export button clicked!<br>';
 
         // Retrieve data
         $exportData = json_decode($_POST['export_data'], true);
-
-        // // Set the headers for CSV file
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="exported_data.csv"');
 
         // Debug
         echo 'Exported Data:<br>';
