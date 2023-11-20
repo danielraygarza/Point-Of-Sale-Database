@@ -185,6 +185,7 @@ Create a valid_signup.php file in GitHub repository. This is the SQL code that w
 
     <?php
         include 'database.php';
+        session_start();
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
