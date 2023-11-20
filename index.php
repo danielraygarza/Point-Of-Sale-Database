@@ -3,11 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <?php 
-  echo getenv("DB_HOST"); // Should output the host string
-  echo getenv("DB_NAME"); 
-  echo 'TEVBFCHDSBFJKDS'; 
-  ?>
     <title>POS Pizza</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/pizza.ico" type="image/x-icon">
