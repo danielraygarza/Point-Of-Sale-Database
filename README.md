@@ -89,8 +89,8 @@ To connect Web App to Azure Database:
 
     In your web app, under "Configuration", select "New application setting" and enter the following individually:
         Name: DB_HOST | Value: your server name
-        Name: DB_USER | Value: admin username
-        Name: DB_PASS | Value: admin's password
+        Name: DB_USERNAME | Value: admin username
+        Name: DB_PASSWORD | Value: admin's password
         Name: DB_NAME | Value: database name you created earlier
     Your Azure database is now connected to the Web App.
 
@@ -106,13 +106,13 @@ Create a table titled "users" by running the following SQL command:
         password VARCHAR(255) NOT NULL    
     );
 
-Create a database.php file in the GitHub repository and paste the following. Update the file by filling in your own information:
+Create a database.php file in the GitHub repository and paste the following This ensures your server info is not publically available:
 
     <?php
-        $host = "servername.mysql.database.azure.com";
-        $dbname = "database name";
-        $username = "admin username";
-        $password = "admin user password";
+        $host = getenv("DB_HOST");
+        $username = getenv("DB_USERNAME");
+        $password = getenv("DB_PASSWORD");
+        $dbname = getenv("DB_NAME");
         $port = 3306;
         $mysqli = mysqli_init();
         mysqli_ssl_set($mysqli, NULL, NULL, "./DigiCertGlobalRootCA.crt.pem", NULL, NULL);
@@ -234,36 +234,60 @@ To give database access to other users:
 
  How to run a PHP Web App locally through VS Code on MacOS:
 
-     Download VS Code extensions: PHP Intelephense by Ben Mewburn and PHP Server by brapifra
-     You will need to have PHP installed on your Mac.
-     Open a terminal window in VS Code:
-     Check if you have PHP with command "php -v"
-     If you do not have PHP, you will need to download it using Homebrew.
-     Check if you have Homebrew installed with command "brew help"
+    This will require you set up your Azure server locally.
+    Open terminal and do the following:
      
-     If you do not have Homebrew, run the following commands:
-         1. /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-         2. echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-         3. /Users/YOURUSERNAME/.zprofile 
-             eval "$(/opt/homebrew/bin/brew shellenv)"
-     
-     If you get this message (zsh: permission denied: /Users/YOURUSERNAME/.zprofile), run the following commands:
-         4. touch /Users/YOURUSERNAME/.zprofile
-         5. echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/YOURUSERNAME/.zprofile
-         6. source /Users/YOURUSERNAME/.zprofile
-         
-     
-     Ensure Homebrew was installed correctly with command "brew help"
-     Now that you have Homebrew, you can download PHP with command "brew install php"
-     Ensure you have PHP with command "php -v"
-     Now close VS Code and start again.
+    Run command: nano ~/.zshrc
+    Copy and paste the following and fill in your server info. This info is under your "Configuration" settings in your Web App.
+        export DB_HOST = "your server name"
+        export DB_NAME = "your database name"
+        export DB_USERNAME = "admin username"
+        export DB_PASSWORD = "admin password"
+        
+    Press Ctrl + O to write the changes to the file.
+    Press Enter to confirm the file name.
+    Press Ctrl + X to exit nano.
+    To save your changes, run command: source ~/.zshrc
+    Verify your changes in terminal by running command: echo $DB_HOST
+    To ensure your local host restarts, run command: killall php
 
-     You now have PHP installed:
-     On your PHP files in VS Code, you should see a blue icon in the top right corner. 
-     This button will launch a local server and open your web app locally.
-     Any changes you make can be seen before pushing to the GitHub repository. 
+    Download VS Code extensions: PHP Intelephense by Ben Mewburn and PHP Server by brapifra
+    You will need to have PHP installed on your Mac.
+    Open a terminal window in VS Code:
+    Check if you have PHP with command "php -v"
+    If you do not have PHP, you will need to download it using Homebrew.
+    Check if you have Homebrew installed with command "brew help"
+     
+    If you do not have Homebrew, run the following commands:
+        1. /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        2. echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+        3. /Users/YOURUSERNAME/.zprofile 
+         eval "$(/opt/homebrew/bin/brew shellenv)"
+    
+    If you get this message (zsh: permission denied: /Users/YOURUSERNAME/.zprofile), run the following commands:
+        4. touch /Users/YOURUSERNAME/.zprofile
+        5. echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/YOURUSERNAME/.zprofile
+        6. source /Users/YOURUSERNAME/.zprofile
+    
+    Ensure Homebrew was installed correctly with command "brew help"
+    Now that you have Homebrew, you can download PHP with command "brew install php"
+    Ensure you have PHP with command "php -v"
+    Now close VS Code and start again.
+    
+    You now have PHP installed. On your PHP files in VS Code, you should see a blue icon in the top right corner. 
+    This button will launch a local server and open your web app locally.
+    Any changes you make can be seen before pushing to the GitHub repository.
 
  To run a PHP Web App locally through VS Code on Windows, refer to this video: 
+    
+    To connect to Azure server locally, from ChatGPT:    
+    On Windows:
+    Open the Start Search, type in "Edit environment variables for your account", and press Enter.
+    In the Environment Variables window, under User variables, click New to create a new environment variable.
+    Enter the name of the variable (e.g., DB_HOST) and its value (e.g., pospizza.mysql.database.azure.com). Repeat this for each environment variable (DB_NAME, DB_USER, DB_PASS).
+    Click OK to close the dialog boxes.
+    After setting them, you may need to restart your development environment or your computer to make sure the environment variables are recognized.
+
  
      https://www.youtube.com/watch?v=Ry8tRRfxxf4&ab_channel=BoostMyTool
         
