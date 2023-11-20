@@ -1,8 +1,8 @@
 <?php
-$host = "pospizza.mysql.database.azure.com";
-$dbname = "pos";
-$username = "danielgarza";
-$password = "#drgarza8";
+$host = getenv("DB_HOST");
+$username = getenv("DB_USERNAME");
+$password = getenv("DB_PASSWORD");
+$dbname = getenv("DB_NAME");
 $port = 3306;
 $mysqli = mysqli_init();
 mysqli_ssl_set($mysqli, NULL, NULL, "./DigiCertGlobalRootCA.crt.pem", NULL, NULL);
