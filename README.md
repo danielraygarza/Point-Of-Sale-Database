@@ -240,17 +240,18 @@ To give database access to other users:
      
     Run command: nano ~/.zshrc
     Copy and paste the following and fill in your server info. This info is under your "Configuration" settings in your Web App.
-        export DB_HOST = "your server name"
-        export DB_NAME = "your database name"
-        export DB_USERNAME = "admin username"
-        export DB_PASSWORD = "admin password"
+        export DB_HOST="your server name"
+        export DB_NAME="your database name"
+        export DB_USERNAME="admin username"
+        export DB_PASSWORD="admin password"
         
     Press Ctrl + O to write the changes to the file.
     Press Enter to confirm the file name.
     Press Ctrl + X to exit nano.
     To save your changes, run command: source ~/.zshrc
     Verify your changes in terminal by running command: echo $DB_HOST
-    To ensure your local host restarts, run command: killall php
+    Restart VS Code.
+    To ensure your local host restarted, run command: killall php
 
     Download VS Code extensions: PHP Intelephense by Ben Mewburn and PHP Server by brapifra
     You will need to have PHP installed on your Mac.
