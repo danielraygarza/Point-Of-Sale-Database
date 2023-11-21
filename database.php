@@ -1,9 +1,4 @@
 <?php
-// Hiding credentials doesnt allow you to run the website locally
-// $host = "pospizza.mysql.database.azure.com";
-// $username = "danielgarza";
-// $password = "#drgarza8";
-// $dbname = "pos";
 $host = getenv("DB_HOST");
 $username = getenv("DB_USERNAME");
 $password = getenv("DB_PASSWORD");
