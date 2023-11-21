@@ -7,17 +7,14 @@ body {
     align-items: center;
     height: 100vh;
     padding-top: 5%;
-    /* background: linear-gradient(45deg, #6C5B7B, #C06C84, #F67280); */
-    background: url('../img/pizza.jpeg') no-repeat center center fixed; 
-    background-size: cover; 
+    background: url('../img/pizza.jpeg') no-repeat center center fixed;
+    background-size: cover;
     color: #fff;
-    /* text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); */
 }
 
 form {
     text-align: center;
     width: auto;
-    /* max-width: 700px; */
     display: inline-block;
     background-color: rgba(224, 217, 217, 0.7);
     padding: 10px 20px;
@@ -29,12 +26,12 @@ form {
 
 label {
     font-family: 'Trebuchet MS', sans-serif;
-    display: inline-block;  /* Makes label behave like a block while keeping it inline */
-    margin-bottom: 6px;     /* Spacing below the label */
-    font-size: 16px;        /* Font size of the label */
+    display: inline-block;
+    margin-bottom: 6px;
+    font-size: 16px;
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    padding-right: 3px;    /* Padding to the right for spacing between label and an associated input, if they are side by side */
+    padding-right: 3px;
 }
 
 h1 {
@@ -45,36 +42,33 @@ h1 {
     animation: fadeIn 3s ease-in-out;
 }
 
-/* Button Styling */
 .button {
     display: inline-block;
-    background-color: #F67280; /* Button color */
-    color: #ffffff; /* Text color */
-    padding: 10px 20px; /* Top/bottom and left/right padding */
+    background-color: #F67280;
+    color: #ffffff;
+    padding: 10px 20px;
     height: fit-content;
-    border-radius: 15px; /* Rounded corners */
-    text-decoration: none; /* Removes underline from link */
-    font-size: 1rem; /* Text size */
-    border: none; /* Removes any default border */
-    cursor: pointer; /* Changes the cursor to a hand when hovering */
-    margin: 5px; /* Space around each button */
-    transition: background-color 0.3s ease; /* Smooth color transition on hover */
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
-/* Hover effect */
 .button:hover {
-    background-color: #C06C84; /* Darkens the button color when hovered */
+    background-color: #C06C84;
 }
 
-/* Active (when button is clicked) effect */
 .button:active {
-    background-color: #6C5B7B; /* Makes the button even darker when clicked */
-    /* position: relative; */
-    /* top: 1px; */
+    background-color: #6C5B7B;
+    position: relative;
+    top: 1px;
 }
 
-.toppings-list{
+.toppings-list {
     color: black;
     text-shadow: none;
     margin-bottom: 10px;
@@ -83,18 +77,16 @@ h1 {
 }
 
 input[type="checkbox"] {
-    margin-right: 10px; /* Adds space between the checkbox and the label text */
-    /* Add your custom styles for checkboxes here */
+    margin-right: 10px;
 }
 
-/* Navbar Styling */
 .navbar {
     background-color: rgba(224, 217, 217, 0.7);
     overflow: hidden;
-    position: fixed;  /* This ensures the navbar is always at the top */
-    top: 0;           /* Aligns the navbar to the top */
-    width: 100%;      /* Ensures the navbar stretches the full width of the page */
-    z-index: 1000;    /* Keeps the navbar above other elements */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
@@ -112,63 +104,60 @@ input[type="checkbox"] {
     color: black;
 }
 
-/* Report Header Styling */
 .report_header {
     background-color: rgba(7, 4, 4, 0.7);
-    color: white; /* Text color */
-    text-align: center; /* Center align text */
-    padding: 10px; /* Add some padding for spacing */
-    font-size: 24px; /* Adjust font size */
-    font-weight: bold; /* Make bold text */
-    top: 50px; /* Position 50 pixels below navbar */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    top: 50px;
 }
+
 .card {
     border-radius: 10px;
-    width: 500px; /* Set the desired width */
-    height: 600px; /* Set the desired height */
+    width: 500px;
+    height: 600px;
     margin: 1px auto;
     position: relative;
     background-color: white;
 }
 
-
-input[type="text"],/* Base styling for all input fields and dropdowns */
+input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="tel"],
 input[type="number"],
 select {
-    width: auto; /* Take the full width of the parent container */
-    padding: 8px 12px; /* Padding for a nicer spacing inside the field */
-    margin-bottom: 5px; /* Spacing between each field */
-    border: 1px solid #e0e0e0; /* Border color */
-    border-radius: 4px; /* Rounded corners */
-    font-size: 14px; /* Font size */
-    background-color: #fff; /* White background */
-    transition: border-color 0.3s; /* Smooth transition for border color */
-    outline: none; /* Remove the browser's default outline */
+    width: auto;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.3s;
+    outline: none;
 }
 
-/* Focus effect: change border color when an input field is in focus */
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="tel"]:focus,
 input[type="number"]:focus,
 select:focus {
-    border-color: #F67280; 
-    box-shadow: 0 0 5px #F67280; /* Add a subtle shadow */
+    border-color: #F67280;
+    box-shadow: 0 0 5px #F67280;
 }
 
 #errorMessage {
-    color: black;  
-    font-weight: bold; 
+    color: black;
+    font-weight: bold;
     margin: 10px;
     opacity: 1;
-    transition: opacity 1s;  /* fade out effect */
+    transition: opacity 1s;
 }
 
-/* Style the cart button */
 #cart-button {
     background-color: #ff9900;
     color: white;
@@ -177,19 +166,18 @@ select:focus {
 }
 
 #cart-button:hover {
-    background-color: #ff7700; /* darker orange color on hover */
+    background-color: #ff7700;
 }
 
 .checkout-window {
-    display:flex;
-    width: 60%; /* Set the desired width (60% of the screen width) */
-    height:80%;
-    /* margin-top: 0; */
-    padding: 0; /* Add padding for spacing inside the box */
+    display: flex;
+    width: 60%;
+    height: 80%;
+    padding: 0;
     position: absolute;
-    top: 50%; /* Center the box vertically */
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the box precisely */
+    transform: translate(-50%, -50%);
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
     text-align: center;
@@ -207,20 +195,20 @@ select:focus {
 }
 
 .cart-panel {
-    width: 90%; /* Set the desired width (60% of the screen width) */
-    height:70%;
-    margin: 0px 0px; /* Center the box horizontally */
+    width: 90%;
+    height: 70%;
+    margin: 0px 0px;
     margin-top: 10px;
-    padding: 20px; /* Add padding for spacing inside the box */
+    padding: 20px;
     border-radius: 10px;
     background: rgba(224, 217, 217, 0.7);
     text-align: left;
-    position: relative;  /* Change from 'absolute' to 'relative' */
-    top: 0;  /* Reset the top positioning */
-    left: 0;  /* Reset the left positioning */
-    transform: none; 
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
     overflow: auto;
-    
+
 }
 
 .cart-items {
@@ -229,8 +217,6 @@ select:focus {
     margin: 0;
     color: black;
     text-shadow: none;
-    /* text-align: center; */
-
 }
 
 .cart-items li {
@@ -241,14 +227,13 @@ select:focus {
 }
 
 .orderbutton {
-    display: block; /* Ensures it's on a new line */
+    display: block;
 }
 
 .php-heading {
     color: black;
     font-size: 24px;
     text-shadow: none;
-
 }
 
 .th-spacing {
@@ -262,7 +247,7 @@ main .main-holder {
 }
 
 main .main-holder .order-display {
-    position: absolute; 
+    position: absolute;
     width: 1000px;
     display: flex;
     flex-direction: column;
@@ -275,7 +260,7 @@ main .od-header {
     width: 1000px;
 }
 
-main .od-header .filterALL{
+main .od-header .filterALL {
     width: 200px;
     text-align: center;
     background-color: rgba(224, 217, 217, 0.7);
@@ -283,15 +268,12 @@ main .od-header .filterALL{
     border-radius: 10px;
 }
 
-main .od-header .filterALL:hover{
-    background-color: rgba(224, 217, 217, 0.542);;
+main .od-header .filterALL:hover {
+    background-color: rgba(224, 217, 217, 0.542);
+    ;
 }
 
-main .od-header .filterALL .filterLabel{
-
-}
-
-main .od-header .count{
+main .od-header .count {
     color: rgb(245, 245, 245);
     font-weight: bold;
     text-align: right;
@@ -312,7 +294,6 @@ main .main-holder .order-display .order-card-info {
     flex-direction: row;
     flex: auto;
 }
-
 
 main .main-holder .order-display .order-card .order-card-info .order-card-left {
     width: 50%;
@@ -348,24 +329,24 @@ main .main-holder .order-display .order-card .order-card-info .order-card-right 
     border-right: 1px solid black;
 }
 
-main .main-holder .order-display .order-card .order-card-info .order-card-right .items-ordered{
+main .main-holder .order-display .order-card .order-card-info .order-card-right .items-ordered {
     color: black;
     width: 90%;
 }
 
-main .main-holder .order-display .order-card .order-card-info .order-card-right .items{
+main .main-holder .order-display .order-card .order-card-info .order-card-right .items {
     color: black;
     width: 90%;
     margin: 1px;
     margin-left: 15px;
 }
 
-main .main-holder .order-display .order-card .order-card-info .order-card-right .type{
+main .main-holder .order-display .order-card .order-card-info .order-card-right .type {
     color: black;
     width: 90%;
 }
 
-main .main-holder .order-display .order-card .order-card-info .order-card-right .time_completed{
+main .main-holder .order-display .order-card .order-card-info .order-card-right .time_completed {
     color: black;
     width: 90%;
     position: absolute;
@@ -391,8 +372,7 @@ main .main-holder .order-display .order-card .order-card-info .complete_button {
     font-size: 12px;
     display: flex;
     justify-content: center;
-    cursor: pointer; /* Changes the cursor to a hand when hovering */
-
+    cursor: pointer;
 }
 
 main .main-holder .order-display .order-card .order-card-info .complete_button:hover {
@@ -416,13 +396,13 @@ main .main-holder .order-display .order-card .order-card-info .complete_button:h
 }
 
 input[type="date"] {
-    font-family: Arial, sans-serif; 
+    font-family: Arial, sans-serif;
     font-size: 14px;
-    color: black; 
-    background-color: #fff; 
-    border: 1px solid #ccc; 
-    border-radius: 10px; 
-    padding: 5px; 
+    color: black;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px;
     margin-right: 10px;
 }
 
@@ -459,11 +439,10 @@ input[type="date"] {
     justify-content: center;
 }
 
-.customerinfo .remainingNeeded .needed{
+.customerinfo .remainingNeeded .needed {
     color: rgb(75, 171, 70);
     margin-left: 5px;
     margin-right: 5px;
     margin-top: 0px;
     margin-bottom: 0px;
 }
-
