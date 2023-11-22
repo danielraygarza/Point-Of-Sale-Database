@@ -14,7 +14,7 @@ if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] 
 if (isset($_POST['export'])) {
     // Set the headers for CSV file
     header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="exported_data.csv"');
+    header('Content-Disposition: attachment; filename="POS_Pizza_Data.csv"');
 
     // Retrieve data
     $exportData = json_decode($_POST['export_data'], true);
