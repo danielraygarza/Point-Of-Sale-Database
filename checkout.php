@@ -10,23 +10,22 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// when you click "place order", it will run this code
 if (isset($_POST['place-order'])) {
     // check if any employees are clocked in at the selected store
     $selectedStoreId = $mysqli->real_escape_string($_POST['Store_ID']);
     $checkEmployees = $mysqli->query("SELECT COUNT(*) AS ClockedInEmployees FROM employee WHERE Store_ID = '$selectedStoreId' AND clocked_in = 1");
     $row = $checkEmployees->fetch_assoc();
-    
-     // redirect if employees are clocked in
-     if ($row['ClockedInEmployees'] > 0) {
+
+    // redirect if employees are clocked in
+    if ($row['ClockedInEmployees'] > 0) {
+        // reads order type and redirects to delivery or pickup page
         $Order_Type = $mysqli->real_escape_string($_POST['Order_Type']);
         $_SESSION['selected_store_id'] = $_POST['Store_ID'];
+        
+        // create session variable checkout completed to control user access
         if ($Order_Type == 'Pickup') {
             $_SESSION['checkout_completed'] = true;
             header('Location: pickup.php');
-            exit;
-        } else if ($Order_Type == 'DIGIORNO') {
-            header('Location: https://www.goodnes.com/digiorno/');
             exit;
         } else if ($Order_Type == 'Delivery') {
             $_SESSION['checkout_completed'] = true;
@@ -37,16 +36,15 @@ if (isset($_POST['place-order'])) {
             exit;
         }
     } else {
-        // Redirect or inform the user if no employees are clocked in
-        // For example, redirect to a notification page or an error page
+        // if no employees are clocked in, give error message
         echo "";
         $_SESSION['error'] = "Sorry, this location is closed!";
-        header('Location: checkout.php'); // Replace with your desired location
+        header('Location: checkout.php');
         exit;
     }
 }
 
-// Clear the cart if the "Clear Cart" button is clicked
+// Clear cart button empties array
 if (isset($_POST['clear-cart'])) {
     $_SESSION['cart'] = [];
 }
@@ -60,7 +58,6 @@ function getCartItemCount()
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Checkout</title>
     <link rel="stylesheet" href="css/styles.css">
@@ -84,16 +81,16 @@ function getCartItemCount()
 
     <form action="checkout.php" method="post">
         <div class="checkout-window">
-            <!-- <h2 class="cart-heading">Pizza Cart</h2> -->
             <?php
             // if logged in, greet customer with name
             if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                 echo "<h2 class='php-heading'>" . $_SESSION['user']['first_name'] . ", review your cart!</h2>";
-            } else { // checks if the user is logged in. If so, it returns a welcome with their name.
+            } else {
                 echo "<h2 class='php-heading'>Review your cart!</h2>"; // or a generic welcome if not
             }
             ?>
             <div>
+                <!-- dropdown for stores -->
                 <select id="Store_ID" name="Store_ID" style="margin-right: 10px">
                     <option value="" selected disabled>Select Location to Order</option>
                     <?php
@@ -109,44 +106,41 @@ function getCartItemCount()
                     }
                     ?>
                 </select>
-                <!-- Select box containing the order method to be selected -->
+                <!-- dropdown for order method -->
                 <select id="Order_Type" name="Order_Type">
                     <option value="" selected disabled>Select Order Method</option>
                     <option value="Pickup">Pick Up</option>
                     <option value="Delivery">Delivery</option>
-                    <option value="DIGIORNO">DIGIORNO</option>
                 </select>
-                <!-- END SELECT BOX -->
             </div>
             <div class="cart-panel">
                 <ul class="cart-items">
                     <?php
-                    // Assuming you have a cart stored in a session or database
+                    // establishes cart in session
                     $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
-                    $totalPrice = 0; //start total at zero
-                    $totalCOG = 0; //start total at zero
+                    $totalPrice = 0; // price of order for customer
+                    $totalCOG = 0; // cost of goods in order
                     if (count($cart) > 0) {
                         //loop through the items in the cart and display them
-
-                        //---------QUERY FOR RETURNING CART ITEMS AS NAMES WITH PRICES---------------------------//
                         foreach ($cart as $item) {
+                            //---------QUERY FOR RETURNING CART ITEMS AS NAMES WITH PRICES---------------------------//
                             $query = "SELECT Item_Cost AS Cost, Item_Name AS Name, Cost_Of_Good, 'item' AS Source FROM items WHERE Item_Name = '$item'
                                     UNION ALL
                                     SELECT Price AS Cost, Name, Cost_Of_Good, 'menu' AS Source FROM menu WHERE Pizza_ID = '$item'";
-                            // returns The topping name as item, and the pizza name as Source. Also returns price as cost.\
 
                             $result = $mysqli->query($query);
-                            // Start query to load items for the checkout
                             if ($result) {
                                 while ($row = $result->fetch_assoc()) {
                                     $itemName = $row['Name'];
                                     $itemCost = $row['Cost'];
                                     $itemCOG = $row['Cost_Of_Good'];
+                                    
+                                    //accumlating total price and cost of goods for order
                                     $totalPrice += $itemCost;
                                     $totalCOG += $itemCOG;
-
-                                    //check source and indent toppings from item table
+                                    
+                                    // output order items while checking source to fit styling
                                     if ($row['Source'] === 'item') {
                                         echo "<li class='item-style'>$itemName - $$itemCost</li>";
                                     } else {
@@ -156,10 +150,11 @@ function getCartItemCount()
                             }
                         }
                         echo "<li>----------------------</li>";
+                        // prints total price
                         echo "<li>Total Price: $$totalPrice</li>";
-                         //prints total price
                         echo '<li><button name="clear-cart" type="submit" class="clear-cart-button">Clear Cart</button></li>';
                     } else {
+                        // if cart count returns 0
                         echo "<h2 class='php-heading'> Your cart is empty</h2>";
                     }
                     $_SESSION['totalPrice'] = $totalPrice; //saves total price to session
@@ -168,22 +163,22 @@ function getCartItemCount()
                 </ul>
             </div>
             <script>
+                //function to ensure store and method are selected when "place order is selected"
                 function setRequiredFields() {
                     document.getElementById('Store_ID').required = true;
                     document.getElementById('Order_Type').required = true;
                 }
             </script>
             <?php
-                //displays error messages here 
-                if (isset($_SESSION['error'])) {
-                    echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
-                    unset($_SESSION['error']);  // Unset the error message after displaying it
-                }
-                ?>
+            //displays error messages here 
+            if (isset($_SESSION['error'])) {
+                echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                unset($_SESSION['error']);  // Unset the error message after displaying it
+            }
+            ?>
             <input class="button orderbutton" type="submit" name="place-order" value="Place Order" onclick="setRequiredFields()">
         </div>
     </form>
 </body>
 
 </html>
-

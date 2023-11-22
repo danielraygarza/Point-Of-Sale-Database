@@ -1,4 +1,5 @@
 <?php
+// gets configuration information from Azure web app
 $host = getenv("DB_HOST");
 $username = getenv("DB_USERNAME");
 $password = getenv("DB_PASSWORD");

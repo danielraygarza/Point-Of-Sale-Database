@@ -12,6 +12,7 @@ if (empty($_SESSION['checkout_completed'])) {
     exit;
 }
 
+// returns number of items in cart
 function getCartItemCount()
 {
     return count($_SESSION['cart']);
@@ -39,7 +40,7 @@ if (isset($_SESSION['cart'])) {
     $cart = $_SESSION['cart'];
 }
 
-//if logged in, assign store credit to discount
+//if logged in, check if store credit exist and assign to discount amount
 $discountAmount = 0;
 if (isset($_SESSION['user']['customer_id'])) {
     $customerID = $_SESSION['user']['customer_id'];
@@ -51,12 +52,12 @@ if (isset($_SESSION['user']['customer_id'])) {
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") { 
 
     //pickup table
     $first_name = $mysqli->real_escape_string($_POST['first_name']);
     $last_name = $mysqli->real_escape_string($_POST['last_name']);
-    
+
     //order table
     $Current_Date = $mysqli->real_escape_string($_POST['Current_Date']);
     $Current_Time = $mysqli->real_escape_string($_POST['Current_Time']);
@@ -70,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
     $T_Date = $mysqli->real_escape_string($_POST['Current_Date']);
     $Time_Processed = $mysqli->real_escape_string($_POST['Current_Time']);
 
-    // SQL to find an available employee at the selected store with the least number of assigned orders
+    // find available employee at the selected store with the least number of assigned orders
     $findEmployeeSQL = "SELECT Employee_ID FROM employee  WHERE Store_ID = '$store_id' AND clocked_in = 1 
                             ORDER BY assigned_orders ASC LIMIT 1";
 
@@ -100,16 +101,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             }
             $employee = $result->fetch_assoc();
             $employee_id_assigned = $employee['Employee_ID'];
+
+            // insert into orders table
             $ordersSQL = "INSERT INTO orders (Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned, Cost_Of_Goods)
                         VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned', '$totalCOG')";
-            // Check if the orders table insertion was successful
-            if ($mysqli->query($ordersSQL) === TRUE) {
-                $Order_ID = $mysqli->insert_id; // Check this after the query
 
-                // Inserting the data into the pickup table with the same Order_ID
+            // ensure orders table insertion was successful
+            if ($mysqli->query($ordersSQL) === TRUE) {
+                $Order_ID = $mysqli->insert_id; //assign new order ID
+
+                //insert into pickup table
                 $pickupSQL = "INSERT INTO pickup (PU_Order_ID, PU_Date, PU_Time_Processed, employee, PU_firstName, PU_lastName)
                             VALUES ('$Order_ID', '$Current_Date', '$Current_Time', '$employee_id_assigned', '$first_name', '$last_name')";
 
+                // ensure pickup table insertion was successful
                 if ($mysqli->query($pickupSQL) === TRUE) {
                     // Update the customer's store credit after applying the discount
                     if (isset($_SESSION['user']['customer_id'])) {
@@ -117,13 +122,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                         $updateCustomerCredit = "UPDATE customers SET store_credit = $newStoreCredit WHERE customer_id = '$customerID'";
                         if (!$mysqli->query($updateCustomerCredit)) {
                             throw new Exception("Error updating customer's store credit: " . $mysqli->error);
-                            }
+                        }
                     }
-                    // Inserting the data into the transactions table with the same Order_ID
+                    //insert into transaction table
                     $transactionSQL = "INSERT INTO transactions (T_Order_ID, Total_Amount_Charged, Amount_Tipped, Payment_Method, T_Date, Time_Processed)
                                 VALUES ('$Order_ID', '$Total_Amount_Charged', '$Amount_Tipped', '$Payment_Method', '$Current_Date','$Current_Time')";
+
+                    // ensure transactions table insertion was successful
                     if ($mysqli->query($transactionSQL) === TRUE) {
-                        // After successfully inserting into orders, deliveries, and transactions, assign the employee
+                        // After successfully inserting into orders, pickup, and transactions, assign the employee
                         $incrementAssignedOrdersSQL = "UPDATE employee 
                                                     SET assigned_orders = assigned_orders + 1 
                                                     WHERE Employee_ID = '$employee_id_assigned'";
@@ -162,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                 //holds attributes for cart item
                                 $itemDetails = $itemDetailsResult->fetch_assoc();
 
-                                // insert into order_items
+                                // insert into order_items table
                                 $insertOrderItemSQL = "INSERT INTO order_items (Item_ID, Order_ID, Price, Item_Name, Date_Ordered) 
                                                        VALUES (?, ?, ?, ?, ?)";
                                 $insertStmt = $mysqli->prepare($insertOrderItemSQL);
@@ -175,7 +182,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                         $updateInventorySQL = "UPDATE inventory SET Inventory_Amount = Inventory_Amount - {$itemDetails['Amount_per_order']} 
                                                             WHERE Item_ID = {$itemDetails['Item_ID']} AND Store_ID = $store_id";
                                         $mysqli->query($updateInventorySQL);
-
                                     } else if ($source === 'menu') {
                                         // Check if the menu item is a pizza
                                         $pizzaDetailsQuery = "SELECT Is_Pizza, Size_Option FROM menu WHERE Pizza_ID = ?";
@@ -185,6 +191,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                         $pizzaDetailsResult = $pizzaStmt->get_result();
 
                                         if ($pizzaDetails = $pizzaDetailsResult->fetch_assoc()) {
+                                            // check if menu item is a pizza
                                             if ($pizzaDetails['Is_Pizza']) {
                                                 // Determine how much dough/sauce/cheese to subtract based on pizza size
                                                 $ingredientAmountToSubtract = 0;
@@ -203,9 +210,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                         break;
                                                 }
 
+                                                // create array for ingredients to take from inventory
                                                 $ingredientNames = ['dough', 'cheese', 'sauce'];
                                                 $ingredientIds = [];
 
+                                                // loop through pizza ingredients 
                                                 foreach ($ingredientNames as $ingredientName) {
                                                     $ingredientIdQuery = "SELECT Item_ID FROM items WHERE Item_Name = ?";
                                                     $stmt = $mysqli->prepare($ingredientIdQuery);
@@ -232,7 +241,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                             }
                                         }
                                     }
-
                                 } //END UPDATE INVENTORY  
                                 else {
                                     // Handle error for failed insertion into order_items
@@ -244,9 +252,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                     break;
                                 }
                             } //end cart item loop
-                            
-                            $_SESSION['order_completed'] = true; //variable to restrict access to thank you page
+
                             $_SESSION['cart'] = []; //empties cart after everything
+                            $_SESSION['order_completed'] = true; // session variable to restrict access to thank you page
                             $mysqli->commit();
                             // Redirect to the thank you page
                             header('Location: thankyou.php');
@@ -323,6 +331,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             </div><br>
         <?php } ?>
 
+        <!-- each field is checking if user is logged in and populating info if they are -->
         <div>
             <label for="first_name">Name </label>
             <input type="text" id="first_name" name="first_name" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['first_name']; ?>" <?php } ?> placeholder="First" style="width: 125px;" required>
@@ -333,15 +342,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
         <div>
             <label for="Amount">Amount </label>
-            <input type="text" id="Amount" name="Amount" <?php if (isset($_SESSION['totalPrice'])) { ?> value=" <?php echo $totalPrice ?>" <?php } ?> placeholder="Amount" style="width: 100px;" required readonly >
+            <input type="text" id="Amount" name="Amount" <?php if (isset($_SESSION['totalPrice'])) { ?> value=" <?php echo $totalPrice ?>" <?php } ?> placeholder="Amount" style="width: 100px;" required readonly>
 
             <label for="Amount_Tipped">Tip Amount </label>
             <input type="number" id="Amount_Tipped" name="Amount_Tipped" min=0 placeholder="Tip" style="width: 100px;">
 
-            <input type="hidden" id="Cost_Of_Goods" name="Cost_Of_Goods" <?php if (isset($_SESSION['Cost_Of_Goods'])) { ?> value= <?php $totalCOG ?> <?php } ?>>
+            <input type="hidden" id="Cost_Of_Goods" name="Cost_Of_Goods" <?php if (isset($_SESSION['Cost_Of_Goods'])) { ?> value=<?php $totalCOG ?> <?php } ?>>
         </div><br>
 
         <?php
+        // display discount amount if it greater than 0
         if ($discountAmount > 0) { ?>
             <div>
                 <label for="Discount_Amount">Discount Applied </label>
@@ -350,43 +360,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                 <div>
                 <?php } ?>
 
-            <label for="Total_Amount_Charged">Total Amount </label>
-            <input type="text" id="Total_Amount_Charged" name="Total_Amount_Charged" placeholder="Total Amount" style="width: 100px;" required readonly>
-        </div><br>
+                <label for="Total_Amount_Charged">Total Amount </label>
+                <input type="text" id="Total_Amount_Charged" name="Total_Amount_Charged" placeholder="Total Amount" style="width: 100px;" required readonly>
+                </div><br>
 
-        <script>
-            function calculateTotal() {
-                var amount = parseFloat(document.getElementById('Amount').value) || 0;
-                var tip = parseFloat(document.getElementById('Amount_Tipped').value) || 0;
-                var discount = parseFloat(<?php echo $discountAmount; ?>) || 0;
-                var total = amount + tip - discount;
-                document.getElementById('Total_Amount_Charged').value = total.toFixed(2);
-            }
-            document.getElementById('Amount').addEventListener('input', calculateTotal);
-            document.getElementById('Amount_Tipped').addEventListener('input', calculateTotal);
-        </script>
+                <script>
+                    // funtion adding up amount, total amount, tip, and discount
+                    function calculateTotal() {
+                        var amount = parseFloat(document.getElementById('Amount').value) || 0;
+                        var tip = parseFloat(document.getElementById('Amount_Tipped').value) || 0;
+                        var discount = parseFloat(<?php echo $discountAmount; ?>) || 0;
+                        var total = amount + tip - discount;
+                        document.getElementById('Total_Amount_Charged').value = total.toFixed(2);
+                    }
+                    document.getElementById('Amount').addEventListener('input', calculateTotal);
+                    document.getElementById('Amount_Tipped').addEventListener('input', calculateTotal);
+                </script>
 
-        <div>
-            <select id="Payment_Method" name="Payment_Method" required>
-                <option value="" selected disabled>Select Payment Method</option>
-                <option value="Cash">Cash</option>
-                <option value="Credit Card">Credit Card</option>
-                <option value="Bitcoin">Bitcoin</option>
-                <option value="V-Bucks">V-Bucks</option>
-            </select>
-        </div><br>
+                <div>
+                    <select id="Payment_Method" name="Payment_Method" required>
+                        <option value="" selected disabled>Select Payment Method</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Bitcoin">Bitcoin</option>
+                        <option value="V-Bucks">V-Bucks</option>
+                    </select>
+                </div><br>
 
 
-        <?php
-        //displays error messages here 
-        if (isset($_SESSION['error'])) {
-            echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
-            unset($_SESSION['error']);  // Unset the error message after displaying it
-        }
-        ?>
+                <?php
+                //displays error messages here 
+                if (isset($_SESSION['error'])) {
+                    echo '<div id="errorMessage">' . $_SESSION['error'] . '</div>';
+                    unset($_SESSION['error']);  // Unset the error message after displaying it
+                }
+                ?>
 
-        <div>
-            <input class=button type="submit" value="Finalize Order">
+                <div>
+                    <input class=button type="submit" value="Finalize Order">
     </form>
 </body>
 

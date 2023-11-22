@@ -12,12 +12,13 @@ if (empty($_SESSION['checkout_completed'])) {
     exit;
 }
 
+// returns number of items in cart
 function getCartItemCount()
 {
     return count($_SESSION['cart']);
 }
 
-//carries the selected store from checkout page
+// carries the selected store from checkout page
 if (isset($_SESSION['selected_store_id'])) {
     $store_id = $_SESSION['selected_store_id'];
 } else {
@@ -41,7 +42,7 @@ if (isset($_SESSION['cart'])) {
 }
 
 
-//if logged in, assign store credit to discount
+//if logged in, check if store credit exist and assign to discount amount
 $discountAmount = 0;
 if (isset($_SESSION['user']['customer_id'])) {
     $customerID = $_SESSION['user']['customer_id'];
@@ -53,7 +54,7 @@ if (isset($_SESSION['user']['customer_id'])) {
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //order table
     $Current_Date = $mysqli->real_escape_string($_POST['Current_Date']);
@@ -75,11 +76,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
     $T_Date = $mysqli->real_escape_string($_POST['Current_Date']);
     $Time_Processed = $mysqli->real_escape_string($_POST['Current_Time']);
 
-    // SQL to find an available employee at the selected store with the least number of assigned orders
+    // find available employee at the selected store with the least number of assigned orders
     $findEmployeeSQL = "SELECT Employee_ID FROM employee 
                         WHERE Store_ID = '$store_id' AND clocked_in = 1 AND Title_Role IN ('TM', 'SUP')
                         ORDER BY assigned_orders ASC LIMIT 1";
-        
+
 
     // Start a transaction
     $mysqli->begin_transaction();
@@ -109,16 +110,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             }
             $employee = $result->fetch_assoc();
             $employee_id_assigned = $employee['Employee_ID'];
+
+            // insert into orders table
             $ordersSQL = "INSERT INTO orders (Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned, Cost_Of_Goods)
                         VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned', '$totalCOG')";
-            // Check if the orders table insertion was successful
+                        
+            // ensure orders table insertion was successful
             if ($mysqli->query($ordersSQL) === TRUE) {
                 $Order_ID = $mysqli->insert_id; //assign new order ID
 
-                //insert delivery table
+                //insert into delivery table
                 $deliverySQL = "INSERT INTO delivery (D_Order_ID, D_Date, D_Time_Processed, D_Address, D_Address2, D_City, D_State, D_Zip_Code, delivery_employeeID)
                             VALUES ('$Order_ID', '$Current_Date', '$Current_Time', '$D_Address', '$D_Address2','$D_City', '$D_State', '$D_Zip_Code', '$employee_id_assigned')";
 
+                // ensure delivery table insertion was successful
                 if ($mysqli->query($deliverySQL) === TRUE) {
                     // Update the customer's store credit after applying the discount
                     if (isset($_SESSION['user']['customer_id'])) {
@@ -126,24 +131,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                         $updateCustomerCredit = "UPDATE customers SET store_credit = $newStoreCredit WHERE customer_id = '$customerID'";
                         if (!$mysqli->query($updateCustomerCredit)) {
                             throw new Exception("Error updating customer's store credit: " . $mysqli->error);
-                            }
+                        }
                     }
-                    //insert transaction table
+                    //insert into transaction table
                     $transactionSQL = "INSERT INTO transactions (T_Order_ID, Total_Amount_Charged, Amount_Tipped, Payment_Method, T_Date, Time_Processed)
                                 VALUES ('$Order_ID', '$Total_Amount_Charged', '$Amount_Tipped', '$Payment_Method', '$Current_Date','$Current_Time')";
+
+                    // ensure transactions table insertion was successful
                     if ($mysqli->query($transactionSQL) === TRUE) {
                         // After successfully inserting into orders, deliveries, and transactions, assign the employee
                         $incrementAssignedOrdersSQL = "UPDATE employee 
-                                                SET assigned_orders = assigned_orders + 1 
+                                                SET assigned_orders = assigned_orders + 1 -- increments orders assigned to employee
                                                 WHERE Employee_ID = '$employee_id_assigned'";
 
+                        // ensure employee update was successful
                         if ($mysqli->query($incrementAssignedOrdersSQL) === TRUE) {
                             //adds to customers total spent to date
                             $addToCustomerTotal = "UPDATE customers
                                                     SET total_spent_toDate = total_spent_toDate + $Total_Amount_Charged 
                                                     WHERE customer_id = '$customerID'";
                             $result = $mysqli->query($addToCustomerTotal); //process update
-                            
+
                             //LOOP THROUGH ITEMS IN CART TO ADD TO ORDER ITEMS AND UPDATE INVENTORY
                             foreach ($_SESSION['cart'] as $itemId) {
                                 //check if item is in items table
@@ -169,10 +177,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                     }
                                 }
 
-                                //holds attributes for cart item
+                                // holds attributes for cart item
                                 $itemDetails = $itemDetailsResult->fetch_assoc();
 
-                                // insert into order_items
+                                // insert into order_items table
                                 $insertOrderItemSQL = "INSERT INTO order_items (Item_ID, Order_ID, Price, Item_Name, Date_Ordered) 
                                                        VALUES (?, ?, ?, ?, ?)";
                                 $insertStmt = $mysqli->prepare($insertOrderItemSQL);
@@ -181,11 +189,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                 // UPDATE INVENTORY
                                 if ($insertStmt->execute()) {
                                     if ($source === 'item') {
-                                        // Update inventory for items int the 'items' table
+                                        // Update inventory for items in the 'items' table
                                         $updateInventorySQL = "UPDATE inventory SET Inventory_Amount = Inventory_Amount - {$itemDetails['Amount_per_order']} 
                                                             WHERE Item_ID = {$itemDetails['Item_ID']} AND Store_ID = $store_id";
                                         $mysqli->query($updateInventorySQL);
-
                                     } else if ($source === 'menu') {
                                         // Check if the menu item is a pizza
                                         $pizzaDetailsQuery = "SELECT Is_Pizza, Size_Option FROM menu WHERE Pizza_ID = ?";
@@ -195,8 +202,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                         $pizzaDetailsResult = $pizzaStmt->get_result();
 
                                         if ($pizzaDetails = $pizzaDetailsResult->fetch_assoc()) {
+                                            // check if menu item is a pizza
                                             if ($pizzaDetails['Is_Pizza']) {
-                                                // Determine how much dough/sauce/cheese to subtract based on pizza size
+                                                // Determine how much dough/sauce/cheese to subtract based on pizza size based on size
                                                 $ingredientAmountToSubtract = 0;
                                                 switch ($pizzaDetails['Size_Option']) {
                                                     case 'S':
@@ -213,9 +221,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                                         break;
                                                 }
 
+                                                // create array for ingredients to take from inventory
                                                 $ingredientNames = ['dough', 'cheese', 'sauce'];
                                                 $ingredientIds = [];
 
+                                                // loop through pizza ingredients 
                                                 foreach ($ingredientNames as $ingredientName) {
                                                     $ingredientIdQuery = "SELECT Item_ID FROM items WHERE Item_Name = ?";
                                                     $stmt = $mysqli->prepare($ingredientIdQuery);
@@ -242,7 +252,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                                             }
                                         }
                                     }
-
                                 } //END UPDATE INVENTORY  
                                 else {
                                     // Handle error for failed insertion into order_items
@@ -256,7 +265,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                             } //end cart item loop
 
                             $_SESSION['cart'] = []; //empties cart after everything
-                            $_SESSION['order_completed'] = true; //variable to restrict access to thank you page
+                            $_SESSION['order_completed'] = true; // session variable to restrict access to thank you page
                             $mysqli->commit();
                             // Redirect to the thank you page
                             header('Location: thankyou.php');
@@ -340,6 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             </div><br>
         <?php } ?>
 
+        <!-- each field is checking if user is logged in and populating info if they are -->
         <div>
             <label for="D_Address">Address </label>
             <input type="text" id="D_Address" name="D_Address" <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?> value="<?php echo $_SESSION['user']['address']; ?>" <?php } ?> placeholder="Enter deilvery address" required>
@@ -357,6 +367,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) : ?>
                     <option value="<?php echo $_SESSION['user']['state']; ?>" selected> <?php echo $_SESSION['user']['state']; ?> </option>
                 <?php else : ?> <option value="" selected disabled>Select</option> <?php endif; ?>
+                <option value="" selected disabled>Select</option>
                 <option value="AL">Alabama</option><option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option><option value="AR">Arkansas</option>
                 <option value="CA">California</option><option value="CO">Colorado</option>
@@ -390,14 +401,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
         <div>
             <label for="Amount">Amount </label>
             <input type="text" id="Amount" name="Amount" <?php if (isset($_SESSION['totalPrice'])) { ?> value=" <?php echo $totalPrice ?>" <?php } ?> placeholder="Amount" style="width: 100px;" required readonly>
-            
+
             <label for="Amount_Tipped">Tip Amount </label>
             <input type="number" id="Amount_Tipped" name="Amount_Tipped" min=0 placeholder="Tip" style="width: 100px;">
-            
-            <input type="hidden" id="Cost_Of_Goods" name="Cost_Of_Goods" <?php if (isset($_SESSION['Cost_Of_Goods'])) { ?> value= <?php $totalCOG ?> <?php } ?>>
+
+            <input type="hidden" id="Cost_Of_Goods" name="Cost_Of_Goods" <?php if (isset($_SESSION['Cost_Of_Goods'])) { ?> value=<?php $totalCOG ?> <?php } ?>>
         </div><br>
 
         <?php
+        // display discount amount if it greater than 0
         if ($discountAmount > 0) { ?>
             <div>
                 <label for="Discount_Amount">Discount Applied </label>
@@ -412,6 +424,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
 
 
                 <script>
+                    // funtion adding up amount, total amount, tip, and discount
                     function calculateTotal() {
                         var amount = parseFloat(document.getElementById('Amount').value) || 0;
                         var tip = parseFloat(document.getElementById('Amount_Tipped').value) || 0;
