@@ -20,6 +20,7 @@
         $Item_Type = $mysqli->real_escape_string($_POST['Item_Type']);
         $Item_Name = $mysqli->real_escape_string($_POST['Item_Name']);
         $Item_Cost = $mysqli->real_escape_string($_POST['Item_Cost']);
+        $Cost_Of_Good = $mysqli->real_escape_string($_POST['Cost_Of_Good']);
         $Reorder_Threshold = $mysqli->real_escape_string($_POST['Reorder_Threshold']);
         $Days_to_expire = $mysqli->real_escape_string($_POST['Days_to_expire']);
         $Amount_per_order = $mysqli->real_escape_string($_POST['Amount_per_order']);
@@ -31,8 +32,8 @@
             $_SESSION['error'] = "Item already exist!";
         } else {
             // Inserting the data into the database if item doesnt exist already
-            $sql = "INSERT INTO items (Item_Type, Item_Name, Item_Cost, Reorder_Threshold, Days_to_expire, Amount_per_order) 
-                    VALUES ('$Item_Type', '$Item_Name','$Item_Cost', '$Reorder_Threshold', '$Days_to_expire', '$Amount_per_order')";
+            $sql = "INSERT INTO items (Item_Type, Item_Name, Item_Cost, Cost_Of_Good, Reorder_Threshold, Days_to_expire, Amount_per_order) 
+                    VALUES ('$Item_Type', '$Item_Name','$Item_Cost', '$Cost_Of_Good','$Reorder_Threshold', '$Days_to_expire', '$Amount_per_order')";
 
             if ($mysqli->query($sql) === TRUE) {
                 $mysqli->close();
@@ -76,7 +77,7 @@
         </div><br>
 
         <div>
-            <label for="Item_Cost">Item Cost  </label>
+            <label for="Item_Cost">Menu Cost  </label>
             <input type="number" id="Item_Cost" name="Item_Cost" min=0 placeholder="Enter cost" step="0.01" required>
         </div><br>
         <script>
@@ -91,6 +92,11 @@
                 });
             });
         </script>
+
+        <div>
+            <label for="Cost_Of_Good">Cost of Good  </label>
+            <input type="number" id="Cost_Of_Good" name="Cost_Of_Good" min=0 placeholder="Enter cost" step="0.01" required>
+        </div><br>
 
         <div>
             <label for="Reorder_Threshold">Reorder Threshold  </label>
