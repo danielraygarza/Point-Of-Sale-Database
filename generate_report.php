@@ -1,23 +1,18 @@
 <?php
-    session_start();
-    include 'database.php'; // Include the database connection details
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+session_start();
+include 'database.php'; // Include the database connection details
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-   // Redirects if not manager/CEO or accessed directly via URL
-    if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-        header("Location: employee_login.php");
-        exit; // Make sure to exit so that the rest of the script won't execute
-    }
+// Redirects if not manager/CEO or accessed directly via URL
+if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    header("Location: employee_login.php");
+    exit; // Make sure to exit so that the rest of the script won't execute
+}
 
-    // TO DO: //
-    // POPULATE DATABASE WITH MORE ORDER INFO AND NEW VENDORS
-
-    date_default_timezone_set('America/Chicago');
-    $currentDate = date("Y-m-d");
-    // echo $currentDate;
-
+date_default_timezone_set('America/Chicago');
+$currentDate = date("Y-m-d");
 ?>
 
 <!DOCTYPE html>
@@ -34,8 +29,8 @@
         .scrollable-area {
             min-height: auto;
             max-height: 500px;
-            overflow: auto; /* Add a scrollbar when content overflows */
-            border: 1px solid #ccc; /* Optional border styling */
+            overflow: auto;
+            border: 1px solid #ccc;
         }
 
         /* Style for the table */
@@ -44,7 +39,8 @@
             width: 100%;
         }
 
-        .table_update th, .table_update td {
+        .table_update th,
+        .table_update td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
@@ -58,10 +54,10 @@
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="reports.php">Back to Reports</a>
-        <?php echo '<a href="logout.php">Logout</a>';?>
-        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
+        <?php echo '<a href="logout.php">Logout</a>'; ?>
+        <a id="cart-button" style="background-color: transparent;"><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
-    <form action="generate_report.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">
+    <form action="export_wcsv.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">
         <?php
         // Check if the form has been submitted
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -74,20 +70,12 @@
                 ////INVENTORY QUERIES////
                 /////////////////////////
                 if ($reportType === 'inventory') {
-                    // Database connection code:
-                    include 'database.php'; // Database connection file
-
-                    //Check if the connection to the database was successful
-                    if ($mysqli === false) {
-                        die("Error: Could not connect to the database. " . mysqli_connect_error());
-                    }
-
                     // Check the value of the inventoryType
                     $inventoryType = $_POST['inventoryType'];
                     $sql = '';
 
                     // Get the selected store
-                    if(isset($_POST['storeId'])){
+                    if (isset($_POST['storeId'])) {
                         $storeId = $_POST['storeId'];
                     } else {
                         $storeId = '1';
@@ -170,7 +158,7 @@
                         if (mysqli_num_rows($result) > 0) {
 
                             // Build exportArray
-                            while ($row = mysqli_fetch_assoc($exResult)){
+                            while ($row = mysqli_fetch_assoc($exResult)) {
                                 $exportArray[] = $row;
                             }
 
@@ -198,7 +186,6 @@
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr>';
-                                // echo '<td>' . $row['Inventory_ID'] . '</td>';
                                 echo '<td>' . $row['Item_Name'] . '</td>';
                                 echo '<td>' . $row['Inventory_Amount'] . '</td>';
                                 echo "<td>" . $row['Last_Stock_Shipment_Date'] . "</td>";
@@ -217,11 +204,9 @@
                             // End of scrollable area
                             echo '</div>';
 
-                            // // Build exportArray
-                            // while ($row = mysqli_fetch_assoc($result)){
-                            //     $exportArray[] = $row;
-                            // }
-
+                            // Export to CSV button
+                            echo '<input type="hidden" name="export_data" value="' . htmlspecialchars(json_encode($exportArray)) . '">';
+                            echo '<input type="submit" class="button" name="export" value="Export to CSV">';
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No inventory data available.';
@@ -241,16 +226,8 @@
                 //////STORE QUERIES//////
                 /////////////////////////
                 if ($reportType === 'store') {
-                    // Database connection code:
-                    include 'database.php'; // Database connection file
-
-                    //Check if the connection to the database was successful
-                    if ($mysqli === false) {
-                        die("Error: Could not connect to the database. " . mysqli_connect_error());
-                    }
-
                     // Get the selected store
-                    if(isset($_POST['storeId'])){
+                    if (isset($_POST['storeId'])) {
                         $storeId = $_POST['storeId'];
                     } else {
                         $storeId = '1';
@@ -263,11 +240,8 @@
 
                     // Define your SQL queries for Inventory selection
                     if ($storeType === 'orders') {
-                        // DONE
                         // Header for daily orders
                         $setHeader = 'Daily Orders';
-                        // Get the current Date
-                        // $currentDate = 20231116;
                         // Query for daily orders
                         $sql = "SELECT Pizza_Store_ID,
                         Store_Address,
@@ -299,9 +273,6 @@
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) = '$currentDate';";
                     } elseif ($storeType === 'orderdates') {
-                        // DONE
-                        // Header for daily orders
-                        // $setHeader = 'Orders by Date';
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
                             $stDate = $_POST['stDate'];
@@ -349,20 +320,14 @@
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
                     } elseif ($storeType === 'popular') {
-                        // DONE PENDING DATABASE TESTING
-                        // Header for most popular item today
-                        // $setHeader = 'Most Popular item';
-                        $address = $mysqli->query("SELECT Store_Address, 
-                        Store_City 
+                        $address = $mysqli->query("SELECT Store_Address,Store_City 
                         FROM pizza_store 
                         WHERE Pizza_Store_ID = '$storeId'");
+
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Most Popular item today from ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
 
-                        // Get the current Date
-                        // $currentDate = 20231114;
-                        // TO COMPLETE: Query for most popular item today
                         $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
                         COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
@@ -373,9 +338,6 @@
                         ORDER BY Item_Count DESC
                         LIMIT 1;";
                     } elseif ($storeType === 'datepopular') {
-                        // DONE PENDING DATABASE TESTING
-                        // Header for most popular item for date range
-                        // $setHeader = 'Most Popular Item by Date';
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
                             $stDate = $_POST['stDate'];
@@ -391,9 +353,9 @@
                         }
 
                         // Header for most popular item for date range
-                        $setHeader = 'Most Popular item from ' . $stDate . ' to ' .  $endDate; //header with date range
-                        
                         // TO COMPLETE: Query for most popular item today
+                        $setHeader = 'Most Popular item from ' . $stDate . ' to ' .  $endDate;
+
                         $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
                         COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
@@ -407,8 +369,6 @@
                         // IN PROGRESS
                         // Header for total sales today
                         $setHeader = 'Total Sales Today';
-                        // Get the current Date
-                        // $currentDate = date("Y-m-d");
                         // TO COMPLETE: Query for total sales today
                         $sql = "SELECT P.Pizza_Store_ID, 
                         P.Store_Address, 
@@ -418,10 +378,6 @@
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
-
-                        // Add to SELECT statement:
-                        // SUM(O.Cost_To_Us) AS Cost_Of_Goods, (Total_Sales - Cost_Of_Goods) AS Profit_Margin
-                        
                     } else {
                         // IN PROGRESS
                         //Header for total sales to date
@@ -446,18 +402,14 @@
                         ON P.Pizza_Store_ID = O.Store_ID
                         WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
                         GROUP BY P.Pizza_Store_ID, P.Store_Address;";
-
-                        // Add to SELECT statement:
-                        // SUM(O.Cost_To_Us) AS Cost_Of_Goods, (Total_Sales - Cost_Of_Goods) AS Profit_Margin
                     }
-
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
                     $exResult = mysqli_query($mysqli, $sql);
 
                     // Check to see if $ordSql set
-                    if(!empty(trim($ordSql))){
+                    if (!empty(trim($ordSql))) {
                         $ordResult = mysqli_query($mysqli, $ordSql);
                         $ordExResult = mysqli_query($mysqli, $ordSql);
                     }
@@ -468,11 +420,11 @@
 
                             // Build exportArray
                             if ($storeType === 'popular' || $storeType === 'datepopular') {
-                                while ($row = mysqli_fetch_assoc($exResult)){
+                                while ($row = mysqli_fetch_assoc($exResult)) {
                                     $exportArray[] = $row;
                                 }
                             } else {
-                                while ($row = mysqli_fetch_assoc($ordExResult)){
+                                while ($row = mysqli_fetch_assoc($ordExResult)) {
                                     $exportArray[] = $row;
                                 }
                             }
@@ -490,18 +442,13 @@
                                         <th class='th-spacing'>Item Name</th>
                                         <th class='th-spacing'>Sold Today</th>
                                     </tr>";
-                            // Returns table colums for sales by day and sales by date range
+                                // Returns table colums for sales by day and sales by date range
                             } elseif ($storeType === 'sales' || $storeType === 'date') {
                                 echo "<tr>
                                     <th class='th-spacing'>Pizza Store ID</th>
                                     <th class='th-spacing'>Pizza Store Address</th>
                                     <th class='th-spacing'>Total Sales</th>
-                                    
                                     </tr>";
-
-                                    // <th class='th-spacing'>Cost of Goods</th>
-                                    // <th class='th-spacing'>Profit Margin</th>
-                            // Returns table columns for orders by day and orders by date range
                             } else {
                                 echo "<tr>
                                         <th class='th-spacing'>Pizza Store ID</th>
@@ -511,9 +458,6 @@
                                         <th class='th-spacing'>Cost of Goods</th>
                                         <th class='th-spacing'>Profit Margin</th>
                                     </tr>";
-                                    // <th class='th-spacing'>Total Sales</th>
-                                    // <th class='th-spacing'>Cost of Goods</th>
-                                    // <th class='th-spacing'>Profit Margin</th>
                             }
                             // Loop through the results and display them in a table
                             while ($row = mysqli_fetch_assoc($result)) {
@@ -523,7 +467,7 @@
                                     echo '<td>' . $row['Most_Popular_Item'] . '</td>';
                                     echo '<td>' . $row['Item_Count'] . '</td>';
                                     echo '</tr>';
-                                // Populates columns for sales by day and sales by date range
+                                    // Populates columns for sales by day and sales by date range
                                 } elseif ($storeType === 'sales' || $storeType === 'date') {
                                     echo '<tr>';
                                     echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
@@ -532,7 +476,7 @@
                                     // echo '<td>' . $row['Cost_Of_Goods'] . '<.td>';
                                     // echo '<td>' . $row['Profit_Margin'] . '<.td>';
                                     echo '</tr>';
-                                // Populates columns for orders by day and orders by date range
+                                    // Populates columns for orders by day and orders by date range
                                 } else {
                                     echo '<tr>';
                                     echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
@@ -541,7 +485,6 @@
                                     echo '<td>' . $row['Total_Sales'] . '</td>';
                                     echo '<td>' . $row['Cost_Of_Goods'] . '</td>';
                                     echo '<td>' . $row['Profit_Margin'] . '</td>';
-                                    
                                     //echo '<td>' . $row['Vendor_Email'] . '</td>';
                                     //echo '<td>' . $row['Vendor_Phone'] . '</td>';
                                     echo '</tr>';
@@ -555,9 +498,9 @@
                             echo '</div>';
 
                             // Should check if we have set $ordSql and that $ordResult populated
-                            if (!empty(trim($ordSql)) && $ordResult){
+                            if (!empty(trim($ordSql)) && $ordResult) {
                                 // Seems redundant, but second check
-                                if (mysqli_num_rows($ordResult) > 0){
+                                if (mysqli_num_rows($ordResult) > 0) {
                                     echo '<h2>Order Details</h2>';
 
                                     // Start scrollable area
@@ -577,7 +520,7 @@
                                         </tr>";
 
                                     // Loop through order detail results
-                                    while ($ordRow = mysqli_fetch_assoc($ordResult)){
+                                    while ($ordRow = mysqli_fetch_assoc($ordResult)) {
                                         echo '<tr>';
                                         echo '<td>' . $ordRow['Order_ID'] . "</td>";
                                         echo "<td>" . $ordRow['Date_Of_Order'] . "</td>";
@@ -595,15 +538,18 @@
 
                                     // End of scrollable area
                                     echo '</div>';
+
+                                    // Export to CSV button
+                                    echo '<input type="hidden" name="export_data" value="' . htmlspecialchars(json_encode($exportArray)) . '">';
+                                    echo '<input type="submit" class="button" name="export" value="Export to CSV">';
                                 }
                             }
                         } else {
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
-                            if(($storeType === 'orderdates') || ($storeType === 'date')){
+                            if (($storeType === 'orderdates') || ($storeType === 'date')) {
                                 echo ' From ' . $stDate . ' to ' . $endDate;
                             }
-
                         }
                     } else {
                         echo 'Error executing the SQL query: ' . mysqli_error($mysqli);
@@ -628,40 +574,39 @@
                     } else {
                         $employeeId = 0;
                     }
-                
+
                     if (isset($_POST['storeId'])) {
                         $storeId = $_POST['storeId'];
                     } else {
                         $storeId = 0;
                     }
-                
-                    
+
+
                     $active_employee = $_POST['emp_status'];
-                    
-                
+
+
                     $employeeSql = "SELECT  `E_First_Name`, `E_Last_Name`, `Title_Role`, `Hire_Date`, `assigned_orders`, `completed_orders` 
                                     FROM `employee`
-                                    WHERE  `Store_ID` = '".$storeId."' AND `active_employee` = '".$active_employee."' AND  `Employee_ID` = $employeeId";
-                
-                
+                                    WHERE  `Store_ID` = '" . $storeId . "' AND `active_employee` = '" . $active_employee . "' AND  `Employee_ID` = $employeeId";
+
+
                     $employeeResult = mysqli_query($mysqli, $employeeSql);
-                
+
                     $is_result = 0;
-                
+
                     if ($employeeResult) {
-                        // Check if there are rows returned
                         if (mysqli_num_rows($employeeResult) > 0) {
                             $is_result = 1;
-                            echo '<div style="float:right;">
-                                <button id="export-csv" style="font-size:medium;" class="button">Export to CSV</button>
-                                </div><br>';
+                            // echo '<div style="float:right;">
+                            //     <button id="export-csv" style="font-size:medium;" class="button">Export to CSV</button>
+                            //     </div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start scrollable area
                             echo '<div class="scrollable-area">';
 
                             echo "<table border='1' class='table_update'>";
-                
+
                             echo "<tr>
                                     <th class='th-spacing'>First Name</th>
                                     <th class='th-spacing'>Last Name</th>
@@ -670,7 +615,7 @@
                                     <th class='th-spacing'>Assigned Orders</th>
                                     <th class='th-spacing'>Completed Orders</th>
                                 </tr>";
-                
+
                             while ($row = mysqli_fetch_assoc($employeeResult)) {
                                 echo "<tr>";
                                 echo "<td>" . $row['E_First_Name'] . "</td>";
@@ -681,30 +626,34 @@
                                 echo "<td>" . $row['completed_orders'] . "</td>";
                                 echo "</tr>";
                             }
-                
+
                             echo "</table>";
 
                             // End of scrollable area
                             echo '</div>';
                         }
-                
-                        // Display Order Details Table
-                        // $orderSql = "SELECT `Order_ID`, `Date_Of_Order`, `Time_Of_Order`, `Order_Type`, `Order_Status`, `Total_Amount`, `Customer_ID`, `orders`.Store_ID 
-                        //             FROM `orders` LEFT JOIN `employee` ON `employee`.Employee_ID = `orders`.Employee_ID_assigned 
-                        //             WHERE `Employee_ID_assigned` = $employeeId AND `orders`.Store_ID = $storeId AND `active_employee` = $active_employee";
 
+                        // Display Order Details Table
                         $orderSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, Customer_ID, pizza_store.Store_Address
                                     FROM orders LEFT JOIN employee ON employee.Employee_ID = orders.Employee_ID_assigned LEFT JOIN pizza_store ON pizza_store.Pizza_Store_ID = orders.Store_ID
                                     WHERE Employee_ID_assigned = $employeeId AND orders.Store_ID = $storeId AND active_employee = $active_employee";
 
-                
+
                         $orderResult = mysqli_query($mysqli, $orderSql);
-                
+                        $exResult = mysqli_query($mysqli, $orderSql);
+
+
                         if ($orderResult) {
                             if (mysqli_num_rows($orderResult) > 0) {
+
+                                // Build exportArray
+                                while ($row = mysqli_fetch_assoc($exResult)) {
+                                    $exportArray[] = $row;
+                                }
+
                                 echo '<h2>Order Details</h2>';
 
-                                 // Start scrollable area
+                                // Start scrollable area
                                 echo '<div class="scrollable-area">';
 
                                 echo "<table border='1' class='table_update' id='export-data'>";
@@ -718,7 +667,7 @@
                                         <th class='th-spacing'>Customer ID</th>
                                         <th class='th-spacing'>Store Location</th>
                                     </tr>";
-                
+
                                 while ($orderRow = mysqli_fetch_assoc($orderResult)) {
                                     echo "<tr>";
                                     echo "<td>" . $orderRow['Order_ID'] . "</td>";
@@ -731,11 +680,15 @@
                                     echo "<td>" . $orderRow['Store_Address'] . "</td>";
                                     echo "</tr>";
                                 }
-                
+
                                 echo "</table>";
 
                                 // End of scrollable area
-                            echo '</div>';
+                                echo '</div>';
+
+                                // Export to CSV button
+                                echo '<input type="hidden" name="export_data" value="' . htmlspecialchars(json_encode($exportArray)) . '">';
+                                echo '<input type="submit" class="button" name="export" value="Export to CSV">';
                             }
                         } else {
                             echo 'Error executing the Order SQL query: ' . mysqli_error($mysqli);
@@ -743,8 +696,8 @@
                     } else {
                         echo 'Error executing the Employee SQL query: ' . mysqli_error($mysqli);
                     }
-                
-                    if($is_result == 0) {
+
+                    if ($is_result == 0) {
                         echo '<h2>No Records Found!</h2>';
                     }
                     // Close the database connection
@@ -753,53 +706,31 @@
                 /////////////////////////
                 //END EMPLOYEE QUERIES///
                 /////////////////////////
-
-
-
-                // Add more cases for other report types as needed
             }
         }
         ?>
 
     </form>
 
-    
-<!-- //////////////////////////////////// -->
-<!-- //Windows CSV Export Functionality// -->
-<!-- //////////////////////////////////// -->
-    <?php
-        if ($reportType !== "performance") {
-            // Only display the form if the reportType is not "performance"
-            echo '<form action="export_wcsv.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">';
-            echo '<input type="hidden" name="export_data" value="'. htmlspecialchars(json_encode($exportArray)) . '">';
-            echo '<input type="submit" class="button" name="export" value="Export to CSV">';
-            echo '</form>';
-        }
-    ?>
-<!-- //////////////////////////////////// -->
-<!-- ///////End Windows CSV Export/////// -->
-<!-- //////////////////////////////////// -->
-
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="table2csv.js"></script>
 
     <script type="text/javascript">
         $(document).on('click', '#export-csv', function(e) {
-                e.preventDefault();
-                $("#export-data").table2csv({
-                    filename:'export-csv.csv'
-                });
-
-
-
+            e.preventDefault();
+            $("#export-data").table2csv({
+                filename: 'export-csv.csv'
+            });
         });
 
-        $('#export-pdf').on('click', function (e) {
-             e.preventDefault();
+        $('#export-pdf').on('click', function(e) {
+            e.preventDefault();
 
-             var tableHtml = $('#export-data').html();
+            var tableHtml = $('#export-data').html();
 
-             $.post('export_pdf.php', { data: tableHtml }, function (response) {
+            $.post('export_pdf.php', {
+                data: tableHtml
+            }, function(response) {
                 // Convert base64 PDF data to Blob
                 var byteCharacters = atob(response.fileData);
                 var byteArrays = [];
@@ -816,7 +747,9 @@
                     byteArrays.push(byteArray);
                 }
 
-                var blob = new Blob(byteArrays, { type: 'application/pdf' });
+                var blob = new Blob(byteArrays, {
+                    type: 'application/pdf'
+                });
 
                 // Create a download link and trigger the download
                 var link = document.createElement('a');
@@ -826,10 +759,8 @@
                 link.click();
                 document.body.removeChild(link);
             }, 'json');
-            
-        });
 
-       
+        });
     </script>
 
 
