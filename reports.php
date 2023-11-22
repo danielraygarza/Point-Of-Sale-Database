@@ -1,37 +1,33 @@
 <?php
 // // Check if the user is not logged in
-    session_start();
-    include 'database.php'; // Include the database connection details
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+session_start();
+include 'database.php'; // Include the database connection details
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    // Redirects if not manager/CEO or accessed directly via URL
-    if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-        header("Location: employee_login.php");
-        exit; // Make sure to exit so that the rest of the script won't execute
+// Redirects if not manager/CEO or accessed directly via URL
+if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    header("Location: employee_login.php");
+    exit; // Make sure to exit so that the rest of the script won't execute
+}
+
+function getEmployeeData($mysqli)
+{
+    $sql = "SELECT `Employee_ID`, `E_First_Name`, `E_Last_Name` FROM `employee`";
+    $result = $mysqli->query($sql);
+
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $employeeData[] = [
+                'Employee_ID' => $row['Employee_ID'],
+                'Name' => $row['E_First_Name'] . ' ' . $row['E_Last_Name'],
+            ];
+        }
+        $result->free();
     }
-
-    //TO DO://
-    // CURRENTLY SELECTING ANY MONTH OR YEAR REPOPULATES DAYS FOR BOTH START AND END FORCING USER TO RESELECT ANY VALUES ALREADY SELECTED THERE
-
-    //Daniel: altered function above to not include "database.php" inside function. 
-    // it was causing continuity errors. database.php included is at top of file
-    function getEmployeeData($mysqli) {
-        $sql = "SELECT `Employee_ID`, `E_First_Name`, `E_Last_Name` FROM `employee`";
-        $result = $mysqli->query($sql);
-    
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $employeeData[] = [
-                    'Employee_ID' => $row['Employee_ID'],
-                    'Name' => $row['E_First_Name'] . ' ' . $row['E_Last_Name'],
-                ];
-            }
-            $result->free();
-        } 
-        return $employeeData;
-    }
+    return $employeeData;
+}
 
 ?>
 
@@ -50,8 +46,8 @@
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="employee_home.php">Employee Home</a>
-        <?php echo '<a href="logout.php">Logout</a>';?>
-        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
+        <?php echo '<a href="logout.php">Logout</a>'; ?>
+        <a id="cart-button" style="background-color: transparent;"><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
 
     <form action="generate_report.php" method="post">
@@ -71,18 +67,18 @@
         <div id="storeSelection" style="display: none;">
             <label for="storeId">Select Store:</label>
             <select name="storeId" id="storeId" onchange="checkSelections()">
-                <!-- <option value="test">Default</option> -->
-                <!-- get current employee ID -->
                 <option value="" selected disabled>Select Store</option>
                 <?php
-                    // select from store where mananager ID equals current ID. 
-                    $stores = $mysqli->query("SELECT * FROM pizza_store");
-                    if ($stores->num_rows > 0) {
-                        while($row = $stores->fetch_assoc()) {
-                            if ($row["Pizza_Store_ID"] == 1) { continue; } //only shows store ID 1. can delete to show all
-                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                        }
+                // select from store where mananager ID equals current ID. 
+                $stores = $mysqli->query("SELECT * FROM pizza_store");
+                if ($stores->num_rows > 0) {
+                    while ($row = $stores->fetch_assoc()) {
+                        if ($row["Pizza_Store_ID"] == 1) {
+                            continue;
+                        } //only shows store ID 1. can delete to show all
+                        echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                     }
+                }
                 ?>
             </select>
 
@@ -148,22 +144,22 @@
         <div id="Employer" style="display: none;">
 
             <!-- STORE SELECTION WAS HERE -->
-            
+
 
             <label for="emp_status">Select Employee Status:</label>
             <select name="emp_status" id="emp_status">
                 <option value="" selected disabled>Select Employee Status</option>
-                
+
                 <option value="1">Current</option>
                 <option value="0">Former</option>
-                
+
             </select>
             <!-- </select><br> -->
 
             <label for="employeeDropdown">Select Employee:</label>
             <select name="employeeDropdown" id="employeeDropdown" onchange="checkSelections()">
                 <option value="" selected disabled>Select Employee</option>
-                
+
             </select>
         </div><br>
 
@@ -183,9 +179,9 @@
         function showOptions() {
             //This reads which main report group is currently selected
             var reportType = document.getElementById('reportType');
-            
+
             // Resets dropdowns when you change report type
-            storeId.value = ""; 
+            storeId.value = "";
             inventoryType.value = "";
             storeType.value = "";
             employeeDropdown.value = "";
@@ -239,12 +235,12 @@
         }
 
         // Date padding function
-        function padWithZero(number){
+        function padWithZero(number) {
             return number < 10 ? '0' + number : number;
         }
 
         // Function to set start and end dates
-        function dateOptions(){
+        function dateOptions() {
             // Debug
             console.log('dateOptions function called');
 
@@ -252,16 +248,16 @@
             var storeType = document.getElementById('storeType');
             var dateOptions = document.getElementById('dateOptions');
 
-            if(storeType.value === 'orderdates'){
+            if (storeType.value === 'orderdates') {
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
-            } else if(storeType.value === 'date'){
+            } else if (storeType.value === 'date') {
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
-            } else if(storeType.value === 'datepopular'){
+            } else if (storeType.value === 'datepopular') {
                 newStartDateOptions.style.display = 'block';
                 newEndDateOptions.style.display = 'block';
-            } else{
+            } else {
                 newStartDateOptions.style.display = 'none';
                 newEndDateOptions.style.display = 'none';
             }
@@ -277,7 +273,7 @@
         }
 
         // Activate Generate Reports button
-        function checkSelections(){
+        function checkSelections() {
             // Debug
             console.log('checkSelections function called');
             // Bool
@@ -296,7 +292,7 @@
 
             // Can change to make initialize variable with if statement instead if needed for fringe cases
             // storeId.value !== '' changed from: (storeId.value !== '' || employeeSelect.value !== '')
-            if (reportType.value !== '' && storeId.value !== '' && (inventoryType.value !== '' || storeType.value !== '' || employeeSelect.value !== '')){
+            if (reportType.value !== '' && storeId.value !== '' && (inventoryType.value !== '' || storeType.value !== '' || employeeSelect.value !== '')) {
                 if ((storeType.value === 'orderdates' || storeType.value === 'datepopular' || storeType.value === 'date') && (startDate.value < 20220100 || endDate.value < 20220100)) {
                     selectionMade = false;
                 } else {
@@ -305,18 +301,18 @@
             }
 
             document.getElementById('submitButton').disabled = !selectionMade;
-            
+
             var checkVal = document.getElementById('storeSelID').value;
-            
+
             // Debug
             console.log('checkVal:', checkVal);
 
             // If store selection not changing, don't call setNewStoreSelID again
-            if(checkVal !== storeId.value){
+            if (checkVal !== storeId.value) {
                 var storeID = 1;
                 // If not set, sets an initial value for hidden storeId value
                 // May not be necessary anymore
-                if(storeId.value !== ''){
+                if (storeId.value !== '') {
                     storeID = storeId.value;
                 }
                 // Sets the hidden value to the selected storeId value
@@ -331,7 +327,7 @@
 
         }
 
-        function setDay(){
+        function setDay() {
             // Debug
             console.log('setDay function called');
 
@@ -341,7 +337,7 @@
 
             var endDate = document.getElementById('end_date').value;
             document.getElementById('endDate').value = endDate;
-            
+
             checkSelections();
 
             // Debug
@@ -353,8 +349,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <script>
-
-        function setNewStoreSelID(){
+        function setNewStoreSelID() {
             populateEmployeeDropdown($('#storeSelID').val(), $("#emp_status").val());
             // Debug
             console.log('onChange function setting SSID ran');
@@ -366,9 +361,12 @@
             $.ajax({
                 url: 'getEmployees.php', // Replace with your server-side script
                 type: 'GET',
-                data: { storeId: storeId, emp_status: emp_status },
+                data: {
+                    storeId: storeId,
+                    emp_status: emp_status
+                },
                 dataType: 'json',
-                success: function (employees) {
+                success: function(employees) {
                     // Clear existing options
                     $('#employeeDropdown').empty();
 
@@ -376,23 +374,23 @@
                     $('#employeeDropdown').append('<option value="" selected disabled>Select Employee</option>');
 
                     // Add employee options based on the selected store
-                    $.each(employees, function (index, employee) {
+                    $.each(employees, function(index, employee) {
                         $('#employeeDropdown').append('<option value="' + employee.id + '">' + employee.name + '</option>');
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error('Error fetching employees:', status, error);
                     console.log(xhr.responseText);
                 }
             });
         }
 
-        $('#emp_status').on('change', function () {
+        $('#emp_status').on('change', function() {
             //alert(1);
             populateEmployeeDropdown($("#storeSelID").val(), $(this).val());
         });
-        </script>
-        <!-- //$(document).ready(function () {
+    </script>
+    <!-- //$(document).ready(function () {
 
         // Handle store selection change
         
@@ -436,8 +434,8 @@
         //     });
         // }
         //}); -->
-        <!-- Add /script> here if uncommenting^^ -->
-    
+    <!-- Add /script> here if uncommenting^^ -->
+
 </body>
 
 </html>
