@@ -16,11 +16,11 @@ Team Members
 
 The following technologies were used to develop this project:
 
-    HTML/CSS/JavaScript
-    PHP
-    SQL
     Microsoft Azure
     MySQL Workbench
+    PHP
+    SQL
+    HTML/CSS/JavaScript
     GitHub/GitHub Desktop
     Visual Studio Code
 
