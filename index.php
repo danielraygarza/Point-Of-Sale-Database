@@ -1,4 +1,4 @@
-<!-- Login page on opening web app page -->
+<!-- Default URL page -->
 
 <!DOCTYPE html>
 <html>

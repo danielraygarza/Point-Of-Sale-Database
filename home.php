@@ -5,7 +5,7 @@ session_start();
 
 // Check if user is logged in
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    //access customer attributes
+    // greet customer if logged in
     echo "<h2>Welcome, " . $_SESSION['user']['first_name'] . "!</h2>";
 } else {
     //if not logged in, will send to default URL
@@ -36,11 +36,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     </div>
 
     <?php
+    // get store credit info from current customer
     $userID = $_SESSION['user']['customer_id'];
     $queryCustomer = $mysqli->query("SELECT total_spent_toDate, store_credit FROM customers WHERE customer_id = $userID");
     $customerInfo = $queryCustomer->fetch_assoc();
     ?>
 
+    <!-- Display store credit info to customer -->
     <div class="customerinfo">
         <p class="triggerDisplay">TIP: For every $100 you spend you will get $10 in store credit!</p>
         <div class="totalspent">Total Amount Spent To Date: $<?php echo $customerInfo["total_spent_toDate"]; ?></div>

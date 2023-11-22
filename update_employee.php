@@ -1,5 +1,4 @@
 <?php
-// Start the session at the beginning of the file
 include 'database.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -9,16 +8,15 @@ session_start();
 // Redirects if not manager/CEO or accessed directly via URL
 if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
     header("Location: employee_login.php");
-    exit; // Make sure to exit so that the rest of the script won't execute
+    exit;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['action'])) {
         if ($_POST['action'] == 'get_employee_details') {
+            // get info for selected employee
             $Employee_ID = $mysqli->real_escape_string($_POST['employee_id']);
-            $sql = "SELECT E_First_Name, E_Last_Name, Employee_ID, Title_Role, Store_ID, Supervisor_ID, Hire_Date 
-                        FROM employee 
-                        WHERE Employee_ID = $Employee_ID";
+            $sql = "SELECT * FROM employee WHERE Employee_ID = $Employee_ID";
             $result = $mysqli->query($sql);
 
             if ($result) {
@@ -31,13 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mysqli->close();
                 exit;
             }
-        } elseif ($_POST['action'] == 'get_supervisors_for_store') {
+        } else if ($_POST['action'] == 'get_supervisors_for_store') {
             $storeId = $mysqli->real_escape_string($_POST['store_id']);
             $role = $_POST['role'];
 
-            $sql = "SELECT Employee_ID, E_First_Name, E_Last_Name, Title_Role 
-                        FROM employee 
-                        WHERE Store_ID = '$storeId' AND Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'";
+            $sql = "SELECT * FROM employee WHERE Store_ID = '$storeId' AND Title_Role IN ('SUP', 'MAN', 'CEO') AND active_employee = '1'";
 
             $result = $mysqli->query($sql);
             $supervisors = [];
@@ -56,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
     } else {
+        // save all input when 'save update' is clicked
         $E_First_Name = $mysqli->real_escape_string($_POST['E_First_Name']);
         $E_Last_Name = $mysqli->real_escape_string($_POST['E_Last_Name']);
         $Title_Role = $mysqli->real_escape_string($_POST['Title_Role']);
@@ -121,26 +118,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select onchange="getEmployeeDetails(this.value)">
                 <option value="" selected disabled>Select Employee</option>
                 <?php
-                if ($_SESSION['user']['Title_Role'] == 'CEO') {
-                    $allEmployees = $mysqli->query("SELECT * FROM employee WHERE active_employee = '1'");
-                    if ($allEmployees->num_rows > 0) {
-                        while ($row = $allEmployees->fetch_assoc()) {
-                            echo '<option value="' . $row["Employee_ID"] . '" ' . $selected . '>' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
-                        }
-                    }
+                $employee_ID = $_SESSION['user']['Employee_ID'];
+                $employee_role = $_SESSION['user']['Title_Role'];
+
+                // CEO can see all stores while manager only sees their own stores
+                if ($employee_role == 'CEO') {
+                    $query = "SELECT * FROM employee WHERE active_employee = '1'";
                 } else {
-                    $managerStore = $_SESSION['user']['Store_ID'];
-                    $allEmployees = $mysqli->query("SELECT * FROM employee WHERE Store_ID = $managerStore");
-                    if ($allEmployees->num_rows > 0) {
-                        while ($row = $allEmployees->fetch_assoc()) {
-                            echo '<option value="' . $row["Employee_ID"] . '" ' . $selected . '>' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
-                        }
+                    $store_id = $_SESSION['user']['Store_ID'];
+                    $query = "SELECT * FROM employee WHERE Store_ID = '$store_id' AND active_employee = '1'";
+                }
+
+                $allEmployees = $mysqli->query($query);
+                if ($allEmployees->num_rows > 0) {
+                    // display all current employees in dropdown
+                    while ($row = $allEmployees->fetch_assoc()) {
+                        echo '<option value="' . $row["Employee_ID"] . '" ' . $selected . '>' . $row["E_First_Name"] . ' ' . $row["E_Last_Name"] . '</option>';
                     }
                 }
                 ?>
+
             </select>
         </div><br>
         <script type="text/javascript">
+            // get employee info for selected employee
             function getEmployeeDetails(employeeId) {
                 if (employeeId) {
                     $.ajax({
@@ -197,13 +198,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div><br>
 
         <script>
+            // supervisors adjust based on selected employee role
             function roleRequirement() {
                 const role = document.getElementById('Title_Role');
                 const store = document.getElementById('Store_ID');
                 const supervisor = document.getElementById('Supervisor_ID');
 
                 if (role.value === 'MAN') {
-                    //set value to CEO and store 1
+                    // if manager, set value to CEO and store 1
                     supervisor.value = '12345678';
                     supervisor.setAttribute('disabled', 'disabled');
                     store.value = '1';
@@ -228,9 +230,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select id="Store_ID" name="Store_ID" required onchange="updateSupervisorsForStore(this.value)">
                 <option value="" selected disabled>Select</option>
                 <?php
-                $stores = $mysqli->query("SELECT * FROM pizza_store");
+                $employee_ID = $_SESSION['user']['Employee_ID'];
+                $employee_role = $_SESSION['user']['Title_Role'];
+
+                // CEO can see all stores while manager only sees their own stores
+                if ($employee_role == 'CEO') {
+                    $query = "SELECT * FROM pizza_store";
+                } else {
+                    $query = "SELECT * FROM pizza_store WHERE Store_Manager_ID = '$employee_ID'";
+                }
+                $stores = $mysqli->query($query);
                 if ($stores->num_rows > 0) {
                     while ($row = $stores->fetch_assoc()) {
+                        if ($row["Pizza_Store_ID"] == 1) {
+                            continue;
+                        } //only shows store ID 1. can delete to show all
                         echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                     }
                 }
@@ -239,6 +253,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div><br>
 
         <script>
+            // supervisors displayed based on selected store
             function updateSupervisorsForStore(storeId) {
                 const role = document.getElementById('Title_Role').value;
                 const supervisorDropdown = $('#Supervisor_ID');
@@ -303,6 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
         </div><br>
 
+        <!-- deleting info: firing employee marks them as inactive and no longer assigned orders -->
         <div>
             <label for="active_employee">Remove Employee </label>
             <select id="active_employee" name="active_employee" onchange="showWarning(this.value)">
@@ -315,6 +331,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div><br>
 
         <script>
+            // display warning if remove employee is selected
             function showWarning(value) {
                 var warningMessage = document.getElementById('warning_message');
                 if (value === '0') {
@@ -324,8 +341,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         </script>
-
-
 
         <?php
         //displays error messages here 

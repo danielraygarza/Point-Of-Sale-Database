@@ -1,65 +1,67 @@
 <?php
-    // Start the session at the beginning of the file
-    include 'database.php';
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-    session_start();
+// Start the session at the beginning of the file
+include 'database.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
 
-    // Redirects if not manager/CEO or accessed directly via URL
-     if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
-        header("Location: employee_login.php");
-        exit; // Make sure to exit so that the rest of the script won't execute
-    }
+// Redirects if not manager/CEO or accessed directly via URL
+if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
+    header("Location: employee_login.php");
+    exit;
+}
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted
-        // Extracting data from the form
-        $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
-        $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
-        $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']); //adds to current amount if already exist
-        $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
-        $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $Store_ID = $mysqli->real_escape_string($_POST['Store_ID']);
+    $Item_ID = $mysqli->real_escape_string($_POST['Item_ID']);
+    $Inventory_Amount = $mysqli->real_escape_string($_POST['Inventory_Amount']); //adds to current amount if already exist
+    $Vend_ID = $mysqli->real_escape_string($_POST['Vend_ID']);
+    $Last_Stock_Shipment_Date = $mysqli->real_escape_string($_POST['Last_Stock_Shipment_Date']);
 
-        // add days_to_expire to the shipment date
-        $daysToExpireQuery = $mysqli->query("SELECT Days_to_expire FROM items WHERE Item_ID = '$Item_ID'");
-        $row = $daysToExpireQuery->fetch_assoc();
-        $daysToExpire = $row['Days_to_expire'];
-        $date = new DateTime($Last_Stock_Shipment_Date);
-        $date->add(new DateInterval('P' . $daysToExpire . 'D'));
-        $Expiration_Date = $date->format('Y-m-d');
+    // add item's days_to_expire to the shipment date for expiration date
+    $daysToExpireQuery = $mysqli->query("SELECT Days_to_expire FROM items WHERE Item_ID = '$Item_ID'");
+    $row = $daysToExpireQuery->fetch_assoc();
+    $daysToExpire = $row['Days_to_expire'];
+    $date = new DateTime($Last_Stock_Shipment_Date);
+    $date->add(new DateInterval('P' . $daysToExpire . 'D'));
+    $Expiration_Date = $date->format('Y-m-d');
 
-        $checkExistence = $mysqli->prepare("SELECT COUNT(*) FROM inventory WHERE Store_ID = ? AND Item_ID = ?");
-        $checkExistence->bind_param("ii", $Store_ID, $Item_ID);
-        $checkExistence->execute();
-        $result = $checkExistence->get_result();
-        $row = $result->fetch_array();
-        $count = $row[0];
-        if ($count > 0) {
-            // Inventory exists for this store and item, update it
-            $sql = "UPDATE inventory 
+    // check if item already has inventory in that store location
+    $checkExistence = $mysqli->prepare("SELECT COUNT(*) FROM inventory WHERE Store_ID = ? AND Item_ID = ?");
+    $checkExistence->bind_param("ii", $Store_ID, $Item_ID);
+    $checkExistence->execute();
+    $result = $checkExistence->get_result();
+    $row = $result->fetch_array();
+    $count = $row[0];
+
+    if ($count > 0) {
+        // Inventory exists for this store and item, update it
+        $sql = "UPDATE inventory 
                     SET Inventory_Amount = Inventory_Amount + '$Inventory_Amount', Vend_ID='$Vend_ID', Last_Stock_Shipment_Date='$Last_Stock_Shipment_Date', Expiration_Date='$Expiration_Date' 
                     WHERE Store_ID='$Store_ID' AND Item_ID='$Item_ID'";
 
-            if ($mysqli->query($sql) === TRUE) {
-                $mysqli->close();
-                header('Location: employee_home.php');
-                exit;
-            } else {
-                echo "Error: " . $sql . "<br>" . $mysqli->error;
-            }
-        }else {
-            // Inserting the data into the database
-            $sql = "INSERT INTO inventory (Store_ID, Item_ID, Inventory_Amount, Vend_ID, Last_Stock_Shipment_Date, Expiration_Date) 
+        if ($mysqli->query($sql) === TRUE) {
+            $mysqli->close();
+            header('Location: employee_home.php');
+            exit;
+        } else {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+    } else {
+        // if item has no iventory in that location, then insert the item
+        $sql = "INSERT INTO inventory (Store_ID, Item_ID, Inventory_Amount, Vend_ID, Last_Stock_Shipment_Date, Expiration_Date) 
                     VALUES ('$Store_ID', '$Item_ID', '$Inventory_Amount', '$Vend_ID','$Last_Stock_Shipment_Date', '$Expiration_Date')";
-            if ($mysqli->query($sql) === TRUE) {
-                $mysqli->close();
-                header('Location: employee_home.php');
-                exit;
-            } else {
-                echo "Error: " . $sql . "<br>" . $mysqli->error;
-            }
+                    
+        if ($mysqli->query($sql) === TRUE) {
+            $mysqli->close();
+            header('Location: employee_home.php');
+            exit;
+        } else {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
         }
     }
+}
 
 ?>
 
@@ -75,8 +77,8 @@
     <div class="navbar">
         <a href="index.php">Home</a>
         <a href="employee_home.php">Employee Home</a>
-        <?php echo '<a href="logout.php">Logout</a>';?>
-        <a id="cart-button" style="background-color: transparent;" ><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
+        <?php echo '<a href="logout.php">Logout</a>'; ?>
+        <a id="cart-button" style="background-color: transparent;"><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
     <form action="inventory.php" method="post">
         <h2>Inventory</h2>
@@ -84,23 +86,24 @@
             <label for="Store_ID">Store Location </label>
             <select id="Store_ID" name="Store_ID" required>
                 <option value="" selected disabled>Select Store</option>
-                <!-- Show all stores for CEO but only assigned store for managers -->
                 <?php
-                 if ($_SESSION['user']['Title_Role'] == 'CEO') {
-                    $stores = $mysqli->query("SELECT * FROM pizza_store");
-                    if ($stores->num_rows > 0) {
-                        while ($row = $stores->fetch_assoc()) {
-                            if ($row["Pizza_Store_ID"] == 1) { continue; } //dont add inventory to store 1
-                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
-                        }
-                    }
+                $employee_ID = $_SESSION['user']['Employee_ID'];
+                $employee_role = $_SESSION['user']['Title_Role'];
+
+                // CEO can see all stores while manager only sees their own stores
+                if ($employee_role == 'CEO') {
+                    $query = "SELECT * FROM pizza_store";
                 } else {
-                    $managerID = $_SESSION['user']['Employee_ID'];
-                    $stores = $mysqli->query("SELECT * FROM pizza_store WHERE Store_Manager_ID = $managerID");
-                    if ($stores->num_rows > 0) {
-                        while ($row = $stores->fetch_assoc()) {
-                            echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
+                    $query = "SELECT * FROM pizza_store WHERE Store_Manager_ID = '$employee_ID'";
+                }
+                $stores = $mysqli->query($query);
+                if ($stores->num_rows > 0) {
+                    while ($row = $stores->fetch_assoc()) {
+                        // store one does not hold inventory
+                        if ($row["Pizza_Store_ID"] == 1) {
+                            continue;
                         }
+                        echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                     }
                 }
                 ?>
@@ -112,7 +115,8 @@
             <select id="Item_ID" name="Item_ID" required>
                 <option value="" selected disabled>Select Item</option>
                 <?php
-                $items = $mysqli->query("SELECT * FROM items WHERE Days_to_expire > 0");
+                // can only select items where inventory is tracked
+                $items = $mysqli->query("SELECT Item_ID, Item_Name FROM items WHERE Days_to_expire > 0");
                 if ($items->num_rows > 0) {
                     while ($row = $items->fetch_assoc()) {
                         echo '<option value="' . $row["Item_ID"] . '" ' . $selected . '>' . $row["Item_Name"] . '</option>';
@@ -132,7 +136,8 @@
             <select id="Vend_ID" name="Vend_ID" required>
                 <option value="" selected disabled>Select Vendor</option>
                 <?php
-                $vendors = $mysqli->query("SELECT * FROM vendor");
+                // displays vendor options
+                $vendors = $mysqli->query("SELECT Vendor_ID, Vendor_Name FROM vendor");
                 if ($vendors->num_rows > 0) {
                     while ($row = $vendors->fetch_assoc()) {
                         echo '<option value="' . $row["Vendor_ID"] . '" ' . $selected . '>' . $row["Vendor_Name"] . '</option>';

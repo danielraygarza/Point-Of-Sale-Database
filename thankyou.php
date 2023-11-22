@@ -8,6 +8,7 @@ if (empty($_SESSION['order_completed'])) {
     exit;
 }
 
+// get store selected at checkout
 if (isset($_SESSION['selected_store_id'])) {
     $store_id = $_SESSION['selected_store_id'];
 }
@@ -37,29 +38,34 @@ if (isset($_SESSION['selected_store_id'])) {
 
     <form action="" method="post">
         <h2>Thank you, we hope your enjoy your POS Pizza!</h2>
-        <?php 
-            if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                //display members store credit if any
-                $customerID = $_SESSION['user']['customer_id'];
-                $query = "SELECT store_credit FROM customers WHERE customer_id = '$customerID'";
-                $result = $mysqli->query($query); 
-                if ($result && $row = $result->fetch_assoc()) {
-                    $_SESSION['user']['store_credit'] = $row['store_credit'];
-                }
-                $store_credit = $_SESSION['user']['store_credit'];
-                if ($store_credit > 0) {
-                    echo "<h2>Store credit: $store_credit</h2>";
-                }
+        <?php
+        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+            $customerID = $_SESSION['user']['customer_id'];
+            $query = "SELECT store_credit FROM customers WHERE customer_id = '$customerID'";
+            $result = $mysqli->query($query);
+
+            // get customers store credit
+            if ($result && $row = $result->fetch_assoc()) {
+                $_SESSION['user']['store_credit'] = $row['store_credit'];
             }
+            
+            // display members store credit if any
+            $store_credit = $_SESSION['user']['store_credit'];
+            if ($store_credit > 0) {
+                echo "<h2>Store credit: $store_credit</h2>";
+            }
+        }
         ?>
 
         <a href="menu.php" class="button">Place Another Order</a>
 
+        <!-- if logged in, display logout button -->
         <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?>
             <a href="logout.php" class="button">Logout</a>
         <?php } ?>
     </form>
 
+    <!-- if not logged in, display sign up button -->
     <?php if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) { ?>
         <br>
         <form>

@@ -12,7 +12,7 @@ CREATE DEFINER=`danielgarza`@`%` TRIGGER `customers_BEFORE_UPDATE` BEFORE UPDATE
 END
 
 CREATE DEFINER=`danielgarza`@`%` TRIGGER `order_items_AFTER_INSERT` AFTER INSERT ON `order_items` FOR EACH ROW BEGIN
-	-- action: order placed
+	-- event: order placed
     DECLARE reorderThreshold INT;
     DECLARE currentInventory INT;
 
@@ -84,7 +84,26 @@ CREATE DEFINER=`danielgarza`@`%` TRIGGER `order_items_AFTER_INSERT` AFTER INSERT
     END IF;
 END
 
+CREATE DEFINER=`danielgarza`@`%` TRIGGER `inventory_BEFORE_UPDATE` BEFORE UPDATE ON `inventory` FOR EACH ROW BEGIN
+	-- event: inventory is updated
+    DECLARE daysToExpire INT DEFAULT 0;
+	
+    -- condition: if last stock date is changed, 
+    IF OLD.Last_Stock_Shipment_Date <> NEW.Last_Stock_Shipment_Date THEN
+        -- get the item's days to expire number
+        SELECT days_to_expire INTO daysToExpire
+        FROM items
+        WHERE Item_ID = NEW.Item_ID;
+
+        IF daysToExpire IS NOT NULL THEN
+			-- action: expiration date will update by adding daysToExpire to last stock date
+            SET NEW.Expiration_Date = DATE_ADD(NEW.Last_Stock_Shipment_Date, INTERVAL daysToExpire DAY);
+        END IF;
+    END IF;
+END
+
 CREATE DEFINER=`danielgarza`@`%` TRIGGER `employee_BEFORE_UPDATE` BEFORE UPDATE ON `employee` FOR EACH ROW BEGIN
+    -- if employee is fired, then clock them out to prevent faulty assigned orders
     IF NEW.active_employee = 0 THEN
         SET NEW.clocked_in = 0;
     END IF;
