@@ -1,3 +1,4 @@
+<!-- this page is displayed after finalizing order following the delivery/pickup page -->
 <?php
 include 'database.php'; // Include the database connection details
 session_start();

@@ -1,3 +1,5 @@
+<!-- REPORTS QUERIES ARE ON THIS PAGE -->
+<!-- this page displays selected report from reports.php -->
 <?php
 session_start();
 include 'database.php'; // Include the database connection details

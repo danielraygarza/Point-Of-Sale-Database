@@ -1,3 +1,4 @@
+-- store credit trigger
 CREATE DEFINER=`danielgarza`@`%` TRIGGER `customers_BEFORE_UPDATE` BEFORE UPDATE ON `customers` FOR EACH ROW BEGIN
   -- event: customers places order
   IF OLD.total_spent_toDate < NEW.total_spent_toDate THEN
@@ -11,6 +12,7 @@ CREATE DEFINER=`danielgarza`@`%` TRIGGER `customers_BEFORE_UPDATE` BEFORE UPDATE
   END IF;
 END
 
+-- update inventory trigger
 CREATE DEFINER=`danielgarza`@`%` TRIGGER `order_items_AFTER_INSERT` AFTER INSERT ON `order_items` FOR EACH ROW BEGIN
 	-- event: order placed
     DECLARE reorderThreshold INT;
@@ -84,6 +86,8 @@ CREATE DEFINER=`danielgarza`@`%` TRIGGER `order_items_AFTER_INSERT` AFTER INSERT
     END IF;
 END
 
+
+-- ADDTIONAL TRIGGERS
 CREATE DEFINER=`danielgarza`@`%` TRIGGER `inventory_BEFORE_UPDATE` BEFORE UPDATE ON `inventory` FOR EACH ROW BEGIN
 	-- event: inventory is updated
     DECLARE daysToExpire INT DEFAULT 0;

@@ -1,3 +1,4 @@
+<!-- login page for employees -->
 <?php
 include 'database.php';
 

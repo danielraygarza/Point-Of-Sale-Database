@@ -1,3 +1,4 @@
+<!-- login page for customers -->
 <?php
 include 'database.php';
 

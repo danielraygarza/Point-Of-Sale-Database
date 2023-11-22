@@ -1,3 +1,8 @@
+<!-- this page is multi purposed based on employee's role
+For team members and supervisors, displays orders assigned to them and allows them to mark orders completed
+This will update the employee table by incrementing completed orders, decrementing assigned orders, updating time completed in orders table,
+and time delivered/picked up in respective delivery/pickup table
+For CEO and managers, displays options to add/update employees, and add inventory, stores, and menu items -->
 <?php
 include 'database.php';
 // Start the session at the beginning of the file
@@ -272,66 +277,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
-<?php
-/*
-** Title: Comprehensive Employee-Centric Order Management System with Dynamic Filtering and Real-Time Updates
-**
-** Introduction:
-** This meticulously crafted PHP script encapsulates a comprehensive employee-centric order
-** management system, elevating the operational efficiency of pizza establishments. Rooted in
-** real-time updates and dynamic filtering capabilities, the script not only streamlines order
-** processing but also empowers employees with a versatile set of tools for effective
-** establishment management.
-**
-** Session Initialization and Security Measures:
-** The script commences with the crucial task of initializing user sessions, creating a secure
-** environment that bars unauthorized access. Robust error reporting settings, including
-** displaying and logging, fortify the script against potential issues. Session variables carry
-** vital information, ensuring the authenticated status of users and allowing personalized
-** interactions based on employee roles.
-**
-** Employee Dashboard and Role-Specific Greetings:
-** A pivotal aspect of the script is the employee dashboard, which adapts its interface based on
-** the user's role. CEOs are greeted with regal salutations, acknowledging their high-ranking
-** status, while other employees receive motivational prompts to kickstart their workday. This
-** dynamic greeting mechanism establishes a personalized and engaging user experience.
-**
-** CEO-Specific Actions and Administrative Capabilities:
-** CEOs, as the apex decision-makers, enjoy a spectrum of administrative capabilities. From
-** creating and updating employee accounts to ordering inventory, registering new stores, and
-** adding menu items, CEOs wield the script as a potent tool for overseeing diverse aspects of
-** the business. The inclusion of these CEO-specific actions enhances the versatility of the
-** system, catering to the multifaceted responsibilities of executive roles.
-**
-** Real-Time Order Display and Dynamic Filtering:
-** The heart of the system lies in its ability to dynamically display and filter orders based on
-** their status. The default view presents a comprehensive list of all orders assigned to the
-** logged-in employee, fostering transparency and accountability. The introduction of dynamic
-** filtering options, driven by AJAX requests, ensures a seamless and responsive interface. The
-** script leverages asynchronous communication to deliver real-time updates, enabling
-** employees to stay abreast of changing order statuses.
-**
-** Order Completion Logic and Time-Stamped Records:
-** The script enhances order tracking by incorporating an efficient order completion logic.
-** Employees can effortlessly mark orders as "Completed," triggering a cascade of updates across
-** the database. The system intelligently records the time of completion, fostering a
-** time-stamped approach to order fulfillment. This meticulous tracking not only aids in
-** performance evaluation but also contributes to optimizing delivery and pickup operations.
-**
-** HTML Interface: A Symphony of Simplicity and Functionality:
-** The HTML section of the script embraces a minimalist and intuitive design philosophy. A
-** streamlined navigation bar offers quick links to essential sections, ensuring a fluid
-** navigation experience. The main content area provides a visually appealing and informative
-** display of orders, complete with dynamic filtering options. The script's interface adheres
-** to best practices, combining aesthetics with functionality to create a user-centric
-** environment.
-**
-** Conclusion:
-** In conclusion, this PHP script stands as a testament to the intricacies and possibilities of
-** modern order management systems. From robust session management to dynamic interfaces and
-** CEO-specific functionalities, the script exemplifies a holistic approach to addressing the
-** needs of pizza establishment employees. Developers can leverage this script as a blueprint for
-** creating sophisticated, user-friendly, and feature-rich order management solutions that
-** resonate with the demands of contemporary businesses.
-*/
-?>

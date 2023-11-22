@@ -1,3 +1,4 @@
+<!-- checkout page displays items in cart. select store and order method before finalizing order -->
 <?php
 // Start the session
 session_start();

@@ -1,3 +1,5 @@
+<!-- this page allows managers and CEO to order inventory for stores. manager can only order for their assigned store
+inventory table is updated -->
 <?php
 // Start the session at the beginning of the file
 include 'database.php';

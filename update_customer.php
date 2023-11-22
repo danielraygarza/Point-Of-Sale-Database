@@ -1,3 +1,4 @@
+<!-- this page allows customers to update their information. updates customers table -->
 <?php
 // Start the session at the beginning of the file
 include 'database.php';

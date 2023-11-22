@@ -1,3 +1,4 @@
+<!-- this page creates a new employee. only accessible by CEO and managers. data inserted into employee table -->
 <?php
 session_start();
 

@@ -1,3 +1,4 @@
+<!-- this page adds a new item to the items page. only accessible by CEO. data inserted into items table -->
 <?php
 session_start();
 include 'database.php'; // Include the database connection details

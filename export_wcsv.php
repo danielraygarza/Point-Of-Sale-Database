@@ -1,3 +1,4 @@
+<!-- function called to export CSV files from reports page -->
 <?php
 session_start();
 include 'database.php'; // Include the database connection details

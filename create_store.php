@@ -1,3 +1,4 @@
+<!-- this page creates a new store location. only accessible by CEO. data inserted into pizza_store table -->
 <?php
 session_start();
 include 'database.php'; // Include the database connection details

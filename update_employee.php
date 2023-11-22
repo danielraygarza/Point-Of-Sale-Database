@@ -1,3 +1,4 @@
+<!-- this page allows the CEO/managers to update employees accounts. managers can only see employees at their store. employee table is updated -->
 <?php
 include 'database.php';
 ini_set('display_errors', 1);

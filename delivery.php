@@ -1,3 +1,9 @@
+<!-- this page is shown after checkout page when delivery is selected. final page of ordering process. Once order is placed, the following occurs: 
+- data inserted into orders, order_items, delivery, and transactions tables 
+- order is assigned to employee with least current assigned orders at selected store
+- item's inventory is updated at selected store
+- if customer is logged in, total spent and store credit is updated in customers table
+- if customer is guest, data inserted into guest table -->
 <?php
 include 'database.php'; // Include the database connection details
 session_start();

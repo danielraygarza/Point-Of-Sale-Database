@@ -1,3 +1,4 @@
+<!-- this page is displayed after a pizza is added to the cart. allows user to add toppings to pizza -->
 <?php
 include 'database.php';
 session_start();

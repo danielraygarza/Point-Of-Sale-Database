@@ -1,3 +1,4 @@
+<!-- function runs when logout is clicked -->
 <?php
 //Logout file for nav bar. Will kill session and send to main page
 session_start();

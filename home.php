@@ -1,3 +1,4 @@
+<!-- home page for customers displayed after login. displays total spent and store credit -->
 <?php
 // Start the session at the beginning of the file
 include 'database.php';
