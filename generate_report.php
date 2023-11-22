@@ -712,7 +712,7 @@ $currentDate = date("Y-m-d");
 
     </form>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="table2csv.js"></script>
 
     <script type="text/javascript">
@@ -762,7 +762,7 @@ $currentDate = date("Y-m-d");
 
         });
     </script>
-
+ -->
 
 </body>
 
