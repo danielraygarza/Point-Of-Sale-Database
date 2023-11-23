@@ -55,7 +55,7 @@ function getEmployeeData($mysqli)
         <h2>Reports</h2>
 
         <div>
-            <label for="reportType">Select a Report:</label>
+            <label for="reportType">Report Type </label>
             <select name="reportType" id="reportType" onchange="showOptions()" required>
                 <option value="" selected disabled>Select a Report</option>
                 <option value="inventory">Inventory Reports</option>
@@ -66,12 +66,20 @@ function getEmployeeData($mysqli)
         </div> <br>
 
         <div id="storeSelection" style="display: none;">
-            <label for="storeId">Select Store:</label>
+            <label for="storeId">Store Location </label>
             <select name="storeId" id="storeId" onchange="checkSelections()">
                 <option value="" selected disabled>Select Store</option>
                 <?php
-                // select from store where mananager ID equals current ID. 
-                $stores = $mysqli->query("SELECT * FROM pizza_store");
+                $employee_ID = $_SESSION['user']['Employee_ID'];
+                $employee_role = $_SESSION['user']['Title_Role'];
+
+                // CEO can see all stores while manager only sees their own stores
+                if ($employee_role == 'CEO') {
+                    $query = "SELECT * FROM pizza_store";
+                } else {
+                    $query = "SELECT * FROM pizza_store WHERE Store_Manager_ID = '$employee_ID'";
+                }
+                $stores = $mysqli->query($query);
                 if ($stores->num_rows > 0) {
                     while ($row = $stores->fetch_assoc()) {
                         if ($row["Pizza_Store_ID"] == 1) {
@@ -90,9 +98,9 @@ function getEmployeeData($mysqli)
 
         <div id="inventoryOptions" style="display: none;">
             <!-- Inventory Report sub-options here -->
-            <label for="inventoryType">Select Inventory Report Type:</label>
+            <label for="inventoryType">Inventory Report Type </label>
             <select name="inventoryType" id="inventoryType" onchange="checkSelections()">
-                <option value="" selected disabled>-</option>
+                <option value="" selected disabled>Select Report </option>
                 <option value="all">All Stock</option>
                 <option value="low">Low Stock</option>
                 <option value="out">Out of Stock</option>
@@ -104,17 +112,17 @@ function getEmployeeData($mysqli)
         <!-- Here you also set your id that you will reference in the function below to make this menu visible -->
         <div id="storeOptions" style="display: none;">
             <!-- Store Report sub-options here -->
-            <label for="storeType">Select Store Report Type:</label>
+            <label for="storeType">Store Report Type </label>
             <!-- Here you set your id that you'll reference on generate_report.php -->
             <!-- This will tell the page which sub report you want to run -->
             <select name="storeType" id="storeType" onchange="dateOptions()">
                 <!-- Here are the different options you can display in your sub menu -->
                 <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
-                <option value="" selected disabled>-</option>
-                <option value="orders">Daily Orders</option>
-                <option value="orderdates">Total Orders From:</option>
+                <option value="" selected disabled>Select Report</option>
+                <option value="orders">Today's Orders</option>
+                <option value="orderdates">Orders by Date Range </option>
                 <option value="popular">Today's Most Popular Item</option>
-                <option value="datepopular">Most Popular Item From:</option>
+                <option value="datepopular">Popular Item by Date Range</option>
                 <!-- <option value="sales">Total Sales Today</option>
                 <option value="date">Total Sales From:</option> -->
             </select>
@@ -123,7 +131,7 @@ function getEmployeeData($mysqli)
 
         <!-- Fixed Start Date Dropdown -->
         <div id="newStartDateOptions" style="display: none;">
-            <label for="start_date">Start Date:</label>
+            <label for="start_date">Start Date </label>
             <input type="date" id="start_date" name="start_date" onchange="setDay()">
 
             <!-- Save stDate to post -->
@@ -133,7 +141,7 @@ function getEmployeeData($mysqli)
 
         <!-- Fixed End Date Dropdown -->
         <div id="newEndDateOptions" style="display: none;">
-            <label for="end_date">End Date:</label>
+            <label for="end_date">End Date </label>
             <input type="date" id="end_date" name="end_date" onchange="setDay()">
 
             <!-- Saves endDate to post -->
@@ -147,7 +155,7 @@ function getEmployeeData($mysqli)
             <!-- STORE SELECTION WAS HERE -->
 
 
-            <label for="emp_status">Select Employee Status:</label>
+            <label for="emp_status"> Employee Status </label>
             <select name="emp_status" id="emp_status">
                 <option value="" selected disabled>Select Employee Status</option>
 
@@ -157,9 +165,9 @@ function getEmployeeData($mysqli)
             </select>
             <!-- </select><br> -->
 
-            <label for="employeeDropdown">Select Employee:</label>
+            <label for="employeeDropdown">Employee </label>
             <select name="employeeDropdown" id="employeeDropdown" onchange="checkSelections()">
-                <option value="" selected disabled>Select Employee</option>
+                <option value="" selected disabled>Select Employee </option>
 
             </select>
         </div><br>
