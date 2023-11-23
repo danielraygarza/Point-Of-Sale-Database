@@ -95,32 +95,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $result = $mysqli->query($findEmployeeSQL);
         if ($result && $result->num_rows > 0) {
-            //check if user is logged in as customer
-            if (isset($_SESSION['user']['customer_id'])) {
-                //get ID if customer is logged in
-                $customerID = $_SESSION['user']['customer_id'];
-            } else {
-                //guest table
-                $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
-                $first_name = $mysqli->real_escape_string($_POST['first_name']);
-                $last_name = $mysqli->real_escape_string($_POST['last_name']);
-                $guestSQL = "INSERT INTO guest (G_Phone_Number, G_First_Name, G_Last_Name)
-                            VALUES ('$phone_number', '$first_name', '$last_name')";
-
-                //get new ID if guest
-                if ($mysqli->query($guestSQL) === TRUE) {
-                    $customerID = $mysqli->insert_id; // get new auto incremented ID
-                } else {
-                    header('Location: checkout.php');
-                    exit;
-                }
-            }
-            $employee = $result->fetch_assoc();
-            $employee_id_assigned = $employee['Employee_ID'];
-
-            // insert into orders table
-            $ordersSQL = "INSERT INTO orders (Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned, Cost_Of_Goods)
-                        VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned', '$totalCOG')";
+            
+             // assign employee receiving order to variable
+             $employee = $result->fetch_assoc();
+             $employee_id_assigned = $employee['Employee_ID'];
+ 
+             //get the customer id of current user
+             if (isset($_SESSION['user']['customer_id'])) {
+                 //get ID if customer is logged in
+                 $customerID = $_SESSION['user']['customer_id'];
+ 
+                 // insert into orders table with customer  ID
+                 $ordersSQL = "INSERT INTO orders (Customer_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned, Cost_Of_Goods)
+                             VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned', '$totalCOG')";
+             } else {
+                 // insert into guest table
+                 $phone_number = $mysqli->real_escape_string(str_replace('-', '', $_POST['phone_number']));
+                 $guestSQL = "INSERT INTO guest (G_Phone_Number, G_First_Name, G_Last_Name)
+                             VALUES ('$phone_number', '$first_name', '$last_name')";
+ 
+                 //get ID if guest
+                 if ($mysqli->query($guestSQL) === TRUE) {
+                     $customerID = $mysqli->insert_id; // get new auto incremented ID
+                 
+                     // insert into orders table with Guest ID
+                     $ordersSQL = "INSERT INTO orders (Guest_ID, Date_Of_Order, Time_Of_Order, Order_Type, Total_Amount, Store_ID, Employee_ID_assigned, Cost_Of_Goods)
+                                 VALUES ('$customerID', '$Current_Date', '$Current_Time', '$Order_Type', '$Total_Amount_Charged', '$store_id', '$employee_id_assigned', '$totalCOG')";
+ 
+                 } else {
+                     header('Location: checkout.php');
+                     exit;
+                 }
+             }
                         
             // ensure orders table insertion was successful
             if ($mysqli->query($ordersSQL) === TRUE) {

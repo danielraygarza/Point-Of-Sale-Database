@@ -191,10 +191,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="main-holder">
                 <div class="order-display">
 
-                    <?php while ($row = mysqli_fetch_assoc($result)) {
-                        $customerID = $row["Customer_ID"];
-                        $customerName = $mysqli->query("SELECT C.first_name, C.last_name FROM customers AS C WHERE $customerID = C.customer_id");
-                        $getCustomerName = $customerName->fetch_assoc();
+                    <?php 
+                        while ($row = mysqli_fetch_assoc($result)) {
+                        // Check if the order is associated with a customer or a guest
+                        if (!empty($row['Customer_ID'])) {
+                            // get customer name
+                            $customerID = $row['Customer_ID'];
+                            $customerQuery = "SELECT first_name AS First_Name, last_name AS Last_Name FROM customers WHERE customer_id = $customerID";
+                        } else {
+                            // get guest name
+                            $customerID = $row['Guest_ID'];
+                            $customerQuery = "SELECT G_First_Name AS First_Name, G_Last_Name AS Last_Name FROM guest WHERE Guest_ID = $customerID";
+                        }
+                        
+                        // run query and assign to variable
+                        $customerNames = $mysqli->query($customerQuery);
+                        if ($customerNames && $customerNames->num_rows > 0) {
+                            $getCustomerName = $customerNames->fetch_assoc();
+                        } else {
+                            // Handle the case where no user data is found
+                            echo "No user data found.";
+                        }
                     ?>
 
                         <div class="order-card" style="
@@ -210,7 +227,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="order-card-info">
                                 <div class="order-card-left">
                                     <p class="order-id">Order ID: <?php echo $row["Order_ID"]; ?></p>
-                                    <p class="customer">Customer Name: <?php echo $getCustomerName["first_name"], " ", $getCustomerName["last_name"]; ?></p>
+                                    <p class="customer">Customer Name: <?php echo $getCustomerName["First_Name"], " ", $getCustomerName["Last_Name"]; ?></p>
                                     <p class="date">Date Order Placed: <?php echo $row["Date_Of_Order"]; ?></p>
                                     <p class="time">Time Order Placed: <?php echo $row["Time_Of_Order"]; ?></p>
                                     <p class="total">Total: $<?php echo $row["Total_Amount"]; ?></p>
