@@ -225,7 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 if ($ingredientIdResult && $ingredientRow = $ingredientIdResult->fetch_assoc()) {
                                                     $ingredientIds[$ingredientName] = $ingredientRow['Item_ID'];
                                                 } else {
-                                                    echo "Error: $ingredientName Item_ID not found.";
+                                                    echo "Error: $ingredientName Item_ID not found." . $mysqli->error;;
                                                     // Handle the error as needed
                                                 }
                                             }
@@ -236,8 +236,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                                 WHERE Item_ID = $ingredientId AND Store_ID = $store_id";
                                                 $mysqli->query($updateIngredientInventorySQL);
                                             }
-                                        } else { //if not pizza
-                                            continue; //later update for side products
+                                        } else { // if not pizza
+                                            $itemDetailsQuery = "SELECT Amount_per_order FROM items WHERE Item_ID = ?";
+                                            $itemStatement = $mysqli->prepare($itemDetailsQuery);
+                                            $itemStatement->bind_param("i", $itemDetails['Item_ID']);
+                                            $itemStatement->execute();
+                                            $itemDetailsResult = $itemStatement->get_result();
+                                        
+                                            if ($itemRow = $itemDetailsResult->fetch_assoc()) {
+                                                // assigned order amount to variable
+                                                $amountToSubtract = $itemRow['Amount_per_order'];
+                                        
+                                                // update inventory for the side item
+                                                $updateInventorySQL = "UPDATE inventory 
+                                                                       SET Inventory_Amount = Inventory_Amount - $amountToSubtract 
+                                                                       WHERE Item_ID = ? AND Store_ID = ?";
+                                                $updateStmt = $mysqli->prepare($updateInventorySQL);
+                                                $updateStmt->bind_param("ii", $itemDetails['Item_ID'], $store_id);
+                                                $updateStmt->execute();
+                                        
+                                                if ($mysqli->error) {
+                                                    echo "Error updating inventory for Item ID {$itemDetails['Item_ID']}: " . $mysqli->error;
+                                                }
+                                            } else {
+                                                echo "Error: Item details not found for Item ID {$itemDetails['Item_ID']}.";
+                                            }
                                         }
                                     }
                                 } //END UPDATE INVENTORY  
@@ -273,6 +296,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 throw new Exception("Error inserting into orders: " . $mysqli->error);
             }
         } else {
+            // if no one is clocked in at location, give error message
             echo "";
             $_SESSION['error'] = "Sorry, we're closed! We are POS!";
             header('Location: pickup.php');
