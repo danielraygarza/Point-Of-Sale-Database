@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="signup.php" class="button">Sign up</a>
 
         <div>
-            <p><a href="menu.php">Continue as guest</a></p>
+            <p><a href="menu.php?guest=1">Continue as guest</a></p>
         </div>
     </form>
 
