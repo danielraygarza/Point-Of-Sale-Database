@@ -1,5 +1,5 @@
-<!-- function called to export CSV files from reports page -->
 <?php
+// function called to export CSV files from reports page
 session_start();
 include 'database.php'; // Include the database connection details
 ini_set('display_errors', 1);

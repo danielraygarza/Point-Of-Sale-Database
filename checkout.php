@@ -1,5 +1,6 @@
-<!-- checkout page displays items in cart. select store and order method before finalizing order -->
 <?php
+// checkout page displays items in cart. select store and order method before finalizing order
+
 // Start the session
 session_start();
 include 'database.php';

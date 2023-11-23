@@ -1,12 +1,13 @@
-<!-- this page allows managers and CEO to order inventory for stores. manager can only order for their assigned store
-inventory table is updated -->
 <?php
+// this page allows managers and CEO to order inventory for stores. manager can only order for their assigned store
+// inventory table is updated
+
 // Start the session at the beginning of the file
+session_start();
 include 'database.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-session_start();
 
 // Redirects if not manager/CEO or accessed directly via URL
 if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {

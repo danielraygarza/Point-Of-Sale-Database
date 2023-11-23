@@ -1,8 +1,9 @@
-<!-- home page for customers displayed after login. displays total spent and store credit -->
 <?php
+// home page for customers displayed after login. displays total spent and store credit
+
 // Start the session at the beginning of the file
-include 'database.php';
 session_start();
+include 'database.php';
 
 // Check if user is logged in
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {

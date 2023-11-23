@@ -1,5 +1,6 @@
-<!-- this page allows user to select the type of report to display. page submission runs generate_report.php -->
 <?php
+// this page allows user to select the type of report to display. page submission runs generate_report.php
+
 // // Check if the user is not logged in
 session_start();
 include 'database.php'; // Include the database connection details

@@ -1,11 +1,12 @@
-<!-- this page allows customers to update their information. updates customers table -->
 <?php
+// this page allows customers to update their information. updates customers table
+
 // Start the session at the beginning of the file
+session_start(); 
 include 'database.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {

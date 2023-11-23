@@ -1,11 +1,12 @@
-<!-- signup page for customers. data inserted into customers page -->
 <?php
+// signup page for customers. data inserted into customers page
+
+session_start();
 include 'database.php'; // Include the database connection details
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $first_name = $mysqli->real_escape_string($_POST['first_name']);
     $middle_initial = $mysqli->real_escape_string($_POST['middle_initial']);

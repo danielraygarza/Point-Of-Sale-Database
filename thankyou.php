@@ -1,7 +1,8 @@
-<!-- this page is displayed after finalizing order following the delivery/pickup page -->
 <?php
-include 'database.php'; // Include the database connection details
+// this page is displayed after finalizing order following the delivery/pickup page
+
 session_start();
+include 'database.php'; // Include the database connection details
 
 //ensures page is only accessible if order was completed
 if (empty($_SESSION['order_completed'])) {

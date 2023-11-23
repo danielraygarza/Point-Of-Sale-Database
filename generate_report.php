@@ -1,6 +1,7 @@
-<!-- REPORTS QUERIES ARE ON THIS PAGE -->
-<!-- this page displays selected report from reports.php -->
 <?php
+// REPORTS QUERIES ARE ON THIS PAGE
+// this page displays selected report from reports.php
+
 session_start();
 include 'database.php'; // Include the database connection details
 ini_set('display_errors', 1);

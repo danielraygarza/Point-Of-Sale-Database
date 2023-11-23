@@ -1,5 +1,6 @@
-<!-- this page adds a new item to the items page. only accessible by CEO. data inserted into items table -->
 <?php
+// this page adds a new item to the items page. only accessible by CEO. data inserted into items table
+
 session_start();
 include 'database.php'; // Include the database connection details
 ini_set('display_errors', 1);

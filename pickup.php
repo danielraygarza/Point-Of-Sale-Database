@@ -1,12 +1,13 @@
-<!-- this page is shown after checkout page when pickup is selected. final page of ordering process. Once order is placed, the following occurs: 
+<?php
+/* this page is shown after checkout page when pickup is selected. final page of ordering process. Once order is placed, the following occurs: 
 - data inserted into orders, order_items, pickup, and transactions tables 
 - order is assigned to employee with least current assigned orders at selected store
 - item's inventory is updated at selected store
 - if customer is logged in, total spent and store credit is updated in customers table
-- if customer is guest, data inserted into guest table -->
-<?php
-include 'database.php'; // Include the database connection details
+- if customer is guest, data inserted into guest table */
+
 session_start();
+include 'database.php'; // Include the database connection details
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);

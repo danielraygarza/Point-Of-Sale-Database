@@ -1,7 +1,8 @@
-<!-- this page displays all menu items -->
 <?php
-include 'database.php';
+// this page displays all menu items
+
 session_start();
+include 'database.php';
 
 // If user is logged in as employee, log them out and treat user as guest
 if (isset($_GET['guest']) && $_GET['guest'] === '1') {

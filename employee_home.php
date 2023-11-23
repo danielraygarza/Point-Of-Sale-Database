@@ -1,12 +1,13 @@
-<!-- this page is multi purposed based on employee's role
+<?php
+/* this page is multi purposed based on employee's role
 For team members and supervisors, displays orders assigned to them and allows them to mark orders completed
 This will update the employee table by incrementing completed orders, decrementing assigned orders, updating time completed in orders table,
 and time delivered/picked up in respective delivery/pickup table
-For CEO and managers, displays options to add/update employees, and add inventory, stores, and menu items -->
-<?php
-include 'database.php';
+For CEO and managers, displays options to add/update employees, and add inventory, stores, and menu items */
+
 // Start the session at the beginning of the file
 session_start();
+include 'database.php';
 
 // Redirects to login if not employee/accessed via URL
 if (!isset($_SESSION['user']['Title_Role'])) {

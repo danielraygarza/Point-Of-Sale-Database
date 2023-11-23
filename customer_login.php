@@ -1,5 +1,6 @@
-<!-- login page for customers -->
 <?php
+// login page for customers
+
 include 'database.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

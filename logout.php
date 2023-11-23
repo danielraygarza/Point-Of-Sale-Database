@@ -1,5 +1,6 @@
-<!-- function runs when logout is clicked -->
 <?php
+// function runs when logout is clicked
+
 //Logout file for nav bar. Will kill session and send to main page
 session_start();
 include 'database.php';

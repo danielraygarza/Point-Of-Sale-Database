@@ -1,7 +1,8 @@
-<!-- this page is displayed after a pizza is added to the cart. allows user to add toppings to pizza -->
 <?php
-include 'database.php';
+// this page is displayed after a pizza is added to the cart. allows user to add toppings to pizza
+
 session_start();
+include 'database.php';
 
 // ensures page was accessed by menu only
 if (empty($_SESSION['item_selected'])) {

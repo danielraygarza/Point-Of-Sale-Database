@@ -1,7 +1,7 @@
-<!-- this page creates a new employee. only accessible by CEO and managers. data inserted into employee table -->
 <?php
-session_start();
+// this page creates a new employee. only accessible by CEO and managers. data inserted into employee table
 
+session_start();
 include 'database.php'; // Include the database connection details
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
