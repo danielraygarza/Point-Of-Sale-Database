@@ -1,7 +1,6 @@
 <?php
 // this page allows user to select the type of report to display. page submission runs generate_report.php
 
-// // Check if the user is not logged in
 session_start();
 include 'database.php'; // Include the database connection details
 ini_set('display_errors', 1);
@@ -11,9 +10,10 @@ error_reporting(E_ALL);
 // Redirects if not manager/CEO or accessed directly via URL
 if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
     header("Location: employee_login.php");
-    exit; // Make sure to exit so that the rest of the script won't execute
+    exit;
 }
 
+// function to get employees info
 function getEmployeeData($mysqli)
 {
     $sql = "SELECT `Employee_ID`, `E_First_Name`, `E_Last_Name` FROM `employee`";
@@ -30,10 +30,8 @@ function getEmployeeData($mysqli)
     }
     return $employeeData;
 }
-
 ?>
 
-<!-- Welcome page after user creates new account -->
 <!DOCTYPE html>
 <html>
 
@@ -52,6 +50,7 @@ function getEmployeeData($mysqli)
         <a id="cart-button" style="background-color: transparent;"><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
 
+    <!-- run generate_report on submission -->
     <form action="generate_report.php" method="post">
         <h2>Reports</h2>
 
@@ -61,7 +60,6 @@ function getEmployeeData($mysqli)
                 <option value="" selected disabled>Select a Report</option>
                 <option value="inventory">Inventory Reports</option>
                 <option value="store">Store Reports</option>
-                <!-- <option value="sales">Sales Report</option> -->
                 <option value="performance">Employee Performance Report</option>
             </select>
         </div> <br>
@@ -85,7 +83,7 @@ function getEmployeeData($mysqli)
                     while ($row = $stores->fetch_assoc()) {
                         if ($row["Pizza_Store_ID"] == 1) {
                             continue;
-                        } //only shows store ID 1. can delete to show all
+                        } // do not show store one
                         echo '<option value="' . $row["Pizza_Store_ID"] . '" ' . $selected . '>' . $row["Store_Address"] . ' - ' . $row["Store_City"] . '</option>';
                     }
                 }
@@ -108,68 +106,50 @@ function getEmployeeData($mysqli)
             </select>
         </div><br>
 
-        <!-- //Copy the format from here// -->
-        <!-- This creates the sub-menu once you've selected the main category -->
-        <!-- Here you also set your id that you will reference in the function below to make this menu visible -->
         <div id="storeOptions" style="display: none;">
             <!-- Store Report sub-options here -->
             <label for="storeType">Store Report Type </label>
-            <!-- Here you set your id that you'll reference on generate_report.php -->
-            <!-- This will tell the page which sub report you want to run -->
             <select name="storeType" id="storeType" onchange="dateOptions()">
-                <!-- Here are the different options you can display in your sub menu -->
-                <!-- The value is how it will be referenced on generate_report.php and the text to the right is what appears in the drop down menu -->
                 <option value="" selected disabled>Select Report</option>
                 <option value="orders">Today's Orders</option>
                 <option value="orderdates">Orders by Date Range </option>
                 <option value="popular">Today's Most Popular Item</option>
                 <option value="datepopular">Popular Item by Date Range</option>
-                <!-- <option value="sales">Total Sales Today</option>
-                <option value="date">Total Sales From:</option> -->
             </select>
         </div><br>
-        <!-- //To here// -->
 
-        <!-- Fixed Start Date Dropdown -->
+        <!-- get start date -->
         <div id="newStartDateOptions" style="display: none;">
             <label for="start_date">Start Date </label>
             <input type="date" id="start_date" name="start_date" onchange="setDay()">
 
             <!-- Save stDate to post -->
             <input type="hidden" id="stDate" name="stDate">
-
         </div> <br>
 
-        <!-- Fixed End Date Dropdown -->
+        <!-- get end date -->
         <div id="newEndDateOptions" style="display: none;">
             <label for="end_date">End Date </label>
             <input type="date" id="end_date" name="end_date" onchange="setDay()">
 
             <!-- Saves endDate to post -->
             <input type="hidden" id="endDate" name="endDate">
+        </div><br>
 
-        </div> <br>
-
-        <!-- Add more drop down sub-menus here -->
+        <!-- employee performance report filters -->
         <div id="Employer" style="display: none;">
-
-            <!-- STORE SELECTION WAS HERE -->
-
-
             <label for="emp_status"> Employee Status </label>
             <select name="emp_status" id="emp_status">
+                <!-- filter between current and former employees -->
                 <option value="" selected disabled>Select Employee Status</option>
-
                 <option value="1">Current</option>
                 <option value="0">Former</option>
-
             </select>
-            <!-- </select><br> -->
 
+            <!-- dropdown filtering current and former employees -->
             <label for="employeeDropdown">Employee </label>
             <select name="employeeDropdown" id="employeeDropdown" onchange="checkSelections()">
                 <option value="" selected disabled>Select Employee </option>
-
             </select>
         </div><br>
 
@@ -181,7 +161,6 @@ function getEmployeeData($mysqli)
         document.getElementById('employeeDropdown').addEventListener('change', function() {
             var selectedEmployeeId = this.value;
             if (selectedEmployeeId != 0) {
-                // var url = "./include/function/genereateEmployReport.php?action=generateReport&id=" + selectedEmployeeId;
                 window.location.href = url;
             }
         });
@@ -196,16 +175,13 @@ function getEmployeeData($mysqli)
             storeType.value = "";
             employeeDropdown.value = "";
 
-            //If you add a new sub menu, define it here then refence it by it's id like so:
+            // sub menus
             var inventoryOptions = document.getElementById('inventoryOptions');
             var storeOptions = document.getElementById('storeOptions');
             var Employer = document.getElementById('Employer');
             var storeSelection = document.getElementById('storeSelection');
 
-            //This if/else determines which sub menu is visible
-            //To set a new one visible, set reportType === 'newMenu'
-            //Then newMenuOptions.style.display = 'block'
-            //Be sure to set the other sub menus to 'none' and add in your new menu to the other sub menu categories and set it to 'none'
+            // only displays required input fields for selected report
             if (reportType.value === 'inventory') {
                 inventoryOptions.style.display = 'block';
                 storeOptions.style.display = 'none';
@@ -213,7 +189,6 @@ function getEmployeeData($mysqli)
                 storeSelection.style.display = 'block';
                 newStartDateOptions.style.display = 'none';
                 newEndDateOptions.style.display = 'none';
-                // newMenuOptions.style.display = 'none'
 
             } else if (reportType.value === 'store') {
                 inventoryOptions.style.display = 'none';
@@ -251,7 +226,7 @@ function getEmployeeData($mysqli)
 
         // Function to set start and end dates
         function dateOptions() {
-            // Debug
+            //  debug
             console.log('dateOptions function called');
 
             // Store report type
@@ -275,7 +250,7 @@ function getEmployeeData($mysqli)
             // Update Generate Report button
             checkSelections();
 
-            //Debug
+            // debug
             var sType = storeType.value;
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
@@ -284,24 +259,26 @@ function getEmployeeData($mysqli)
 
         // Activate Generate Reports button
         function checkSelections() {
-            // Debug
+            //  debug
             console.log('checkSelections function called');
-            // Bool
             var selectionMade = false;
+
             // Main report type selection
             var reportType = document.getElementById('reportType');
+
             // Secondary report type selection
             var inventoryType = document.getElementById('inventoryType');
             var storeType = document.getElementById('storeType');
             var employeeSelect = document.getElementById('employeeDropdown');
+
             // Store selection
             var storeId = document.getElementById('storeId');
+
             // Start/End date selection
             var startDate = document.getElementById('stDate');
             var endDate = document.getElementById('endDate');
 
-            // Can change to make initialize variable with if statement instead if needed for fringe cases
-            // storeId.value !== '' changed from: (storeId.value !== '' || employeeSelect.value !== '')
+            // ensuring all required fields are selected
             if (reportType.value !== '' && storeId.value !== '' && (inventoryType.value !== '' || storeType.value !== '' || employeeSelect.value !== '')) {
                 if ((storeType.value === 'orderdates' || storeType.value === 'datepopular' || storeType.value === 'date') && (startDate.value < 20220100 || endDate.value < 20220100)) {
                     selectionMade = false;
@@ -311,17 +288,15 @@ function getEmployeeData($mysqli)
             }
 
             document.getElementById('submitButton').disabled = !selectionMade;
-
             var checkVal = document.getElementById('storeSelID').value;
 
-            // Debug
+            //  debug
             console.log('checkVal:', checkVal);
 
-            // If store selection not changing, don't call setNewStoreSelID again
+            // if store selection not changing, don't call setNewStoreSelID again
             if (checkVal !== storeId.value) {
                 var storeID = 1;
-                // If not set, sets an initial value for hidden storeId value
-                // May not be necessary anymore
+                // if not set, sets an initial value for hidden storeId value
                 if (storeId.value !== '') {
                     storeID = storeId.value;
                 }
@@ -331,17 +306,17 @@ function getEmployeeData($mysqli)
                 // Updates employee drop down
                 setNewStoreSelID();
             }
-            // Debug
+            //  debug
             console.log('Selection Made', selectionMade);
             console.log('storeSelID set to:', storeID);
 
         }
 
         function setDay() {
-            // Debug
+            //  debug
             console.log('setDay function called');
 
-            //Start and end date selection
+            // start and end date selection
             var stDate = document.getElementById('start_date').value;
             document.getElementById('stDate').value = stDate;
 
@@ -350,26 +325,24 @@ function getEmployeeData($mysqli)
 
             checkSelections();
 
-            // Debug
+            //  debug
             console.log('Start Date:', stDate);
             console.log('End Date:', endDate);
         }
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
     <script>
         function setNewStoreSelID() {
             populateEmployeeDropdown($('#storeSelID').val(), $("#emp_status").val());
-            // Debug
-            console.log('onChange function setting SSID ran');
+            //  debug
             console.log('storeSelID set to', storeSelID.value);
         }
 
         function populateEmployeeDropdown(storeId, emp_status) {
-            // Make an AJAX request to fetch employee data based on the selected store
+            // AJAX request to get employee data based on the selected store
             $.ajax({
-                url: 'getEmployees.php', // Replace with your server-side script
+                url: 'getEmployees.php',
                 type: 'GET',
                 data: {
                     storeId: storeId,
@@ -396,56 +369,9 @@ function getEmployeeData($mysqli)
         }
 
         $('#emp_status').on('change', function() {
-            //alert(1);
             populateEmployeeDropdown($("#storeSelID").val(), $(this).val());
         });
     </script>
-    <!-- //$(document).ready(function () {
-
-        // Handle store selection change
-        
-        // $('#storeSelID').on('change', function () {
-        //     //alert(1);
-        //     populateEmployeeDropdown($(this).val(), $("#emp_status").val());
-
-        //     // Debug
-        //     console.log('onChange function setting SSID ran');
-        //     console.log('storeSelID set to', storeSelID.value);
-        // });
-
-        // $('#emp_status').on('change', function () {
-        //     //alert(1);
-        //     populateEmployeeDropdown($("#storeSelID").val(), $(this).val());
-        // });
-
-        // function populateEmployeeDropdown(storeId, emp_status) {
-        //     // Make an AJAX request to fetch employee data based on the selected store
-        //     $.ajax({
-        //         url: 'getEmployees.php', // Replace with your server-side script
-        //         type: 'GET',
-        //         data: { storeId: storeId, emp_status: emp_status },
-        //         dataType: 'json',
-        //         success: function (employees) {
-        //             // Clear existing options
-        //             $('#employeeDropdown').empty();
-
-        //             // Add default option
-        //             $('#employeeDropdown').append('<option value="" selected disabled>Select Employee</option>');
-
-        //             // Add employee options based on the selected store
-        //             $.each(employees, function (index, employee) {
-        //                 $('#employeeDropdown').append('<option value="' + employee.id + '">' + employee.name + '</option>');
-        //             });
-        //         },
-        //         error: function (xhr, status, error) {
-        //             console.error('Error fetching employees:', status, error);
-        //             console.log(xhr.responseText);
-        //         }
-        //     });
-        // }
-        //}); -->
-    <!-- Add /script> here if uncommenting^^ -->
-
 </body>
 
 </html>
