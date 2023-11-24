@@ -113,8 +113,8 @@ function getEmployeeData($mysqli)
                 <option value="" selected disabled>Select Report</option>
                 <option value="orders">Today's Orders</option>
                 <option value="orderdates">Orders by Date Range </option>
-                <option value="popular">Today's Most Popular Item</option>
-                <option value="datepopular">Popular Item by Date Range</option>
+                <option value="popular">Today's Most Popular Items</option>
+                <option value="datepopular">Popular Items by Date Range</option>
             </select>
         </div><br>
 

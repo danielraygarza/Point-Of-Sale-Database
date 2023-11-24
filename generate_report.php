@@ -318,7 +318,7 @@ $currentDate = date("Y-m-d");
                         // Header for popular items
                         $address = $mysqli->query("SELECT Store_Address,Store_City  FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
-                            $setHeader = 'Most Popular item today from ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
+                            $setHeader = 'Most Popular items today from ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
 
                         // query for popular items today
@@ -330,7 +330,7 @@ $currentDate = date("Y-m-d");
                         WHERE DATE(O.Date_Of_Order) = '$currentDate' AND O.Store_ID = '$storeId'
                         GROUP BY I.Item_Name
                         ORDER BY Item_Count DESC
-                        LIMIT 1;";
+                        LIMIT 3;";
                     } elseif ($storeType === 'datepopular') {
                         // Get the selected date range
                         if (isset($_POST['stDate'])) {
@@ -347,18 +347,17 @@ $currentDate = date("Y-m-d");
                         }
 
                         // Header for most popular item for date range
-                        $setHeader = 'Most Popular item from ' . $stDate . ' to ' .  $endDate;
+                        $setHeader = 'Most Popular items from ' . $stDate . ' to ' .  $endDate;
                         
                         // query for most popular item in date range
-                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
-                        COUNT(OI.Item_ID) AS Item_Count
+                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
                         JOIN ORDERS O ON OI.Order_ID = O.Order_ID
                         JOIN ITEMS I ON OI.Item_ID = I.Item_ID
                         WHERE O.Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
                         GROUP BY I.Item_Name
                         ORDER BY Item_Count DESC
-                        LIMIT 1;";
+                        LIMIT 3;";
                     } 
 
                     // Execute the query
