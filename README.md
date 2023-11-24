@@ -47,8 +47,8 @@ File Descriptions:
 
     employee_home.php: multi purposed page based on employee's role
     For team members and supervisors, displays orders assigned to them and allows them to mark orders completed
-    This will update the employee table by incrementing completed orders, decrementing assigned orders, updating time completed in orders table,
-    and time delivered/picked up in respective delivery/pickup table
+    This will update the employee table by incrementing completed orders, decrementing assigned orders, 
+    updating time completed in orders table, and time delivered/picked up in respective delivery/pickup table
     For CEO and managers, displays options to add/update employees, and add inventory, stores, and menu items
 
     employee_login.php: login page for employees
