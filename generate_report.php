@@ -322,13 +322,18 @@ $currentDate = date("Y-m-d");
                         }
 
                         // query for popular items today
-                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
-                        COUNT(OI.Item_ID) AS Item_Count
+                        $sql = "SELECT 
+                        I.Item_Name AS Most_Popular_Item, 
+                        COUNT(OI.Item_ID) AS Item_Count,
+                        I.Item_Cost, I.Cost_Of_Good,
+                        (COUNT(OI.Item_ID) * I.Item_Cost) AS Total_Sales,
+                        (COUNT(OI.Item_ID) * I.Cost_Of_Good) AS Cost_Of_Goods,
+                        ((COUNT(OI.Item_ID) * I.Item_Cost) - (COUNT(OI.Item_ID) * I.Cost_Of_Good)) AS Profit_Margin
                         FROM ORDER_ITEMS OI
                         JOIN ORDERS O ON OI.Order_ID = O.Order_ID
                         JOIN ITEMS I ON OI.Item_ID = I.Item_ID
-                        WHERE DATE(O.Date_Of_Order) = '$currentDate' AND O.Store_ID = '$storeId'
-                        GROUP BY I.Item_Name
+                        WHERE O.Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
+                        GROUP BY I.Item_Name, I.Item_Cost, I.Cost_Of_Good
                         ORDER BY Item_Count DESC
                         LIMIT 3;";
                     } elseif ($storeType === 'datepopular') {
@@ -350,12 +355,18 @@ $currentDate = date("Y-m-d");
                         $setHeader = 'Most Popular items from ' . $stDate . ' to ' .  $endDate;
                         
                         // query for most popular item in date range
-                        $sql = "SELECT I.Item_Name AS Most_Popular_Item, COUNT(OI.Item_ID) AS Item_Count
+                        $sql = "SELECT 
+                        I.Item_Name AS Most_Popular_Item, 
+                        COUNT(OI.Item_ID) AS Item_Count,
+                        I.Item_Cost, I.Cost_Of_Good,
+                        (COUNT(OI.Item_ID) * I.Item_Cost) AS Total_Sales,
+                        (COUNT(OI.Item_ID) * I.Cost_Of_Good) AS Cost_Of_Goods,
+                        ((COUNT(OI.Item_ID) * I.Item_Cost) - (COUNT(OI.Item_ID) * I.Cost_Of_Good)) AS Profit_Margin
                         FROM ORDER_ITEMS OI
                         JOIN ORDERS O ON OI.Order_ID = O.Order_ID
                         JOIN ITEMS I ON OI.Item_ID = I.Item_ID
                         WHERE O.Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
-                        GROUP BY I.Item_Name
+                        GROUP BY I.Item_Name, I.Item_Cost, I.Cost_Of_Good
                         ORDER BY Item_Count DESC
                         LIMIT 3;";
                     } 
@@ -397,6 +408,9 @@ $currentDate = date("Y-m-d");
                                 echo "<tr>
                                         <th class='th-spacing'>Item Name</th>
                                         <th class='th-spacing'>Amount Sold</th>
+                                        <th class='th-spacing'>Total Sales</th>
+                                        <th class='th-spacing'>Cost of Goods</th>
+                                        <th class='th-spacing'>Profit Margin</th>
                                     </tr>";
 
                             // Returns table columns for orders by day and orders by date range
@@ -417,6 +431,9 @@ $currentDate = date("Y-m-d");
                                     echo '<tr>';
                                     echo '<td>' . $row['Most_Popular_Item'] . '</td>';
                                     echo '<td>' . $row['Item_Count'] . '</td>';
+                                    echo '<td>' . $row['Total_Sales'] . '</td>';
+                                    echo '<td>' . $row['Cost_Of_Goods'] . '</td>';
+                                    echo '<td>' . $row['Profit_Margin'] . '</td>';
                                     echo '</tr>';
 
                                 // Populates columns for orders by day and orders by date range
