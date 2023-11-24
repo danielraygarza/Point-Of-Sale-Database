@@ -11,7 +11,7 @@ error_reporting(E_ALL);
 // Redirects if not manager/CEO or accessed directly via URL
 if (!isset($_SESSION['user']['Title_Role']) || ($_SESSION['user']['Title_Role'] !== 'CEO' && $_SESSION['user']['Title_Role'] !== 'MAN')) {
     header("Location: employee_login.php");
-    exit; // Make sure to exit so that the rest of the script won't execute
+    exit;
 }
 
 date_default_timezone_set('America/Chicago');
@@ -60,9 +60,10 @@ $currentDate = date("Y-m-d");
         <?php echo '<a href="logout.php">Logout</a>'; ?>
         <a id="cart-button" style="background-color: transparent;"><?php echo 'Employee Role: ' . $_SESSION['user']['Title_Role']; ?></a>
     </div>
-    <form action="export_wcsv.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">
+    <!-- submission button exports csv -->
+    <form action="export_csv.php" method="post" style="background-color: rgba(119, 115, 115, 0.7)">
         <?php
-        // Check if the form has been submitted
+        // code runs when reports.php submits form
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['reportType'])) {
                 $reportType = $_POST['reportType'];
@@ -84,10 +85,8 @@ $currentDate = date("Y-m-d");
                         $storeId = '1';
                     }
 
-                    // Define your SQL queries for Inventory selection
                     if ($inventoryType === 'low') {
                         // Header for low stock items
-                        // $setHeader = 'Low Stock Items';
                         $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Low Stock Items for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
@@ -107,11 +106,7 @@ $currentDate = date("Y-m-d");
                         WHERE I.Inventory_Amount <= Items.Reorder_Threshold + 30 AND I.Store_ID = '$storeId';";
                     } elseif ($inventoryType === 'out') {
                         // Header for out of stock items
-                        // $setHeader = 'Out of Stock Items';
-                        $address = $mysqli->query("SELECT Store_Address, 
-                        Store_City 
-                        FROM pizza_store 
-                        WHERE Pizza_Store_ID = '$storeId'");
+                        $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Out of Stock for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
@@ -130,7 +125,6 @@ $currentDate = date("Y-m-d");
                         WHERE I.Inventory_Amount <= 0 AND I.Store_ID = '$storeId';";
                     } else {
                         // Header for all items
-                        // $setHeader = 'Inventory Report';
                         $address = $mysqli->query("SELECT Store_Address, Store_City FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Inventory Report for ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
@@ -150,8 +144,6 @@ $currentDate = date("Y-m-d");
                         INNER JOIN ITEMS ON I.Item_ID = Items.Item_ID
                         WHERE I.Store_ID = '$storeId';";
                     }
-
-
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
                     $exResult = mysqli_query($mysqli, $sql);
@@ -173,7 +165,6 @@ $currentDate = date("Y-m-d");
 
                             // Start of table
                             echo '<table border="1" class="table_update">';
-                            // <th class='th-spacing'>Product ID</th>
                             echo "<tr>
                                 <th class='th-spacing'>Product</th>
                                 <th class='th-spacing'>Quantity in Stock</th>
@@ -211,6 +202,7 @@ $currentDate = date("Y-m-d");
                             echo '<input type="hidden" name="export_data" value="' . htmlspecialchars(json_encode($exportArray)) . '">';
                             echo '<input type="submit" class="button" name="export" value="Export to CSV">';
                         } else {
+                            // if no data found
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No inventory data available.';
                         }
@@ -236,12 +228,10 @@ $currentDate = date("Y-m-d");
                         $storeId = '1';
                     }
 
-                    // Check the value of the inventoryType
                     $storeType = $_POST['storeType'];
                     $sql = '';
                     $ordSql = '';
 
-                    // Define your SQL queries for Inventory selection
                     if ($storeType === 'orders') {
                         // Header for daily orders
                         $setHeader = 'Daily Orders';
@@ -272,7 +262,8 @@ $currentDate = date("Y-m-d");
                         Order_Status, 
                         Total_Amount, 
                         Cost_Of_Goods,
-                        Customer_ID
+                        Customer_ID,
+                        Guest_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) = '$currentDate';";
                     } elseif ($storeType === 'orderdates') {
@@ -319,24 +310,24 @@ $currentDate = date("Y-m-d");
                         Order_Status, 
                         Total_Amount, 
                         Cost_Of_Goods,
-                        Customer_ID
+                        Customer_ID,
+                        Guest_ID
                         FROM ORDERS
                         WHERE Store_ID = '$storeId' AND DATE(Date_Of_Order) BETWEEN '$stDate' AND '$endDate';";
                     } elseif ($storeType === 'popular') {
-                        $address = $mysqli->query("SELECT Store_Address,Store_City 
-                        FROM pizza_store 
-                        WHERE Pizza_Store_ID = '$storeId'");
-
+                        // Header for popular items
+                        $address = $mysqli->query("SELECT Store_Address,Store_City  FROM pizza_store WHERE Pizza_Store_ID = '$storeId'");
                         if ($addressRow = $address->fetch_assoc()) {
                             $setHeader = 'Most Popular item today from ' . $addressRow['Store_Address'] . ' - ' .  $addressRow['Store_City']; //header with store address
                         }
 
+                        // query for popular items today
                         $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
                         COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
                         JOIN ORDERS O ON OI.Order_ID = O.Order_ID
                         JOIN ITEMS I ON OI.Item_ID = I.Item_ID
-                        WHERE DATE(O.Date_Of_Order) = '$currentDate'AND O.Store_ID = '$storeId'
+                        WHERE DATE(O.Date_Of_Order) = '$currentDate' AND O.Store_ID = '$storeId'
                         GROUP BY I.Item_Name
                         ORDER BY Item_Count DESC
                         LIMIT 1;";
@@ -356,9 +347,9 @@ $currentDate = date("Y-m-d");
                         }
 
                         // Header for most popular item for date range
-                        // TO COMPLETE: Query for most popular item today
                         $setHeader = 'Most Popular item from ' . $stDate . ' to ' .  $endDate;
-
+                        
+                        // query for most popular item in date range
                         $sql = "SELECT I.Item_Name AS Most_Popular_Item, 
                         COUNT(OI.Item_ID) AS Item_Count
                         FROM ORDER_ITEMS OI
@@ -368,44 +359,7 @@ $currentDate = date("Y-m-d");
                         GROUP BY I.Item_Name
                         ORDER BY Item_Count DESC
                         LIMIT 1;";
-                    } elseif ($storeType === 'sales') {
-                        // IN PROGRESS
-                        // Header for total sales today
-                        $setHeader = 'Total Sales Today';
-                        // TO COMPLETE: Query for total sales today
-                        $sql = "SELECT P.Pizza_Store_ID, 
-                        P.Store_Address, 
-                        SUM(O.Total_Amount) AS Total_Sales
-                        FROM PIZZA_STORE P 
-                        LEFT JOIN ORDERS O
-                        ON P.Pizza_Store_ID = O.Store_ID
-                        WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) = '$currentDate'
-                        GROUP BY P.Pizza_Store_ID, P.Store_Address;";
-                    } else {
-                        // IN PROGRESS
-                        //Header for total sales to date
-                        $setHeader = 'Total Sales by Date:';
-                        // Get the selected date range
-                        if (isset($_POST['stDate'])) {
-                            $stDate = $_POST['stDate'];
-                        } else {
-                            // Default test values for stDate
-                            $stDate = $currentDate;
-                        }
-                        if (isset($_POST['endDate'])) {
-                            $endDate = $_POST['endDate'];
-                        } else {
-                            // Default test values for endDate
-                            $endDate = $currentDate;
-                        }
-                        // TO COMPLETE: Query for date range sales
-                        $sql = "SELECT P.Pizza_Store_ID, P.Store_Address, SUM(O.Total_Amount) AS Total_Sales
-                        FROM PIZZA_STORE P 
-                        LEFT JOIN ORDERS O
-                        ON P.Pizza_Store_ID = O.Store_ID
-                        WHERE P.Pizza_Store_ID = '$storeId' AND DATE(O.Date_Of_Order) BETWEEN '$stDate' AND '$endDate'
-                        GROUP BY P.Pizza_Store_ID, P.Store_Address;";
-                    }
+                    } 
 
                     // Execute the query
                     $result = mysqli_query($mysqli, $sql);
@@ -443,15 +397,10 @@ $currentDate = date("Y-m-d");
                             if ($storeType === 'popular' || $storeType === 'datepopular') {
                                 echo "<tr>
                                         <th class='th-spacing'>Item Name</th>
-                                        <th class='th-spacing'>Sold Today</th>
+                                        <th class='th-spacing'>Amount Sold</th>
                                     </tr>";
-                                // Returns table colums for sales by day and sales by date range
-                            } elseif ($storeType === 'sales' || $storeType === 'date') {
-                                echo "<tr>
-                                    <th class='th-spacing'>Pizza Store ID</th>
-                                    <th class='th-spacing'>Pizza Store Address</th>
-                                    <th class='th-spacing'>Total Sales</th>
-                                    </tr>";
+
+                            // Returns table columns for orders by day and orders by date range
                             } else {
                                 echo "<tr>
                                         <th class='th-spacing'>Pizza Store ID</th>
@@ -470,16 +419,8 @@ $currentDate = date("Y-m-d");
                                     echo '<td>' . $row['Most_Popular_Item'] . '</td>';
                                     echo '<td>' . $row['Item_Count'] . '</td>';
                                     echo '</tr>';
-                                    // Populates columns for sales by day and sales by date range
-                                } elseif ($storeType === 'sales' || $storeType === 'date') {
-                                    echo '<tr>';
-                                    echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
-                                    echo '<td>' . $row['Store_Address'] . '</td>';
-                                    echo '<td>' . $row['Total_Sales'] . '</td>';
-                                    // echo '<td>' . $row['Cost_Of_Goods'] . '<.td>';
-                                    // echo '<td>' . $row['Profit_Margin'] . '<.td>';
-                                    echo '</tr>';
-                                    // Populates columns for orders by day and orders by date range
+
+                                // Populates columns for orders by day and orders by date range
                                 } else {
                                     echo '<tr>';
                                     echo '<td>' . $row['Pizza_Store_ID'] . '</td>';
@@ -488,8 +429,6 @@ $currentDate = date("Y-m-d");
                                     echo '<td>' . $row['Total_Sales'] . '</td>';
                                     echo '<td>' . $row['Cost_Of_Goods'] . '</td>';
                                     echo '<td>' . $row['Profit_Margin'] . '</td>';
-                                    //echo '<td>' . $row['Vendor_Email'] . '</td>';
-                                    //echo '<td>' . $row['Vendor_Phone'] . '</td>';
                                     echo '</tr>';
                                 }
                             }
@@ -502,14 +441,13 @@ $currentDate = date("Y-m-d");
 
                             // Should check if we have set $ordSql and that $ordResult populated
                             if (!empty(trim($ordSql)) && $ordResult) {
-                                // Seems redundant, but second check
                                 if (mysqli_num_rows($ordResult) > 0) {
                                     echo '<h2>Order Details</h2>';
 
                                     // Start scrollable area
                                     echo '<div class="scrollable-area">';
 
-                                    // Start of table
+                                    // Start of table for order details on store report
                                     echo '<table border="1" class="table_update">';
                                     echo "<tr>
                                             <th class='th-spacing'>Order ID</th>
@@ -524,6 +462,7 @@ $currentDate = date("Y-m-d");
 
                                     // Loop through order detail results
                                     while ($ordRow = mysqli_fetch_assoc($ordResult)) {
+                                        // populates order details
                                         echo '<tr>';
                                         echo '<td>' . $ordRow['Order_ID'] . "</td>";
                                         echo "<td>" . $ordRow['Date_Of_Order'] . "</td>";
@@ -532,7 +471,11 @@ $currentDate = date("Y-m-d");
                                         echo "<td>" . $ordRow['Order_Status'] . "</td>";
                                         echo "<td>" . $ordRow['Total_Amount'] . "</td>";
                                         echo "<td>" . $ordRow['Cost_Of_Goods'] . "</td>";
-                                        echo "<td>" . $ordRow['Customer_ID'] . "</td>";
+                                        if (!empty($ordRow['Customer_ID'])) {
+                                            echo "<td>" . $ordRow['Customer_ID'] . "</td>";
+                                        } else {
+                                            echo "<td>" . $ordRow['Guest_ID'] . "</td>";
+                                        }
                                         echo "</tr>";
                                     }
 
@@ -548,6 +491,7 @@ $currentDate = date("Y-m-d");
                                 }
                             }
                         } else {
+                            // no date found
                             echo '<h2>' . $setHeader . '</h2>';
                             echo 'No order data available for store ' . $storeId;
                             if (($storeType === 'orderdates') || ($storeType === 'date')) {
@@ -572,21 +516,22 @@ $currentDate = date("Y-m-d");
                 if ($reportType === 'performance') {
                     $setHeader = 'Employee Details';
                     $employeeId = '0';
+                    // get employee info from reports
                     if (isset($_POST['employeeDropdown'])) {
                         $employeeId = $_POST['employeeDropdown'];
                     } else {
                         $employeeId = 0;
                     }
 
+                    // get store location from reports
                     if (isset($_POST['storeId'])) {
                         $storeId = $_POST['storeId'];
                     } else {
-                        $storeId = 0;
+                        $storeId = 1;
                     }
 
-
+                    // get employee status from reports filter
                     $active_employee = $_POST['emp_status'];
-
 
                     $employeeSql = "SELECT  `E_First_Name`, `E_Last_Name`, `Title_Role`, `Hire_Date`, `assigned_orders`, `completed_orders` 
                                     FROM `employee`
@@ -600,9 +545,6 @@ $currentDate = date("Y-m-d");
                     if ($employeeResult) {
                         if (mysqli_num_rows($employeeResult) > 0) {
                             $is_result = 1;
-                            // echo '<div style="float:right;">
-                            //     <button id="export-csv" style="font-size:medium;" class="button">Export to CSV</button>
-                            //     </div><br>';
                             echo '<h2>' . $setHeader . '</h2>';
 
                             // Start scrollable area
@@ -610,6 +552,7 @@ $currentDate = date("Y-m-d");
 
                             echo "<table border='1' class='table_update'>";
 
+                            // create columnds for employee details
                             echo "<tr>
                                     <th class='th-spacing'>First Name</th>
                                     <th class='th-spacing'>Last Name</th>
@@ -620,6 +563,7 @@ $currentDate = date("Y-m-d");
                                 </tr>";
 
                             while ($row = mysqli_fetch_assoc($employeeResult)) {
+                                // populate data for employee details
                                 echo "<tr>";
                                 echo "<td>" . $row['E_First_Name'] . "</td>";
                                 echo "<td>" . $row['E_Last_Name'] . "</td>";
@@ -637,14 +581,12 @@ $currentDate = date("Y-m-d");
                         }
 
                         // Display Order Details Table
-                        $orderSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, Customer_ID, pizza_store.Store_Address
+                        $orderSql = "SELECT Order_ID, Date_Of_Order, Time_Of_Order, Order_Type, Order_Status, Total_Amount, Customer_ID, Guest_ID, pizza_store.Store_Address
                                     FROM orders LEFT JOIN employee ON employee.Employee_ID = orders.Employee_ID_assigned LEFT JOIN pizza_store ON pizza_store.Pizza_Store_ID = orders.Store_ID
                                     WHERE Employee_ID_assigned = $employeeId AND orders.Store_ID = $storeId AND active_employee = $active_employee";
 
-
                         $orderResult = mysqli_query($mysqli, $orderSql);
                         $exResult = mysqli_query($mysqli, $orderSql);
-
 
                         if ($orderResult) {
                             if (mysqli_num_rows($orderResult) > 0) {
@@ -659,6 +601,7 @@ $currentDate = date("Y-m-d");
                                 // Start scrollable area
                                 echo '<div class="scrollable-area">';
 
+                                // create columns for assigned orders
                                 echo "<table border='1' class='table_update' id='export-data'>";
                                 echo "<tr>
                                         <th class='th-spacing'>Order ID</th>
@@ -672,6 +615,7 @@ $currentDate = date("Y-m-d");
                                     </tr>";
 
                                 while ($orderRow = mysqli_fetch_assoc($orderResult)) {
+                                    // populate order information
                                     echo "<tr>";
                                     echo "<td>" . $orderRow['Order_ID'] . "</td>";
                                     echo "<td>" . $orderRow['Date_Of_Order'] . "</td>";
@@ -679,7 +623,11 @@ $currentDate = date("Y-m-d");
                                     echo "<td>" . $orderRow['Order_Type'] . "</td>";
                                     echo "<td>" . $orderRow['Order_Status'] . "</td>";
                                     echo "<td>" . $orderRow['Total_Amount'] . "</td>";
-                                    echo "<td>" . $orderRow['Customer_ID'] . "</td>";
+                                    if (!empty($orderRow['Customer_ID'])) {
+                                        echo "<td>" . $orderRow['Customer_ID'] . "</td>";
+                                    } else {
+                                        echo "<td>" . $orderRow['Guest_ID'] . "</td>";
+                                    }
                                     echo "<td>" . $orderRow['Store_Address'] . "</td>";
                                     echo "</tr>";
                                 }
@@ -700,6 +648,7 @@ $currentDate = date("Y-m-d");
                         echo 'Error executing the Employee SQL query: ' . mysqli_error($mysqli);
                     }
 
+                    // no data found
                     if ($is_result == 0) {
                         echo '<h2>No Records Found!</h2>';
                     }
