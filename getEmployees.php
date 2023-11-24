@@ -1,5 +1,5 @@
 <?php
-// function used in reports.php to get employee date
+// function used in reports.php to get employee data
 session_start();
 include 'database.php';
 ini_set('display_errors', 1);

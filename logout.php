@@ -1,5 +1,5 @@
 <?php
-// function runs when logout is clicked
+// function runs when logout is clicked. logs user out and sends to home or employee_home based on user
 
 //Logout file for nav bar. Will kill session and send to main page
 session_start();
