@@ -1,4 +1,6 @@
-To set up the project, refer to this Notion: https://massive-nitrogen-4fb.notion.site/COSC-3380-Database-Project-1c6861ef7d9345389f08d57cc7f18fff?pvs=4
+To set up the project, refer to this Notion: 
+    
+    https://massive-nitrogen-4fb.notion.site/COSC-3380-Database-Project-1c6861ef7d9345389f08d57cc7f18fff?pvs=4
 
 University of Houston Database Systems (COSC 3380) with Dr. Uma Ramamurthy
 
