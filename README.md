@@ -1,3 +1,5 @@
+Refer to this Notion: https://massive-nitrogen-4fb.notion.site/COSC-3380-Database-Project-1c6861ef7d9345389f08d57cc7f18fff?pvs=4
+
 University of Houston Database Systems (COSC 3380) with Dr. Uma Ramamurthy
 
 This project is a web-based point-of-sale management system for the University of Houston. A pizza shop was selected to demonstrate the point-of-sale concept. It was developed by Team 13 as part of the COSC 3380 course. 
